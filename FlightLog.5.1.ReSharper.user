@@ -7,7 +7,9 @@
     </boolean>
   </SettingsComponent>
   <RecentFiles>
-    <RecentFiles />
+    <RecentFiles>
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:packages.config" caret="0" fromTop="0" />
+    </RecentFiles>
     <RecentEdits />
   </RecentFiles>
   <NAntValidationSettings>
@@ -20,4 +22,52 @@
     <NUnitInstallDir>C:\Program Files (x86)\NUnit 2.5.8\bin\net-2.0\</NUnitInstallDir>
     <UseAddins>Never</UseAddins>
   </UnitTestRunnerNUnit>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="HttpResponse`0" priority="2" />
+      <Item value="HttpContext`0" priority="0" />
+      <Item value="IO" priority="1" />
+      <Item value="string" priority="2" />
+      <Item value="form1" priority="0" />
+      <Item value="if" priority="2" />
+      <Item value="System`0" priority="0" />
+      <Item value="System" priority="0" />
+      <Item value="File`0" priority="0" />
+      <Item value="return" priority="1" />
+      <Item value="DateTime`0" priority="1" />
+      <Item value="target" priority="2" />
+      <Item value="throw" priority="0" />
+      <Item value="e" priority="0" />
+      <Item value="var" priority="0" />
+      <Item value="IFieldControl`0" priority="1" />
+      <Item value="TimeSpan`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.HttpContext">
+      <Item value="Current" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpContext">
+      <Item value="Response" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.HttpResponse">
+      <Item value="Write`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.File">
+      <Item value="Exists`0" priority="0" />
+      <Item value="GetCreationTime`0" priority="0" />
+      <Item value="Decrypt`0" priority="0" />
+      <Item value="Delete`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Format`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Today" priority="0" />
+      <Item value="Now" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.DateTime">
+      <Item value="ToString`0" priority="0" />
+      <Item value="Subtract`0" priority="0" />
+      <Item value="Date" priority="1" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
 </Configuration>

@@ -35,11 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="ErikEJ.SqlCeMembership">
-      <HintPath>..\packages\ErikEJ.SqlCeMembership.2.0.0.4\lib\ErikEJ.SqlCeMembership.dll</HintPath>
+    <Reference Include="ErikEJ.SqlCeMembership, Version=2.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ErikEJ.SqlCeMembership.2.1.0.1\lib\ErikEJ.SqlCeMembership.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="StartListeData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

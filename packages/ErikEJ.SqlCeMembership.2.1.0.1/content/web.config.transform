@@ -1,0 +1,23 @@
+<configuration>
+    <connectionStrings>
+        <add name="SqlCeServices" connectionString="data source=|DataDirectory|\SqlCeAspnetdb.sdf" />
+    </connectionStrings>
+    <system.web>
+        <membership defaultProvider="SqlCeMembershipProvider">
+            <providers>
+               <add name="SqlCeMembershipProvider" type="ErikEJ.SqlCeMembershipProvider, ErikEJ.SqlCeMembership" connectionStringName="SqlCeServices" applicationName="/" enablePasswordRetrieval="false" enablePasswordReset="true" requiresQuestionAndAnswer="false" requiresUniqueEmail="true" passwordFormat="Hashed" writeExceptionsToEventLog="false" />
+            </providers>
+        </membership>
+       <profile enabled="false">
+         <providers>
+           <clear/>
+           <add name="SqlCeProfileProvider" type="ErikEJ.SqlCeProfileProvider" connectionStringName="SqlCeServices" applicationName="/"/>
+         </providers>
+       </profile>
+      <roleManager defaultProvider="SqlCeRoleProvider">
+            <providers>
+                <add name="SqlCeRoleProvider" type="ErikEJ.SqlCeRoleProvider, ErikEJ.SqlCeMembership" connectionStringName="SqlCeServices" applicationName="/" writeExceptionsToEventLog="false" />
+            </providers>
+        </roleManager>
+    </system.web>
+</configuration>
