@@ -1,0 +1,171 @@
+﻿@model IEnumerable<FlightLog.Models.Flight>
+@helper TruncateDate(DateTime input)
+    {
+        if (input.Year == DateTime.Today.Year)
+        {
+    @(input.ToString("ddd. ") + input.ToString("d MMM"));
+        }
+        else
+        {
+            <a href="@Url.Content("~/")@input.ToString("yyyy-MM-dd")" class="awesomeBtn">@input.ToString("dd/MM")</a>
+            @*@Html.ActionLink(input.ToShortDateString(), "Date", new { date = input })*@
+        }
+}
+@{
+    ViewBag.Title = "Startlisten";
+    int startNr = 0;
+}
+<p>
+    @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+    @Html.ActionLink("Importer eksisterende flyvedata", "Import")
+</p>
+<table id="myTable" class="tablesorter">
+    <thead>
+        <tr>
+            <th>
+                Dato
+            </th>
+            <th>
+                Start
+            </th>
+            <th>
+                Landing
+            </th>
+            <th>
+                Tid
+            </th>
+            <th>
+                Fly
+            </th>
+            <th>
+                Pilote(r)
+            </th>
+            <th>
+                Flyveplads
+            </th>
+            <th>
+                Tacho
+            </th>
+            <th>
+                Note
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @TruncateDate(item.Date)
+                </td>
+                <td>
+                    @if (item.Departure == null)
+                    {
+                        <span style="white-space: nowrap;">
+                            @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm") })
+                            <text>/</text>@Html.ActionLink("-5", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm") })
+                            <text>/</text>@Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm") })
+                        </span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Departure)
+                    }
+                </td>
+                <td>
+                    @if (item.Landing == null)
+                    {
+                        <span style="white-space: nowrap;">
+                            @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm") })
+                            <text>/</text>@Html.ActionLink("-5", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm") })
+                            <text>/</text>@Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm") })
+                        </span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Landing)
+                    }
+                </td>
+                <td>
+                    @if (item.Departure.HasValue && item.Landing.HasValue)
+                    {
+                        if (item.Landing.Value > item.Departure.Value)
+                        {
+                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                        }
+                        else
+                        {
+                            <text><span class="error">Fejl: landing før start</span></text>
+                        }
+                    }
+                </td>
+                <td>
+                    @item.Plane.CompetitionId
+                    @item.Plane.Registration
+                </td>
+                <td>
+                    @item.Pilot.Name
+                    @if (item.PilotBackseat != null)
+                    {
+                        <text>/ </text>@item.PilotBackseat.Name
+                    }
+                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                    {
+                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
+                    }
+                </td>
+                <td>
+                    @item.StartedFrom.Name
+                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                    {
+                        <text>/ </text>
+                        @item.LandedOn.Name
+                    }
+                </td>
+                <td>
+                    @item.TachoDeparture
+                    @if ((item.TachoLanding != null) && (item.TachoLanding > 0))
+                    {
+                        <text>/ </text>
+                        @item.TachoLanding
+                        <text> (diff: </text>
+                        @(item.TachoDeparture.Value - item.TachoLanding.Value);
+                        <text> ) </text>
+                    }
+                </td>
+                <td>
+                    @if ((item.Description != null) && (item.Description.Length > 40))
+                    {
+                        @item.Description.Substring(0, 37).ToString()
+                        <span title="[...]@item.Description.Substring(37).ToString()">
+                            <text>[...]</text>
+                        </span>
+                    }
+                    else
+                    {
+                        @item.Description
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Rediger", "Edit", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    @*@Html.ActionLink("Historik", "ChangeHistory", new { id = item.FlightId }, new { @class = "awesomeBtn" }) *@
+                    @*@Html.ActionLink("Slet", "Delete", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+</p>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#myTable").tablesorter();
+    }
+);
+</script>

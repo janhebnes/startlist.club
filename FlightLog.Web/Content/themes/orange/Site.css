@@ -1,0 +1,415 @@
+﻿/* RESET
+----------------------------------------------------------*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+body
+{
+	background: #ffffff url('images/BodyBG.png') repeat-x top left;
+    font-size: .75em;
+    font-family: Arial, Helvetica, Sans-Serif;
+    color: #444444;
+}
+
+
+/* LINKS   
+----------------------------------------------------------*/
+a
+{
+    color: #FC6703;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+a:hover
+{
+    color: #ff9622;
+}
+
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    color: #444444;
+    margin: 20px 0 10px 0;
+    clear: both;
+}
+
+h1
+{
+    font-size: 2em;
+    color: #ff9622;
+}
+
+h2
+{
+    font-size: 1.5em;
+}
+
+h3
+{
+    font-size: 1.2em;
+}
+
+h4
+{
+    font-size: 1.1em;
+}
+
+h5, h6
+{
+    font-size: 1em;
+}
+
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page
+{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#title
+{
+	color: #ffffff;
+    float: left;
+    background: transparent url('images/TitleLeft.png') no-repeat top left;
+}
+
+#title h1
+{
+    color: #444444;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    padding: 22px 20px 30px 20px;
+    background: transparent url('images/TitleRight.png') no-repeat top right;
+}
+
+#logindisplay
+{
+    color: #ffffff;
+    text-align: right;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+#logindisplay a:link, #logindisplay a:visited
+{
+    color: #ffffff;
+	text-decoration: none;
+}
+
+#logindisplay a:hover
+{
+    text-decoration: underline;
+}
+
+#menucontainer
+{
+    margin-top: 61px;
+}
+
+#main
+{
+	margin-top: 100px;
+    margin-bottom: 30px;
+	padding: 10px 30px 15px 30px;
+}
+
+#footer
+{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+    color: #cccccc;
+    padding: 11px 0;
+    text-align: center;
+    font-size: 11px;
+    width: 100%;
+	background: #ffffff url('images/BodyBG.png') repeat-x top left;
+}
+
+
+/* TAB MENU   
+----------------------------------------------------------*/
+ul#menu
+{
+	float: right;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul#menu li
+{
+	float: left;
+    background: transparent url('images/TabInactiveLeft.png') no-repeat bottom left;
+}
+
+ul#menu li a
+{
+	display: block;
+	padding: 15px 20px 8px 15px;
+	color: #444444;
+	font-size: 14px;
+	font-weight: bold;
+	text-decoration: none;
+	text-transform: uppercase;
+	background: transparent url('images/TabInactiveRight.png') no-repeat bottom right;
+}
+
+ul#menu li a:hover
+{
+	text-decoration: underline;
+}
+
+ul#menu li.active
+{
+    background: transparent url('images/TabActiveLeft.png') no-repeat bottom left;
+}
+
+ul#menu li.active a
+{
+    background: transparent url('images/TabActiveRight.png') no-repeat bottom right;
+}
+
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+fieldset 
+{
+    margin: 2em 0 1em 0;
+    padding: 1em;
+    border: 1px solid #ff9622;
+}
+
+legend
+{
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ffffff;
+    background: #ff9622;
+    padding: 5px 10px;
+}
+
+fieldset p 
+{
+    margin: 10px 12px 2px 10px;
+}
+
+fieldset label, fieldset .display-label
+{
+    display: block;
+    font-weight: bold;
+    margin: 5px 0 3px 0;
+}
+
+fieldset label.inline 
+{
+    display: inline;
+}
+
+input[type="text"], input[type="password"]
+{
+    width: 200px;
+    border: 1px solid #cccccc;
+	color: #333333;
+}
+
+input[type="text"]:focus, input[type="password"]:focus
+{
+	background-color: #ffd09d;
+    border: 1px solid #ff9622;
+}
+
+textarea
+{
+	display:block;
+	height: 100px;
+	width: 400px;
+	color: #333333;
+    font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 1.1em;
+    border: 1px solid #cccccc;
+}
+
+textarea:focus
+{
+	background-color: #ffd09d;
+    border: 1px solid #ff9622;
+}
+
+/* TABLE
+----------------------------------------------------------*/
+table 
+{
+	border: solid 1px #cccccc;
+}
+
+table td 
+{
+	padding: 4px;   
+	border: solid 1px #cccccc;
+}
+
+table thead td, table th
+{
+	padding: 4px;
+	text-align: center;
+	text-transform: uppercase; 
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #ff9622; 
+	border: solid 1px #cccccc;
+}
+
+table thead
+{
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+table th
+{
+	background-color: #444444;
+	/* text-transform: capitalize; */
+}
+
+table tr.row-alternate
+{
+	background-color: #E4E4E4; 
+}
+
+
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+    clear: both;
+}
+
+.error
+{
+    color: #ff0000;
+}
+
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+	padding: 10px 10px 10px 35px;
+	margin: 10px 0;
+	border: 1px solid #dfdfdf;
+	color: #ff0000;
+	font-weight: bold;
+	background: #fcf9ce url(icons/error.gif) 5px 6px no-repeat;
+}
+
+.errorMessage, .warningMessage, .infoMessage
+{
+	padding: 10px 10px 10px 35px;
+	margin: 5px 0;
+	border: 1px solid #DFDFDF;
+	color: #333333;
+	font-weight: bold;
+}
+
+.errorMessage
+{
+	background: #fcf9ce url(icons/error.gif) 5px 6px no-repeat;
+}
+
+.warningMessage
+{
+	background: #fcf9ce url(icons/exclamation.gif) 5px 6px no-repeat;
+}
+
+.infoMessage
+{
+	background: #fcf9ce url(icons/info.gif) 5px 6px no-repeat;
+}
+
+.float-left
+{
+	float: left;
+}
+
+.float-right
+{
+	float: right;
+}
+
+
+/* OTHER HTML TAGS  
+----------------------------------------------------------*/
+code, blockquote
+{
+  padding: 10px;
+  text-align: left;
+  display: block;
+  overflow: auto;  
+  background: #fafafa;
+  border: 1px solid #f2f2f2;  
+  border-left: 3px solid #ff9622;
+}
+
+code
+{
+	font: 500 1em/1.5em 'Lucida Console', 'courier new', monospace;
+}
+
+blockquote
+{
+	font: bold 1.2em/1.5em 'Trebuchet MS', Tahoma, sans-serif; 
+	color: #666666;
+}
+
+ul, ol
+{
+	margin: 10px 30px;
+	list-style-position: inside;
+}
+
+ul
+{
+	list-style-type: disc;
+}
+
+ol
+{
+	list-style-type: decimal;
+}
+
+img
+{
+	border: 1px solid #dadada;
+	padding: 5px;
+	background: #fafafa;
+}
+
+img.float-right
+{
+	margin: 5px 0px 5px 15px;
+	border-right: 3px solid #ff9622;
+}
+
+img.float-left
+{
+	margin: 5px 15px 5px 0px;
+	border-left: 3px solid #ff9622;
+}

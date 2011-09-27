@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Themes/Orange/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    @*<link rel="stylesheet" type="text/css" href="http://flyveklubben.dk/medlem/ow/css/ow.css" media="all">*@
+    <style media="print">.noprint{display:none;}body{margin-right:0px; margin-left:0px;}</style>
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.tablesorter.min.js")" type="text/javascript"></script>
+</head>
+<body>
+<div id="container">
+    <div class="page">
+
+        <div id="header">
+            <div id="title">
+                <h1>@ViewBag.Title</h1>
+            </div>
+
+            <div id="logindisplay">
+                @Html.Partial("_LogOnPartial")
+            </div>
+
+            <div id="menucontainer" class="noprint">
+
+                <ul id="menu">
+                    <li>@Html.ActionLink("Dagsrapporter", "Index", "Report")</li>
+                    <li>@Html.ActionLink("Startlisten", "Index", "Flight")</li>
+                    <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
+                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div id="main">
+            @RenderBody()
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿@model FlightLog.Models.Flight
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Flight</legend>
+
+    <div class="display-label">Departure</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Departure)
+    </div>
+
+    <div class="display-label">Landing</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Landing)
+    </div>
+
+    <div class="display-label">Plane</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Plane.Registration)
+    </div>
+
+    <div class="display-label">Pilot</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Pilot.Name)
+    </div>
+
+    <div class="display-label">StartType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartType)
+    </div>
+
+    <div class="display-label">Departure</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartedFrom.Name)
+    </div>
+
+    <div class="display-label">Landing</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LandedOn.Name)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Tilbage til listen", "Index")
+    </p>
+}

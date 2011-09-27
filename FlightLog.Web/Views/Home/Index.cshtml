@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Kom igang";
+    using (var db = new FlightLog.Models.FlightContext())
+    {
+        ViewBag.Stats = db.Flights.Count().ToString();
+    }    
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+    Totale antal registrerede flyvninger: @ViewBag.Stats<br />
+    Siden er udarbejdet for at fungere som startliste for <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a><br />
+    <br />
+    Den er forsøgt holdt generel således at pris beregningen for en anden klub nemt kan lægges ind via en ekstern .Net assembly. 
+</p>

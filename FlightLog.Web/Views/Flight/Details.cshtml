@@ -1,0 +1,78 @@
+﻿@model FlightLog.Models.Flight
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detaljer</h2>
+
+<fieldset>
+    <legend>Flight</legend>
+
+	<div class="display-label">Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+
+    <div class="display-label">Departure</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Departure)
+    </div>
+
+    <div class="display-label">Landing</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Landing)
+    </div>
+
+    <div class="display-label">Plane</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Plane.Registration)
+    </div>
+
+    <div class="display-label">Pilot</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Pilot.Name)
+    </div>
+
+    <div class="display-label">Pilot backseat</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PilotBackseat.Name)
+    </div>
+
+    <div class="display-label">Pilot paying</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Betaler.Name)
+    </div>
+
+    <div class="display-label">StartType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartType)
+    </div>
+
+    <div class="display-label">Departure</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartedFrom.Name)
+    </div>
+
+    <div class="display-label">Landing</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LandedOn.Name)
+    </div>
+
+    <div class="display-label">TachoDeparture</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TachoDeparture)
+    </div>
+
+    <div class="display-label">TachoLanding</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TachoLanding)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Rediger", "Edit", new { id=Model.FlightId }) | 
+    @*@Html.ActionLink("Historik", "ChangeHistory", new { id=Model.FlightId }) | *@
+    @Html.ActionLink("Tilbage til listen", "Index")
+</p>
+
+@Html.Partial("_changeHistory", (IEnumerable<FlightLog.Models.FlightVersionHistory>)ViewBag.ChangeHistory)

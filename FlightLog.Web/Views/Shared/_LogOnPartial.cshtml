@@ -1,0 +1,8 @@
+﻿@if(Request.IsAuthenticated) {
+    <text> <b>@Context.User.Identity.Name</b>!
+    [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
+}
+else {
+    @:[ @Html.ActionLink("Log On", "LogOn", "Account") ]
+    <text> <b>@Context.User.IsInRole("Administrator") is not here</b>!</text>
+}

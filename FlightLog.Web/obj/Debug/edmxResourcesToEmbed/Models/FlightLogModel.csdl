@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="FlightLogModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="FlightLogModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="FlightSet" EntityType="FlightLogModel.Flight" />
+    <EntitySet Name="PilotSet" EntityType="FlightLogModel.Pilot" />
+    <EntitySet Name="FlightClubSet" EntityType="FlightLogModel.FlightClub" />
+  </EntityContainer>
+  <EntityType Name="Flight">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int16" Name="PilotId" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pilot">
+    <Key>
+      <PropertyRef Name="PilotId" />
+    </Key>
+    <Property Type="Int32" Name="PilotId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ComplexProperty" Type="FlightLogModel.ComplexType1" Nullable="false" />
+    <Property Type="String" Name="Property" Nullable="false" />
+    <NavigationProperty Name="NavigationProperty1" />
+  </EntityType>
+  <EntityType Name="FlightClub">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+</Schema>

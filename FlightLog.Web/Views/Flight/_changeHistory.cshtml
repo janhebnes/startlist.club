@@ -1,0 +1,121 @@
+﻿@model IEnumerable<FlightLog.Models.FlightVersionHistory>
+
+@helper TruncateDate(DateTime input)
+{
+    if (input.Year == DateTime.Today.Year) {
+        @(input.ToString("ddd. ") + input.ToString("m"));
+    }
+    else
+    {
+        @input.ToShortDateString()
+    }
+}
+
+@{
+    ViewBag.Title = "Startlisten / Historik";
+}
+<h2>Historik</h2>
+
+<fieldset>
+    <legend>Flight</legend>
+
+<table>
+    <tr>
+        <th>
+            Rettet
+        </th>
+        <th>
+            Dato
+        </th>
+        <th>
+            Start
+        </th>
+        <th>
+            Landing
+        </th>
+        <th>
+            Fly
+        </th>
+        <th>
+            Piloter
+        </th>
+        <th>
+            Betalende
+        </th>
+        <th>
+            Startmetode
+        </th>
+        <th>
+            Flyveplads
+        </th>
+        <th>
+            Tacho
+        </th>
+        <th>
+            Note
+        </th>
+    </tr>
+@foreach (var item in Model)
+{
+    
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Created)
+            <text> af </text>
+            @Html.DisplayFor(modelItem => item.LastUpdatedBy)
+        </td>
+        <td>
+            @TruncateDate(item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Departure)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Landing)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Plane)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pilot.Name)
+            @if (item.PilotBackseat != null)
+            {
+                <text>, </text>
+                @Html.DisplayFor(modelItem => item.PilotBackseat.Name)
+            }
+        </td>
+        <td>
+            @if (item.Betaler != null)
+            {
+                @Html.DisplayFor(modelItem => item.Betaler.Name)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartedFrom.Name)
+            @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+            {
+                <text>, </text>
+                @Html.DisplayFor(modelItem => item.LandedOn.Name)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TachoDeparture)
+            <text> / </text>
+            @Html.DisplayFor(modelItem => item.TachoLanding)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+    </tr>
+}
+</table>
+</fieldset>
+<p>
+    @Html.ActionLink("Tilbage til detaljer", "Details", new { id = ViewBag.FlightId }) |
+    @Html.ActionLink("Rediger", "Edit", new { id = ViewBag.FlightId }) |
+    @Html.ActionLink("Slet", "Delete", new { id = ViewBag.FlightId }) |
+    @Html.ActionLink("Tilbage til listen", "Index")
+</p>
