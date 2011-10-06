@@ -12,7 +12,6 @@ namespace FlightLog.Controllers
 {
     using System.Diagnostics.CodeAnalysis;
 
-    [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class FlightController : Controller
     {
         /// <summary>
@@ -22,7 +21,7 @@ namespace FlightLog.Controllers
 
         public ViewResult Index()
         {
-            var flights = this.db.Flights.Take(60).OrderByDescending(s => s.Departure ?? DateTime.Now);
+            var flights = this.db.Flights.Take(60).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
             var l = flights.ToList();
             return View(l);
         }
