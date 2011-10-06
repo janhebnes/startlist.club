@@ -20,7 +20,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
 
         private string DownloadDataFile()
         {
-            var target = Server.MapPath("~/App_Data/00096B5FAB4D.xml");
+            var target = Server.MapPath("~/App_Data/801F0227AE51.xml");
             if (global::System.IO.File.Exists(target))
             {
                 var creationTime = (global::System.IO.File.GetCreationTime(target));
@@ -264,7 +264,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                     flight.TachoCost = Double.Parse(row["TachoCost"].ToString());
 
                     flight.TaskDistance = Int32.Parse(row["Km"].ToString());
-                    flight.RecordKey = Int32.Parse(row["RecordKey"].ToString());
+                    flight.RecordKey = rkey; //// Int32.Parse(row["RecordKey"].ToString());
 
                     db.Flights.Add(flight);
 
