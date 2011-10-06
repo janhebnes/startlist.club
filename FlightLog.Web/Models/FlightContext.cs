@@ -39,9 +39,6 @@ namespace FlightLog.Models
         {
             get
             {
-                // Specify the provider name, server and database.
-                string providerName = "System.Data.SqlClient"; // SqlClient
-
                 // Build the SqlConnection connection string.
                 string providerString = WebConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"];
 
