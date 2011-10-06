@@ -100,9 +100,9 @@
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            //using a custom initializer to seed the database,look in blogcontext to see
-            //how it works
-            ////System.Data.Entity.Database.SetInitializer(new FlightContext.FlightContextInitializer());
+#if DEBUG
+            System.Data.Entity.Database.SetInitializer(new FlightContext.FlightContextInitializer());
+#endif
         }
     }
 }

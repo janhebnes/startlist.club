@@ -8,9 +8,54 @@
   </SettingsComponent>
   <RecentFiles>
     <RecentFiles>
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:packages.config" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:packages.config" caret="277" fromTop="6" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:Pilot.cs" caret="588" fromTop="21" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.Debug.config" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.Release.config" caret="722" fromTop="15" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="1449" fromTop="41" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Shared/f:_Layout.cshtml" caret="121" fromTop="4" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/f:Web.config" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:obj/d:Debug/d:edmxResourcesToEmbed/d:Models/f:FlightLogModel.ssdl" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:obj/d:Debug/d:edmxResourcesToEmbed/d:Models/f:FlightLogModel.msl" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:obj/d:Debug/d:edmxResourcesToEmbed/d:Models/f:FlightLogModel.csdl" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:obj/d:Debug/d:edmxResourcesToEmbed/d:Models/f:Model1.edmx.sql" caret="23257" fromTop="21" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="590" fromTop="10" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="3518" fromTop="21" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Global.asax.cs" caret="3282" fromTop="18" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="810" fromTop="15" />
     </RecentFiles>
-    <RecentEdits />
+    <RecentEdits>
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1754" fromTop="44" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1754" fromTop="45" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="43" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="48" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="19" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="40" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="811" fromTop="12" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1192" fromTop="22" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Shared/f:_Layout.cshtml" caret="121" fromTop="4" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="11488" fromTop="58" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5925" fromTop="19" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5925" fromTop="18" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="8894" fromTop="30" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1754" fromTop="33" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="723" fromTop="14" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="15" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="700" fromTop="11" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="468" fromTop="20" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1754" fromTop="39" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1754" fromTop="36" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1754" fromTop="35" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="11" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5817" fromTop="29" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Global.asax.cs" caret="4279" fromTop="29" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5726" fromTop="54" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="541" fromTop="11" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="724" fromTop="17" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:obj/d:Debug/d:edmxResourcesToEmbed/d:Models/f:FlightLogModel.csdl" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="462" fromTop="10" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="809" fromTop="15" />
+    </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
     <NAntPath value="" />
@@ -27,13 +72,13 @@
       <Item value="HttpResponse`0" priority="2" />
       <Item value="HttpContext`0" priority="0" />
       <Item value="IO" priority="1" />
-      <Item value="string" priority="2" />
+      <Item value="string" priority="4" />
       <Item value="form1" priority="0" />
-      <Item value="if" priority="2" />
+      <Item value="if" priority="4" />
       <Item value="System`0" priority="0" />
-      <Item value="System" priority="0" />
+      <Item value="System" priority="3" />
       <Item value="File`0" priority="0" />
-      <Item value="return" priority="1" />
+      <Item value="return" priority="4" />
       <Item value="DateTime`0" priority="1" />
       <Item value="target" priority="2" />
       <Item value="throw" priority="0" />
@@ -41,6 +86,33 @@
       <Item value="var" priority="0" />
       <Item value="IFieldControl`0" priority="1" />
       <Item value="TimeSpan`0" priority="0" />
+      <Item value="Configuration" priority="3" />
+      <Item value="Configuration`0" priority="0" />
+      <Item value="null" priority="0" />
+      <Item value="this" priority="3" />
+      <Item value="Database`0" priority="3" />
+      <Item value="base" priority="3" />
+      <Item value="FlightContext`0" priority="1" />
+      <Item value="SqlConnection`0" priority="0" />
+      <Item value="dbFac" priority="0" />
+      <Item value="DbConnection`0" priority="0" />
+      <Item value="Database" priority="0" />
+      <Item value="Diagnostics" priority="0" />
+      <Item value="Debug`0" priority="0" />
+      <Item value="DropCreateDatabaseIfModelChanges" priority="0" />
+      <Item value="protected" priority="0" />
+      <Item value="override" priority="0" />
+      <Item value="ConnectionString" priority="0" />
+      <Item value="Flight`0" priority="0" />
+      <Item value="db" priority="0" />
+      <Item value="SqlConnectionStringBuilder`0" priority="0" />
+      <Item value="sqlBuilder" priority="2" />
+      <Item value="true" priority="0" />
+      <Item value="s" priority="0" />
+      <Item value="Configurations" priority="0" />
+      <Item value="ConventionsConfiguration`0" priority="0" />
+      <Item value="ModelConfiguration" priority="0" />
+      <Item value="DropCreateDatabaseAlways" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.Web.HttpContext">
       <Item value="Current" priority="0" />
@@ -59,6 +131,8 @@
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.String">
       <Item value="Format`0" priority="0" />
+      <Item value="Empty" priority="0" />
+      <Item value="IsNullOrEmpty`0" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.DateTime">
       <Item value="Today" priority="0" />
@@ -68,6 +142,53 @@
       <Item value="ToString`0" priority="0" />
       <Item value="Subtract`0" priority="0" />
       <Item value="Date" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.Configuration.WebConfigurationManager">
+      <Item value="AppSettings" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FlightLog.Models.FlightContext">
+      <Item value="Database" priority="1" />
+      <Item value="Configuration" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Entity.Database">
+      <Item value="Connection" priority="4" />
+      <Item value="CompatibleWithModel`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Data.Entity.Database">
+      <Item value="SetInitializer`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Entity.DbContext">
+      <Item value="Configuration" priority="0" />
+      <Item value="Database" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Common.DbProviderFactory">
+      <Item value="CreateConnectionStringBuilder`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Common.DbConnection">
+      <Item value="Open`0" priority="2" />
+      <Item value="Close`0" priority="0" />
+      <Item value="ServerVersion" priority="1" />
+      <Item value="State" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Diagnostics.Debug">
+      <Item value="WriteLine`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FlightLog.Models.FlightContext+FlightContextInitializer">
+      <Item value="InitializeDatabase`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FlightLog.Models.Pilot">
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.SqlClient.SqlConnectionStringBuilder">
+      <Item value="MultipleActiveResultSets" priority="0" />
+      <Item value="ConnectionString" priority="0" />
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Entity.DbModelBuilder">
+      <Item value="Build`0" priority="0" />
     </ItemStatistics>
   </CompletionStatisticsManager>
 </Configuration>

@@ -39,7 +39,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
             {
                 HttpContext.Current.Response.Write("Downloading Current Data file.<br />");
                 WebClient client = new WebClient();
-                client.DownloadFile("http://flyveklubben.dk/Application/StartStedet/00096B5FAB4D.xml", target);
+                client.DownloadFile("http://flyveklubben.dk/Application/StartStedet/801F0227AE51.xml", target);
                 HttpContext.Current.Response.Write("Data file downloaded.<br />");
                 return target;
             }

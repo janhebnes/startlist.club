@@ -132,6 +132,7 @@
     <Content Include="Content\themes\orange\images\TitleRight.png" />
     <Content Include="Content\themes\orange\sample\ie.jpg" />
     <Content Include="Content\themes\orange\Site.css" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Models\Model1.edmx.sql" />
     <Content Include="Scripts\AutoCompleteCombobox.js" />
     <Content Include="App_Data\Memberlist.xml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -327,6 +328,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Location\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Debug\edmxResourcesToEmbed\Models\FlightLogModel.csdl" />
+    <None Include="obj\Debug\edmxResourcesToEmbed\Models\FlightLogModel.msl" />
+    <None Include="obj\Debug\edmxResourcesToEmbed\Models\FlightLogModel.ssdl" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
