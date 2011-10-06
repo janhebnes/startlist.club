@@ -94,7 +94,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                 var spilstart = db.StartTypes.First(c => c.Name == "Spilstart");
                 foreach (DataRow row in startListeDataTable.Rows)
                 {
-                    if (i > 50)
+                    if (i > 20)
                     {
                         break;
                     }
@@ -275,7 +275,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
 
             return
                 string.Format(
-                    "Imported {0} new flights.<br />Parsed {3} of {6}(allready imported {1}, skipped {2})<br /> <a href=\"{4}\">{5}</a><br /><br />Continuing import in 10 seconds...<script>setTimeout('window.location.reload()',10000);</script>",
+                    "Imported {0} new flights.<br />Parsed {3} of {6}(allready imported {1}, skipped {2})<br /> <a href=\"{4}\">{5}</a><br /><br />Continuing import in 10 seconds...<script>setTimeout('window.location.reload()',5000);</script>",
                     i,
                     omitted,
                     invalid,
