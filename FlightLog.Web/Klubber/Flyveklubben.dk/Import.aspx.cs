@@ -90,6 +90,8 @@ namespace FlightLog.Klubber.FlyveklubbenDk
             int invalid = 0;
             using (var db = new FlightContext())
             {
+                var latestRecordKey = (from p in db.Flights select (p.RecordKey)).Max();
+
                 var club = db.Clubs.First(c => c.ShortName == "ØSF");
                 var spilstart = db.StartTypes.First(c => c.Name == "Spilstart");
                 foreach (DataRow row in startListeDataTable.Rows)
@@ -105,6 +107,12 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                     if (!Int32.TryParse(row["RecordKey"].ToString(), out rkey))
                     {
                         invalid++;
+                        continue;
+                    }
+
+                    if (rkey <= latestRecordKey)
+                    {
+                        omitted++;
                         continue;
                     }
 
