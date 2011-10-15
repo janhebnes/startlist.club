@@ -238,16 +238,30 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                         // Need memberId for creating member
                     }
 
+                    // Remove time zone information on date
+                    var startDateString = row["SDate"].ToString();
+                    startDateString = startDateString.Replace("+02:00", "+00:00");
+                    DateTime date = DateTime.Parse(startDateString);
+                    date = DateTime.SpecifyKind(date, DateTimeKind.Unspecified);
+
+                    DateTime departureTime = DateTime.Parse(row["STime"].ToString());
+                    departureTime = DateTime.SpecifyKind(departureTime, DateTimeKind.Utc);
+
+                    DateTime landingTime = DateTime.Parse(row["LTime"].ToString());
+                    landingTime = DateTime.SpecifyKind(landingTime, DateTimeKind.Utc);
+
                     var flight = new Flight
                     {
-                        Date = DateTime.Parse(row["SDate"].ToString()).Date,
-                        Departure = DateTime.Parse(row["STime"].ToString()),
-                        Landing = DateTime.Parse(row["LTime"].ToString()),
+                        Date = date,
+                        Departure = departureTime,
+                        Landing = landingTime,
                         PlaneId = plane.PlaneId,
                         PilotId = pilot.PilotId,
                         BetalerId = pilotBetaler.PilotId,
                         StartedFromId = departure.LocationId
                     };
+
+                    
 
                     if (pilotBackseat != null)
                     {
