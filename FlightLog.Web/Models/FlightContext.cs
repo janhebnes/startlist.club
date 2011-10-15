@@ -135,9 +135,6 @@ namespace FlightLog.Models
                         .HasForeignKey(m => m.BetalerId)
                         .WillCascadeOnDelete(false);
 
-
-
-            
         }
 
 
@@ -146,6 +143,23 @@ namespace FlightLog.Models
         {
             protected override void Seed(FlightContext context)
             {
+                // Locations
+                var xloc = new Location { Name = "Kongsted" };
+                context.Locations.Add(xloc);
+                context.SaveChanges();
+
+                // Clubs
+                var xclub = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = xloc };
+                context.Clubs.Add(xclub);
+                context.SaveChanges();
+
+                // StartType
+                var xstart = new StartType() { Name = "Spilstart", ShortName = "S" };
+                context.StartTypes.Add(xstart);
+                base.Seed(context);
+                return;
+
+
                 // Locations
                 var loc = new Location { Name = "Kongsted" };
                 context.Locations.Add(loc);

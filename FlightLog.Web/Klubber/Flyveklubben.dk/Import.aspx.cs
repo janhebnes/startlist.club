@@ -90,7 +90,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
             int invalid = 0;
             using (var db = new FlightContext())
             {
-                var latestRecordKey = (from p in db.Flights select (p.RecordKey)).Max();
+                var latestRecordKey = (from p in db.Flights select p.RecordKey).DefaultIfEmpty(0).Max();
 
                 var club = db.Clubs.First(c => c.ShortName == "ØSF");
                 var spilstart = db.StartTypes.First(c => c.Name == "Spilstart");
@@ -240,7 +240,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
 
                     var flight = new Flight
                     {
-                        Date = DateTime.Parse(row["SDate"].ToString()),
+                        Date = DateTime.Parse(row["SDate"].ToString()).Date,
                         Departure = DateTime.Parse(row["STime"].ToString()),
                         Landing = DateTime.Parse(row["LTime"].ToString()),
                         PlaneId = plane.PlaneId,

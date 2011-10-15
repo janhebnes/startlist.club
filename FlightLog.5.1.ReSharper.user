@@ -12,44 +12,51 @@
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:Pilot.cs" caret="588" fromTop="21" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.Debug.config" caret="0" fromTop="0" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.Release.config" caret="722" fromTop="15" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="1449" fromTop="41" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Shared/f:_Layout.cshtml" caret="121" fromTop="4" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/f:Web.config" caret="0" fromTop="0" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="3518" fromTop="21" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Global.asax.cs" caret="3282" fromTop="18" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="809" fromTop="15" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1190" fromTop="28" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1515" fromTop="21" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Home/f:Contact.cshtml" caret="548" fromTop="12" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Home/f:Administration.cshtml" caret="0" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Global.asax.cs" caret="4010" fromTop="28" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="1971" fromTop="22" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Report/f:Index.cshtml" caret="2605" fromTop="21" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:FlightController.cs" caret="268" fromTop="0" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="2501" fromTop="46" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:Flight.cs" caret="601" fromTop="23" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="4520" fromTop="46" />
     </RecentFiles>
     <RecentEdits>
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1607" fromTop="44" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1607" fromTop="45" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="43" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="48" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="19" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="40" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="811" fromTop="12" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Shared/f:_Layout.cshtml" caret="121" fromTop="4" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="11341" fromTop="58" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5778" fromTop="19" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5778" fromTop="18" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="8747" fromTop="30" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1607" fromTop="33" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="723" fromTop="14" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="15" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="700" fromTop="11" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="468" fromTop="20" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1607" fromTop="39" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1607" fromTop="36" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1607" fromTop="35" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5134" fromTop="11" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5670" fromTop="29" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="5476" fromTop="11" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Global.asax.cs" caret="4279" fromTop="29" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5579" fromTop="54" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="541" fromTop="11" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="724" fromTop="17" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="462" fromTop="10" />
-      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="809" fromTop="15" />
       <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="1190" fromTop="28" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="649" fromTop="22" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5893" fromTop="21" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="6142" fromTop="26" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="6349" fromTop="31" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Models/f:FlightContext.cs" caret="5561" fromTop="7" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="11840" fromTop="23" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Home/f:Administration.cshtml" caret="644" fromTop="14" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Global.asax.cs" caret="4010" fromTop="28" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="1186" fromTop="13" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Views/d:Home/f:Contact.cshtml" caret="548" fromTop="12" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/f:Web.config" caret="821" fromTop="9" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="2329" fromTop="27" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="2222" fromTop="23" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="1910" fromTop="15" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:ReportController.cs" caret="2501" fromTop="34" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:FlightController.cs" caret="607" fromTop="24" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Controllers/f:FlightController.cs" caret="268" fromTop="13" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="10730" fromTop="41" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="3716" fromTop="25" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="4419" fromTop="43" />
+      <File id="714653D2-F219-4968-A99A-D71D4664D598/d:Klubber/d:Flyveklubben.dk/f:Import.aspx.cs" caret="3716" fromTop="24" />
     </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
@@ -73,7 +80,7 @@
       <Item value="System`0" priority="0" />
       <Item value="System" priority="3" />
       <Item value="File`0" priority="0" />
-      <Item value="return" priority="4" />
+      <Item value="return" priority="5" />
       <Item value="DateTime`0" priority="1" />
       <Item value="target" priority="2" />
       <Item value="throw" priority="0" />
@@ -108,6 +115,9 @@
       <Item value="ConventionsConfiguration`0" priority="0" />
       <Item value="ModelConfiguration" priority="0" />
       <Item value="DropCreateDatabaseAlways" priority="0" />
+      <Item value="Session" priority="0" />
+      <Item value="else" priority="0" />
+      <Item value="int" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.Web.HttpContext">
       <Item value="Current" priority="0" />
@@ -136,7 +146,7 @@
     <ItemStatistics item="Qualified:System.DateTime">
       <Item value="ToString`0" priority="0" />
       <Item value="Subtract`0" priority="0" />
-      <Item value="Date" priority="1" />
+      <Item value="Date" priority="10" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.Web.Configuration.WebConfigurationManager">
       <Item value="AppSettings" priority="0" />
@@ -184,6 +194,26 @@
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Data.Entity.DbModelBuilder">
       <Item value="Build`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Entity.DbSet`1">
+      <Item value="Where`1" priority="0" />
+      <Item value="Count`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.SessionState.HttpSessionState">
+      <Item value="LCID" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FlightLog.Models.Flight">
+      <Item value="Date" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IOrderedQueryable`1">
+      <Item value="ThenBy`2" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Nullable`1">
+      <Item value="HasValue" priority="1" />
+      <Item value="Value" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
+      <Item value="DefaultIfEmpty`1" priority="0" />
     </ItemStatistics>
   </CompletionStatisticsManager>
 </Configuration>
