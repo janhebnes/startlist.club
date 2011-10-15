@@ -242,7 +242,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                     var startDateString = row["SDate"].ToString();
                     startDateString = startDateString.Replace("+02:00", "+00:00");
                     DateTime date = DateTime.Parse(startDateString);
-                    date = DateTime.SpecifyKind(date, DateTimeKind.Unspecified);
+                    date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 
                     DateTime departureTime = DateTime.Parse(row["STime"].ToString());
                     departureTime = DateTime.SpecifyKind(departureTime, DateTimeKind.Utc);
