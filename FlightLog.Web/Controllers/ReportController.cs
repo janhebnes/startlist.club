@@ -65,7 +65,7 @@ namespace FlightLog.Controllers
             {
                 rpt.Date = date.Value;
             }
-            else 
+            else
             {
                 rpt.Date = DateTime.Today;
             }
@@ -75,22 +75,33 @@ namespace FlightLog.Controllers
             return this.View(rpt);
         }
 
-        public FileContentResult Export(int year, int month)
+        public FileContentResult Export(int year, int? month)
         {
-            var flights = this.db.Flights.Where(f => f.Date.Month == month && f.Date.Year == year).OrderBy(o => o.Departure);
+            if (month.HasValue)
+            {
+                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year).OrderBy(o => o.Departure);
+                var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
+                return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlister-" + year + "-" + month + ".csv");
+            }
+            else
+            {
+                var flights = this.db.Flights.Where(f => f.Date.Year == year).OrderBy(o => o.Departure);
+                var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
+                return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlister-" + year + ".csv");
+            }
+        }
 
-            var csv = Enumerable.Aggregate(flights, Flight.CsvHeaders, (current, flight) => current + flight.ToCsvString());
-
-            ////csv = csv.Replace('æ', '祥'); //(char)145
-            ////csv = csv.Replace('Æ', (char)146);
-            ////csv = csv.Replace('ø', (char)248);
-            ////csv = csv.Replace('Ø', (char)216);
-            ////csv = csv.Replace('å', (char)134);
-            ////csv = csv.Replace('Å', (char)143);
-            
-            // Encoding Issue... 
-
-            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlister-" + year + "-" + month + ".csv");
+        private string SafeCSVParser(string input)
+        {
+            // HACK: Fix for Encoding Issue with Danish letters and not wanting to use a component for creating the csv.
+            var csv = input.Replace("æ", "ae");
+            csv = csv.Replace("Æ", "AE");
+            csv = csv.Replace("ø", "oe");
+            csv = csv.Replace("Ø", "OE");
+            csv = csv.Replace("å", "aa");
+            csv = csv.Replace("Å", "AA");
+            csv = csv.Replace("é", "e");
+            return csv;
         }
 
         public Dictionary<DateTime, int> AvailableDates()

@@ -212,8 +212,12 @@ namespace FlightLog.Models
         /// </returns>
         public TimeSpan FlightTime()
         {
-            var l = this.Landing.HasValue ? this.Landing.Value : this.Departure;
-            return (l - this.Departure) ?? TimeSpan.Zero;
+            if (this.Departure.HasValue && this.Landing.HasValue && this.Landing > this.Departure)
+            {
+                return this.Landing.Value - this.Departure.Value;
+            }
+
+            return TimeSpan.Zero;
         }
     }
 }

@@ -33,13 +33,17 @@
         <td align="right">@Model.Flights.Count()
         </td>
     </tr>
+    @{
+        var time = new TimeSpan(@Model.Flights.ToList()
+                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                .Sum(f => f.myTime));
+    }
     <tr>
         <td>
             Flyvetid
         </td>
-        <td align="right">@(new DateTime(@Model.Flights.ToList()
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
+        <td align="right">
+                    @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")) , time.Minutes.ToString("#00")) : "")
         </td>
     </tr>
     <tr>
@@ -65,6 +69,7 @@
     </tr>
 </table>
 <p>
+    <br />
     @Html.ActionLink("Eksporter startlisten for " + Model.Date.ToString("MMMM yyyy"), "Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month }, new { @class = "awesomeBtn" })
 </p>
 <h2>
@@ -92,7 +97,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in from c in Model.Flights
-                                         group c by new { c.Plane, c.Pilot } into g
+                                         group c by new { c.Pilot, c.Plane } into g
                                          select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
                     {
                         <tr>

@@ -5,7 +5,7 @@
 <p>
     <a href="@Url.Content("~/")@Model.Date.AddYears(-1).ToString("yyyy")" class="awesomeBtn">@Model.Date.AddYears(-1).ToString("yyyy")</a>
     <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn"><strong>@Model.Date.ToString("yyyy")</strong></a>
-    @foreach (var month in @Model.Flights.Select(d => d.Date.Month).Distinct())
+    @foreach (var month in @Model.Flights.Select(d => d.Date.Month).Distinct().OrderBy(o => o))
     {
         <a href="@Url.Content("~/")@Model.Date.AddMonths(month - 1).ToString("yyyy-MM")" class="awesomeBtn">@Model.Date.AddMonths(month - 1).ToString("MMMM")</a>
     }
@@ -101,7 +101,7 @@
                 @{
                     var totaltime = new TimeSpan(Model.Flights.ToList().Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 }).Sum(f => f.myTime));
                 }
-                @(totaltime.TotalMinutes > 0 ? string.Format("{0}:{1}", totaltime.TotalHours.ToString("#00.0"), totaltime.Minutes.ToString("#00")) : "")
+                @(totaltime.TotalMinutes > 0 ? string.Format("{0}:{1}", totaltime.TotalHours.ToString("#00.0").Substring(0, totaltime.TotalHours.ToString("#00.0").IndexOf(",")), totaltime.Minutes.ToString("#00")) : "")
             </td>
             @for (int i = 1; i <= 12; i++)
             {
@@ -109,7 +109,7 @@
                                 .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
                                 .Sum(f => f.myTime));
                 <td align="right">
-                    @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0"), time.Minutes.ToString("#00")) : "")
+                    @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
                 </td>
             }
         </tr>
@@ -130,6 +130,10 @@
         </tr>
     </tbody>
 </table>
+<p>
+    <br />
+    @Html.ActionLink("Eksporter startlisten for " + Model.Date.ToString("yyyy"), "Export", "Report", new { year = Model.Date.Year }, new { @class = "awesomeBtn" })
+</p>
 <h3>
     Pilot statistik</h3>
 <table id="myPilotTable" class="tablesorter">
@@ -209,7 +213,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0"), time.Minutes.ToString("#00")) : "")
+                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
                     </td>
                 }
             </tr>
@@ -222,17 +226,13 @@
     }
 );
 </script>
-@*
-<h3>
-    Fly statistik</h3>*@
+
 <h2>
     Logbøger for @Model.Date.ToString("yyyy")</h2>
-<h3>
-    Fly</h3>
-<table>
+<table >
     <tr>
         <td valign="top">
-            <table>
+            <table id="myPilotStatTable" class="tablesorter">
                 <thead>
                     <tr>
                         <th>
@@ -240,99 +240,6 @@
                         </th>
                         <th>
                             Forsæde
-                        </th>
-                        <th>
-                            Antal
-                        </th>
-                        <th>
-                            Flyvetid
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in from c in Model.Flights
-                                         group c by new { c.Plane, c.Pilot } into g
-                                         select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
-                    {
-                        <tr>
-                            <td>
-                                @item.Plane
-                            </td>
-                            <td>
-                                @item.Pilot.Name
-                            </td>
-                            <td align="right">
-                                @item.Count
-                            </td>
-                            <td align="right">
-                                @(new DateTime(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </td>
-        <td valign="top">
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Fly
-                        </th>
-                        <th>
-                            Bagsæde
-                        </th>
-                        <th>
-                            Antal
-                        </th>
-                        <th>
-                            Flyvetid
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in from c in Model.Flights
-                                         where c.PilotBackseat != null
-                                         group c by new { c.Plane, c.PilotBackseat } into g
-                                         select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
-                    {
-                        <tr>
-                            <td>
-                                @item.Plane
-                            </td>
-                            <td>
-                                @item.PilotBackseat.Name
-                            </td>
-                            <td align="right">
-                                @item.Count
-                            </td>
-                            <td align="right">
-                                @(new DateTime(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </td>
-    </tr>
-</table>
-<h3>
-    Piloter</h3>
-<table>
-    <tr>
-        <td valign="top">
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Forsæde
-                        </th>
-                        <th>
-                            Fly
                         </th>
                         <th>
                             Antal
@@ -347,20 +254,22 @@
                                          group c by new { c.Pilot, c.Plane } into g
                                          select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                     {
+                         var time = new TimeSpan(item.ItemFlights
+                            .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                            .Sum(f => f.myTime)); 
+                        
                         <tr>
                             <td>
-                                @item.Pilot.Name
+                                @item.Plane
                             </td>
                             <td>
-                                @item.Plane
+                                @item.Pilot.Name
                             </td>
                             <td align="right">
                                 @item.Count
                             </td>
                             <td align="right">
-                                @(new DateTime(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                                @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
                             </td>
                         </tr>
                     }
@@ -368,14 +277,14 @@
             </table>
         </td>
         <td valign="top">
-            <table>
+            <table id="myPilotStatTable2" class="tablesorter">
                 <thead>
                     <tr>
                         <th>
-                            Bagsæde
+                            Fly
                         </th>
                         <th>
-                            Fly
+                            Bagsæde
                         </th>
                         <th>
                             Antal
@@ -391,20 +300,22 @@
                                          group c by new { c.PilotBackseat, c.Plane } into g
                                          select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                     {
+                          var time = new TimeSpan(item.ItemFlights
+                            .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                            .Sum(f => f.myTime)); 
+                         
                         <tr>
                             <td>
-                                @item.PilotBackseat.Name
+                                @item.Plane
                             </td>
                             <td>
-                                @item.Plane
+                                @item.PilotBackseat.Name
                             </td>
                             <td align="right">
                                 @item.Count
                             </td>
                             <td align="right">
-                                @(new DateTime(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                                @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
                             </td>
                         </tr>
                     }
@@ -413,127 +324,10 @@
         </td>
     </tr>
 </table>
-@*<br style="page-break-after: always;" />
-<h2>
-    Startlister for @Model.Date.ToString("MMMM yyyy")</h2>
-<table id="myTable" class="tablesorter">
-    <thead>
-        <tr>
-            <th>
-                Dato
-            </th>
-            <th>
-                Fly
-            </th>
-            <th>
-                Pilote(r)
-            </th>
-            <th>
-                Start
-            </th>
-            <th>
-                Landing
-            </th>
-            <th>
-                Flyvetid
-            </th>
-            <th>
-                Flyveplads
-            </th>
-            <th>
-                Tacho
-            </th>
-            <th>
-                Note
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Flights)
-        {
-            <tr>
-                <td>
-                    @item.Date.ToShortDateString()
-                </td>
-                <td>
-                    @item.Plane.CompetitionId
-                    @item.Plane.Registration
-                </td>
-                <td>
-                    @item.Pilot.Name
-                    @if (item.PilotBackseat != null)
-                    {
-                        <text>, </text>@item.PilotBackseat.Name
-                    }
-                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                    {
-                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                    }
-                </td>
-                <td>
-                    @if (item.Departure.HasValue)
-                    {
-                        @item.Departure.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @if (item.Landing.HasValue)
-                    {
-                        @item.Landing.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @if (item.Departure != null && item.Landing != null)
-                    {
-                        @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
-                    }
-                </td>
-                <td>
-                    @item.StartedFrom.Name
-                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                    {
-                        <text>, </text>
-                        @item.LandedOn.Name
-                    }
-                </td>
-                <td>
-                    @item.TachoDeparture
-                    @if (item.Departure.HasValue && item.TachoLanding.HasValue && item.TachoLanding > 0)
-                    {
-                        <text> / </text>
-                        @item.TachoLanding 
-                        <text> (diff: </text>
-                        @(item.TachoDeparture.Value - item.TachoLanding.Value);
-                        <text> ) </text>
-                    }
-                </td>
-                <td>
-                    @if ((item.Description != null) && (item.Description.Length > 40))
-                    {
-                        @item.Description.Substring(0, 37).ToString()
-                        <span title="[...]@item.Description.Substring(37).ToString()">
-                            <text>[...]</text>
-                        </span>
-                    }
-                    else
-                    {
-                        @item.Description
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" })
-                    @Html.ActionLink("Historik", "ChangeHistory", new { id = item.FlightId }, new { @class = "awesomeBtn" })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#myTable").tablesorter();
+        $("#myPilotStatTable").tablesorter();
+        $("#myPilotStatTable2").tablesorter();
     }
 );
 </script>
-*@
