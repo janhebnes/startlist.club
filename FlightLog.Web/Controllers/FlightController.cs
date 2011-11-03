@@ -19,9 +19,11 @@ namespace FlightLog.Controllers
         /// </summary>
         private FlightContext db = new FlightContext();
 
-        public ViewResult Index()
+        public ViewResult Index(int? skip, int? take)
         {
-            var flights = this.db.Flights.Take(60).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
+            ViewBag.Skip = skip.HasValue ? skip.Value : 0;
+            ViewBag.Take = take.HasValue ? take.Value : 60;
+            var flights = this.db.Flights.OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
             var l = flights.ToList();
             return View(l);
         }

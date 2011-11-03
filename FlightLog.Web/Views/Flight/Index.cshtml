@@ -18,6 +18,8 @@
 <p>
     @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
     @*@Html.ActionLink("Importer eksisterende flyvedata", "Import")*@
+    | 
+    @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip+60 })
 </p>
 <table id="myTable" class="tablesorter">
     <thead>
@@ -161,6 +163,8 @@
 </table>
 <p>
     @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+    | 
+    @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip+60 })
 </p>
 
 <script type="text/javascript">
