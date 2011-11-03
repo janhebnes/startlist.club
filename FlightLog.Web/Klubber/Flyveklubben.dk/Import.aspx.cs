@@ -56,25 +56,6 @@ namespace FlightLog.Klubber.FlyveklubbenDk
         /// <remarks>Will be removed to separate Assembly prior to beta release</remarks>
         public string ImportFlightLog(string startStedetPath)
         {
-            //string startStedetPath = @"\Flyveklubben\StartStedetSync\Webservice\Application\StartStedet\00096B5FAB4D.xml";
-
-            //if (global::System.IO.Directory.Exists(@"C:\Users\Jhe\Documents\Visual Studio 2010\Projects"))
-            //{
-            //    startStedetPath = @"C:\Users\Jhe\Documents\Visual Studio 2010\Projects" + startStedetPath;
-            //}
-            //else if (global::System.IO.Directory.Exists(@"C:\Users\Jan\Documents\Visual Studio 2010\Projects"))
-            //{
-            //    startStedetPath = @"C:\Users\Jan\Documents\Visual Studio 2010\Projects" + startStedetPath;
-            //}
-            //else if (global::System.IO.Directory.Exists(@"C:\Users\Jan\Workshop\Visual Studio 2010\Projects"))
-            //{
-            //    startStedetPath = @"C:\Users\Jan\Workshop\Visual Studio 2010\Projects" + startStedetPath;
-            //}
-            //else
-            //{
-            //    return "Visual Studio 2010 Projects could not be found.";
-            //}
-
             var startListeDataTable = new StartListeData.StartListeDataSet.StartListeDataTable();
             if (global::System.IO.File.Exists(startStedetPath))
             {
@@ -240,7 +221,6 @@ namespace FlightLog.Klubber.FlyveklubbenDk
 
                     // Remove time zone information on date
                     var startDateString = row["SDate"].ToString();
-                    startDateString = startDateString.Replace("+02:00", "+00:00");
                     DateTime date = DateTime.Parse(startDateString);
                     date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
 

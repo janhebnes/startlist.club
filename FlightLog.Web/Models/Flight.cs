@@ -30,10 +30,15 @@ namespace FlightLog.Models
             }
             set
             {
-                m_Date = value.ToUniversalTime();
+                if (value != value.ToUniversalTime()) 
+                {
+                    m_Date = new DateTime(value.Year, value.Month, value.Day);
+                }
+                else
+                    m_Date = value;
                 
                 if (m_Date.TimeOfDay != new TimeSpan(0, 0, 0)) 
-                    throw new ArgumentOutOfRangeException("Date type must be submitted");
+                    throw new ArgumentOutOfRangeException("DateTime is not a UTC Date set at 00:00:00 must be submitted");
             }
         }
         [DataType(DataType.Time)]

@@ -1,3 +1,5 @@
 
 /.hg
 /_ReSharper.FlightLog
+/*.suo
+/*.user
