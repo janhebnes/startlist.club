@@ -38,7 +38,7 @@ namespace FlightLog.Models
                     m_Date = value;
                 
                 if (m_Date.TimeOfDay != new TimeSpan(0, 0, 0))
-                    throw new ArgumentOutOfRangeException("DateTime is not a UTC Date set at 00:00:00 must be submitted, date: " + m_Date.ToString() + " value:" + value.ToString());
+                    throw new ArgumentOutOfRangeException("DateTime is not a UTC Date set at 00:00:00 must be submitted, date: " + m_Date.ToString() + " value:" + value.ToString() + " universaltime: " + value.ToUniversalTime().ToString());
             }
         }
         [DataType(DataType.Time)]
