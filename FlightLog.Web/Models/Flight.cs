@@ -9,6 +9,7 @@ namespace FlightLog.Models
     public class Flight
     {
         private Pilot m_Pilot;
+        private DateTime m_Date;
         private DateTime? m_Departure;
         private DateTime? m_Landing;
 
@@ -21,7 +22,20 @@ namespace FlightLog.Models
         [Key]
         public Guid FlightId { get; set; }
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTime Date
+        {
+            get
+            {
+                return m_Date;
+            }
+            set
+            {
+                m_Date = value.ToUniversalTime();
+                
+                if (m_Date.TimeOfDay != new TimeSpan(0, 0, 0)) 
+                    throw new ArgumentOutOfRangeException("Date type must be submitted");
+            }
+        }
         [DataType(DataType.Time)]
         public DateTime? Departure
         {
