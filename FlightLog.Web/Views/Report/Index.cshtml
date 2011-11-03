@@ -59,7 +59,7 @@
     <thead>
         <tr>
             <th>
-                Start nr.
+                #
             </th>
             <th>
                 Fly
@@ -85,7 +85,7 @@
             <th>
                 Note
             </th>
-            <th>
+            <th class="noprint">
             </th>
         </tr>
     </thead>
@@ -167,11 +167,11 @@
                         @item.Description
                     }
                 </td>
-                <td>
+                <td class="noprint">
                     @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
                     @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
-                    @Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
-                    @Html.ActionLink("Slet", "Delete", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                    @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                    @Html.ActionLink("Slet", "Delete", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>
             </tr>
         }
