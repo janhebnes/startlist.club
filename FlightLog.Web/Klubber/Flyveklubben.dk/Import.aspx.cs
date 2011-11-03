@@ -222,7 +222,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                     // Remove time zone information on date
                     var startDateString = row["SDate"].ToString();
                     DateTime date = DateTime.Parse(startDateString);
-                    date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+                    date = DateTime.SpecifyKind(date, DateTimeKind.Local);
 
                     DateTime departureTime = DateTime.Parse(row["STime"].ToString());
                     departureTime = DateTime.SpecifyKind(departureTime, DateTimeKind.Utc);
