@@ -282,7 +282,7 @@ namespace FlightLog.Klubber.FlyveklubbenDk
             string reloadTrigger = "Continuing import in 10 seconds...<script>setTimeout('window.location.reload()',5000);</script>";
             // Done with import
             if (i + omitted + invalid == startListeDataTable.Rows.Count) 
-                reloadTrigger = string.Empty;
+                reloadTrigger = "IMPORT FINISHED!";
 
             return
                 string.Format(
