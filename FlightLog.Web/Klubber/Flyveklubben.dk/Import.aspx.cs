@@ -222,7 +222,13 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                     // Remove time zone information on date
                     var startDateString = row["SDate"].ToString();
                     DateTime date = DateTime.Parse(startDateString);
-                    date = DateTime.SpecifyKind(date, DateTimeKind.Local);
+                    date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+
+                    // HACK: Fix for allowing the AppHarbor prod server to parse danish date xml on the english prod server into a utc time... im now desperate...
+                    if (date.TimeOfDay != new TimeSpan(0, 0, 0))
+                    {
+                        date = date.AddHours(24 - date.TimeOfDay.Hours);
+                    }
 
                     DateTime departureTime = DateTime.Parse(row["STime"].ToString());
                     departureTime = DateTime.SpecifyKind(departureTime, DateTimeKind.Utc);
@@ -240,8 +246,6 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                         BetalerId = pilotBetaler.PilotId,
                         StartedFromId = departure.LocationId
                     };
-
-                    
 
                     if (pilotBackseat != null)
                     {
@@ -275,16 +279,22 @@ namespace FlightLog.Klubber.FlyveklubbenDk
                 }
             }
 
+            string reloadTrigger = "Continuing import in 10 seconds...<script>setTimeout('window.location.reload()',5000);</script>";
+            // Done with import
+            if (i + omitted + invalid == startListeDataTable.Rows.Count) 
+                reloadTrigger = string.Empty;
+
             return
                 string.Format(
-                    "Imported {0} new flights.<br />Parsed {3} of {6}(allready imported {1}, skipped {2})<br /> <a href=\"{4}\">{5}</a><br /><br />Continuing import in 10 seconds...<script>setTimeout('window.location.reload()',5000);</script>",
+                    "Imported {0} new flights.<br />Parsed {3} of {6}(allready imported {1}, skipped {2})<br /> <a href=\"{4}\">{5}</a><br /><br />{7}",
                     i,
                     omitted,
                     invalid,
                     i + omitted + invalid,
                     "/Flight",
                     "Back to list",
-                    startListeDataTable.Rows.Count);
+                    startListeDataTable.Rows.Count,
+                    reloadTrigger);
 
             ////return RedirectToAction("Index");
         }
