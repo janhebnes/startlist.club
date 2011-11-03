@@ -32,7 +32,7 @@ namespace FlightLog.Models
             {
                 if (value != value.ToUniversalTime()) 
                 {
-                    m_Date = new DateTime(value.Year, value.Month, value.Day);
+                    m_Date = new DateTime(value.Year, value.Month, value.Day, 0, 0, 0);
                 }
                 else
                     m_Date = value;
