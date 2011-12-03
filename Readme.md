@@ -1,12 +1,13 @@
-FlightLog 
+Flight Journal
 =============
 
-Flight logger for Flight Clubs, created for handling any Soaring flight club in Danmark.
+Flight journal for Flight Clubs.
+Created for handling Soaring flights in Danish flight clubs.
 
 Deployment
 ------------
 
-http://flightlog.apphb.com
+http://log.flyveklubben.dk
 
 Contributing
 ------------
