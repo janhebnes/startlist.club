@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Profile;
 using System.Web.Security;
 
-namespace  FlightLog
+namespace FlightLog.Infrastructure
 {
     public class AccountProfile : DataAvail.Mvc.Account.OAuthAccountProfile
     {

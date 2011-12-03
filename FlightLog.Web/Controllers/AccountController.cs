@@ -13,8 +13,6 @@ namespace FlightLog.Controllers
 {
     public class AccountController : DataAvail.Mvc.Account.OAuthAccountController
 	{
-		
-
         public IFormsAuthenticationService FormsService { get; set; }
         public IMembershipService MembershipService { get; set; }
 

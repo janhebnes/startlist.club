@@ -36,3 +36,6 @@ http://www.velocityreviews.com/forums/t589438-sql-query-to-linq-group-by-and-sum
 
 Possible Extension for creating base references with T4
 http://msdn.microsoft.com/en-us/magazine/ee291528.aspx
+
+package id="Open-MVC" version="0.7" for OAuth
+http://www.nuget.org/List/Packages/Open-MVC
