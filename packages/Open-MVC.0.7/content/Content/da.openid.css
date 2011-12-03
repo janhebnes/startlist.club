@@ -1,0 +1,32 @@
+.oa-icon {background-image:url('../Images/openid.png'); width:16px; height:16px; background-repeat:no-repeat;}
+.oa-icon.openid {background-position:0px -192px;}
+.oa-icon.yandex {background-position:0px 0px;}
+.oa-icon.livejournal {background-position:0px -16px;}
+.oa-icon.liveinternet {background-position:0px -128px;}
+.oa-icon.blogger {background-position:0px -144px;}
+.oa-icon.rambler {background-position:0px -160px;}
+.oa-icon.facebook {background-position:0px -32px;}
+.oa-icon.twitter {background-position:0px -96px;}
+.oa-icon.vkontakte {background-position:0px -80px;}
+.oa-icon.google {background-position:0px -112px;}
+.oa-icon.local {background-image:url('../Images/openid_local.png'); width:16px; height:16px; background-repeat:no-repeat;}
+
+.oa-serv-button {display:inline-block; background-image:url('../Images/openid.png'); width:87px; height:21px; background-repeat:no-repeat; vertical-align:middle;}
+.oa-serv-button.liveid-button {background-position:0px -318px;}
+.oa-serv-button.facebook-button {background-position:0px -208px;}
+.oa-serv-button.twitter-button {background-position:0px -274px;}
+.oa-serv-button.vkontakte-button {background-position:0px -252px;}
+.oa-serv-button.google-button {background-position:0px -296px;}
+
+div.oa-panel {max-width:600px; margin-top:16px; margin-bottom:24px;}
+div.oa-panel-line {border-bottom:1px solid #E3E3E3; padding-bottom:10px;}
+div.oa-panel-title {font-size:140%; border-bottom:solid 2px #E3E3E3; padding-bottom:12px; }
+div.oa-panel-note{margin:18px 0px 6px 0px; font-weight: bold; }
+
+div.oa-panel-list  {padding:0px; margin:0px; overflow:hidden; zoom:1;}
+div.oa-panel-list div {display:block; float:left; margin:4px 6px 0px 0px; width:110px;}
+div.oa-panel-list a {display:inline-block; margin:1px; padding:4px 4px 4px 4px; text-decoration:none; color:#646464; outline:none; cursor:pointer;}
+div.oa-panel-list a:hover {margin:0px; border:1px solid #D9D9D9;}
+div.oa-panel-list a.oa-selected {margin:0px; border:1px solid #D9D9D9; background-color:#EBEBEB;}
+div.oa-panel-list i {display:inline-block; margin:0px; margin-right:4px; vertical-align:middle; cursor:pointer;}
+div.oa-panel-list b {vertical-align:middle; font-weight:bold; font-size:12px; font-family:Tahoma,Verdana,Arial,sans-serif;}
