@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="dotNetOpenAuth" type="DotNetOpenAuth.Configuration.DotNetOpenAuthSection" requirePermission="false" allowLocation="true" />
+  </configSections>
+  <uri>
+    <idn enabled="All" />
+    <iriParsing enabled="true" />
+  </uri>
+  <!-- this is an optional configuration section where aspects of dotnetopenauth can be customized -->
+  <dotNetOpenAuth>
+    <openid>
+      <relyingParty>
+        <security requireSsl="false" />
+        <behaviors>
+          <!-- The following OPTIONAL behavior allows RPs to use SREG only, but be compatible
+								 with OPs that use Attribute Exchange (in various formats). -->
+          <add type="DotNetOpenAuth.OpenId.Behaviors.AXFetchAsSregTransform, DotNetOpenAuth" />
+        </behaviors>
+      </relyingParty>
+    </openid>
+    <messaging>
+      <untrustedWebRequest>
+        <whitelistHosts>
+          <!-- since this is a sample, and will often be used with localhost -->
+          <add name="localhost" />
+        </whitelistHosts>
+      </untrustedWebRequest>
+    </messaging>
+    <!-- Allow DotNetOpenAuth to publish usage statistics to library authors to improve the library. -->
+    <reporting enabled="true" />
+  </dotNetOpenAuth>
+  <appSettings>
+    <!-- Twitter sign-up: https://twitter.com/oauth_clients -->
+    <add key="twitterConsumerKey" value="XXX" />
+    <add key="twitterConsumerSecret" value="XXX" />
+    <!-- Facebook sign-up: http://developers.facebook.com/setup/ -->
+    <add key="facebookAppID" value="XXX" />
+    <add key="facebookAppSecret" value="XXX" />
+    <!-- VKontakte sign-up: http://vkontakte.ru/editapp?act=create&site=1 -->
+    <add key="vkontakteAppID" value="XXX" />
+    <add key="vkontakteAppSecret" value="XXX" />
+  </appSettings>
+</configuration>

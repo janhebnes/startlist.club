@@ -9,3 +9,6 @@ C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightL
 C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightLog.Web\obj\Release\ResolveAssemblyReference.cache
 C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightLog.Web\obj\Release\FlightLog.dll
 C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightLog.Web\obj\Release\FlightLog.pdb
+C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightLog.Web\bin\DataAvail.Mvc.Account.dll
+C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightLog.Web\bin\DotNetOpenAuth.ApplicationBlock.dll
+C:\Users\Jan\Workshop\Visual Studio 2010\Projects\Flyveklubben\FlightLog\FlightLog.Web\bin\DotNetOpenAuth.dll

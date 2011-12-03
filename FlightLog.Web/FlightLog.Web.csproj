@@ -35,6 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataAvail.Mvc.Account">
+      <HintPath>..\packages\Open-MVC.0.7\lib\net40\DataAvail.Mvc.Account.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth">
+      <HintPath>..\packages\Open-MVC.0.7\lib\net40\DotNetOpenAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.ApplicationBlock">
+      <HintPath>..\packages\Open-MVC.0.7\lib\net40\DotNetOpenAuth.ApplicationBlock.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
     </Reference>
@@ -78,6 +87,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\FlightController.cs" />
@@ -93,6 +103,13 @@
     </Compile>
     <Compile Include="Infrastructure\DateRangeAttribute.cs" />
     <Compile Include="Infrastructure\ModelClientValidationRangeDateRule.cs" />
+    <Compile Include="Klubber\Flyveklubben.dk\debug.aspx.cs">
+      <DependentUpon>debug.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Klubber\Flyveklubben.dk\debug.aspx.designer.cs">
+      <DependentUpon>debug.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Flight.cs" />
@@ -116,6 +133,7 @@
     <Compile Include="ViewModels\Report\ReportViewModel.cs" />
     <Content Include="Content\asc.gif" />
     <Content Include="Content\bg.gif" />
+    <Content Include="Content\da.openid.css" />
     <Content Include="Content\desc.gif" />
     <Content Include="Content\themes\base\Site.css" />
     <Content Include="Content\themes\orange\icons\error.gif" />
@@ -132,6 +150,9 @@
     <Content Include="Content\themes\orange\images\TitleRight.png" />
     <Content Include="Content\themes\orange\sample\ie.jpg" />
     <Content Include="Content\themes\orange\Site.css" />
+    <Content Include="Images\openid.png" />
+    <Content Include="Images\openid_local.png" />
+    <Content Include="Klubber\Flyveklubben.dk\debug.aspx" />
     <Content Include="Scripts\AutoCompleteCombobox.js" />
     <Content Include="App_Data\Memberlist.xml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -153,6 +174,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="readme.SqlCeMembership.txt" />
+    <Content Include="Scripts\da.openid.js" />
     <Content Include="Scripts\EditorHookup.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\RangeDateValidator.js" />
@@ -327,6 +349,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Location\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\OAuthError.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LogOnOAuth.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LogInOAuth.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

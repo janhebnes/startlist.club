@@ -22,10 +22,10 @@
             <legend>Account Information</legend>
 
             <div class="editor-label">
-                @Html.LabelFor(m => m.UserName)
+                @Html.LabelFor(m => m.UserName) 
             </div>
             <div class="editor-field">
-                @Html.TextBoxFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName) <em>*) Must be an pilot name existing in the system</em>
                 @Html.ValidationMessageFor(m => m.UserName)
             </div>
 

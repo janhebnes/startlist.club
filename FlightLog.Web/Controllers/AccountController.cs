@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,8 +11,9 @@ using FlightLog.Models;
 
 namespace FlightLog.Controllers
 {
-    public class AccountController : Controller
-    {
+    public class AccountController : DataAvail.Mvc.Account.OAuthAccountController
+	{
+		
 
         public IFormsAuthenticationService FormsService { get; set; }
         public IMembershipService MembershipService { get; set; }
@@ -30,7 +31,9 @@ namespace FlightLog.Controllers
         // **************************************
 
         public ActionResult LogOn()
-        {
+		{
+			base.OAuthBeforeLogOn();
+
             return View();
         }
 
@@ -174,3 +177,4 @@ namespace FlightLog.Controllers
 
     }
 }
+

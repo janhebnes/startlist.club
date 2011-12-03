@@ -1,0 +1,67 @@
+﻿<script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/da.openid.js")"></script>
+<link href="@Url.Content("~/Content/da.openid.css")" rel="stylesheet" type="text/css" />
+<div class="oa-panel">
+    <div class="oa-panel-note">
+        You could login this site using one of these services:</div>
+    <div class="oa-panel-list">
+        <div>
+            <a id="oa_Facebook" class="oa-button" data-serv-name="facebook"><i class="oa-icon facebook">
+            </i><b>Facebook</b></a></div>
+        <div>
+            <a id="oa_Twitter" class="oa-button" data-serv-name="twitter"><i class="oa-icon twitter">
+            </i><b>Twitter</b></a></div>
+        <div>
+            <a id="oa_Google" class="oa-button" data-serv-name="google"><i class="oa-icon google">
+            </i><b>Google</b></a></div>
+        <div>
+            <a id="oa_Blogger" class="oa-button" data-oi-url="$.blogspot.com"><i class="oa-icon blogger">
+            </i><b>Blogger</b></a></div>
+        <div>
+            <a id="oa_OpenID" class="oa-button" data-oi-url="$"><i class="oa-icon openid"></i><b>
+                OpenID</b></a></div>
+        <div>
+            <a id="oa_Livejournal" class="oa-button" data-oi-url="$.livejournal.com"><i class="oa-icon livejournal">
+            </i><b>Livejournal</b></a></div>
+        <div>
+            <a id="oa_VKontakte" class="oa-button" data-serv-name="vkontakte"><i class="oa-icon vkontakte">
+            </i><b>ВКонтакте</b></a></div>
+        <div>
+            <a id="oa_Yandex" class="oa-button" data-oi-url="$@@yandex.ru"><i class="oa-icon yandex">
+            </i><b>Яндекс</b></a></div>
+        <div>
+            <a id="oa_Rambler" class="oa-button" data-oi-url="$@@rambler.ru"><i class="oa-icon rambler">
+            </i><b>Rambler</b></a></div>
+        <div>
+            <a id="oa_Liveinternet" class="oa-button" data-oi-url="http://www.liveinternet.ru/users/$/">
+                <i class="oa-icon liveinternet"></i><b>Liveinternet</b></a></div>
+    </div>
+    <div class="oa-panel-line">
+    </div>
+    <br />
+    <div class="oa-oi-action">
+        <div id="oi_action" style="display: none">
+            <i></i><span id="oi_prefix"></span>
+            <input type="text" id="oi_input" />
+            <span id="oi_postfix"></span>
+            <button data-serv-name="openid" class="logon-button">
+                Login</button>
+        </div>
+        <div id="oa_action" style="display: none">
+            <div style="display: none" class="oa-serv-button facebook-button logon-button" data-serv-name="facebook" data-serv-url="@ViewBag.FacebookOAuthUrl" data-serv-caption="Facebook">
+            </div>
+            <div style="display: none" class="oa-serv-button twitter-button logon-button" data-serv-name="twitter" data-serv-url="/Account/OAuth?serviceName=Twitter&returnUrl=@ViewBag.ReturnUrl"
+             data-serv-caption="Twitter.com">
+            </div>
+            <div style="display: none" class="oa-serv-button vkontakte-button" id="vk_button" data-serv-name="vkontakte"
+                data-serv-caption="VKontakte.ru">
+            </div>
+            <div style="display: none" class="oa-serv-button google-button logon-button" data-serv-name="google"
+                data-serv-caption="Google" data-serv-url="/Account/OpenId?ServiceUrl=Google">
+            </div>
+            <span>Use your information from $ to login this site.</span>
+        </div>
+    </div>
+    <input type="hidden" id="return_url" value="@ViewBag.ReturnUrl" />
+    <input type="hidden" id="vk_app_id" value="@ViewBag.VKontakteAppId" />
+</div>
