@@ -17,7 +17,7 @@ namespace FlightLog.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-            if (!requestContext.HttpContext.User.IsInRole("Administrator") || !requestContext.HttpContext.User.IsInRole("Editor"))
+            if (!requestContext.HttpContext.User.IsInRole("Administrator") && !requestContext.HttpContext.User.IsInRole("Editor") && !requestContext.RouteData.Values.ContainsValue("Create"))
             {
                 throw new SecurityAccessDeniedException(string.Format("Access Denied to User {0}", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
