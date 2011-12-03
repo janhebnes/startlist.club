@@ -1,15 +1,39 @@
 ﻿@{
-    ViewBag.Title = "Kom igang";
+    ViewBag.Title = "Kom godt igang";
     using (var db = new FlightLog.Models.FlightContext())
     {
         ViewBag.Stats = db.Flights.Count().ToString();
     }    
 }
-
 <h2>@ViewBag.Title</h2>
 <p>
-    Totale antal registrerede flyvninger: @ViewBag.Stats<br />
-    Siden er udarbejdet for at fungere som startliste for <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a><br />
+    Startliste system for <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a><br />
+    Totale antal registrerede flyvninger: @ViewBag.Stats
+</p>
+<h3>
+    Status på systemet</h3>
+<p>
+    Det er på nuværende muligt at registrere flyvninger, se rettelseshistorik, se statistik
+    på dag/måned/år, lave udtræk til Excel, logge på via Facebook, Google og OAuth.<br />
+    Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
+    <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den
+    registerede dato. Der er rettelseshistorik på alle ændringer.<br />
+    <b>Redaktøren</b> kan ændre alle former for data for klubben, alle startliste oplysninger,
+    registrere nye fly og piloter, samt slette flvyninger.
+</p>
+<h3>
+    Kildekode</h3>
+<p>
+    Den er baseret på ASP.Net MVC 3 og Entity Framework 4.1 med en Code First tilgang
+    til databasen.<br />
+    Det er muligt at bidrage til kildekoden via projektet på Github.<br />
     <br />
-    Den er forsøgt holdt generel således at pris beregningen for en anden klub nemt kan lægges ind via en ekstern .Net assembly. 
+    <a href="https://github.com/janhebnes/FlightLog">https://github.com/janhebnes/FlightLog</a><br />
+    <br />
+</p>
+<p>
+    Den er forsøgt holdt generel således at andre klubber kunne registre deres startlister
+    på samme website.<br />
+    På nuværende afventer afsluttende udvikling af disse dele at der vises interesse
+    fra andre klubber.
 </p>

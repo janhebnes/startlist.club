@@ -11,6 +11,8 @@ using FlightLog.Models;
 namespace FlightLog.Controllers
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.Remoting.Contexts;
+    using System.ServiceModel.Security;
 
     public class FlightController : Controller
     {
@@ -19,11 +21,13 @@ namespace FlightLog.Controllers
         /// </summary>
         private FlightContext db = new FlightContext();
 
-        public ViewResult Index(int? skip, int? take)
+        public ViewResult Index(int? skip, int? take, int? locationid)
         {
             ViewBag.Skip = skip.HasValue ? skip.Value : 0;
             ViewBag.Take = take.HasValue ? take.Value : 60;
-            var flights = this.db.Flights.OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
+            ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
+            ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
+            var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
             var l = flights.ToList();
             return View(l);
         }
@@ -62,6 +66,8 @@ namespace FlightLog.Controllers
         /// <returns>Action link</returns>
         public ActionResult Land(Guid id, int? offSet)
         {
+            if (!Request.IsAuthenticated) return null;
+
             Flight flight = this.db.Flights.Find(id);
             if ((flight != null) && (flight.Landing == null))
             {
@@ -80,6 +86,8 @@ namespace FlightLog.Controllers
         /// <returns>Action link</returns>
         public ActionResult Depart(Guid id, int? offSet)
         {
+            if (!Request.IsAuthenticated) return null;
+
             Flight flight = this.db.Flights.Find(id);
             if ((flight != null) && (flight.Landing == null))
             {
@@ -92,6 +100,8 @@ namespace FlightLog.Controllers
 
         public ActionResult Clone(Guid id)
         {
+            if (!Request.IsAuthenticated) return null;
+
             Flight originalFlight = this.db.Flights.Find(id);
             var flight = new Flight
             {
@@ -111,6 +121,8 @@ namespace FlightLog.Controllers
 
         public ActionResult Create()
         {
+            if (!Request.IsAuthenticated) return null;
+
             var flight = new Flight
                 {
                     Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)
@@ -124,10 +136,13 @@ namespace FlightLog.Controllers
         [HttpPost]
         public ActionResult Create(Flight flight)
         {
+            if (!Request.IsAuthenticated) return null;
+
             if (ModelState.IsValid)
             {
                 flight.FlightId = Guid.NewGuid();
                 flight.LastUpdated = DateTime.Now;
+                flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
                 this.db.Flights.Add(flight);
                 this.db.SaveChanges();
                 return RedirectToAction("Index");
@@ -141,7 +156,23 @@ namespace FlightLog.Controllers
         // GET: /Default1/Edit/5
         public ActionResult Edit(Guid id)
         {
+            if (!Request.IsAuthenticated) return null;
+            bool isEditable = false;
+            if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
+            
             Flight flight = this.db.Flights.Find(id);
+
+            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
+            {
+                isEditable = true;
+            }
+            if (!isEditable)
+            {
+                throw new SecurityAccessDeniedException(
+                    string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
+            }
+
             this.PopulateViewBag(flight);
             ViewBag.ChangeHistory = this.GetChangeHistory(id);
             return View(flight);
@@ -152,10 +183,25 @@ namespace FlightLog.Controllers
         [HttpPost]
         public ActionResult Edit(Flight flight)
         {
+            if (!Request.IsAuthenticated) return null;
+            bool isEditable = false;
+            if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
+            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
+            {
+                isEditable = true;
+            }
+            if (!isEditable)
+            {
+                throw new SecurityAccessDeniedException(
+                    string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
+            }
+
             if (ModelState.IsValid)
             {
                 this.db.Entry(flight).State = EntityState.Modified;
                 flight.LastUpdated = DateTime.Now;
+                flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
                 this.db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -168,6 +214,13 @@ namespace FlightLog.Controllers
         // GET: /Default1/Delete/5
         public ActionResult Delete(Guid id)
         {
+            if (!Request.IsAuthenticated || 
+                (!Request.RequestContext.HttpContext.User.IsInRole("Editor") &&
+                 !Request.RequestContext.HttpContext.User.IsInRole("Administrator")))
+            {
+                return null;
+            }
+
             Flight flight = this.db.Flights.Find(id);
             return View(flight);
         }
@@ -178,6 +231,13 @@ namespace FlightLog.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {
+            if (!Request.IsAuthenticated ||
+                (!Request.RequestContext.HttpContext.User.IsInRole("Editor") &&
+                 !Request.RequestContext.HttpContext.User.IsInRole("Administrator")))
+            {
+                return null;
+            }
+
             Flight flight = this.db.Flights.Find(id);
             this.db.Flights.Remove(flight);
             this.db.SaveChanges();

@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    using System.Runtime.Remoting.Contexts;
+
     public class Flight
     {
         private Pilot m_Pilot;
@@ -153,7 +155,7 @@ namespace FlightLog.Models
             get
             {
                 return
-                    "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde DSvU;Bagsæde medlemsnr;Bagsæde navn;Bagsæde DSvU;Betaler medlemsnr;Betaler navn;Betaler DSvU;Startet;Landed;Flyvetid;Tacho;Start pris;Flyvetid pris ;Tacho pris;Total pris;Note;Km;Starttype;Started fra;Landed på;Sidst opdateret af;Nøgle\n";
+                    "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde DSvU;Bagsæde medlemsnr;Bagsæde navn;Bagsæde DSvU;Betaler medlemsnr;Betaler navn;Betaler DSvU;Startet;Landed;Flyvetid;Tacho;Start pris;Flyvetid pris ;Tacho pris;Total pris;Note;Km;Starttype;Started fra;Landed på;Sidst opdateret;Sidst opdateret af;Nøgle\n";
             }
         }
 
@@ -161,7 +163,7 @@ namespace FlightLog.Models
         {
             return
                 string.Format(
-                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24};{25}\n",
+                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24};{25};{26}\n",
                     this.Date.ToShortDateString(),
                     this.Plane,
                     this.Pilot != null ? this.Pilot.MemberId : string.Empty,
@@ -186,6 +188,7 @@ namespace FlightLog.Models
                     this.StartType,
                     this.StartedFrom,
                     this.LandedOn,
+                    this.LastUpdated,
                     this.LastUpdatedBy,
                     this.RecordKey);
         }

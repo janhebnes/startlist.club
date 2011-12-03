@@ -144,7 +144,10 @@ $(function() {
 
         <p>
             <input type="submit" value="Save" />
-            @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId })
+            @if (Context.User.IsInRole("Editor"))
+            {
+                @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId })
+            }
         </p>
     </fieldset>
 }

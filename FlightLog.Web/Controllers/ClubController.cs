@@ -8,10 +8,22 @@ using System.Web.Mvc;
 using FlightLog.Models;
 
 namespace FlightLog.Controllers
-{ 
+{
+    using System.ServiceModel.Security;
+
     public class ClubController : Controller
     {
         private FlightContext db = new FlightContext();
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            if (!requestContext.HttpContext.User.IsInRole("Administrator"))
+            {
+                throw new SecurityAccessDeniedException(string.Format("Access Denied to User {0}", this.Request.RequestContext.HttpContext.User.Identity.Name));
+            }
+
+            base.Initialize(requestContext);
+        }
 
         //
         // GET: /Club/

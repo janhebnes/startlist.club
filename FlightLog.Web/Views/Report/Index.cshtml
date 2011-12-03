@@ -127,11 +127,11 @@
                     {
                         if (item.Landing.Value > item.Departure.Value)
                         {
-                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                        @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
                         }
                         else
                         {
-                            <text><span class="error">Fejl: landing før start</span></text>
+                        <text><span class="error">Fejl: landing før start</span></text>
                         }
                     }
                 </td>
@@ -168,7 +168,17 @@
                     }
                 </td>
                 <td class="noprint">
-                    @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                    @if (Request.IsAuthenticated)
+                    {
+                        bool isEditable = false;
+                        if (Context.User.IsInRole("Administrator")) { isEditable = true; }
+                        if (Context.User.IsInRole("Editor")) { isEditable = true; }
+                        if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
+                        if (isEditable)
+                        {
+                            @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                        }
+                    }
                     @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
                     @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
                     @Html.ActionLink("Slet", "Delete", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
@@ -184,7 +194,7 @@
 );
 </script>
 <p style="color: silver" class="noprint">
-    <em>Rettelser kan udføres op til 24 timer efter registrering</em>
+    <em>Rettelser kan udføres op til 48 timer efter flyvningen fandt sted.</em>
 </p>
 <br style="page-break-after: always;" />
 <h2>
@@ -377,7 +387,8 @@
 </table>
 <br />
 <p>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn">Statistik for @Model.Date.ToString("yyyy")</a>
-    @*<a href="@Url.Content("~/")@Model.Date.AddMonths(-1).ToString("yyyy-MM")" class="awesomeBtn">Statistik for @Model.Date.AddMonths(-1).ToString("MMMM")</a>*@
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="awesomeBtn">Statistik for @Model.Date.ToString("MMMM")</a>
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn">Statistik
+        for @Model.Date.ToString("yyyy")</a> @*<a href="@Url.Content("~/")@Model.Date.AddMonths(-1).ToString("yyyy-MM")" class="awesomeBtn">Statistik for @Model.Date.AddMonths(-1).ToString("MMMM")</a>*@
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="awesomeBtn">Statistik
+        for @Model.Date.ToString("MMMM")</a>
 </p>

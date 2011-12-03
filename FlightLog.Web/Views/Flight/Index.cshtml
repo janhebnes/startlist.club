@@ -16,10 +16,15 @@
     int startNr = 0;
 }
 <p>
-    @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
-    @*@Html.ActionLink("Importer eksisterende flyvedata", "Import")*@
-    | 
-    @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip+60 })
+    @if(Request.IsAuthenticated) {
+        @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+        @*@Html.ActionLink("Importer eksisterende flyvedata", "Import")*@
+        <text> | </text>
+    }
+    @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip + 60 })
+    @*<span style="float:right">
+        @Html.DropDownList("FilterLocationId", "Filter on airport")
+    </span>*@
 </p>
 <table id="myTable" class="tablesorter">
     <thead>
@@ -63,7 +68,7 @@
                     @TruncateDate(item.Date)
                 </td>
                 <td>
-                    @if (item.Departure == null)
+                    @if (item.Departure == null && Request.IsAuthenticated)
                     {
                         <span style="white-space: nowrap;">
                             @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm") })
@@ -77,7 +82,7 @@
                     }
                 </td>
                 <td>
-                    @if (item.Landing == null)
+                    @if (item.Landing == null && Request.IsAuthenticated)
                     {
                         <span style="white-space: nowrap;">
                             @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm") })
@@ -151,9 +156,20 @@
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Rediger", "Edit", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    @if (Request.IsAuthenticated) {
+                        bool isEditable = false;
+                        if (Context.User.IsInRole("Administrator")) { isEditable = true; }
+                        if (Context.User.IsInRole("Editor")) { isEditable = true; }
+                        if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
+                        if (isEditable)
+                        {
+                            @Html.ActionLink("Rediger", "Edit", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                        }
+                    }
                     @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
-                    @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    @if (Request.IsAuthenticated) {
+                        @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    }
                     @*@Html.ActionLink("Historik", "ChangeHistory", new { id = item.FlightId }, new { @class = "awesomeBtn" }) *@
                     @*@Html.ActionLink("Slet", "Delete", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>
@@ -162,8 +178,11 @@
     </tbody>
 </table>
 <p>
-    @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
-    | 
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+        <text> | </text>
+    }
     @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip+60 })
 </p>
 
