@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    [Serializable]
     public class StartType
     {
         [Key]

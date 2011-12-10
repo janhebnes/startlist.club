@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    using System.Xml.Serialization;
+
     public class Plane
     {
         public int PlaneId { get; set; }
@@ -23,8 +25,11 @@ namespace FlightLog.Models
         public DateTime? ExitDate { get; set; }
 
         public int? StartTypeId { get; set; }
+
+        [XmlIgnore]
         public virtual StartType DefaultStartType { get; set; }
 
+        [XmlIgnore]
         public virtual ICollection<Flight> Flights { get; set; }
 
         public override string ToString()

@@ -44,6 +44,9 @@
     <Reference Include="DotNetOpenAuth.ApplicationBlock">
       <HintPath>..\packages\Open-MVC.0.7\lib\net40\DotNetOpenAuth.ApplicationBlock.dll</HintPath>
     </Reference>
+    <Reference Include="EntityDataModel">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\EntityDataModel.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
     </Reference>
@@ -51,19 +54,51 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ErikEJ.SqlCeMembership.2.1.0.1\lib\ErikEJ.SqlCeMembership.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ApplicationServer.Http">
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.ApplicationServer.Http.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Spatial">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\Microsoft.Data.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Json">
+      <HintPath>..\packages\JsonValue.0.6.0\lib\40\Microsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Formatting">
+      <HintPath>..\packages\HttpClient.0.6.0\lib\40\Microsoft.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Formatting.OData">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\Microsoft.Net.Http.Formatting.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Runtime.Serialization.Internal">
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.Runtime.Serialization.Internal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Server.Common">
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.Server.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceModel.Internal">
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.ServiceModel.Internal.dll</HintPath>
+    </Reference>
     <Reference Include="StartListeData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\flyveklubben.dk\StartListeData.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.OData">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\System.Data.OData.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\SqlServerCompact.4.0.8482.1\lib\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\HttpClient.0.6.0\lib\40\System.Net.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
@@ -88,6 +123,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIs\FlightsApi.cs" />
     <Compile Include="Infrastructure\AccountProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClubController.cs" />

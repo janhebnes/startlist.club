@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    using System.Xml.Serialization;
+
     public class Note
     {
         public int NoteId { get; set; }
@@ -15,6 +17,7 @@ namespace FlightLog.Models
         // Note: The two lines below are what happens per default if it is a simple relation
         //public Guid Flight_FlightId { get; set; }
         //[ForeignKey("Flight_FlightId")]
+        [XmlIgnore]
         public virtual Flight Flight { get; set; }
     }
 }

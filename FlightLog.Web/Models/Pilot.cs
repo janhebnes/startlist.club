@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    using System.Xml.Serialization;
+
     public class Pilot 
     {
         public int PilotId { get; set; }
@@ -23,14 +25,21 @@ namespace FlightLog.Models
         {
             return string.Format("{0} ({1})", this.Name, this.MemberId);
         }
-        
+
+        [XmlIgnore]
         public virtual ICollection<Flight> Flights { get; set; }
+        [XmlIgnore]
         public virtual ICollection<Flight> Flights_Backseat { get; set; }
+        [XmlIgnore]
         public virtual ICollection<Flight> Flights_Betaler { get; set; }
+        [XmlIgnore]
         public virtual ICollection<PilotLog> PilotLogs { get; set; }
 
+        [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_Pilots { get; set; }
+        [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_PilotBackseats { get; set; }
+        [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_Betalers { get; set; }
     }
 }

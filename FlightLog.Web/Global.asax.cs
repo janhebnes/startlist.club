@@ -8,6 +8,11 @@
 
     using FlightLog.Controllers;
     using FlightLog.Models;
+    
+    using FlightLog.APIs;
+    using System.ServiceModel.Activation;
+
+    using Microsoft.ApplicationServer.Http.Activation;
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -22,30 +27,7 @@
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            ////routes.MapRoute(
-            ////    "Default", // Route name
-            ////    "", // URL with parameters
-            ////    new { controller = "Report", action = "Index" } // Parameter defaults
-            ////);
-
-            ////routes.MapRoute(
-            ////    "Default", // Route name
-            ////    "", // URL with parameters
-            ////    new { controller = "Report", action = "Index" } // Parameter defaults
-            ////);
-
-            ////routes.MapRoute(
-            ////  "Default", // Route name
-            ////  "{controller}/{action}/{id}", // URL with parameters
-            ////    new { controller = "Flight", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            ////    );
-
-            ////routes.MapRoute(
-            ////  "Report", // Route name
-            ////  "{controller}/{action}/{id}", // URL with parameters
-            ////  new { controller = "Flight", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            ////);
+            routes.Add(new ServiceRoute("api/flights", new HttpServiceHostFactory(), typeof(FlightsApi)));
 
             routes.MapRoute(
                 "Home", // Route name
@@ -101,7 +83,7 @@
             RegisterRoutes(RouteTable.Routes);
 
 #if DEBUG
-            System.Data.Entity.Database.SetInitializer(new FlightContext.FlightContextInitializer());
+            //System.Data.Entity.Database.SetInitializer(new FlightContext.FlightContextInitializer());
 #endif
         }
     }

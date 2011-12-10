@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    using System.Xml.Serialization;
+
     public class Club
     {
         [Key]
@@ -16,8 +18,11 @@ namespace FlightLog.Models
         public int DefaultStartLocationId { get; set; }
         public virtual Location DefaultStartLocation { get; set; }
 
+        [XmlIgnore]
         public virtual ICollection<StartType> StartTypes { get; set; }
+        [XmlIgnore]
         public virtual ICollection<PilotStatusType> PilotStatusTypes { get; set; }
+        [XmlIgnore]
         public virtual ICollection<Pilot> Pilots { get; set; }
     }
 }

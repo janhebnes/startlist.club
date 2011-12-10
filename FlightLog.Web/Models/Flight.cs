@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace FlightLog.Models
 {
     using System.Runtime.Remoting.Contexts;
+    using System.Xml.Serialization;
 
     public class Flight
     {
@@ -134,7 +135,9 @@ namespace FlightLog.Models
         public double? TaskDistance { get; set; }
 
         public string Description { get; set; }
+        [XmlIgnore]
         public virtual ICollection<Note> Notes { get; set; }
+        [XmlIgnore]
         public virtual ICollection<PilotLog> PilotLogs { get; set; }
 
         public int BetalerId { get; set; }

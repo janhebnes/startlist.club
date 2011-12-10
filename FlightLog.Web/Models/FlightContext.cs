@@ -18,19 +18,19 @@ namespace FlightLog.Models
 
     public class FlightContext : DbContext
     {
-#if DEBUG
-        public FlightContext() 
-        {
-            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-        }
-#endif
-#if !DEBUG
+//#if DEBUG
+//        public FlightContext() 
+//        {
+//            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+//        }
+//#endif
+//#if !DEBUG
         public FlightContext() : base(FlightContext.ConnectionString)
         {   
             // Solution is hosted on AppHarbor 
             // Sql connection is provided by AppSetting on build
         }
-#endif
+//#endif
 
         /// <summary>
         /// Sql Server Settings are provided on model build and set in SQLSERVER_CONNECTION_STRING
@@ -139,132 +139,132 @@ namespace FlightLog.Models
 
 
 
-        public class FlightContextInitializer : DropCreateDatabaseAlways<FlightContext>
-        {
-            protected override void Seed(FlightContext context)
-            {
-                // Locations
-                var xloc = new Location { Name = "Kongsted" };
-                context.Locations.Add(xloc);
-                context.SaveChanges();
+        ////public class FlightContextInitializer : DropCreateDatabaseAlways<FlightContext>
+        ////{
+        ////    protected override void Seed(FlightContext context)
+        ////    {
+        ////        // Locations
+        ////        var xloc = new Location { Name = "Kongsted" };
+        ////        context.Locations.Add(xloc);
+        ////        context.SaveChanges();
 
-                // Clubs
-                var xclub = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = xloc };
-                context.Clubs.Add(xclub);
-                context.SaveChanges();
+        ////        // Clubs
+        ////        var xclub = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = xloc };
+        ////        context.Clubs.Add(xclub);
+        ////        context.SaveChanges();
 
-                // StartType
-                var xstart = new StartType() { Name = "Spilstart", ShortName = "S" };
-                context.StartTypes.Add(xstart);
-                base.Seed(context);
-                return;
+        ////        // StartType
+        ////        var xstart = new StartType() { Name = "Spilstart", ShortName = "S" };
+        ////        context.StartTypes.Add(xstart);
+        ////        base.Seed(context);
+        ////        return;
 
 
-                // Locations
-                var loc = new Location { Name = "Kongsted" };
-                context.Locations.Add(loc);
-                context.Locations.Add(new Location() { Name = "Arnborg" });
-                context.SaveChanges();
+        ////        // Locations
+        ////        var loc = new Location { Name = "Kongsted" };
+        ////        context.Locations.Add(loc);
+        ////        context.Locations.Add(new Location() { Name = "Arnborg" });
+        ////        context.SaveChanges();
 
-                // Clubs
-                var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = loc };
-                context.Clubs.Add(club);
-                context.SaveChanges();
+        ////        // Clubs
+        ////        var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = loc };
+        ////        context.Clubs.Add(club);
+        ////        context.SaveChanges();
 
-                // StartType
-                var start = new StartType() { Name = "Spilstart", ShortName = "S" };
-                context.StartTypes.Add(start);
-                context.StartTypes.Add(new StartType() { Name = "Flyslæb", ShortName = "F" });
-                context.StartTypes.Add(new StartType() { Name = "Selvstart", ShortName = "M" });
-                context.SaveChanges();
+        ////        // StartType
+        ////        var start = new StartType() { Name = "Spilstart", ShortName = "S" };
+        ////        context.StartTypes.Add(start);
+        ////        context.StartTypes.Add(new StartType() { Name = "Flyslæb", ShortName = "F" });
+        ////        context.StartTypes.Add(new StartType() { Name = "Selvstart", ShortName = "M" });
+        ////        context.SaveChanges();
 
-                context.StartTypes.Add(new StartType() { Name = "Passagerstart", ShortName = "Pass.", Club = club });
-                context.StartTypes.Add(new StartType() { Name = "Gratisstart", ShortName = "Gratis", Club = club });
-                context.SaveChanges();
+        ////        context.StartTypes.Add(new StartType() { Name = "Passagerstart", ShortName = "Pass.", Club = club });
+        ////        context.StartTypes.Add(new StartType() { Name = "Gratisstart", ShortName = "Gratis", Club = club });
+        ////        context.SaveChanges();
 
-                // Pilot status
-                var y = new List<string>() { "Ingen", "Prøvemedlem", "Elev", "S-Certifikat", "Instruktør" };
-                y.ForEach(b => context.PilotStatusTypes.Add(new PilotStatusType() { Name = b }));
-                context.SaveChanges();
+        ////        // Pilot status
+        ////        var y = new List<string>() { "Ingen", "Prøvemedlem", "Elev", "S-Certifikat", "Instruktør" };
+        ////        y.ForEach(b => context.PilotStatusTypes.Add(new PilotStatusType() { Name = b }));
+        ////        context.SaveChanges();
 
-                // Planes
-                var pl2 = new Plane { CompetitionId = "R2", Registration = "OY-XMO", Seats = 2, DefaultStartType = start, Engines = 0, EntryDate = DateTime.Now };
-                context.Planes.Add(pl2);
-                var pla = new Plane { CompetitionId = "RR", Registration = "OY-RRX", Seats = 2, DefaultStartType = start, Engines = 1, EntryDate = DateTime.Now };
-                context.Planes.Add(pla);
-                var pl1 = new Plane { CompetitionId = "PU", Registration = "OY-XPU", Seats = 1, DefaultStartType = start, Engines = 0, EntryDate = DateTime.Now };
-                context.Planes.Add(pl1);
-                context.SaveChanges();
+        ////        // Planes
+        ////        var pl2 = new Plane { CompetitionId = "R2", Registration = "OY-XMO", Seats = 2, DefaultStartType = start, Engines = 0, EntryDate = DateTime.Now };
+        ////        context.Planes.Add(pl2);
+        ////        var pla = new Plane { CompetitionId = "RR", Registration = "OY-RRX", Seats = 2, DefaultStartType = start, Engines = 1, EntryDate = DateTime.Now };
+        ////        context.Planes.Add(pla);
+        ////        var pl1 = new Plane { CompetitionId = "PU", Registration = "OY-XPU", Seats = 1, DefaultStartType = start, Engines = 0, EntryDate = DateTime.Now };
+        ////        context.Planes.Add(pl1);
+        ////        context.SaveChanges();
 
-                // Pilots
-                var pilot = new Pilot { Name = "Jan Hebnes", MemberId = "1241", Club = club };
-                context.Pilots.Add(pilot);
+        ////        // Pilots
+        ////        var pilot = new Pilot { Name = "Jan Hebnes", MemberId = "1241", Club = club };
+        ////        context.Pilots.Add(pilot);
 
-                context.SaveChanges();
-                var s = new List<Flight>
-                    {
-                        new Flight
-                            {
-                                Departure = new DateTime(2011, 5, 1, 23, 10, 0),
-                                Landing = new DateTime(2011, 5, 1, 23, 15, 0),
-                                Plane = pl1,
-                                StartedFrom = loc,
-                                LandedOn = loc, 
-                                Pilot = pilot,
-                                StartType = start,
-                                LastUpdatedBy = pilot.ToString()
-                            },
-                        new Flight
-                            {
-                                Plane = pl2,
-                                StartedFrom = loc,
-                                Pilot = pilot,
-                                StartType = start,
-                                LastUpdatedBy = pilot.ToString()
-                            },
-                        new Flight
-                            {
-                                Departure = new DateTime(2011, 5, 1, 23, 25, 0),
-                                Plane = pl2,
-                                StartedFrom = loc,
-                                Pilot = pilot,
-                                StartType = start,
-                                LastUpdatedBy = pilot.ToString(),
-                                Description = "Some more flight description that is very long and complicated and must be handled by the display lists..."
-                            },
-                        new Flight
-                            {
-                                Departure = new DateTime(2011, 4, 15, 23, 25, 0),
-                                Plane = pl2,
-                                StartedFrom = loc,
-                                Pilot = pilot,
-                                StartType = start,
-                                LastUpdatedBy = pilot.ToString()
-                            },
-                        new Flight
-                            {
-                                Departure = new DateTime(2011, 4, 15, 23, 25, 0),
-                                Plane = pl2,
-                                StartedFrom = loc,
-                                Pilot = pilot,
-                                StartType = start,
-                                LastUpdatedBy = pilot.ToString(),
-                                Description = "Some flight description..."
-                            },
-                        new Flight
-                            {
-                                Departure = new DateTime(2011, 4, 5, 23, 25, 0),
-                                Plane = pl2,
-                                StartedFrom = loc,
-                                Pilot = pilot,
-                                StartType = start,
-                                LastUpdatedBy = pilot.ToString()
-                            }
-                    };
-                s.ForEach(b => context.Flights.Add(b));
-                context.SaveChanges();
-                base.Seed(context);
-            }
-        }
+        ////        context.SaveChanges();
+        ////        var s = new List<Flight>
+        ////            {
+        ////                new Flight
+        ////                    {
+        ////                        Departure = new DateTime(2011, 5, 1, 23, 10, 0),
+        ////                        Landing = new DateTime(2011, 5, 1, 23, 15, 0),
+        ////                        Plane = pl1,
+        ////                        StartedFrom = loc,
+        ////                        LandedOn = loc, 
+        ////                        Pilot = pilot,
+        ////                        StartType = start,
+        ////                        LastUpdatedBy = pilot.ToString()
+        ////                    },
+        ////                new Flight
+        ////                    {
+        ////                        Plane = pl2,
+        ////                        StartedFrom = loc,
+        ////                        Pilot = pilot,
+        ////                        StartType = start,
+        ////                        LastUpdatedBy = pilot.ToString()
+        ////                    },
+        ////                new Flight
+        ////                    {
+        ////                        Departure = new DateTime(2011, 5, 1, 23, 25, 0),
+        ////                        Plane = pl2,
+        ////                        StartedFrom = loc,
+        ////                        Pilot = pilot,
+        ////                        StartType = start,
+        ////                        LastUpdatedBy = pilot.ToString(),
+        ////                        Description = "Some more flight description that is very long and complicated and must be handled by the display lists..."
+        ////                    },
+        ////                new Flight
+        ////                    {
+        ////                        Departure = new DateTime(2011, 4, 15, 23, 25, 0),
+        ////                        Plane = pl2,
+        ////                        StartedFrom = loc,
+        ////                        Pilot = pilot,
+        ////                        StartType = start,
+        ////                        LastUpdatedBy = pilot.ToString()
+        ////                    },
+        ////                new Flight
+        ////                    {
+        ////                        Departure = new DateTime(2011, 4, 15, 23, 25, 0),
+        ////                        Plane = pl2,
+        ////                        StartedFrom = loc,
+        ////                        Pilot = pilot,
+        ////                        StartType = start,
+        ////                        LastUpdatedBy = pilot.ToString(),
+        ////                        Description = "Some flight description..."
+        ////                    },
+        ////                new Flight
+        ////                    {
+        ////                        Departure = new DateTime(2011, 4, 5, 23, 25, 0),
+        ////                        Plane = pl2,
+        ////                        StartedFrom = loc,
+        ////                        Pilot = pilot,
+        ////                        StartType = start,
+        ////                        LastUpdatedBy = pilot.ToString()
+        ////                    }
+        ////            };
+        ////        s.ForEach(b => context.Flights.Add(b));
+        ////        context.SaveChanges();
+        ////        base.Seed(context);
+        ////    }
+        ////}
     }
 }
