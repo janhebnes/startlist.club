@@ -50,8 +50,9 @@
     <Reference Include="EntityDataModel">
       <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\EntityDataModel.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="ErikEJ.SqlCeMembership, Version=2.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -152,6 +153,19 @@
     <Compile Include="Klubber\Flyveklubben.dk\debug.aspx.designer.cs">
       <DependentUpon>debug.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201203082243104_InitialCreate.cs" />
+    <Compile Include="Migrations\201203082243104_InitialCreate.Designer.cs">
+      <DependentUpon>201203082243104_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201203082324083_d.cs" />
+    <Compile Include="Migrations\201203082324083_d.Designer.cs">
+      <DependentUpon>201203082324083_d.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201203082329395_Release.cs" />
+    <Compile Include="Migrations\201203082329395_Release.Designer.cs">
+      <DependentUpon>201203082329395_Release.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Flight.cs" />
