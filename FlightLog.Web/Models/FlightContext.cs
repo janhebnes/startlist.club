@@ -18,40 +18,9 @@ namespace FlightLog.Models
 
     public class FlightContext : DbContext
     {
-//#if DEBUG
-//        public FlightContext() 
-//        {
-//            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-//        }
-//#endif
-//#if !DEBUG
-        public FlightContext() // : base(FlightContext.ConnectionString)
+        public FlightContext()
         {   
-            // Solution is hosted on AppHarbor 
-            // Sql connection is provided by AppSetting on build
             Database.CompatibleWithModel(true);
-        }
-//#endif
-
-        /// <summary>
-        /// Sql Server Settings are provided on model build and set in SQLSERVER_CONNECTION_STRING
-        /// </summary>
-        protected static string ConnectionString
-        {
-            get
-            {
-                return WebConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
-
-                //// Build the SqlConnection connection string.
-                //string providerString = WebConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"];
-
-                //var sqlBuilder = new SqlConnectionStringBuilder();
-
-                //sqlBuilder.ConnectionString = providerString;
-                //sqlBuilder.MultipleActiveResultSets = true;
-
-                //return sqlBuilder.ToString();
-            }
         }
 
         public DbSet<Flight> Flights { get; set; }
@@ -139,8 +108,6 @@ namespace FlightLog.Models
                         .WillCascadeOnDelete(false);
 
         }
-
-
 
         ////public class FlightContextInitializer : DropCreateDatabaseAlways<FlightContext>
         ////{
