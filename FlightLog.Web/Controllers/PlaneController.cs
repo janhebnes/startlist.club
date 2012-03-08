@@ -10,7 +10,7 @@ using FlightLog.Models;
 namespace FlightLog.Controllers
 {
     using System.ServiceModel.Security;
-
+    //[Authorize(Roles = "Admin")]
     public class PlaneController : Controller
     {
         private FlightContext db = new FlightContext();

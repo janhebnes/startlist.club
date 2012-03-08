@@ -27,7 +27,8 @@
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.Add(new ServiceRoute("api/flights", new HttpServiceHostFactory(), typeof(FlightsApi)));
+            //routes.Add(new ServiceRoute("api/flights", new HttpServiceHostFactory(), typeof(FlightsApi)));
+            //routes.IgnoreRoute("api/flights");
 
             routes.MapRoute(
                 "Home", // Route name
@@ -52,7 +53,6 @@
                 routes.Add(route);
             }
 
-            
         }
 
         private static IEnumerable<Route> GetDefaultRoutes()

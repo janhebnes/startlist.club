@@ -25,7 +25,6 @@ namespace FlightLog.APIs
 
             return flights.ToList().AsQueryable();
 
-
         ////    var flight = new Flight() { Date = DateTime.Now, Pilot = new Pilot() { Name = "Jan"}};
         ////    var contacts = new List<Contact>()
         ////{
@@ -38,8 +37,6 @@ namespace FlightLog.APIs
         ////};
         ////    return contacts.AsQueryable();
         }
-
-
     }
 
     //public class Contact

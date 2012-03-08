@@ -25,10 +25,11 @@ namespace FlightLog.Models
 //        }
 //#endif
 //#if !DEBUG
-        public FlightContext() : base(FlightContext.ConnectionString)
+        public FlightContext() // : base(FlightContext.ConnectionString)
         {   
             // Solution is hosted on AppHarbor 
             // Sql connection is provided by AppSetting on build
+            Database.CompatibleWithModel(true);
         }
 //#endif
 
@@ -39,15 +40,17 @@ namespace FlightLog.Models
         {
             get
             {
-                // Build the SqlConnection connection string.
-                string providerString = WebConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"];
+                return WebConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
 
-                var sqlBuilder = new SqlConnectionStringBuilder();
+                //// Build the SqlConnection connection string.
+                //string providerString = WebConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"];
 
-                sqlBuilder.ConnectionString = providerString;
-                sqlBuilder.MultipleActiveResultSets = true;
+                //var sqlBuilder = new SqlConnectionStringBuilder();
 
-                return sqlBuilder.ToString();
+                //sqlBuilder.ConnectionString = providerString;
+                //sqlBuilder.MultipleActiveResultSets = true;
+
+                //return sqlBuilder.ToString();
             }
         }
 

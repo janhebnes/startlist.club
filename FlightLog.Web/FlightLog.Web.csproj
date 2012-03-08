@@ -44,6 +44,9 @@
     <Reference Include="DotNetOpenAuth.ApplicationBlock">
       <HintPath>..\packages\Open-MVC.0.7\lib\net40\DotNetOpenAuth.ApplicationBlock.dll</HintPath>
     </Reference>
+    <Reference Include="Elmah, Version=1.2.14318.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
+    </Reference>
     <Reference Include="EntityDataModel">
       <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\EntityDataModel.dll</HintPath>
     </Reference>
@@ -124,6 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIs\FlightsApi.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ElmahController.cs" />
     <Compile Include="Infrastructure\AccountProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
@@ -206,11 +211,10 @@
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\base\jquery-ui.css" />
-    <Content Include="Readme.txt" />
+    <None Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="readme.SqlCeMembership.txt" />
     <Content Include="Scripts\da.openid.js" />
     <Content Include="Scripts\EditorHookup.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />

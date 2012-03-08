@@ -15,7 +15,10 @@ namespace FlightLog.Klubber.FlyveklubbenDk
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.Write(this.ImportFlightLog(this.DownloadDataFile()));
+            //HttpContext.Current.Response.Write(this.ImportFlightLog(this.DownloadDataFile()));
+            //HttpContext.Current.Response.Write(this.ImportFlightLog(Server.MapPath("~/App_Data/2011.xml")));
+            //HttpContext.Current.Response.Write(this.ImportFlightLog(Server.MapPath("~/App_Data/2008_2009_2010.xml")));
+            //HttpContext.Current.Response.Write(this.ImportFlightLog(Server.MapPath("~/App_Data/2006_2007.xml")));
         }
 
         private string DownloadDataFile()

@@ -39,3 +39,6 @@ http://msdn.microsoft.com/en-us/magazine/ee291528.aspx
 
 package id="Open-MVC" version="0.7" for OAuth
 http://www.nuget.org/List/Packages/Open-MVC
+
+ELMAH Memory Error Logger
+Installed with NuGet, enabled on /fejl.axd from localhost
