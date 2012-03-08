@@ -157,14 +157,6 @@
     <Compile Include="Migrations\201203082243104_InitialCreate.Designer.cs">
       <DependentUpon>201203082243104_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201203082324083_d.cs" />
-    <Compile Include="Migrations\201203082324083_d.Designer.cs">
-      <DependentUpon>201203082324083_d.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201203082329395_Release.cs" />
-    <Compile Include="Migrations\201203082329395_Release.Designer.cs">
-      <DependentUpon>201203082329395_Release.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Club.cs" />
