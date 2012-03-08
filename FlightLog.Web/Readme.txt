@@ -5,14 +5,6 @@ Formålet med listen er at lave et samlet Startliste system som kan bruges af al
 == CONTACT == 
 Jan Hebnes
 
-== NOTES ==
-
-Startliste statistik: startfrekvens og flyvetid, udelandinger, opgaver, km.
-Husk elev statistik
-Hvis du er uden for en fly gruppe så send email til vedkommende om han vil skifte gruppe.
-
-Kontakt person hos Århus svæveflyveklub som også har lavet en startliste, også i .net h@slev.dk Telefon: 87381310 Mobil: 26810182
-
 == RESSOURCES ==
 
 Table Splitting
