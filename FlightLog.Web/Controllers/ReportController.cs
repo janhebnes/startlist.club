@@ -59,7 +59,7 @@ namespace FlightLog.Controllers
             rpt.AvailableDates = this.AvailableDates();
             if (rpt.AvailableDates.Count > 0 && !date.HasValue)
             {
-                rpt.Date = rpt.AvailableDates.Last().Key;
+                rpt.Date = rpt.AvailableDates.Max(d => d.Key);
             }
             else if (date.HasValue)
             {
