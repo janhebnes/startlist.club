@@ -152,7 +152,7 @@ $(function() {
     </fieldset>
 }
 <p>
-    @Html.ActionLink("Tilbage til listen", "Index")
+    <a href="/" class="back">Tilbage til listen</a>
 </p>
 
 @Html.Partial("_changeHistory", (IEnumerable<FlightLog.Models.FlightVersionHistory>)ViewBag.ChangeHistory)

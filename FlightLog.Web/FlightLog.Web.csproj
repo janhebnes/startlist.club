@@ -249,6 +249,7 @@
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\RangeDateValidator.js" />
     <Content Include="Klubber\Flyveklubben.dk\Import.aspx" />
+    <Content Include="Scripts\Script.js" />
     <Content Include="Views\Shared\DisplayTemplates\Plane.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\StartType.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />
