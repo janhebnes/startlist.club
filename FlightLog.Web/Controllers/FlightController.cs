@@ -14,6 +14,8 @@ namespace FlightLog.Controllers
     using System.Runtime.Remoting.Contexts;
     using System.ServiceModel.Security;
 
+    using FlightLog.ViewModels.Flight;
+
     public class FlightController : Controller
     {
         /// <summary>
@@ -30,6 +32,23 @@ namespace FlightLog.Controllers
             var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
             var l = flights.ToList();
             return View(l);
+        }
+
+        public ViewResult Grid(int? skip, int? take, int? locationid)
+        {
+            var initialState = new[] {
+                new FlightViewModel { Title = "Tall Hat", Price = 49.95 },
+                new FlightViewModel { Title = "Long Cloak", Price = 78.25 }
+            };
+            return View(initialState);
+
+            //ViewBag.Skip = skip.HasValue ? skip.Value : 0;
+            //ViewBag.Take = take.HasValue ? take.Value : 60;
+            //ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
+            //ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
+            //var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 30));
+            //var l = flights.ToList().Select(x => new FlightViewModel(x));
+            //return View(l);
         }
 
         public ViewResult Date(DateTime date)

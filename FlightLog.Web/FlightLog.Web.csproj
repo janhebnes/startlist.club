@@ -182,6 +182,7 @@
     <Compile Include="Klubber\Flyveklubben.dk\Import.aspx.designer.cs">
       <DependentUpon>Import.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Flight\FlightViewModel.cs" />
     <Compile Include="ViewModels\Report\ReportViewModel.cs" />
     <Content Include="Content\asc.gif" />
     <Content Include="Content\bg.gif" />
@@ -236,6 +237,7 @@
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\base\jquery-ui.css" />
     <None Include="Readme.txt" />
+    <Content Include="Views\Flight\Grid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -247,6 +249,8 @@
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
+    <Content Include="Scripts\knockout.debug.js" />
+    <Content Include="Scripts\knockout.js" />
     <Content Include="Scripts\RangeDateValidator.js" />
     <Content Include="Klubber\Flyveklubben.dk\Import.aspx" />
     <Content Include="Scripts\Script.js" />

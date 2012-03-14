@@ -1,0 +1,51 @@
+﻿@model IEnumerable<FlightLog.ViewModels.Flight.FlightViewModel>
+@using System.Web.Script.Serialization;
+@{
+    ViewBag.Title = "Startlisten";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<h2>Gift list editor</h2>
+
+    <form class="giftListEditor" action="/flight/grid" method="post" >
+        <table> 
+            <tbody data-bind='template: { name: "giftRowTemplate", foreach: gifts }'></tbody>
+        </table>
+
+        <button data-bind="click: addGift">Add Gift</button>
+        <button data-bind="enable: gifts().length > 0" type="submit">Submit</button>
+    </form>
+
+    <script type="text/html" id="giftRowTemplate">
+        <tr> 
+            <td>Gift name: <input class="required" data-bind="value: Title, uniqueName: true" /> ${Title} </td> 
+            <td>Price: $ <input class="required number" data-bind="value: Price, uniqueName: true"/></td> 
+            <td><a href="#" data-bind="click: function() { viewModel.removeGift( $value ) }">Delete</a></td> 
+        </tr>
+    </script>
+
+    <script type="text/javascript">
+
+        var initialData = @Html.Raw(new JavaScriptSerializer().Serialize(Model)); 
+        var viewModel = {
+            gifts: ko.observableArray(initialData),
+            addGift: function () {
+                this.gifts.push({ Title: "", Price: "" });
+            },
+
+            removeGift: function (gift) {
+                this.gifts.remove(gift);
+            },
+
+            save: function () {
+                ko.utils.postJson(location.href, { gifts: this.gifts });
+            }
+        };
+
+        ko.applyBindings(viewModel, document.body); 
+
+        $("form").validate({ submitHandler: function() { viewModel.save() } });
+    </script>
+
+
+
+
