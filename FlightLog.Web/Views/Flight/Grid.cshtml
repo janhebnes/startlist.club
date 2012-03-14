@@ -17,9 +17,9 @@
 
     <script type="text/html" id="giftRowTemplate">
         <tr> 
-            <td>Gift name: <input class="required" data-bind="value: Title, uniqueName: true" /> ${Title} </td> 
+            <td>Gift name: <input class="required" data-bind="value: Title, uniqueName: true" /></td> 
             <td>Price: $ <input class="required number" data-bind="value: Price, uniqueName: true"/></td> 
-            <td><a href="#" data-bind="click: function() { viewModel.removeGift( $value ) }">Delete</a></td> 
+            <td><a href="#" data-bind="click: function() { viewModel.removeGift( $data ) }">Delete</a></td> 
         </tr>
     </script>
 
