@@ -17,6 +17,9 @@ Contributing
 3. Commit your changes (`git commit -am "Added Snarkdown"`)
 4. Push to the branch (`git push origin my_markup`)
 
+Watch the Trello board for upcomming request.
+https://trello.com/board/flight-journal/4f592a73bb5d895218126fed
+
 Establishing a local environment
 ------------
 1.SQLExpress must be installed and your user account must have sa priviledges
