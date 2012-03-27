@@ -22,7 +22,7 @@ https://trello.com/board/flight-journal/4f592a73bb5d895218126fed
 
 Establishing a local environment
 ------------
-1.SQLExpress must be installed and your user account must have sa priviledges
+1. SQLExpress must be installed and your user account must have sa priviledges
 2. Create a FlightLog.Models.FlightContext 
 3. Create EntityFramework system tabel: MigrationHistory e.g. using EF tools or FlightLog.Web\Migrations\MigrationHistory.sql
 4. Create InitialCreate tables with either Update-Database PM tools or with \FlightLog.Web\Migrations\InitialCreate.sql
