@@ -100,7 +100,7 @@
                 <td>
                     @if (item.Departure.HasValue && item.Landing.HasValue)
                     {
-                        if (item.Landing.Value > item.Departure.Value)
+                        if (item.Landing.Value >= item.Departure.Value)
                         {
                         @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
                         }
@@ -124,8 +124,8 @@
                     {
                         <text> / </text>
                         @item.TachoLanding 
-                        <text> (diff: </text>
-                        @(item.TachoDeparture.Value - item.TachoLanding.Value);
+                        <text> (</text>
+                        @(item.TachoLanding.Value - item.TachoDeparture.Value);
                         <text> ) </text>
                     }
                 </td>

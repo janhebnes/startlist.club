@@ -100,7 +100,7 @@
                 <td>
                     @if (item.Departure.HasValue && item.Landing.HasValue)
                     {
-                        if (item.Landing.Value > item.Departure.Value)
+                        if (item.Landing.Value >= item.Departure.Value)
                         {
                             @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
                         }
@@ -136,13 +136,13 @@
                 <td>
                     @item.TachoDeparture
                     @if ((item.TachoLanding != null) && (item.TachoLanding > 0))
-                    {
+                        {
                         <text>/ </text>
                         @item.TachoLanding
-                        <text> (diff: </text>
-                        @(item.TachoDeparture.Value - item.TachoLanding.Value);
+                        <text> ( </text>
+                        @(item.TachoLanding.Value - item.TachoDeparture.Value);
                         <text> ) </text>
-                    }
+                        }
                 </td>
                 <td>
                     @if ((item.Description != null) && (item.Description.Length > 40))
@@ -158,7 +158,8 @@
                     }
                 </td>
                 <td>
-                    @if (Request.IsAuthenticated) {
+                    @if (Request.IsAuthenticated)
+                    {
                         bool isEditable = false;
                         if (Context.User.IsInRole("Administrator")) { isEditable = true; }
                         if (Context.User.IsInRole("Editor")) { isEditable = true; }
@@ -169,7 +170,8 @@
                         }
                     }
                     @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
-                    @if (Request.IsAuthenticated) {
+                    @if (Request.IsAuthenticated)
+                    {
                         @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
                     }
                     @*@Html.ActionLink("Historik", "ChangeHistory", new { id = item.FlightId }, new { @class = "awesomeBtn" }) *@
