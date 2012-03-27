@@ -238,6 +238,7 @@
     <Content Include="Content\themes\base\jquery-ui.css" />
     <None Include="Readme.txt" />
     <Content Include="Views\Flight\Grid.cshtml" />
+    <Content Include="Views\Flight\Sample.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

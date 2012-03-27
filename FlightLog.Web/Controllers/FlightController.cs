@@ -34,7 +34,7 @@ namespace FlightLog.Controllers
             return View(l);
         }
 
-        public ViewResult Grid(int? skip, int? take, int? locationid)
+        public ViewResult Sample(int? skip, int? take, int? locationid)
         {
             var initialState = new[] {
                 new FlightViewModel { Title = "Tall Hat", Price = 49.95 },
@@ -49,6 +49,18 @@ namespace FlightLog.Controllers
             //var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 30));
             //var l = flights.ToList().Select(x => new FlightViewModel(x));
             //return View(l);
+        }
+
+        public ViewResult Grid(DateTime? date, int? locationid)
+        {
+            ViewBag.Date = date.HasValue ? date.Value : DateTime.Today;
+            ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
+            ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
+            var flights = this.db.Flights.Where(s => 
+                (locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true) 
+                    && (date.HasValue ? s.Date == date : s.Date == DateTime.Today)
+                    ).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
+            return View(flights.ToList());
         }
 
         public ViewResult Date(DateTime date)
@@ -94,7 +106,7 @@ namespace FlightLog.Controllers
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Grid");
         }
 
         /// <summary>
@@ -114,7 +126,7 @@ namespace FlightLog.Controllers
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Grid");
         }
 
         public ActionResult Clone(Guid id)
@@ -136,7 +148,13 @@ namespace FlightLog.Controllers
             this.PopulateViewBag(flight);
             return View("Create", flight);
         }
-
+        //
+        // POST: /Flight/Create
+        [HttpPost]
+        public ActionResult Clone(Flight flight)
+        {
+            return Create(flight);
+        }
 
         public ActionResult Create()
         {
@@ -164,7 +182,7 @@ namespace FlightLog.Controllers
                 flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
                 this.db.Flights.Add(flight);
                 this.db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Grid");
             }
 
             this.PopulateViewBag(flight);
@@ -222,7 +240,7 @@ namespace FlightLog.Controllers
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
                 this.db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Grid");
             }
             ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
             this.PopulateViewBag(flight);

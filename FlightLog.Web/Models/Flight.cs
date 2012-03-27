@@ -134,6 +134,7 @@ namespace FlightLog.Models
         public double? TachoLanding { get; set; }
         public double? TaskDistance { get; set; }
 
+        //[Display("Note")]
         public string Description { get; set; }
         [XmlIgnore]
         public virtual ICollection<Note> Notes { get; set; }

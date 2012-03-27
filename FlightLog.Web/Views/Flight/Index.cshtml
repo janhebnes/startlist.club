@@ -70,7 +70,7 @@
                     @TruncateDate(item.Date)
                 </td>
                 <td>
-                    @if (item.Departure == null && Request.IsAuthenticated)
+                    @if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
                     {
                         <span style="white-space: nowrap;">
                             @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm") })
@@ -84,7 +84,7 @@
                     }
                 </td>
                 <td>
-                    @if (item.Landing == null && Request.IsAuthenticated)
+                    @if (!item.Landing.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
                     {
                         <span style="white-space: nowrap;">
                             @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm") })

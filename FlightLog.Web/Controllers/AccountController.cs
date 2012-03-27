@@ -40,18 +40,19 @@ namespace FlightLog.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isPilot = false;
-                using (var db = new FlightContext())
-                {
-                    isPilot = db.Pilots.Any(p => p.Name == model.UserName);
-                    if (!isPilot) 
-                    {
-                        ModelState.AddModelError("", "The user " + model.UserName + " does not have a matching pilot profil in the system.");
-                    }
-                }
+                //var isPilot = false;
+                //using (var db = new FlightContext())
+                //{
+                //    isPilot = db.Pilots.Any(p => p.Name == model.UserName);
+                //    if (!isPilot) 
+                //    {
+                //        ModelState.AddModelError("", "The user " + model.UserName + " does not have a matching pilot profil in the system.");
+                //    }
+                //}
 
-                if (isPilot
-                    && MembershipService.ValidateUser(model.UserName, model.Password))
+                //isPilot && 
+
+                if (MembershipService.ValidateUser(model.UserName, model.Password))
                 {
                     
                     this.FormsService.SignIn(model.UserName, model.RememberMe);
@@ -101,20 +102,20 @@ namespace FlightLog.Controllers
             if (ModelState.IsValid)
             {
                 MembershipCreateStatus createStatus;
-                using (var db = new FlightContext())
-                {
-                    var pilot = db.Pilots.FirstOrDefault(p => p.Name == model.UserName);
-                    if (pilot != null)
-                    {
+                //using (var db = new FlightContext())
+                //{
+                //    var pilot = db.Pilots.FirstOrDefault(p => p.Name == model.UserName);
+                //    if (pilot != null)
+                //    {
                         // Attempt to register the user
                         createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);        
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "The user " + model.UserName + " does not have a matching pilot profil in the system.");
-                        createStatus = MembershipCreateStatus.UserRejected;
-                    }
-                }
+                //    }
+                //    else
+                //    {
+                //        ModelState.AddModelError("", "The user " + model.UserName + " does not have a matching pilot profil in the system.");
+                //        createStatus = MembershipCreateStatus.UserRejected;
+                //    }
+                //}
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
