@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace FlightLog.Controllers
 {
+    using System.Data.Entity;
     using System.Web.Helpers;
 
     using FlightLog.Models;
@@ -50,7 +51,7 @@ namespace FlightLog.Controllers
                     throw new ArgumentException(string.Format("Invalid date input in url: {0}", raw));
                 }
 
-                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year).OrderBy(o => o.Departure);
+                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year).Include("Betaler").OrderBy(o => o.Departure);
 
                 return this.View("month", rptMonth);
             }
@@ -70,7 +71,7 @@ namespace FlightLog.Controllers
                 rpt.Date = DateTime.Today;
             }
 
-            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date).OrderBy(o => o.Departure);
+            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date).Include("Betaler").OrderBy(o => o.Departure);
 
             return this.View(rpt);
         }

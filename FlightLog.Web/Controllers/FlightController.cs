@@ -29,9 +29,8 @@ namespace FlightLog.Controllers
             ViewBag.Take = take.HasValue ? take.Value : 60;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
-            var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
-            var l = flights.ToList();
-            return View(l);
+            var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).Include("Betaler").OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
+            return View(flights.ToList());
         }
 
         public ViewResult Sample(int? skip, int? take, int? locationid)
@@ -78,9 +77,9 @@ namespace FlightLog.Controllers
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
             var flights = this.db.Flights.Where(s => 
-                (locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true) 
-                    && (date.HasValue ? s.Date == date : s.Date == DateTime.Today)
-                    ).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
+                (locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true) &&
+                (date.HasValue ? s.Date == date : s.Date == DateTime.Today)).Include("Betaler").OrderByDescending(s => s.Date).
+                ThenByDescending(s => s.Departure ?? DateTime.Now);
             return View(flights.ToList());
         }
 

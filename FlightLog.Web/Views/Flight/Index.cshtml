@@ -139,19 +139,19 @@
                 </td>
                 <td>
                     @item.TachoDeparture
-                    @if ((item.TachoLanding.HasValue) && (item.TachoLanding > 0))
+                    @if (item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
-                        <text>/ </text>
+                        <text>/</text>
                         @item.TachoLanding
-                        <text> ( </text>
-                        @(item.TachoLanding.Value - item.TachoDeparture.Value);
-                        <text> ) </text>
+                        <text> (</text>
+                        @(item.TachoLanding.Value - item.TachoDeparture.Value)
+                        <text>)</text>
                     }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
-                <td>
+                <td class="noprint">
                     @if (Request.IsAuthenticated)
                     {
                         bool isEditable = false;
@@ -168,8 +168,6 @@
                         @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
                     }
                     @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
-                    @*@Html.ActionLink("Historik", "ChangeHistory", new { id = item.FlightId }, new { @class = "awesomeBtn" }) *@
-                    @*@Html.ActionLink("Slet", "Delete", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>
             </tr>
         }
