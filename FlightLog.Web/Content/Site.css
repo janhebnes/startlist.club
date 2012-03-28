@@ -114,3 +114,40 @@ table.tablesorter tbody td
     color: red;
     font-weight: bold;
 }
+
+.display-label{
+  float:left;
+  clear:left;
+  width:100px;
+  margin:5px 0 3px 0;
+}
+
+.display-label label 
+{
+    margin:0;
+}
+
+.display-field{
+  float:left;
+  clear:right;
+  margin:5px 0 3px 0;
+}
+
+.editor-label{
+  float:left;
+  clear:left;
+  width:100px;
+  margin:5px 0 3px 0;
+}
+
+.editor-field{
+  float:left;
+  clear:right;
+  margin:5px 0 3px 0;
+}
+
+.editor-field input.submit{
+  width:100px;  
+}
+
+.ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text { padding: 2px; text-indent: -9999999px; }

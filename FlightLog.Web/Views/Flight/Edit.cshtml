@@ -1,37 +1,32 @@
 ﻿@model FlightLog.Models.Flight
-
 @{
     ViewBag.Title = "Edit";
 }
-
-<h2>Edit</h2>
-
+<h2>
+    Edit</h2>
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/EditorHookup.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/RangeDateValidator.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/AutoCompleteCombobox.js")" type="text/javascript"></script>
-
 <script>
-$(function() {
-    $("#PlaneId").combobox();
-    $("#PilotId").combobox();
-    $("#PilotBackseatId").combobox();
-    $("#BetalerId").combobox();
-    $("#StartTypeId").combobox();
-    $("#StartedFromId").combobox();
-    $("#LandedOnId").combobox();
-	});
+    $(function () {
+        $("#PlaneId").combobox();
+        $("#PilotId").combobox();
+        $("#PilotBackseatId").combobox();
+        $("#BetalerId").combobox();
+        $("#StartTypeId").combobox();
+        $("#StartedFromId").combobox();
+        $("#LandedOnId").combobox();
+    });
 </script>
-
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Flight</legend>
-
         @Html.HiddenFor(model => model.FlightId)
-
-		<div class="editor-label">
+        <div class="editor-label">
             @Html.LabelFor(model => model.Date)
         </div>
         <div class="editor-field">
@@ -45,7 +40,6 @@ $(function() {
             @Html.EditorFor(model => model.Departure)
             @Html.ValidationMessageFor(model => model.Departure)
         </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.Landing)
         </div>
@@ -53,39 +47,34 @@ $(function() {
             @Html.EditorFor(model => model.Landing)
             @Html.ValidationMessageFor(model => model.Landing)
         </div>
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.PlaneId, "Plane")
+            @Html.LabelFor(model => model.PlaneId)
         </div>
         <div class="editor-field">
             @Html.DropDownList("PlaneId", String.Empty)
             @Html.ValidationMessageFor(model => model.PlaneId)
         </div>
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.PilotId, "Pilot")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PilotId", String.Empty)
-            @Html.ValidationMessageFor(model => model.PilotId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PilotBackseatId, "Pilot backseat")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PilotBackseatId", String.Empty)
-            @Html.ValidationMessageFor(model => model.PilotBackseatId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.BetalerId, "Pilot paying")
+            @Html.LabelFor(model => model.BetalerId)
         </div>
         <div class="editor-field">
             @Html.DropDownList("BetalerId", String.Empty)
             @Html.ValidationMessageFor(model => model.BetalerId)
         </div>
-
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PilotId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("PilotId", String.Empty)
+            @Html.ValidationMessageFor(model => model.PilotId)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PilotBackseatId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("PilotBackseatId", String.Empty)
+            @Html.ValidationMessageFor(model => model.PilotBackseatId)
+        </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.StartTypeId)
         </div>
@@ -93,47 +82,20 @@ $(function() {
             @Html.DropDownList("StartTypeId", String.Empty)
             @Html.ValidationMessageFor(model => model.StartTypeId)
         </div>
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.StartedFromId, "Departure")
+            @Html.LabelFor(model => model.StartedFromId)
         </div>
         <div class="editor-field">
             @Html.DropDownList("StartedFromId", String.Empty)
             @Html.ValidationMessageFor(model => model.StartedFromId)
         </div>
-        
         <div class="editor-label">
-            @Html.LabelFor(model => model.LandedOnId, "Landing")
+            @Html.LabelFor(model => model.LandedOnId)
         </div>
         <div class="editor-field">
             @Html.DropDownList("LandedOnId", String.Empty)
             @Html.ValidationMessageFor(model => model.LandedOnId)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TachoDeparture)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TachoDeparture)
-            @Html.ValidationMessageFor(model => model.TachoDeparture)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TachoLanding)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TachoLanding)
-            @Html.ValidationMessageFor(model => model.TachoLanding)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TaskDistance)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TaskDistance)
-            @Html.ValidationMessageFor(model => model.TaskDistance)
-        </div>
-        
         <div class="editor-label">
             @Html.LabelFor(model => model.Description)
         </div>
@@ -141,26 +103,57 @@ $(function() {
             @Html.EditorFor(model => model.Description)
             @Html.ValidationMessageFor(model => model.Description)
         </div>
-
-        <p>
-            <input type="submit" value="Save" />
+        <div class="editor-label">
+        </div>
+        <div class="editor-field">
+            <input type="submit" value="Gem" class="submit" />
             @if (Context.User.IsInRole("Editor"))
             {
+                <text> | </text>
                 @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId })
             }
-        </p>
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TachoDeparture)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TachoDeparture)
+            @Html.ValidationMessageFor(model => model.TachoDeparture)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TachoLanding)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TachoLanding)
+            @Html.ValidationMessageFor(model => model.TachoLanding)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TaskDistance)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TaskDistance)
+            @Html.ValidationMessageFor(model => model.TaskDistance)
+        </div>
+        <div class="editor-label">
+        </div>
+        <div class="editor-field">
+            <input type="submit" value="Gem" class="submit" />
+            @if (Context.User.IsInRole("Editor"))
+            {
+                <text> | </text>
+                @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId })
+            }
+        </div>
     </fieldset>
 }
 <p>
     <a href="/" class="back">Tilbage til listen</a>
 </p>
-
 @Html.Partial("_changeHistory", (IEnumerable<FlightLog.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
-
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").css("border", "6px solid #888");
-        $("#Description").focus();
+        $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").css("border", "3px solid #888");
+        $("#Landing").focus();
     }
 );
 </script>

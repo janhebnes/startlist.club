@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightLog.Models
 {
+    using System.ComponentModel;
     using System.Runtime.Remoting.Contexts;
     using System.Xml.Serialization;
 
@@ -24,6 +25,7 @@ namespace FlightLog.Models
         }
         [Key]
         public Guid FlightId { get; set; }
+        [DisplayName("Dato")]
         [DataType(DataType.Date)]
         public DateTime Date
         {
@@ -44,6 +46,7 @@ namespace FlightLog.Models
                     throw new ArgumentOutOfRangeException("DateTime is not a UTC Date set at 00:00:00 must be submitted, date: " + m_Date.ToString() + " value:" + value.ToString() + " universaltime: " + value.ToUniversalTime().ToString());
             }
         }
+        [DisplayName("Startet")]
         [DataType(DataType.Time)]
         public DateTime? Departure
         {
@@ -57,6 +60,7 @@ namespace FlightLog.Models
                     this.m_Departure = new DateTime(this.Date.Year, this.Date.Month, this.Date.Day, m_Departure.Value.Hour, m_Departure.Value.Minute, m_Departure.Value.Second);
             }
         }
+        [DisplayName("Landet")]
         [DataType(DataType.Time)]
         public DateTime? Landing
         {
@@ -99,10 +103,11 @@ namespace FlightLog.Models
                 }
             }
         }
-
+        [DisplayName("Fly")]
         [Required]
         public int PlaneId { get; set; }
         public virtual Plane Plane { get; set; }
+        [DisplayName("Pilot")]
         [Required]
         public int PilotId { get; set; }
         public virtual Pilot Pilot
@@ -114,33 +119,42 @@ namespace FlightLog.Models
                 if (Betaler == null) Betaler = m_Pilot;
             }
         }
-
+        [DisplayName("Bagsæde")]
         public int? PilotBackseatId { get; set; }
         public virtual Pilot PilotBackseat { get; set; }
 
+        [DisplayName("Start metode")]
         [Required]
         public int StartTypeId { get; set; }
         public virtual StartType StartType { get; set; }
 
+        [DisplayName("Startsted")]
         public int StartedFromId { get; set; }
         [ForeignKey("StartedFromId")]
         public virtual Location StartedFrom { get; set; }
 
+        [DisplayName("Landingssted")]
         public int? LandedOnId { get; set; }
+        
         [ForeignKey("LandedOnId")]
         public virtual Location LandedOn { get; set; }
 
+        [DisplayName("Tacho start")]
         public double? TachoDeparture { get; set; }
+
+        [DisplayName("Tacho slut")]
         public double? TachoLanding { get; set; }
+        [DisplayName("Opgave km")]
         public double? TaskDistance { get; set; }
 
-        //[Display("Note")]
+        [DisplayName("Note")]
         public string Description { get; set; }
         [XmlIgnore]
         public virtual ICollection<Note> Notes { get; set; }
         [XmlIgnore]
         public virtual ICollection<PilotLog> PilotLogs { get; set; }
 
+        [DisplayName("Betaler")]
         public int BetalerId { get; set; }
         public virtual Pilot Betaler { get; set; }
 
