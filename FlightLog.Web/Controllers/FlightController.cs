@@ -51,6 +51,27 @@ namespace FlightLog.Controllers
             //return View(l);
         }
 
+        // POST: /Flight/History
+        public ViewResult History(int? skip, int? take, int? locationid)
+        {
+            if (!Request.IsAuthenticated) 
+                return null;
+
+            ViewBag.Skip = skip.HasValue ? skip.Value : 0;
+            ViewBag.Take = take.HasValue ? take.Value : 100;
+            ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
+            ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
+            var flightshistory =
+                this.db.FlightVersions.Where(
+                    s =>
+                    locationid.HasValue
+                        ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)
+                        : true).OrderByDescending(s => s.Created).Skip(
+                            (skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 100));
+
+            return View(flightshistory.ToList());
+        }
+
         public ViewResult Grid(DateTime? date, int? locationid)
         {
             ViewBag.Date = date.HasValue ? date.Value : DateTime.Today;
@@ -190,7 +211,7 @@ namespace FlightLog.Controllers
         }
 
         //
-        // GET: /Default1/Edit/5
+        // GET: /Flight/Edit/5
         public ActionResult Edit(Guid id)
         {
             if (!Request.IsAuthenticated) return null;
@@ -248,7 +269,7 @@ namespace FlightLog.Controllers
         }
 
         //
-        // GET: /Default1/Delete/5
+        // GET: /Flight/Delete/5
         public ActionResult Delete(Guid id)
         {
             if (!Request.IsAuthenticated || 
@@ -263,7 +284,7 @@ namespace FlightLog.Controllers
         }
 
         //
-        // POST: /Default1/Delete/5
+        // POST: /Flight/Delete/5
         [HttpPost]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)

@@ -25,7 +25,17 @@
             Rettet
         </th>
         <th>
+            Af
+        </th>
+        <th>
             Dato
+        </th>
+        
+        <th>
+            Fly
+        </th>
+        <th>
+            Pilote(r)
         </th>
         <th>
             Start
@@ -34,16 +44,7 @@
             Landing
         </th>
         <th>
-            Fly
-        </th>
-        <th>
-            Piloter
-        </th>
-        <th>
-            Betalende
-        </th>
-        <th>
-            Startmetode
+            Start metode
         </th>
         <th>
             Flyveplads
@@ -54,6 +55,7 @@
         <th>
             Note
         </th>
+        <th></th>
     </tr>
 @foreach (var item in Model)
 {
@@ -61,34 +63,36 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Created)
-            <text> af </text>
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.LastUpdatedBy)
         </td>
         <td>
             @TruncateDate(item.Date)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Plane)
+        </td>
+        <td>
+            @item.Pilot.Name
+            @if (item.PilotBackseat != null)
+            {
+                <text>/ </text>@item.PilotBackseat.Name
+            }
+            @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+            {
+                <text> (</text>@item.Betaler.Name<text> betaler)</text>
+            }
+            @if ((item.Betaler == null) && (item.Pilot != null))
+            { 
+                <text> (mangler betaler) </text>
+            }
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Departure)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Landing)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Plane)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pilot.Name)
-            @if (item.PilotBackseat != null)
-            {
-                <text>, </text>
-                @Html.DisplayFor(modelItem => item.PilotBackseat.Name)
-            }
-        </td>
-        <td>
-            @if (item.Betaler != null)
-            {
-                @Html.DisplayFor(modelItem => item.Betaler.Name)
-            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StartType)
@@ -107,7 +111,13 @@
             @Html.DisplayFor(modelItem => item.TachoLanding)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            @Html.DisplayFor(modelItem => item.Description, "Description")
+        </td>
+        <td>
+            @if (@item.State != "Added")
+            {
+                @item.State
+            }
         </td>
     </tr>
 }
@@ -122,7 +132,7 @@
         {
             @Html.ActionLink("Rediger", "Edit", new { id = ViewBag.FlightId })
             <text> | </text>
-            @Html.ActionLink("Slet", "Delete", new { id = ViewBag.FlightId })
+            @Html.ActionLink("Slet", "Delete", "Flight", new { id = ViewBag.FlightId }, new { @class = "awesomeBtn" })
             <text> | </text>
         }
     }

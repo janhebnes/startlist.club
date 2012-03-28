@@ -220,6 +220,8 @@
     <Content Include="Images\openid.png" />
     <Content Include="Images\openid_local.png" />
     <Content Include="Klubber\Flyveklubben.dk\debug.aspx" />
+    <None Include="Migrations\InitialCreate.sql" />
+    <None Include="Migrations\MigrationHistory.sql" />
     <Content Include="Scripts\AutoCompleteCombobox.js" />
     <Content Include="App_Data\Memberlist.xml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -239,6 +241,7 @@
     <None Include="Readme.txt" />
     <Content Include="Views\Flight\Grid.cshtml" />
     <Content Include="Views\Flight\Sample.cshtml" />
+    <Content Include="Views\Flight\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -255,6 +258,7 @@
     <Content Include="Scripts\RangeDateValidator.js" />
     <Content Include="Klubber\Flyveklubben.dk\Import.aspx" />
     <Content Include="Scripts\Script.js" />
+    <Content Include="Views\Shared\DisplayTemplates\Description.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Plane.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\StartType.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />

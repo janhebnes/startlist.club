@@ -124,6 +124,10 @@
                     {
                         <text> (</text>@item.Betaler.Name<text> betaler)</text>
                     }
+                    @if ((item.Betaler == null) && (item.Pilot != null))
+                    { 
+                        <text> (mangler betaler) </text>
+                    }
                 </td>
                 <td>
                     @item.StartedFrom.Name
@@ -135,27 +139,17 @@
                 </td>
                 <td>
                     @item.TachoDeparture
-                    @if ((item.TachoLanding != null) && (item.TachoLanding > 0))
-                        {
+                    @if ((item.TachoLanding.HasValue) && (item.TachoLanding > 0))
+                    {
                         <text>/ </text>
                         @item.TachoLanding
                         <text> ( </text>
                         @(item.TachoLanding.Value - item.TachoDeparture.Value);
                         <text> ) </text>
-                        }
+                    }
                 </td>
                 <td>
-                    @if ((item.Description != null) && (item.Description.Length > 40))
-                    {
-                        @item.Description.Substring(0, 37).ToString()
-                        <span title="[...]@item.Description.Substring(37).ToString()">
-                            <text>[...]</text>
-                        </span>
-                    }
-                    else
-                    {
-                        @item.Description
-                    }
+                    @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td>
                     @if (Request.IsAuthenticated)
@@ -169,11 +163,11 @@
                             @Html.ActionLink("Rediger", "Edit", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
                         }
                     }
-                    @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
                     @if (Request.IsAuthenticated)
                     {
                         @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
                     }
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
                     @*@Html.ActionLink("Historik", "ChangeHistory", new { id = item.FlightId }, new { @class = "awesomeBtn" }) *@
                     @*@Html.ActionLink("Slet", "Delete", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>

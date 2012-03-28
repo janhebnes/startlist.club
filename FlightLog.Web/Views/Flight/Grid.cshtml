@@ -68,6 +68,10 @@
                     {
                         <text> (</text>@item.Betaler.Name<text> betaler)</text>
                     }
+                    @if ((item.Betaler == null) && (item.Pilot != null))
+                    { 
+                        <text> (mangler betaler) </text>
+                    }
                 </td>
                 <td>
 					@if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
@@ -130,17 +134,7 @@
                     }
                 </td>
                 <td>
-                    @if ((item.Description != null) && (item.Description.Length > 40))
-                    {
-                        @item.Description.Substring(0, 37).ToString()
-                        <span title="[...]@item.Description.Substring(37).ToString()">
-                            <text>[...]</text>
-                        </span>
-                    }
-                    else
-                    {
-                        @item.Description
-                    }
+                    @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td class="noprint">
                     @if (Request.IsAuthenticated)

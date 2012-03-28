@@ -270,17 +270,7 @@
                     }
                 </td>
                 <td>
-                    @if ((item.Description != null) && (item.Description.Length > 40))
-                    {
-                        @item.Description.Substring(0, 37).ToString()
-                        <span title="[...]@item.Description.Substring(37).ToString()">
-                            <text>[...]</text>
-                        </span>
-                    }
-                    else
-                    {
-                        @item.Description
-                    }
+                    @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td>
                     @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })

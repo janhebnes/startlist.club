@@ -1,6 +1,15 @@
 ﻿@model FlightLog.Models.Flight
 @{
     ViewBag.Title = "Details";
+
+    if (Model == null)
+    {
+        <text><span class="error">Flight id was not found </span></text>
+        @ViewBag.FlightId;
+        @Html.Partial("_changeHistory", (IEnumerable<FlightLog.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
+        return;
+    }
+    
 }
 <h2>
     Detaljer</h2>
@@ -68,14 +77,15 @@
     </div>
 </fieldset>
 <p>
-    @if (Request.IsAuthenticated) {
+    @if (Request.IsAuthenticated)
+    {
         bool isEditable = false;
         if (Context.User.IsInRole("Administrator")) { isEditable = true; }
         if (Context.User.IsInRole("Editor")) { isEditable = true; }
-        if (Model.Date != null && Model.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
+        if (Model != null && Model.Date != null && Model.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
         if (isEditable)
         {
-            @Html.ActionLink("Rediger", "Edit", new { id=Model.FlightId })
+            @Html.ActionLink("Rediger", "Edit", new { id = Model.FlightId })
             <text> | </text>
         }
     }
