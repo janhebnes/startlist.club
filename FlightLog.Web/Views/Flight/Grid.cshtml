@@ -118,7 +118,7 @@
                     @item.StartedFrom.Name
                     @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
                     {
-                        <text>, </text>
+                        <text>/ </text>
                         @item.LandedOn.Name
                     }
                 </td>
@@ -126,7 +126,7 @@
                     @item.TachoDeparture
                     @if (item.Departure.HasValue && item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
-                        <text>/</text>
+                        <text> / </text>
                         @item.TachoLanding 
                         <text> (</text>
                         @(item.TachoLanding.Value - item.TachoDeparture.Value)

@@ -141,7 +141,7 @@
                     @item.TachoDeparture
                     @if (item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
-                        <text>/</text>
+                        <text> / </text>
                         @item.TachoLanding
                         <text> (</text>
                         @(item.TachoLanding.Value - item.TachoDeparture.Value)

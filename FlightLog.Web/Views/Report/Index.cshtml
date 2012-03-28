@@ -104,6 +104,10 @@
                     {
                         <text> (</text>@item.Betaler.Name<text> betaler)</text>
                     }
+                    @if ((item.Betaler == null) && (item.Pilot != null))
+                    { 
+                        <text> (mangler betaler) </text>
+                    }
                 </td>
                 <td>
                     @if (item.Departure.HasValue)
@@ -134,7 +138,7 @@
                     @item.StartedFrom.Name
                     @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
                     {
-                        <text>, </text>
+                        <text>/ </text>
                         @item.LandedOn.Name
                     }
                 </td>
@@ -146,7 +150,7 @@
                         @item.TachoLanding 
                         <text> (</text>
                         @(item.TachoLanding.Value - item.TachoDeparture.Value);
-                        <text> ) </text>
+                        <text>)</text>
                     }
                 </td>
                 <td>
