@@ -348,9 +348,9 @@ namespace FlightLog.Controllers
         private void PopulateViewBag(Flight flight)
         {         
             this.ViewBag.PlaneId = new SelectList(this.db.Planes, "PlaneId", "Registration", (flight == null) ? (object)null : flight.PlaneId);
-            this.ViewBag.PilotId = new SelectList(this.db.Pilots, "PilotId", "Name", (flight == null) ? (object)null : flight.PilotId);
-            this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots, "PilotId", "Name", (flight == null) ? (object)null : flight.PilotBackseatId);
-            this.ViewBag.BetalerId = new SelectList(this.db.Pilots, "PilotId", "Name", (flight == null) ? (object)null : flight.BetalerId);
+            this.ViewBag.BetalerId = new SelectList(this.db.Pilots, "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
+            this.ViewBag.PilotId = new SelectList(this.db.Pilots, "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
+            this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots, "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
             this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes, "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
             this.ViewBag.StartedFromId = new SelectList(this.db.Locations, "LocationId", "Name", (flight == null) ? (object)null : flight.StartedFromId);
             this.ViewBag.LandedOnId = new SelectList(this.db.Locations, "LocationId", "Name", (flight == null) ? (object)null : flight.LandedOnId);
