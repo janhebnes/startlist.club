@@ -100,9 +100,9 @@
                     {
                         <text>/ </text>@item.PilotBackseat.Name
                     }
-                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                    @if ((item.Betaler != null) && (item.BetalerId != item.PilotId))
                     {
-                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
+                        <text> (Anden betaler)</text>
                     }
                     @if ((item.Betaler == null) && (item.Pilot != null))
                     { 
