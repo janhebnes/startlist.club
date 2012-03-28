@@ -127,6 +127,7 @@ namespace FlightLog.Controllers
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
             }
+
             return RedirectToAction("Grid");
         }
 
@@ -185,6 +186,25 @@ namespace FlightLog.Controllers
                 {
                     Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)
                 };
+
+            int val;
+            if (this.Request.Cookies != null)
+            {
+                if (this.Request.Cookies["StartTypeId"] != null && Int32.TryParse(this.Request.Cookies["StartTypeId"].Value, out val))
+                {
+                    flight.StartTypeId = val;
+                }
+                int val2;
+                if (this.Request.Cookies["StartedFromId"] != null && Int32.TryParse(Request.Cookies["StartedFromId"].Value, out val2))
+                {
+                    flight.StartedFromId = val2;
+                }
+                int val3;
+                if (this.Request.Cookies["LandedOnId"] != null && Int32.TryParse(Request.Cookies["LandedOnId"].Value, out val3))
+                {
+                    flight.LandedOnId = val3;
+                }
+            }
             this.PopulateViewBag(flight);
             return View(flight);
         }
@@ -198,6 +218,18 @@ namespace FlightLog.Controllers
 
             if (ModelState.IsValid)
             {
+                // Remember base information in cookies
+                Response.Cookies["StartTypeId"].Value = flight.StartTypeId.ToString();
+                Response.Cookies["StartTypeId"].Expires = DateTime.Now.AddDays(31);
+                Response.Cookies["StartedFromId"].Value = flight.StartedFromId.ToString();
+                Response.Cookies["StartedFromId"].Expires = DateTime.Now.AddDays(31);
+                if (flight.LandedOnId != null)
+                {
+                    Response.Cookies["LandedOnId"].Value = flight.LandedOnId.Value.ToString();
+                    Response.Cookies["LandedOnId"].Expires = DateTime.Now.AddDays(31);
+                }
+                
+                // Create base flight information fields
                 flight.FlightId = Guid.NewGuid();
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
