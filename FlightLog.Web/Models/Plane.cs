@@ -27,6 +27,15 @@ namespace FlightLog.Models
         public int? StartTypeId { get; set; }
 
         [XmlIgnore]
+        public string RenderName
+        {
+            get
+            {
+                return string.Format("{0} ({1})", this.CompetitionId, this.Registration);
+            }
+        }
+
+        [XmlIgnore]
         public virtual StartType DefaultStartType { get; set; }
 
         [XmlIgnore]
