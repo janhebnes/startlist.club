@@ -107,7 +107,10 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TachoDeparture)
-            <text> / </text>
+            @if (item.TachoDeparture.HasValue && item.TachoLanding.HasValue)
+            {
+                <text> / </text>
+            }
             @Html.DisplayFor(modelItem => item.TachoLanding)
         </td>
         <td>

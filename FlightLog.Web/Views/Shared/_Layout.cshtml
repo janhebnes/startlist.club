@@ -33,8 +33,12 @@
                 <ul id="menu">
                     <li>@Html.ActionLink("Dagsrapporter", "Index", "Report")</li>
                     <li>@Html.ActionLink("Startlisten", "Grid", "Flight")</li>
-                    @if (Context.User.IsInRole("Administrator") || Context.User.IsInRole("Editor")) { 
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
                         <li>@Html.ActionLink("Historik", "History", "Flight")</li>
+                    }
+                    @if (Context.User.IsInRole("Administrator") || Context.User.IsInRole("Editor")) 
+                    { 
                         <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
                     }
                     <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
