@@ -34,3 +34,4 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 /FlightLog.Web/App_Data/ASPNETDB.MDF
 /FlightLog.Web/App_Data/aspnetdb_log.ldf
+/FlightLog.Web/FlightLog.Web.Publish.xml
