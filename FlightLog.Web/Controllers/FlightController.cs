@@ -263,6 +263,7 @@ namespace FlightLog.Controllers
             }
 
             this.PopulateViewBag(flight);
+            ViewBag.FlightId = id;
             ViewBag.ChangeHistory = this.GetChangeHistory(id);
             return View(flight);
         }
@@ -295,6 +296,7 @@ namespace FlightLog.Controllers
                 return RedirectToAction("Grid");
             }
             ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+            ViewBag.FlightId = flight.FlightId;
             this.PopulateViewBag(flight);
             return View(flight);
         }
@@ -311,6 +313,9 @@ namespace FlightLog.Controllers
             }
 
             Flight flight = this.db.Flights.Find(id);
+            if (flight != null)
+                ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+
             return View(flight);
         }
 
