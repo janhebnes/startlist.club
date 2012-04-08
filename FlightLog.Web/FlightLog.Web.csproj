@@ -44,8 +44,8 @@
     <Reference Include="DotNetOpenAuth.ApplicationBlock">
       <HintPath>..\packages\Open-MVC.0.7\lib\net40\DotNetOpenAuth.ApplicationBlock.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah, Version=1.2.14318.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="EntityDataModel">
       <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\EntityDataModel.dll</HintPath>
