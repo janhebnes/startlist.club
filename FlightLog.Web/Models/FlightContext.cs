@@ -110,6 +110,7 @@ namespace FlightLog.Models
         }
 
 #if DEBUG
+        //// /// Used for Initial tests of model prior to EF 4.3 Migration model 
         ////public class FlightContextInitializer : DropCreateDatabaseAlways<FlightContext>
         ////{
         ////    protected override void Seed(FlightContext context)
