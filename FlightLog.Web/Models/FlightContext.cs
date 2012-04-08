@@ -109,6 +109,7 @@ namespace FlightLog.Models
 
         }
 
+#if DEBUG
         ////public class FlightContextInitializer : DropCreateDatabaseAlways<FlightContext>
         ////{
         ////    protected override void Seed(FlightContext context)
@@ -236,5 +237,6 @@ namespace FlightLog.Models
         ////        base.Seed(context);
         ////    }
         ////}
+#endif
     }
 }
