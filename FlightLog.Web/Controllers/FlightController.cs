@@ -208,6 +208,37 @@ namespace FlightLog.Controllers
             return View(flight);
         }
 
+        [HttpGet]
+        public JsonResult SetComment(Guid id, string comment)
+        {
+            if (!Request.IsAuthenticated) return null;
+            bool isEditable = false;
+            if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
+
+            Flight flight = this.db.Flights.Find(id);
+
+            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
+            {
+                isEditable = true;
+            }
+            if (!isEditable)
+            {
+                return Json(false, string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
+
+                throw new SecurityAccessDeniedException(
+                    string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
+            }
+
+            if (isEditable)
+            {
+                flight.Description = comment;
+                this.db.SaveChanges();
+                return Json(true, "Succesfull saved.");
+            }
+            return Json(false, "Unsuccessfull");
+        }
+
         //
         // POST: /Flight/Create
         [HttpPost]
@@ -263,6 +294,7 @@ namespace FlightLog.Controllers
             }
 
             this.PopulateViewBag(flight);
+            ViewBag.FlightId = id;
             ViewBag.ChangeHistory = this.GetChangeHistory(id);
             return View(flight);
         }
@@ -295,6 +327,7 @@ namespace FlightLog.Controllers
                 return RedirectToAction("Grid");
             }
             ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+            ViewBag.FlightId = flight.FlightId;
             this.PopulateViewBag(flight);
             return View(flight);
         }
@@ -311,6 +344,9 @@ namespace FlightLog.Controllers
             }
 
             Flight flight = this.db.Flights.Find(id);
+            if (flight != null)
+                ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+
             return View(flight);
         }
 
