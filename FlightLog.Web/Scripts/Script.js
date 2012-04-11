@@ -8,14 +8,20 @@
         e.preventDefault();
 
         var $this = $(this).closest("td");
-        console.log($this);
-
-        //$this.children("span:first").toggle();
-        $this.children("span:last").toggle();
+        $this.children("span:first").hide();
+        $this.children("span:last").fadeToggle("slow");
 
         return false;
     });
 
+    $('a.setComment').click(function (e) {
+        e.preventDefault();
+
+        var $this = $(this).closest("form");
+
+        $this.submit();
+        return false;
+    });
 
 });
 
