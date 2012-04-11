@@ -208,8 +208,7 @@ namespace FlightLog.Controllers
             return View(flight);
         }
 
-        [HttpGet]
-        public JsonResult SetComment(Guid id, string comment)
+        public ActionResult SetComment(Guid id, string comment)
         {
             if (!Request.IsAuthenticated) return null;
             bool isEditable = false;
@@ -224,8 +223,6 @@ namespace FlightLog.Controllers
             }
             if (!isEditable)
             {
-                return Json(false, string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
-
                 throw new SecurityAccessDeniedException(
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
@@ -234,9 +231,9 @@ namespace FlightLog.Controllers
             {
                 flight.Description = comment;
                 this.db.SaveChanges();
-                return Json(true, "Succesfull saved.");
             }
-            return Json(false, "Unsuccessfull");
+
+            return RedirectToAction("Grid");
         }
 
         //
