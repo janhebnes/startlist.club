@@ -134,7 +134,16 @@
                     }
                 </td>
                 <td>
+
                     @Html.DisplayFor(modelItem => item.Description, "Description")
+
+					@using (Html.BeginForm("SetComment", "Flight"))
+					 {
+						<input type="hidden" name="id" value="@item.FlightId" />
+						<input type="text" name="comment" value="@item.Description" />
+						
+						<input type="submit" class="awesomwBtn" value="set" />
+					 }
                 </td>
                 <td class="noprint">
                     @if (Request.IsAuthenticated)
