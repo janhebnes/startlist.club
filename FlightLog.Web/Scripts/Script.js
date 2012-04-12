@@ -19,6 +19,11 @@
 
         var $this = $(this).closest("form");
 
+        // async post - requires e.g. backbone.jd for response handling.
+        //        $.post($this.attr('action'), $this.serialize(), function (data) {
+        //            $this.replaceWith(data);
+        //        }, 'html');
+
         $this.submit();
         return false;
     });
