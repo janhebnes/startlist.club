@@ -136,16 +136,22 @@
                 <td>
                     <span>
                         @Html.DisplayFor(modelItem => item.Description, "Description") 
+                        @if (Request.IsAuthenticated)
+                        {
                         <a href="#" class="editComment">Edit</a>
+                        }
                     </span>
+                    @if (Request.IsAuthenticated)
+                    {
                     <span style="display:none;">
 					    @using (Html.BeginForm("SetComment", "Flight"))
-					     {
+                        {
 						    <input type="hidden" name="id" value="@item.FlightId" />
 						    <input type="text" name="comment" value="@item.Description" />
 						    <a href="#" class="setComment">Set</a>
-					     }
+                        }
                      </span>
+                    }
                 </td>
                 <td class="noprint">
                     @if (Request.IsAuthenticated)
