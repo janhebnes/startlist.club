@@ -11,8 +11,13 @@ using FlightLog.Models;
 
 namespace FlightLog.Controllers
 {
+    using System.Configuration;
+    using System.Net;
+    using System.Net.Configuration;
+    using System.Net.Mail;
+
     public class AccountController : DataAvail.Mvc.Account.OAuthAccountController
-	{
+    {
         public IFormsAuthenticationService FormsService { get; set; }
         public IMembershipService MembershipService { get; set; }
 
@@ -29,8 +34,8 @@ namespace FlightLog.Controllers
         // **************************************
 
         public ActionResult LogOn()
-		{
-			base.OAuthBeforeLogOn();
+        {
+            base.OAuthBeforeLogOn();
 
             return View();
         }
@@ -52,9 +57,22 @@ namespace FlightLog.Controllers
 
                 //isPilot && 
 
+                if (model.UserName.Contains("@"))
+                {
+                    var result = MembershipService.FindUsersByEmail(model.UserName);
+                    var membershipUsers = result as IList<MembershipUser> ?? result.ToList();
+                    if (membershipUsers.Any())
+                    {
+                        if (membershipUsers.Count() == 1)
+                        {
+                            model.UserName = membershipUsers.First().UserName;
+                        }
+                    }
+                }
+
                 if (MembershipService.ValidateUser(model.UserName, model.Password))
                 {
-                    
+
                     this.FormsService.SignIn(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -107,8 +125,8 @@ namespace FlightLog.Controllers
                 //    var pilot = db.Pilots.FirstOrDefault(p => p.Name == model.UserName);
                 //    if (pilot != null)
                 //    {
-                        // Attempt to register the user
-                        createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);        
+                // Attempt to register the user
+                createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
                 //    }
                 //    else
                 //    {
@@ -170,6 +188,141 @@ namespace FlightLog.Controllers
         // **************************************
 
         public ActionResult ChangePasswordSuccess()
+        {
+            return View();
+        }
+
+        // **************************************
+        // URL: /Account/PasswordReset
+        // **************************************
+
+        public ActionResult PasswordReset()
+        {
+            if (!MembershipService.EnablePasswordReset)
+            {
+                throw new Exception("Password reset is not allowed");
+            }
+            return View();
+        }
+
+        // **************************************
+        // URL: /Account/ChangePasswordSuccess
+        // **************************************
+
+        [HttpPost]
+        public ActionResult PasswordReset(string userName)
+        {
+            if (!MembershipService.EnablePasswordReset)
+            {
+                throw new Exception("Password reset is not allowed");
+            }
+
+            MembershipUser user = null;
+
+            // Try by Email
+            if (userName.Contains("@"))
+            {
+                var result = MembershipService.FindUsersByEmail(userName);
+                var membershipUsers = result as IList<MembershipUser> ?? result.ToList();
+                if (membershipUsers.Any())
+                {
+                    if (membershipUsers.Count() == 1)
+                    {
+                        user = membershipUsers.First();
+                    }
+                    else
+                    {
+                        ViewBag.Error = "<p class=\"error\">Multiple user accounts where found with user name: " +
+                                        userName + ", please contact administrator for help.</p>";
+                        return this.View();
+                    }
+                }
+            }
+
+            if (user == null)
+            {
+                // Try by Name
+                var result = MembershipService.FindUsersByName(userName);
+                var membershipUsers = result as IList<MembershipUser> ?? result.ToList();
+                if (membershipUsers.Any())
+                {
+                    if (membershipUsers.Count() == 1)
+                    {
+                        user = membershipUsers.First();
+                    }
+                    else
+                    {
+                        ViewBag.Error = "<p class=\"error\">Multiple user accounts where found with user name: " +
+                                        userName + ", please contact administrator for help.</p>";
+                        return this.View();
+                    }
+                }
+            }
+
+
+            if (user != null)
+            {
+                if (!user.Email.Contains("@"))
+                {
+                    ViewBag.Error =
+                        "<p class=\"error\">User does not have an associated e-mail, password recovery is not possible, please contact administrator for help.</p>";
+                    return this.View();
+                }
+
+                try
+                {
+                    var newPassword = user.ResetPassword();
+                    var subject = "Password Reset Request for " + GetWebAppRoot();
+                    var body = "Your password has been reset to: " + newPassword +
+                               " \n\nWe received a reset password request for your account: " + userName + ". \n\n" +
+                               GetWebAppRoot() + "/Account/LogOn\n\nYou can change your password at\n" +
+                               GetWebAppRoot() + "/Account/ChangePassword\n\nRegards,\nRobert Robot";
+
+                    var smtp = new SmtpClient();
+                    using (
+                        var message = new MailMessage(GetSmtpFromAddress(), user.Email)
+                            {
+                                Subject = subject,
+                                Body = body
+                            })
+                    {
+                        smtp.Send(message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error =
+                        "<p class=\"error\">System Error sending e-mail message to your e-mail.</p><textarea style=\"display:none\"> " +
+                        ex + " </textarea>";
+                    return this.View();
+                }
+                return RedirectToAction("PasswordResetSuccess");
+            }
+
+            ViewBag.Error = "<p class=\"error\">Could not find user name: " + userName + "</p><p>Would you like to <a href=\"/Account/Register\">Register</a>? </p>";
+            return this.View();
+        }
+
+        public string GetSmtpFromAddress()
+        {
+            var config = ConfigurationManager.GetSection("system.net/mailSettings/smtp") as SmtpSection;
+
+            return (config != null) ? config.From : null;
+        }
+
+        public string GetWebAppRoot()
+        {
+            if (HttpContext.Request.ApplicationPath == "/")
+                return "http://" + HttpContext.Request.Url.Host;
+            else
+                return "http://" + HttpContext.Request.Url.Host + HttpContext.Request.ApplicationPath;
+        }
+
+        // **************************************
+        // URL: /Account/ChangePasswordSuccess
+        // **************************************
+
+        public ActionResult PasswordResetSuccess()
         {
             return View();
         }
