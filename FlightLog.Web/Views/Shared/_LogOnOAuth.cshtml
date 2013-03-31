@@ -1,9 +1,7 @@
-﻿<script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js"></script>
+﻿@*<script type="text/javascript" src="http://vkontakte.ru/js/api/openapi.js"></script>*@
 <script type="text/javascript" src="@Url.Content("~/Scripts/da.openid.js")"></script>
 <link href="@Url.Content("~/Content/da.openid.css")" rel="stylesheet" type="text/css" />
 <div class="oa-panel">
-    <div class="oa-panel-note">
-        You could login this site using one of these services:</div>
     <div class="oa-panel-list">
         <div>
             <a id="oa_Facebook" class="oa-button" data-serv-name="facebook"><i class="oa-icon facebook">
@@ -53,9 +51,9 @@
             <div style="display: none" class="oa-serv-button twitter-button logon-button" data-serv-name="twitter" data-serv-url="/Account/OAuth?serviceName=Twitter&returnUrl=@ViewBag.ReturnUrl"
              data-serv-caption="Twitter.com">
             </div>
-            <div style="display: none" class="oa-serv-button vkontakte-button" id="vk_button" data-serv-name="vkontakte"
+            @*<div style="display: none" class="oa-serv-button vkontakte-button" id="vk_button" data-serv-name="vkontakte"
                 data-serv-caption="VKontakte.ru">
-            </div>
+            </div>*@
             <div style="display: none" class="oa-serv-button google-button logon-button" data-serv-name="google"
                 data-serv-caption="Google" data-serv-url="/Account/OpenId?ServiceUrl=Google">
             </div>
@@ -63,5 +61,5 @@
         </div>
     </div>
     <input type="hidden" id="return_url" value="@ViewBag.ReturnUrl" />
-    <input type="hidden" id="vk_app_id" value="@ViewBag.VKontakteAppId" />
+    @*<input type="hidden" id="vk_app_id" value="@ViewBag.VKontakteAppId" />*@
 </div>
