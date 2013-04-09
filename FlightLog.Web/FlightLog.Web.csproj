@@ -253,6 +253,7 @@
     <Content Include="Views\Flight\History.cshtml" />
     <Content Include="Views\Account\PasswordReset.cshtml" />
     <Content Include="Views\Account\PasswordResetSuccess.cshtml" />
+    <Content Include="Views\Account\LogOn - Original.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

@@ -36,14 +36,14 @@ namespace FlightLog.Models
     public class ResetPasswordModel
     {
         [Required]
-        [Display(Name = "User name or Email address")]
+        [Display(Name = "Email or username")]
         public string UserName { get; set; }
     }
 
     public class LogOnModel
     {
         [Required]
-        [Display(Name = "User name or Email address")]
+        [Display(Name = "Email or username")]
         public string UserName { get; set; }
 
         [Required]
@@ -59,12 +59,12 @@ namespace FlightLog.Models
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email address")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
