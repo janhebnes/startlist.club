@@ -71,7 +71,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 .awesomeBtn
 {
     display: inline-block;
-    padding: 2px 6px;
+    padding: 8px 12px;
     box-shadow: 2px 2px 5px #aeaeae;
     border: 1px solid #aeaeae;
     background-color: #f1f1f1;
@@ -148,6 +148,7 @@ table.tablesorter tbody td
 
 .editor-field input.submit{
   width:100px;  
+  padding: 8px 12px;
 }
 
 .ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text { padding: 2px; text-indent: -9999999px; }
