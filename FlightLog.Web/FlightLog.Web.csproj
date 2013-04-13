@@ -197,6 +197,10 @@
     <Content Include="Content\bg.gif" />
     <Content Include="Content\da.openid.css" />
     <Content Include="Content\desc.gif" />
+    <Content Include="Content\facebook-logo-large.png" />
+    <Content Include="Content\google-logo-large.png" />
+    <Content Include="Content\openid.png" />
+    <Content Include="Content\openid_local.png" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
     <Content Include="Content\themes\base\jquery.ui.all.css" />
     <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
@@ -226,8 +230,6 @@
     <Content Include="Content\themes\orange\images\TitleRight.png" />
     <Content Include="Content\themes\orange\sample\ie.jpg" />
     <Content Include="Content\themes\orange\Site.css" />
-    <Content Include="Images\openid.png" />
-    <Content Include="Images\openid_local.png" />
     <Content Include="Klubber\Flyveklubben.dk\debug.aspx" />
     <None Include="Migrations\InitialCreate.sql" />
     <None Include="Migrations\MigrationHistory.sql" />
