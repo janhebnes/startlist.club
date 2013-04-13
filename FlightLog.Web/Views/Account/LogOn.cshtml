@@ -58,7 +58,7 @@ vertical-align: top;">
                 <a class="oa-button" data-serv-name="google" class="google-button-link">
                     <div id="login-google" class="action-gradient large-button provider">
                         <div class="img-container">
-                            <img width="180" height="61" alt="Google" src="https://khan-academy.appspot.com/images/google-logo-large.png">
+                            <img width="180" height="61" alt="Google" src="/Content/google-logo-large.png">
                         </div>
                     </div>
                 </a>
@@ -67,7 +67,7 @@ vertical-align: top;">
                 <a class="oa-button" data-serv-name="facebook">
                     <div id="login-facebook" class="action-gradient large-button provider">
                         <div class="img-container">
-                            <img width="180" height="61" alt="Facebook" src="https://khan-academy.appspot.com/images/facebook-logo-large.png">
+                            <img width="180" height="61" alt="Facebook" src="/Content/facebook-logo-large.png">
                         </div>
                     </div>
                 </a>
@@ -97,8 +97,6 @@ text-transform: uppercase;">OR</span>
 height: 430px;
 vertical-align: top;">
                 <h3 class="regular-header">Log in with a basic account</h3>
-                @*<iframe frameborder="0" scrolling="no" width="435px" height="200px" allowtransparency="yes" src="https://www.khanacademy.org/login?continue=%2F&amp;form=1">
-                </iframe>*@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
@@ -140,9 +138,6 @@ vertical-align: top;">
 }
             </div>
         </div>
-        @*<div class="tos-area">
-            By logging in, you agree to our <a href="/about/tos" target="_blank" tabindex="1">Terms of Service</a> and <a href="/about/privacy-policy" target="_blank" tabindex="1">Privacy Policy</a>.
-        </div>*@
     </div>
 
 <input type="hidden" id="return_url" value="@ViewBag.ReturnUrl" />

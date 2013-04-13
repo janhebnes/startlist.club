@@ -1,6 +1,6 @@
 .oa-icon
 {
-    background-image: url('../Images/openid.png');
+    background-image: url('/Content/openid.png');
     width: 16px;
     height: 16px;
     background-repeat: no-repeat;
@@ -47,7 +47,7 @@
 }
 .oa-icon.local
 {
-    background-image: url('../Images/openid_local.png');
+    background-image: url('/Content/openid_local.png');
     width: 16px;
     height: 16px;
     background-repeat: no-repeat;
@@ -56,7 +56,7 @@
 .oa-serv-button
 {
     display: inline-block;
-    background-image: url('../Images/openid.png');
+    background-image: url('/Content/Images/openid.png');
     width: 87px;
     height: 21px;
     background-repeat: no-repeat;
