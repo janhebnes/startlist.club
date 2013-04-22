@@ -210,17 +210,19 @@ namespace FlightLog.Controllers
 
         public ActionResult SetComment(Guid id, string comment)
         {
-            if (!Request.IsAuthenticated) return null;
             bool isEditable = false;
+            if (!Request.IsAuthenticated) return null;
+
             if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
             if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
 
             Flight flight = this.db.Flights.Find(id);
 
-            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
+            if (flight != null && flight.Date.AddDays(3) >= DateTime.Now)
             {
                 isEditable = true;
             }
+
             if (!isEditable)
             {
                 throw new SecurityAccessDeniedException(
