@@ -8,6 +8,8 @@ namespace FlightLog.Models
 {
     using System.Xml.Serialization;
 
+    using FlightLog.Controllers;
+
     public class Club
     {
         [Key]
@@ -24,5 +26,14 @@ namespace FlightLog.Models
         public virtual ICollection<PilotStatusType> PilotStatusTypes { get; set; }
         [XmlIgnore]
         public virtual ICollection<Pilot> Pilots { get; set; }
+
+        /// <summary>
+        /// Return if the current Club is the Currently Selected Club or return true if no club is selected
+        /// </summary>
+        /// <returns></returns>
+        public bool IsCurrent()
+        {
+            return (ClubController.CurrentClub.ShortName == this.ShortName);
+        }
     }
 }
