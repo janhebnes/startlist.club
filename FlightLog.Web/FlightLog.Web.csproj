@@ -256,6 +256,8 @@
     <Content Include="Views\Account\PasswordReset.cshtml" />
     <Content Include="Views\Account\PasswordResetSuccess.cshtml" />
     <Content Include="Views\Account\LogOn - Original.cshtml" />
+    <Content Include="Views\Club\ClubSelector.cshtml" />
+    <Content Include="Views\Club\SetCurrentClub.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

@@ -15,14 +15,57 @@ namespace FlightLog.Controllers
     {
         private FlightContext db = new FlightContext();
 
+        public static Club CurrentClub
+        {
+            get
+            {
+                if (System.Web.HttpContext.Current.Session["CurrentClub"] == null) return new Club();
+
+                return System.Web.HttpContext.Current.Session["CurrentClub"] as Club;
+            }
+            private set
+            {
+                System.Web.HttpContext.Current.Session.Add("CurrentClub", value);
+            }
+        }
+
+        private void ValidateForAdminPriviledges()
+        {
+            if (!Request.RequestContext.HttpContext.User.IsInRole("Administrator"))
+            {
+                throw new SecurityAccessDeniedException(
+                    string.Format(
+                        "Access Denied to User {0}", this.Request.RequestContext.HttpContext.User.Identity.Name));
+            }
+        }
+
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-            if (!requestContext.HttpContext.User.IsInRole("Administrator"))
+            base.Initialize(requestContext);
+        }
+
+        /// <summary>
+        /// Used by main layout for header switch between flight club filters
+        /// </summary>
+        /// <returns></returns>
+        public PartialViewResult ClubSelector()
+        {
+            return this.PartialView(db.Clubs.ToList());
+        }
+
+        [HttpPost]
+        public ViewResult SetCurrentClub(string shortName)
+        {
+            // Set Current Club
+            CurrentClub = this.db.Clubs.FirstOrDefault(d => d.ShortName == shortName);
+
+            // Return to actual path
+            if (this.Request.UrlReferrer != null)
             {
-                throw new SecurityAccessDeniedException(string.Format("Access Denied to User {0}", this.Request.RequestContext.HttpContext.User.Identity.Name));
+                this.Response.Redirect(this.Request.UrlReferrer.AbsolutePath);
             }
 
-            base.Initialize(requestContext);
+            return this.View(CurrentClub);
         }
 
         //
@@ -30,6 +73,7 @@ namespace FlightLog.Controllers
 
         public ViewResult Index()
         {
+            ValidateForAdminPriviledges();
             return View(db.Clubs.ToList());
         }
 
@@ -38,6 +82,7 @@ namespace FlightLog.Controllers
 
         public ViewResult Details(int id)
         {
+            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             return View(club);
         }
@@ -47,8 +92,9 @@ namespace FlightLog.Controllers
 
         public ActionResult Create()
         {
+            ValidateForAdminPriviledges();
             return View();
-        } 
+        }
 
         //
         // POST: /Club/Create
@@ -56,21 +102,23 @@ namespace FlightLog.Controllers
         [HttpPost]
         public ActionResult Create(Club club)
         {
+            ValidateForAdminPriviledges();
             if (ModelState.IsValid)
             {
                 db.Clubs.Add(club);
                 db.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
 
             return View(club);
         }
-        
+
         //
         // GET: /Club/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
+            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             return View(club);
         }
@@ -81,6 +129,7 @@ namespace FlightLog.Controllers
         [HttpPost]
         public ActionResult Edit(Club club)
         {
+            ValidateForAdminPriviledges();
             if (ModelState.IsValid)
             {
                 db.Entry(club).State = EntityState.Modified;
@@ -92,9 +141,10 @@ namespace FlightLog.Controllers
 
         //
         // GET: /Club/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
+            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             return View(club);
         }
@@ -104,7 +154,8 @@ namespace FlightLog.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
+        {
+            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             db.Clubs.Remove(club);
             db.SaveChanges();
