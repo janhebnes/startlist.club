@@ -19,12 +19,41 @@ namespace FlightLog.Controllers
         {
             get
             {
-                if (System.Web.HttpContext.Current.Session["CurrentClub"] == null) return new Club();
+                // Return Session Cache if set
+                if (System.Web.HttpContext.Current.Session["CurrentClub"] != null)
+                {
+                    return System.Web.HttpContext.Current.Session["CurrentClub"] as Club;
+                }
 
-                return System.Web.HttpContext.Current.Session["CurrentClub"] as Club;
+                // Read Cookie 
+                var cookie = System.Web.HttpContext.Current.Request.Cookies.Get("CurrentClub");
+                if (cookie != null)
+                {
+                    using (var shortDb = new FlightContext())
+                    {
+                        var club = shortDb.Clubs.FirstOrDefault(d => d.ShortName == cookie.Value);
+                        if (club != null)
+                        {
+                            // Set Session Cache
+                            System.Web.HttpContext.Current.Session.Add("CurrentClub", club);
+
+                            // Return Current Club
+                            return club;
+                        }
+                    }
+                }
+
+                // Return Empty Club
+                return new Club();
             }
+
             private set
             {
+                // Set Cookie
+                System.Web.HttpContext.Current.Response.Cookies.Remove("CurrentClub");
+                System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie("CurrentClub", value.ShortName) { Expires = DateTime.Now.AddDays(72) });
+                
+                // Set Session Cache
                 System.Web.HttpContext.Current.Session.Add("CurrentClub", value);
             }
         }
@@ -60,7 +89,7 @@ namespace FlightLog.Controllers
             CurrentClub = this.db.Clubs.FirstOrDefault(d => d.ShortName == shortName);
 
             // Return to actual path
-            if (this.Request.UrlReferrer != null)
+            if (this.Request.UrlReferrer != null && this.Request.UrlReferrer.AbsolutePath != "/Club/SetCurrentClub")
             {
                 this.Response.Redirect(this.Request.UrlReferrer.AbsolutePath);
             }
