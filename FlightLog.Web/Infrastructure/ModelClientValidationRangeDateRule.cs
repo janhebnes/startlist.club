@@ -10,8 +10,8 @@ namespace FlightLog.Infrastructure
             ErrorMessage = errorMessage;
             ValidationType = "rangedate";
 
-            ValidationParameters["min"] = minValue.ToString("dd-MM-yyyy");
-            ValidationParameters["max"] = maxValue.ToString("dd-MM-yyyy");
+            ValidationParameters["min"] = minValue.ToString("yyyy-MM-dd");
+            ValidationParameters["max"] = maxValue.ToString("yyyy-MM-dd");
         }
     }
 }

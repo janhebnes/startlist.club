@@ -7,7 +7,7 @@ $(document).ready(function () {
 			return null;
 		return $.datepicker.parseDate("yy-mm-dd", value);
 	}
-	$('.date').each(function () {
+	$('.dateISO').each(function () {
 		var minDate = getDateYymmdd($(this).data("val-rangedate-min"));
 		var maxDate = getDateYymmdd($(this).data("val-rangedate-max"));
 		$(this).datepicker({

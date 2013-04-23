@@ -17,7 +17,7 @@ namespace FlightLog.Infrastructure
     /// </summary>
     public class DateRangeAttribute : ValidationAttribute, IClientValidatable, IMetadataAware
     {
-        private const string DateFormat = "dd-MM-yyyy";
+        private const string DateFormat = "yyyy-MM-dd";
         private static class DefaultErrorMessages
         {
             public const string Range = "'{0}' must be a date between {1:d} and {2:d}.";
