@@ -31,7 +31,7 @@ namespace FlightLog.Controllers
                 {
                     using (var shortDb = new FlightContext())
                     {
-                        var club = shortDb.Clubs.FirstOrDefault(d => d.ShortName == cookie.Value);
+                        var club = shortDb.Clubs.SingleOrDefault(d => d.ShortName == cookie.Value);
                         if (club != null)
                         {
                             // Set Session Cache
@@ -49,12 +49,25 @@ namespace FlightLog.Controllers
 
             private set
             {
-                // Set Cookie
-                System.Web.HttpContext.Current.Response.Cookies.Remove("CurrentClub");
-                System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie("CurrentClub", value.ShortName) { Expires = DateTime.Now.AddDays(72) });
+                // Remove cookie and cache
+                if (System.Web.HttpContext.Current.Response.Cookies["CurrentClub"] != null)
+                    System.Web.HttpContext.Current.Response.Cookies["CurrentClub"].Expires = DateTime.Now.AddDays(-2);
+
+                if (System.Web.HttpContext.Current.Session["CurrentClub"] != null)
+                    System.Web.HttpContext.Current.Session.Remove("CurrentClub");
+
+                // Set Cookie and Session Cache
+                if (value != null && value.ShortName != null)
+                {
+                    System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie("CurrentClub", value.ShortName) { Expires = DateTime.Now.AddDays(72) });
+                    System.Web.HttpContext.Current.Session.Add("CurrentClub", value);
+                }
+                else
+                {
+                    System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie("CurrentClub", string.Empty) { Expires = DateTime.Now.AddDays(72) });
+                    System.Web.HttpContext.Current.Session.Add("CurrentClub", new Club());
+                }
                 
-                // Set Session Cache
-                System.Web.HttpContext.Current.Session.Add("CurrentClub", value);
             }
         }
 
@@ -86,7 +99,7 @@ namespace FlightLog.Controllers
         public ViewResult SetCurrentClub(string shortName)
         {
             // Set Current Club
-            CurrentClub = this.db.Clubs.FirstOrDefault(d => d.ShortName == shortName);
+            CurrentClub = this.db.Clubs.SingleOrDefault(d => d.ShortName == shortName);    
 
             // Return to actual path
             if (this.Request.UrlReferrer != null && this.Request.UrlReferrer.AbsolutePath != "/Club/SetCurrentClub")
