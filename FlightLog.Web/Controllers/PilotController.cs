@@ -31,7 +31,7 @@ namespace FlightLog.Controllers
         public ViewResult Index()
         {
             var pilots = db.Pilots.Include(p => p.Club);
-            return View(pilots.ToList());
+            return View(pilots.ToList().Where(d=>d.Club.IsCurrent()));
         }
 
         //
