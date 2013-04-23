@@ -7,14 +7,18 @@
 }
 <h2>@ViewBag.Title</h2>
 <p>
-    Startliste system for <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a><br />
+    Startliste system oprindeligt udviklet til <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a> men udvidet til at kunne håndtere andre klubber også.<br />
     Totale antal registrerede flyvninger: @ViewBag.Stats
 </p>
 <h3>
     Status på systemet</h3>
 <p>
-    Det er på nuværende muligt at registrere flyvninger, se rettelseshistorik, se statistik
-    på dag/måned/år, lave udtræk til Excel, logge på via Facebook, Google og OAuth.<br />
+    Det er på nuværende muligt at registrere flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel, logge på via Facebook og Google. <br/>
+    Der er mulighed for at filtrere baggrund af klub, denne visning fastholder klub piloter eller klub flyveplads i visninger og statistikker.<br />
+    <br/>
+    Login systemet er gjort uafhængigt af Pilot listerne så ønsker du at blive oprettet som pilot skal du tag fat i din klubs redaktør. <br/>
+    Rettelses historikken fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem som har rettet hvilke flyvninger, dette kan gøres op til 48 timer efter flyvningen fandt sted.<br/>
+    <br/>
     Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
     <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den
     registerede dato. Der er rettelseshistorik på alle ændringer.<br />
@@ -24,16 +28,12 @@
 <h3>
     Kildekode</h3>
 <p>
-    Den er baseret på ASP.Net MVC 3 og Entity Framework 4.1 med en Code First tilgang
-    til databasen.<br />
+    Løsningen er baseret på ASP.Net MVC 3 og Entity Framework 4.1 med en Code First tilgang til databasen.<br />
     Det er muligt at bidrage til kildekoden via projektet på Github.<br />
     <br />
     <a href="https://github.com/janhebnes/FlightJournal">https://github.com/janhebnes/FlightJournal</a><br />
     <br />
 </p>
 <p>
-    Den er forsøgt holdt generel således at andre klubber kunne registre deres startlister
-    på samme website.<br />
-    På nuværende afventer afsluttende udvikling af disse dele at der vises interesse
-    fra andre klubber.
+    Platform er holdt generel således at flere klubber kan bruge samme platform og website til at administrere deres startlister.
 </p>
