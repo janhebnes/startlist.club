@@ -68,7 +68,7 @@ namespace FlightLog.Controllers
                         : true).OrderByDescending(s => s.Created).Skip(
                             (skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 100));
 
-            return View(flightshistory.ToList());
+            return View(flightshistory.ToList().Where(f => f.IsCurrent()));
         }
 
         public ViewResult Grid(DateTime? date, int? locationid)
@@ -86,7 +86,7 @@ namespace FlightLog.Controllers
         public ViewResult Date(DateTime date)
         {
             var flights = this.db.Flights.Where(s => s.Date == date).Take(100).OrderByDescending(s => s.Departure);
-            var l = flights.ToList();
+            var l = flights.ToList().Where(f => f.IsCurrent());
             return View("index", l);
         }
 
