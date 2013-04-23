@@ -28,12 +28,12 @@ namespace FlightLog.Models
         public virtual ICollection<Pilot> Pilots { get; set; }
 
         /// <summary>
-        /// Return if the current Club is the Currently Selected Club or return true if no club is selected
+        /// Return true if the current Club is the Currently Selected Club or if no club is selected
         /// </summary>
         /// <returns></returns>
         public bool IsCurrent()
         {
-            return (ClubController.CurrentClub.ShortName == this.ShortName);
+            return (ClubController.CurrentClub.ShortName == null || ClubController.CurrentClub.ShortName == this.ShortName);
         }
     }
 }

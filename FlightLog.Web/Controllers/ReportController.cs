@@ -32,7 +32,7 @@ namespace FlightLog.Controllers
                     {
                         var rptYear = new ReportViewModel();
                         rptYear.Date = new DateTime(year, 1, 1);
-                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year).OrderBy(o => o.Departure);
+                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent()).AsQueryable();
                         return this.View("year", rptYear);
                     }
                 }
@@ -51,7 +51,7 @@ namespace FlightLog.Controllers
                     throw new ArgumentException(string.Format("Invalid date input in url: {0}", raw));
                 }
 
-                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year).Include("Betaler").OrderBy(o => o.Departure);
+                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year).Include("Betaler").OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent()).AsQueryable();
 
                 return this.View("month", rptMonth);
             }
@@ -71,7 +71,7 @@ namespace FlightLog.Controllers
                 rpt.Date = DateTime.Today;
             }
 
-            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date).Include("Betaler").OrderBy(o => o.Departure);
+            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date).Include("Betaler").OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent()).AsQueryable();
 
             return this.View(rpt);
         }
@@ -80,13 +80,13 @@ namespace FlightLog.Controllers
         {
             if (month.HasValue)
             {
-                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year).OrderBy(o => o.Departure);
+                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlister-" + year + "-" + month + ".csv");
             }
             else
             {
-                var flights = this.db.Flights.Where(f => f.Date.Year == year).OrderBy(o => o.Departure);
+                var flights = this.db.Flights.Where(f => f.Date.Year == year).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlister-" + year + ".csv");
             }
@@ -107,7 +107,7 @@ namespace FlightLog.Controllers
 
         public Dictionary<DateTime, int> AvailableDates()
         {
-            var availableDates = this.db.Flights.GroupBy(p => p.Date).Select(
+            var availableDates = this.db.Flights.ToList().Where(f => f.IsCurrent()).GroupBy(p => p.Date).Select(
                 g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
 
             return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(

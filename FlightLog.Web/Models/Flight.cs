@@ -10,6 +10,8 @@ namespace FlightLog.Models
     using System.Runtime.Remoting.Contexts;
     using System.Xml.Serialization;
 
+    using FlightLog.Controllers;
+
     public class Flight
     {
         private Pilot m_Pilot;
@@ -239,6 +241,27 @@ namespace FlightLog.Models
             }
 
             return TimeSpan.Zero;
+        }
+
+        /// <summary>
+        /// Return true if the current Flight is relevant for the Currently Selected Club
+        /// </summary>
+        /// <returns></returns>
+        public bool IsCurrent()
+        {
+            // Has the Club Default Location been touched
+            var clubLocationId = ClubController.CurrentClub.DefaultStartLocationId;
+            
+            if (this.StartedFromId == clubLocationId) return true;
+            if (this.LandedOnId == clubLocationId) return true;
+
+            // Has a Club Pilot been involved in the flight
+            var clubId = ClubController.CurrentClub.ClubId;
+            if (this.Pilot != null && this.Pilot.ClubId == clubId) return true;
+            if (this.PilotBackseat != null && this.PilotBackseat.Club.IsCurrent()) return true;
+            if (this.Betaler != null && this.Betaler.Club.IsCurrent()) return true;
+
+            return false;
         }
     }
 }
