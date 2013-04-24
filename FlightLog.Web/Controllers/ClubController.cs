@@ -92,7 +92,7 @@ namespace FlightLog.Controllers
         /// <returns></returns>
         public PartialViewResult ClubSelector()
         {
-            return this.PartialView(db.Clubs.ToList());
+            return this.PartialView(db.Clubs.OrderBy(c=>c.Name).ToList());
         }
 
         [HttpPost]
