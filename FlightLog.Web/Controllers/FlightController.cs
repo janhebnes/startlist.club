@@ -29,8 +29,8 @@ namespace FlightLog.Controllers
             ViewBag.Take = take.HasValue ? take.Value : 60;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
-            var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).Include("Betaler").OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
-            return View(flights.ToList().Where(f => f.IsCurrent()));
+            var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).Include("Betaler").OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).ToList().Where(f => f.IsCurrent()).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
+            return View(flights);
         }
 
         public ViewResult Sample(int? skip, int? take, int? locationid)
@@ -65,10 +65,10 @@ namespace FlightLog.Controllers
                     s =>
                     locationid.HasValue
                         ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)
-                        : true).OrderByDescending(s => s.Created).Skip(
+                        : true).OrderByDescending(s => s.Created).ToList().Where(f => f.IsCurrent()).Skip(
                             (skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 100));
 
-            return View(flightshistory.ToList().Where(f => f.IsCurrent()));
+            return View(flightshistory);
         }
 
         public ViewResult Grid(DateTime? date, int? locationid)
@@ -85,9 +85,8 @@ namespace FlightLog.Controllers
 
         public ViewResult Date(DateTime date)
         {
-            var flights = this.db.Flights.Where(s => s.Date == date).Take(100).OrderByDescending(s => s.Departure);
-            var l = flights.ToList().Where(f => f.IsCurrent());
-            return View("index", l);
+            var flights = this.db.Flights.Where(s => s.Date == date).OrderByDescending(s => s.Departure).ToList().Where(f => f.IsCurrent());
+            return View("index", flights);
         }
 
         public ViewResult Details(Guid id)
