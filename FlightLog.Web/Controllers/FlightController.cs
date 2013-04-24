@@ -30,7 +30,7 @@ namespace FlightLog.Controllers
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
             var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).Include("Betaler").OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
-            return View(flights.ToList());
+            return View(flights.ToList().Where(f => f.IsCurrent()));
         }
 
         public ViewResult Sample(int? skip, int? take, int? locationid)
@@ -68,7 +68,7 @@ namespace FlightLog.Controllers
                         : true).OrderByDescending(s => s.Created).Skip(
                             (skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 100));
 
-            return View(flightshistory.ToList());
+            return View(flightshistory.ToList().Where(f => f.IsCurrent()));
         }
 
         public ViewResult Grid(DateTime? date, int? locationid)
@@ -80,13 +80,13 @@ namespace FlightLog.Controllers
                 (locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true) &&
                 (date.HasValue ? s.Date == date : s.Date == DateTime.Today)).Include("Betaler").OrderByDescending(s => s.Date).
                 ThenByDescending(s => s.Departure ?? DateTime.Now);
-            return View(flights.ToList());
+            return View(flights.ToList().Where(f => f.IsCurrent()));
         }
 
         public ViewResult Date(DateTime date)
         {
             var flights = this.db.Flights.Where(s => s.Date == date).Take(100).OrderByDescending(s => s.Departure);
-            var l = flights.ToList();
+            var l = flights.ToList().Where(f => f.IsCurrent());
             return View("index", l);
         }
 
@@ -210,17 +210,19 @@ namespace FlightLog.Controllers
 
         public ActionResult SetComment(Guid id, string comment)
         {
-            if (!Request.IsAuthenticated) return null;
             bool isEditable = false;
+            if (!Request.IsAuthenticated) return null;
+
             if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
             if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
 
             Flight flight = this.db.Flights.Find(id);
 
-            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
+            if (flight != null && flight.Date.AddDays(3) >= DateTime.Now)
             {
                 isEditable = true;
             }
+
             if (!isEditable)
             {
                 throw new SecurityAccessDeniedException(
@@ -380,10 +382,10 @@ namespace FlightLog.Controllers
         private void PopulateViewBag(Flight flight)
         {
             this.ViewBag.PlaneId = new SelectList(this.db.Planes.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).OrderBy(p => p.CompetitionId), "PlaneId", "RenderName", (flight == null) ? (object)null : flight.PlaneId);
-            this.ViewBag.BetalerId = new SelectList(this.db.Pilots.OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
-            this.ViewBag.PilotId = new SelectList(this.db.Pilots.OrderBy(p=>p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
-            this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
-            this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
+            this.ViewBag.BetalerId = new SelectList(this.db.Pilots.ToList().Where(p=> p.Club.IsCurrent()).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
+            this.ViewBag.PilotId = new SelectList(this.db.Pilots.ToList().Where(p => p.Club.IsCurrent()).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
+            this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.ToList().Where(p => p.Club.IsCurrent()).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
+            this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.Club.IsCurrent()).OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
             this.ViewBag.StartedFromId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.StartedFromId);
             this.ViewBag.LandedOnId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.LandedOnId);
         }

@@ -1,0 +1,19 @@
+﻿@using FlightLog.Controllers
+@model IEnumerable<FlightLog.Models.Club>
+@using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
+{
+    <select name="shortName" onchange="submit()">
+        <option value=""></option>
+        @foreach (var item in Model)
+        {
+            <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{
+            if (ClubController.CurrentClub.ShortName == item.ShortName)
+            {
+                <text>selected</text>
+            }
+                                                                            }>
+                @Html.DisplayFor(modelItem => item.Name)
+            </option>
+        }
+    </select>
+}
