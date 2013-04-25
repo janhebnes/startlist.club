@@ -249,26 +249,17 @@ namespace FlightLog.Models
         /// <returns></returns>
         public bool IsCurrent()
         {
-            return IsCurrent(this);
-        }
-
-        /// <summary>
-        /// Return true if the current Flight is relevant for the Currently Selected Club
-        /// </summary>
-        /// <remarks>usable direcly in linq where statements</remarks>
-        public static bool IsCurrent(Flight arg)
-        {
             // Has the Club Default Location been touched
             var clubLocationId = ClubController.CurrentClub.DefaultStartLocationId;
-
-            if (arg.StartedFromId == clubLocationId) return true;
-            if (arg.LandedOnId == clubLocationId) return true;
+            
+            if (this.StartedFromId == clubLocationId) return true;
+            if (this.LandedOnId == clubLocationId) return true;
 
             // Has a Club Pilot been involved in the flight
             var clubId = ClubController.CurrentClub.ClubId;
-            if (arg.Pilot != null && arg.Pilot.ClubId == clubId) return true;
-            if (arg.PilotBackseat != null && arg.PilotBackseat.Club.IsCurrent()) return true;
-            if (arg.Betaler != null && arg.Betaler.Club.IsCurrent()) return true;
+            if (this.Pilot != null && this.Pilot.ClubId == clubId) return true;
+            if (this.PilotBackseat != null && this.PilotBackseat.Club.IsCurrent()) return true;
+            if (this.Betaler != null && this.Betaler.Club.IsCurrent()) return true;
 
             return false;
         }
