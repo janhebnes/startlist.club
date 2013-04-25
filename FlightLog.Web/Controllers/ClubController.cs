@@ -29,18 +29,25 @@ namespace FlightLog.Controllers
                 var cookie = System.Web.HttpContext.Current.Request.Cookies.Get("CurrentClub");
                 if (cookie != null)
                 {
+                    Club ghost = new Club();
                     using (var shortDb = new FlightContext())
                     {
                         var club = shortDb.Clubs.SingleOrDefault(d => d.ShortName == cookie.Value);
                         if (club != null)
                         {
-                            // Set Session Cache
-                            System.Web.HttpContext.Current.Session.Add("CurrentClub", club);
+                            ghost = new Club();
+                            ghost.DefaultStartLocationId = club.DefaultStartLocationId;
+                            ghost.ShortName = club.ShortName;
+                            ghost.ClubId = club.ClubId;
 
-                            // Return Current Club
-                            return club;
                         }
                     }
+
+                    // Set Session Cache
+                    System.Web.HttpContext.Current.Session.Add("CurrentClub", ghost);
+
+                    // Return Current Club
+                    return ghost;
                 }
 
                 // Return Empty Club

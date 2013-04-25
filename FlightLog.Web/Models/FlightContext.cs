@@ -20,7 +20,8 @@ namespace FlightLog.Models
     {
         public FlightContext()
         {   
-            Database.CompatibleWithModel(true);
+            // This caused a large amount of connection lookups for validating the model, on each instatiation of the FlightContext, found via trace with sql profiler
+            //Database.CompatibleWithModel(true);
         }
 
         public DbSet<Flight> Flights { get; set; }

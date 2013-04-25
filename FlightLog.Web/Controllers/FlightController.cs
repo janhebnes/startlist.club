@@ -29,25 +29,21 @@ namespace FlightLog.Controllers
             ViewBag.Take = take.HasValue ? take.Value : 60;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
-            var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).Include("Betaler").OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).ToList().Where(f => f.IsCurrent()).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
+            
+            // Custom inline Club filtering for allowing maximum performance
+            // A copy of the logic in Flight.IsCurrent(Flight arg) 
+            var flights = this.db.Flights
+                .Where(s => !locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value))
+                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                .Where(f => ClubController.CurrentClub.ShortName == null
+                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
+                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
+
             return View(flights);
-        }
-
-        public ViewResult Sample(int? skip, int? take, int? locationid)
-        {
-            var initialState = new[] {
-                new FlightViewModel { Title = "Tall Hat", Price = 49.95 },
-                new FlightViewModel { Title = "Long Cloak", Price = 78.25 }
-            };
-            return View(initialState);
-
-            //ViewBag.Skip = skip.HasValue ? skip.Value : 0;
-            //ViewBag.Take = take.HasValue ? take.Value : 60;
-            //ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
-            //ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
-            //var flights = this.db.Flights.Where(s => locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true).OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 30));
-            //var l = flights.ToList().Select(x => new FlightViewModel(x));
-            //return View(l);
         }
 
         // POST: /Flight/History
@@ -60,13 +56,19 @@ namespace FlightLog.Controllers
             ViewBag.Take = take.HasValue ? take.Value : 100;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
+
+            // Custom inline Club filtering for allowing maximum performance
+            // A copy of the logic in Flight.IsCurrent(Flight arg) 
             var flightshistory =
-                this.db.FlightVersions.Where(
-                    s =>
-                    locationid.HasValue
-                        ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)
-                        : true).OrderByDescending(s => s.Created).ToList().Where(f => f.IsCurrent()).Skip(
-                            (skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 100));
+                this.db.FlightVersions.Where(s => !locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value))
+                        .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                .Where(f => ClubController.CurrentClub.ShortName == null
+                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
+                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                 .OrderByDescending(s => s.Created).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 100));
 
             return View(flightshistory);
         }
@@ -76,10 +78,11 @@ namespace FlightLog.Controllers
             ViewBag.Date = date.HasValue ? date.Value : DateTime.Today;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
-            var flights = this.db.Flights.Where(s => 
-                (locationid.HasValue ? (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value) : true) &&
-                (date.HasValue ? s.Date == date : s.Date == DateTime.Today)).Include("Betaler").OrderByDescending(s => s.Date).
-                ThenByDescending(s => s.Departure ?? DateTime.Now);
+
+            var flights = this.db.Flights.Where(s => (!locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)) && (date.HasValue ? s.Date == date : s.Date == DateTime.Today))
+                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType")
+                .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
+
             return View(flights.ToList().Where(f => f.IsCurrent()));
         }
 
@@ -91,7 +94,7 @@ namespace FlightLog.Controllers
 
         public ViewResult Details(Guid id)
         {
-            Flight flight = this.db.Flights.Find(id);
+            Flight flight = this.db.Flights.Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType").FirstOrDefault(f=>f.FlightId == id);
             ViewBag.FlightId = id;
             ViewBag.ChangeHistory = this.GetChangeHistory(id);
             return View(flight);
@@ -105,7 +108,9 @@ namespace FlightLog.Controllers
 
         private IEnumerable<FlightLog.Models.FlightVersionHistory> GetChangeHistory(Guid id)
         {
-            return this.db.FlightVersions.Where(s => s.FlightId == id).OrderByDescending(s => s.Created);
+            return this.db.FlightVersions.Where(s => s.FlightId == id)
+                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType")
+                .OrderByDescending(s => s.Created);
         }
 
         /// <summary>

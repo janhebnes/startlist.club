@@ -37,13 +37,13 @@ namespace FlightLog.Models
             }
             set
             {
-                if (value != value.ToUniversalTime()) 
+                if (value != value.ToUniversalTime())
                 {
                     m_Date = new DateTime(value.Year, value.Month, value.Day, 0, 0, 0);
                 }
                 else
                     m_Date = value;
-                
+
                 if (m_Date.TimeOfDay != new TimeSpan(0, 0, 0))
                     throw new ArgumentOutOfRangeException("DateTime is not a UTC Date set at 00:00:00 must be submitted, date: " + m_Date.ToString() + " value:" + value.ToString() + " universaltime: " + value.ToUniversalTime().ToString());
             }
@@ -137,7 +137,7 @@ namespace FlightLog.Models
 
         [DisplayName("Landingssted")]
         public int? LandedOnId { get; set; }
-        
+
         [ForeignKey("LandedOnId")]
         public virtual Location LandedOn { get; set; }
 
@@ -249,19 +249,22 @@ namespace FlightLog.Models
         /// <returns></returns>
         public bool IsCurrent()
         {
-            // Has the Club Default Location been touched
-            var clubLocationId = ClubController.CurrentClub.DefaultStartLocationId;
-            
-            if (this.StartedFromId == clubLocationId) return true;
-            if (this.LandedOnId == clubLocationId) return true;
-
-            // Has a Club Pilot been involved in the flight
-            var clubId = ClubController.CurrentClub.ClubId;
-            if (this.Pilot != null && this.Pilot.ClubId == clubId) return true;
-            if (this.PilotBackseat != null && this.PilotBackseat.Club.IsCurrent()) return true;
-            if (this.Betaler != null && this.Betaler.Club.IsCurrent()) return true;
-
-            return false;
+            return IsCurrent(this);
         }
+
+        /// <summary>
+        /// Return true if the current Flight is relevant for the Currently Selected Club
+        /// </summary>
+        /// <remarks>usable direcly in linq where statements</remarks>
+        public static bool IsCurrent(Flight arg)
+        {
+            return ClubController.CurrentClub.ShortName == null
+                || arg.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
+                || arg.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                || (arg.Pilot != null && arg.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                || (arg.PilotBackseat != null && arg.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                || (arg.Betaler != null && arg.Betaler.ClubId == ClubController.CurrentClub.ClubId);
+        }
+
     }
 }

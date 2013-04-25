@@ -32,7 +32,19 @@ namespace FlightLog.Controllers
                     {
                         var rptYear = new ReportViewModel();
                         rptYear.Date = new DateTime(year, 1, 1);
-                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent()).AsQueryable();
+
+                        // Custom inline Club filtering for allowing maximum performance
+                        // A copy of the logic in Flight.IsCurrent(Flight arg) 
+                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year)
+                            .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                            .Where(f => ClubController.CurrentClub.ShortName == null
+                                || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
+                                || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                                || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                                || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                                || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                            .OrderBy(o => o.Departure)
+                            .AsQueryable();
                         return this.View("year", rptYear);
                     }
                 }
@@ -51,7 +63,18 @@ namespace FlightLog.Controllers
                     throw new ArgumentException(string.Format("Invalid date input in url: {0}", raw));
                 }
 
-                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year).Include("Betaler").OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent()).AsQueryable();
+                // Custom inline Club filtering for allowing maximum performance
+                // A copy of the logic in Flight.IsCurrent(Flight arg) 
+                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year)
+                    .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                    .Where(f => ClubController.CurrentClub.ShortName == null
+                        || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
+                        || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                        || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                        || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                        || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                    .OrderBy(o => o.Departure)
+                    .AsQueryable();
 
                 return this.View("month", rptMonth);
             }
@@ -71,7 +94,18 @@ namespace FlightLog.Controllers
                 rpt.Date = DateTime.Today;
             }
 
-            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date).Include("Betaler").OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent()).AsQueryable();
+            // Custom inline Club filtering for allowing maximum performance
+            // A copy of the logic in Flight.IsCurrent(Flight arg) 
+            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date)
+                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                .Where(f => ClubController.CurrentClub.ShortName == null
+                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
+                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                .OrderBy(o => o.Departure)
+                .AsQueryable();
 
             return this.View(rpt);
         }
@@ -107,11 +141,27 @@ namespace FlightLog.Controllers
 
         public Dictionary<DateTime, int> AvailableDates()
         {
-            var availableDates = this.db.Flights.ToList().Where(f => f.IsCurrent()).GroupBy(p => p.Date).Select(
-                g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
+            // Original implementation
+            //var availableDates = this.db.Flights.GroupBy(p => p.Date).Select(g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
+            //return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(x => x.Date, x => x.Hours);
 
-            return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(
-                x => x.Date, x => x.Hours);
+            // Tweaked implementation that did not perform good enough
+            ////var availableDates = this.db.Flights.ToList().Where(f => f.IsCurrent()).GroupBy(p => p.Date).Select(
+            ////    g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
+
+            // Custom inline Club filtering for allowing maximum performance (SQL Profiler is your friend LINQpad4 did not work with this entity version)
+            // A copy of the logic in Flight.IsCurrent(Flight arg) 
+            var availableDates = this.db.Flights
+                .Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                .Where(f => ClubController.CurrentClub.ShortName == null 
+                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId 
+                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId 
+                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId) 
+                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId) 
+                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                    .GroupBy(p => p.Date)
+                    .Select(g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
+            return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(x => x.Date, x => x.Hours);
         }
     }
 }
