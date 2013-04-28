@@ -217,7 +217,7 @@ fieldset label.inline
 
 input[type="text"], input[type="password"]
 {
-    width: 200px;
+    width: 250px;
     border: 1px solid #cccccc;
 	color: #333333;
 }
