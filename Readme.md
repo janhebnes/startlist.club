@@ -2,7 +2,7 @@ Flight Journal
 =============
 
 Flight journal for Flight Clubs.
-Created for handling Soaring flights in Danish flight clubs.
+Created for handling Soaring flights in Danish (possibly nordic) flight clubs.
 
 Deployment
 ------------
