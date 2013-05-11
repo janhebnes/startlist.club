@@ -3,7 +3,7 @@
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
     <select name="shortName" onchange="submit()">
-        <option value=""></option>
+        <option value="">--- Alle klubber ---</option>
         @foreach (var item in Model)
         {
             <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{
