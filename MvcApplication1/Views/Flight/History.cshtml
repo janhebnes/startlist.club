@@ -1,0 +1,154 @@
+﻿@model IEnumerable<FlightLog.Models.FlightVersionHistory>
+@helper TruncateDate(DateTime input)
+    {
+    if (input.Year == DateTime.Today.Year)
+    {
+    @(input.ToString("ddd. ") + input.ToString("m"));
+    }
+    else
+    {
+    @input.ToShortDateString()
+    }
+}
+@{
+    ViewBag.Title = "Startliste Historik";
+}
+<h2>
+    Historik</h2>
+<fieldset>
+    <legend>Flight</legend>
+    <table id="myTable" class="tablesorter">
+        <thead>
+        <tr>
+            <th>
+                Rettet
+            </th>
+            <th>
+                Af
+            </th>
+            <th>
+                Dato
+            </th>
+            <th>
+                Fly
+            </th>
+            <th>
+                Pilote(r)
+            </th>
+            <th>
+                Start
+            </th>
+            <th>
+                Landing
+            </th>
+            <th>
+                Start metode
+            </th>
+            <th>
+                Flyveplads
+            </th>
+            <th>
+                Tacho
+            </th>
+            <th>
+                Note
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+                Flight Id
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+    
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdatedBy)
+                </td>
+                <td>
+                    @TruncateDate(item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Plane)
+                </td>
+                <td>
+                    @item.Pilot.Name
+                    @if (item.PilotBackseat != null)
+                    {
+                        <text>/ </text>@item.PilotBackseat.Name
+                    }
+                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                    {
+                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
+                    }
+                    @if ((item.Betaler == null) && (item.Pilot != null))
+                    { 
+                        <text> (mangler betaler) </text>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Landing)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartedFrom.Name)
+                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                    {
+                        <text>, </text>
+                        @Html.DisplayFor(modelItem => item.LandedOn.Name)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TachoDeparture)
+                    @if (item.TachoDeparture.HasValue && item.TachoLanding.HasValue)
+                    {
+                        <text> / </text>
+                    }
+                    @Html.DisplayFor(modelItem => item.TachoLanding)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description, "Description")
+                </td>
+                <td>@Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                </td>
+                <td>
+                    @if (item.State == "Deleted")
+                    { 
+                        <strong class="error">DELETED</strong>
+                    }
+                    else
+                    {
+                        @item.State
+                    }
+                </td>
+                <td>@item.FlightId
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</fieldset>
+<p>
+    <a href="/" class="back">Tilbage til listen</a>
+    <text> | </text>
+    @Html.ActionLink("Forrige rettelser", "History", new { skip = ViewBag.Skip + 100 })
+</p>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#myTable").tablesorter();
+    }
+);
+</script>

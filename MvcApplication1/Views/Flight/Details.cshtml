@@ -1,0 +1,99 @@
+﻿@model FlightLog.Models.Flight
+@{
+    ViewBag.Title = "Details";
+
+    if (Model == null)
+    {
+        <text><span class="error">Flight id was not found </span></text>
+        @ViewBag.FlightId;
+        @Html.Partial("_changeHistory", (IEnumerable<FlightLog.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
+        return;
+    }
+    
+}
+<h2>
+    Detaljer</h2>
+<fieldset>
+    <legend>Flight</legend>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Date)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Departure)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Departure)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Landing)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Landing)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.PlaneId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Plane)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.BetalerId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Betaler.Name)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.PilotId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Pilot.Name)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.PilotBackseatId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PilotBackseat.Name)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.StartTypeId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartType)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.StartedFromId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartedFrom.Name)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.LandedOnId)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LandedOn.Name)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.TachoDeparture)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TachoDeparture)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.TachoLanding)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TachoLanding)
+    </div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Description)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+</fieldset>
+<p>
+    @if (Request.IsAuthenticated)
+    {
+        bool isEditable = false;
+        if (Context.User.IsInRole("Administrator")) { isEditable = true; }
+        if (Context.User.IsInRole("Editor")) { isEditable = true; }
+        if (Model != null && Model.Date != null && Model.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
+        if (isEditable)
+        {
+            @Html.ActionLink("Rediger", "Edit", new { id = Model.FlightId })
+            <text> | </text>
+        }
+    }
+    <a href="/" class="back">Tilbage til listen</a>
+</p>
+@Html.Partial("_changeHistory", (IEnumerable<FlightLog.Models.FlightVersionHistory>)ViewBag.ChangeHistory)

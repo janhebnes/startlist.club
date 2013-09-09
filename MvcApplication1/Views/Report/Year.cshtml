@@ -1,0 +1,333 @@
+﻿@model FlightLog.ViewModels.Report.ReportViewModel
+@{
+    ViewBag.Title = "Årsrapport";
+}
+<p>
+    <a href="@Url.Content("~/")@Model.Date.AddYears(-1).ToString("yyyy")" class="awesomeBtn">@Model.Date.AddYears(-1).ToString("yyyy")</a>
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn"><strong>@Model.Date.ToString("yyyy")</strong></a>
+    @foreach (var month in @Model.Flights.Select(d => d.Date.Month).Distinct().OrderBy(o => o))
+    {
+        <a href="@Url.Content("~/")@Model.Date.AddMonths(month - 1).ToString("yyyy-MM")" class="awesomeBtn">@Model.Date.AddMonths(month - 1).ToString("MMMM")</a>
+    }
+    @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
+    {
+        <a href="@Url.Content("~/")@Model.Date.AddYears(1).ToString("yyyy")" class="awesomeBtn">@Model.Date.AddYears(1).ToString("yyyy")</a>
+    }
+</p>
+<h2>
+    Statistik for @Model.Date.ToString("yyyy")</h2>
+<table>
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @*Total for @Model.Date.ToString("yyyy")*@
+            </th>
+            <th>
+                Jan
+            </th>
+            <th>
+                Feb
+            </th>
+            <th>
+                Mar
+            </th>
+            <th>
+                Apr
+            </th>
+            <th>
+                Maj
+            </th>
+            <th>
+                Jun
+            </th>
+            <th>
+                Jul
+            </th>
+            <th>
+                Aug
+            </th>
+            <th>
+                Sep
+            </th>
+            <th>
+                Okt
+            </th>
+            <th>
+                Nov
+            </th>
+            <th>
+                Dec
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                Flyvedage
+            </td>
+            <td align="right">
+                @Model.Flights.Select(s => s.Date).Distinct().Count()
+            </td>
+            @for (int i = 1; i <= 12; i++)
+            {
+                var count = Model.Flights.Where(f => f.Date.Month == i).Select(s => s.Date).Distinct().Count();
+                <td align="right">
+                    @(count != 0 ? count.ToString() : "")
+                </td>
+            }
+        </tr>
+        <tr>
+            <td>
+                Starter
+            </td>
+            <td align="right">
+                @Model.Flights.Count()
+            </td>
+            @for (int i = 1; i <= 12; i++)
+            {
+                var count = Model.Flights.Where(f => f.Date.Month == i).Count();
+                <td align="right">
+                    @(count != 0 ? count.ToString() : "")
+                </td>
+            }
+        </tr>
+        <tr>
+            <td>
+                Flyvetid
+            </td>
+            <td align="right">
+                @{
+                    var totaltime = new TimeSpan(Model.Flights.ToList().Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 }).Sum(f => f.myTime));
+                }
+                @(totaltime.TotalMinutes > 0 ? string.Format("{0}:{1}", totaltime.TotalHours.ToString("#00.0").Substring(0, totaltime.TotalHours.ToString("#00.0").IndexOf(",")), totaltime.Minutes.ToString("#00")) : "")
+            </td>
+            @for (int i = 1; i <= 12; i++)
+            {
+                var time = new TimeSpan(Model.Flights.Where(f => f.Date.Month == i).ToList()
+                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                                .Sum(f => f.myTime));
+                <td align="right">
+                    @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                </td>
+            }
+        </tr>
+        <tr>
+            <td>
+                Piloter i luften
+            </td>
+            <td align="right">
+                @Model.Flights.Select(s => s.Pilot).Union(Model.Flights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
+            </td>
+            @for (int i = 1; i <= 12; i++)
+            {
+                var count = Model.Flights.Where(f => f.Date.Month == i).Select(s => s.Pilot).Union(Model.Flights.Where(s => s.Date.Month == i && s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count();
+                <td align="right">
+                    @(count != 0 ? count.ToString() : "")
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+<p>
+    <br />
+    @Html.ActionLink("Eksporter startlisten for " + Model.Date.ToString("yyyy"), "Export", "Report", new { year = Model.Date.Year }, new { @class = "awesomeBtn" })
+</p>
+<h3>
+    Pilot statistik</h3>
+<table id="myPilotTable" class="tablesorter">
+    <thead>
+        <tr>
+            <th>
+                Forsæde
+            </th>
+            <th>
+                Antal
+            </th>
+            <th>
+                Flyvetid
+            </th>
+            <th colspan="2">
+                Jan
+            </th>
+            <th colspan="2">
+                Feb
+            </th>
+            <th colspan="2">
+                Mar
+            </th>
+            <th colspan="2">
+                Apr
+            </th>
+            <th colspan="2">
+                Maj
+            </th>
+            <th colspan="2">
+                Jun
+            </th>
+            <th colspan="2">
+                Jul
+            </th>
+            <th colspan="2">
+                Aug
+            </th>
+            <th colspan="2">
+                Sep
+            </th>
+            <th colspan="2">
+                Okt
+            </th>
+            <th colspan="2">
+                Nov
+            </th>
+            <th colspan="2">
+                Dec
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in from c in Model.Flights
+                             group c by new { c.Pilot } into g
+                             select new { Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
+        {
+            <tr>
+                <td>
+                    @item.Pilot.Name
+                </td>
+                <td align="right">
+                    @item.Count
+                </td>
+                <td align="right">
+                    @(new DateTime(item.ItemFlights
+                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                </td>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    var count = item.ItemFlights.Count(f => f.Date.Month == i);
+                    var time = (new TimeSpan(item.ItemFlights.Where(f => f.Date.Month == i)
+                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                                .Sum(f => f.myTime)));
+                    <td align="right">
+                        @(count != 0 ? count.ToString() : "")
+                    </td>
+                    <td align="right">
+                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#myPilotTable").tablesorter();
+    }
+);
+</script>
+
+<h2>
+    Logbøger for @Model.Date.ToString("yyyy")</h2>
+<table >
+    <tr>
+        <td valign="top">
+            <table id="myPilotStatTable" class="tablesorter">
+                <thead>
+                    <tr>
+                        <th>
+                            Fly
+                        </th>
+                        <th>
+                            Forsæde
+                        </th>
+                        <th>
+                            Antal
+                        </th>
+                        <th>
+                            Flyvetid
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in from c in Model.Flights
+                                         group c by new { c.Pilot, c.Plane } into g
+                                         select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+                    {
+                         var time = new TimeSpan(item.ItemFlights
+                            .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                            .Sum(f => f.myTime)); 
+                        
+                        <tr>
+                            <td>
+                                @item.Plane
+                            </td>
+                            <td>
+                                @item.Pilot.Name
+                            </td>
+                            <td align="right">
+                                @item.Count
+                            </td>
+                            <td align="right">
+                                @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </td>
+        <td valign="top">
+            <table id="myPilotStatTable2" class="tablesorter">
+                <thead>
+                    <tr>
+                        <th>
+                            Fly
+                        </th>
+                        <th>
+                            Bagsæde
+                        </th>
+                        <th>
+                            Antal
+                        </th>
+                        <th>
+                            Flyvetid
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in from c in Model.Flights
+                                         where c.PilotBackseat != null
+                                         group c by new { c.PilotBackseat, c.Plane } into g
+                                         select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+                    {
+                          var time = new TimeSpan(item.ItemFlights
+                            .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                            .Sum(f => f.myTime)); 
+                         
+                        <tr>
+                            <td>
+                                @item.Plane
+                            </td>
+                            <td>
+                                @item.PilotBackseat.Name
+                            </td>
+                            <td align="right">
+                                @item.Count
+                            </td>
+                            <td align="right">
+                                @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#myPilotStatTable").tablesorter();
+        $("#myPilotStatTable2").tablesorter();
+    }
+);
+</script>

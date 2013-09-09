@@ -1,0 +1,45 @@
+﻿@model IEnumerable<FlightLog.Models.StartType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            ShortName
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Club
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ShortName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Club.ShortName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.StartTypeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.StartTypeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.StartTypeId })
+        </td>
+    </tr>
+}
+
+</table>

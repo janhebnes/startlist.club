@@ -1,0 +1,30 @@
+﻿@model FlightLog.Models.Club
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Club</legend>
+
+    <div class="display-label">ShortName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ShortName)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">DefaultStartLocationId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DefaultStartLocationId)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ClubId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
