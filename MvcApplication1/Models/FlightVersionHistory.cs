@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -26,7 +27,7 @@ namespace FlightLog.Models
         /// <param name="entityState">
         /// The entity state.
         /// </param>
-        public FlightVersionHistory(Flight f, System.Data.EntityState entityState)
+        public FlightVersionHistory(Flight f, EntityState entityState)
         {
             this.State = entityState.ToString();
 

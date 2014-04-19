@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace FlightLog.Models
 {
-    using System.Configuration;
-    using System.Data;
-    using System.Data.Common;
-    using System.Data.Entity.ModelConfiguration.Configuration;
-    using System.Data.EntityClient;
-    using System.Data.Objects;
-    using System.Data.SqlClient;
-    using System.Web.Configuration;
-
     public class FlightContext : DbContext
     {
         public FlightContext()
@@ -40,7 +29,7 @@ namespace FlightLog.Models
         public void ThrowValidationErrors()
         {
             string errors = string.Empty;
-            this.GetValidationErrors().ToList<System.Data.Entity.Validation.DbEntityValidationResult>().ForEach(b => b.ValidationErrors.ToList<System.Data.Entity.Validation.DbValidationError>().ForEach(c => errors = c.PropertyName + ": " + c.ErrorMessage));
+            this.GetValidationErrors().ToList().ForEach(b => b.ValidationErrors.ToList().ForEach(c => errors = c.PropertyName + ": " + c.ErrorMessage));
             if (!string.IsNullOrEmpty(errors))
             {
                 throw new Exception(errors);
@@ -55,7 +44,7 @@ namespace FlightLog.Models
         {
             this.ThrowValidationErrors();
 
-            this.ChangeTracker.Entries<Flight>().Where(f => (f.State == System.Data.EntityState.Added) || (f.State == System.Data.EntityState.Deleted) || (f.State == System.Data.EntityState.Modified))
+            this.ChangeTracker.Entries<Flight>().Where(f => (f.State == EntityState.Added) || (f.State == EntityState.Deleted) || (f.State == EntityState.Modified))
                                     .ToList<DbEntityEntry<Flight>>()
                                     .ForEach((c => this.FlightVersions.Add(new FlightVersionHistory((Flight)c.Entity, c.State))));
 
