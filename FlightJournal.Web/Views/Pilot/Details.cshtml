@@ -1,0 +1,35 @@
+﻿@model FlightJournal.Web.Models.Pilot
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Pilot</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">UnionId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UnionId)
+    </div>
+
+    <div class="display-label">MemberId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MemberId)
+    </div>
+
+    <div class="display-label">Club</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.ShortName)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.PilotId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

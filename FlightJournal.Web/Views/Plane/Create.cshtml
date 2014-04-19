@@ -1,0 +1,81 @@
+﻿@model FlightJournal.Web.Models.Plane
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Plane</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Registration)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Registration)
+            @Html.ValidationMessageFor(model => model.Registration)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompetitionId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CompetitionId)
+            @Html.ValidationMessageFor(model => model.CompetitionId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Seats)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Seats)
+            @Html.ValidationMessageFor(model => model.Seats)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Engines)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Engines)
+            @Html.ValidationMessageFor(model => model.Engines)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EntryDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EntryDate)
+            @Html.ValidationMessageFor(model => model.EntryDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExitDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExitDate)
+            @Html.ValidationMessageFor(model => model.ExitDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartTypeId, "DefaultStartType")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("StartTypeId", String.Empty)
+            @Html.ValidationMessageFor(model => model.StartTypeId)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

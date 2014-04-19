@@ -1,0 +1,190 @@
+﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
+@using System.Web.Script.Serialization;
+@helper TruncateDate(DateTime input)
+    {
+        if (input.Year == DateTime.Today.Year)
+        {
+    @(input.ToString("ddd. ") + input.ToString("d MMM"));
+        }
+        else
+        {
+            <a href="@Url.Content("~/")@input.ToString("yyyy-MM-dd")" class="awesomeBtn">@input.ToString("dd/MM")</a>
+            @*@Html.ActionLink(input.ToShortDateString(), "Date", new { date = input })*@
+        }
+}
+@{
+    ViewBag.Title = "Startlisten";
+    int startNr = 0;
+}
+
+<p>
+    @if(Request.IsAuthenticated) {
+        @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+        @*@Html.ActionLink("Importer eksisterende flyvedata", "Import")*@
+        <text> | </text>
+    }
+    @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip + 60 })
+    @*<span style="float:right">
+        @Html.DropDownList("FilterLocationId", "Filter on airport")
+    </span>*@
+</p>
+<table id="myTable" class="tablesorter">
+    <thead>
+        <tr>
+            <th>
+                Dato
+            </th>
+            <th>
+                Start
+            </th>
+            <th>
+                Landing
+            </th>
+            <th>
+                Tid
+            </th>
+            <th>
+                Fly
+            </th>
+            <th>
+                Pilote(r)
+            </th>
+            <th>
+                Flyveplads
+            </th>
+            <th>
+                Tacho
+            </th>
+            <th>
+                Note
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @TruncateDate(item.Date)
+                </td>
+                <td>
+                    @if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
+                    {
+                        <span style="white-space: nowrap;">
+                            @Html.ActionLink("-10 min", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "awesomeBtn" })
+                            <text> </text>@Html.ActionLink("-5 min", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "awesomeBtn" })
+                            <text> </text>@Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "awesomeBtn" })
+                        </span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Departure)
+                    }
+                </td>
+                <td>
+                    @if (!item.Landing.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
+                    {
+                        <span style="white-space: nowrap;">
+                            @Html.ActionLink("-10 min", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "awesomeBtn" })
+                            <text> </text>@Html.ActionLink("-5 min", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "awesomeBtn" })
+                            <text> </text>@Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "awesomeBtn" })
+                        </span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Landing)
+                    }
+                </td>
+                <td>
+                    @if (item.Departure.HasValue && item.Landing.HasValue)
+                    {
+                        if (item.Landing.Value >= item.Departure.Value)
+                        {
+                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                        }
+                        else
+                        {
+                            <text><span class="error">Fejl: landing før start</span></text>
+                        }
+                    }
+                </td>
+                <td>
+                    @item.Plane.CompetitionId
+                    @item.Plane.Registration
+                </td>
+                <td>
+                    @item.Pilot.Name
+                    @if (item.PilotBackseat != null)
+                    {
+                        <text>/ </text>@item.PilotBackseat.Name
+                    }
+                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                    {
+                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
+                    }
+                    @if ((item.Betaler == null) && (item.Pilot != null))
+                    { 
+                        <text> (mangler betaler) </text>
+                    }
+                </td>
+                <td>
+                    @item.StartedFrom.Name
+                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                    {
+                        <text>/ </text>
+                        @item.LandedOn.Name
+                    }
+                </td>
+                <td>
+                    @item.TachoDeparture
+                    @if (item.TachoLanding.HasValue && item.TachoLanding > 0)
+                    {
+                        <text> / </text>
+                        @item.TachoLanding
+                        <text> (</text>
+                        @(item.TachoLanding.Value - item.TachoDeparture.Value)
+                        <text>)</text>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description, "Description")
+                </td>
+                <td class="noprint">
+                    @if (Request.IsAuthenticated)
+                    {
+                        bool isEditable = false;
+                        if (Context.User.IsInRole("Administrator")) { isEditable = true; }
+                        if (Context.User.IsInRole("Editor")) { isEditable = true; }
+                        if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
+                        if (isEditable)
+                        {
+                            @Html.ActionLink("Rediger", "Edit", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                        }
+                    }
+                    @if (Request.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                    }
+                    @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
+        <text> | </text>
+    }
+    @Html.ActionLink("Forrige flyvninger", "Index", new { skip = ViewBag.Skip+60 })
+</p>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#myTable").tablesorter();
+    }
+);
+</script>

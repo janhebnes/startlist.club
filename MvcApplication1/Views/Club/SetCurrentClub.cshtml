@@ -1,7 +1,0 @@
-﻿@model FlightLog.Models.Club
-@if (Request.IsAuthenticated)
-{
-    <p>Aktive flyveklub filtrering sat til </p>
-    @Html.DisplayFor(modelItem => Model.ShortName)
-    @Html.DisplayFor(modelItem => Model.Name)
-}

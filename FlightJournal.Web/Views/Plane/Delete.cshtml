@@ -1,0 +1,53 @@
+﻿@model FlightJournal.Web.Models.Plane
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Plane</legend>
+
+    <div class="display-label">Registration</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Registration)
+    </div>
+
+    <div class="display-label">CompetitionId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompetitionId)
+    </div>
+
+    <div class="display-label">Seats</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Seats)
+    </div>
+
+    <div class="display-label">Engines</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Engines)
+    </div>
+
+    <div class="display-label">EntryDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EntryDate)
+    </div>
+
+    <div class="display-label">ExitDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExitDate)
+    </div>
+
+    <div class="display-label">DefaultStartType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DefaultStartType.ShortName)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
