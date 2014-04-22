@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlightJournal.Web.Models
 {
-    public class PilotLog
+    public class PilotLogEntry
     {
         [Key]
         public Guid PilotLogid { get; set; }

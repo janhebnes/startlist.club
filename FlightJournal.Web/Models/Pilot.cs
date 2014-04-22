@@ -37,7 +37,7 @@ namespace FlightJournal.Web.Models
         [XmlIgnore]
         public virtual ICollection<Flight> Flights_Betaler { get; set; }
         [XmlIgnore]
-        public virtual ICollection<PilotLog> PilotLogs { get; set; }
+        public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
 
         [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_Pilots { get; set; }

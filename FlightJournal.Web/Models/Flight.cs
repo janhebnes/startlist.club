@@ -150,7 +150,7 @@ namespace FlightJournal.Web.Models
         [XmlIgnore]
         public virtual ICollection<Note> Notes { get; set; }
         [XmlIgnore]
-        public virtual ICollection<PilotLog> PilotLogs { get; set; }
+        public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
 
         [DisplayName("Betaler")]
         public int BetalerId { get; set; }
