@@ -1,57 +1,62 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
+                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                    }
                             <li>@Html.ActionLink("Dagsrapporter", "Index", "Report")</li>
                             <li>@Html.ActionLink("Startlisten", "Grid", "Flight")</li>
                             @if (Context.User.Identity.IsAuthenticated)
                             {
                                 <li>@Html.ActionLink("Historik", "History", "Flight")</li>
                             }
-                            @if (Context.User.IsInRole("Administrator") || Context.User.IsInRole("Editor")) 
+                            @*@if (User.IsInRole("Administrator") || User.IsInRole("Editor")) 
                             { 
                                 <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
-                            }
+                            }*@
                             <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
+                </ul>
+                @Html.Partial("_LoginPartial")
             </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @Html.Action("ClubSelector", "Club")
-                @RenderBody()
-            </section>
         </div>
+    </div>
+    <div class="container body-content">
+        @RenderSection("featured", required: false)
+        @RenderBody()
+        <hr />
         <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
-            </div>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            @Html.Action("ClubSelector", "Club")
         </footer>
+    </div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
 </html>
