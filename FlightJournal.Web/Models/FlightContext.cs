@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using WebMatrix.WebData;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace FlightJournal.Web.Models
 {
     public class FlightContext : DbContext
     {
-        public FlightContext() : base("FlightJournal") {  }
+        public FlightContext() : base("FlightJournal")
+        {
+            //Database.SetInitializer<FlightContext>(new CreateDatabaseIfNotExists<FlightContext>());
+            //Database.SetInitializer<FlightContext>(new FlightContextInitializer());
+        }
 
         public DbSet<Flight> Flights { get; set; }
         public DbSet<FlightVersionHistory> FlightVersions { get; set; }
@@ -103,6 +111,39 @@ namespace FlightJournal.Web.Models
         {
             protected override void Seed(FlightContext context)
             {
+                //// --------- Basic user information 
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+                var myinfo = new MyUserInfo() { FirstName = "Pranav", LastName = "Rastogi" };
+                string name = "Admin";
+                string password = "123456";
+                string test = "test";
+
+                //Create Role Test and User Test
+                RoleManager.Create(new IdentityRole(test));
+                UserManager.Create(new ApplicationUser() { UserName = test });
+
+                //Create Role Admin if it does not exist
+                if (!RoleManager.RoleExists(name))
+                {
+                    var roleresult = RoleManager.Create(new IdentityRole(name));
+                }
+
+                //Create User=Admin with password=123456
+                var user = new ApplicationUser();
+                user.UserName = name;
+                user.HomeTown = "Seattle";
+                user.MyUserInfo = myinfo;
+                var adminresult = UserManager.Create(user, password);
+
+                //Add User Admin to Role Admin
+                if (adminresult.Succeeded)
+                {
+                    var result = UserManager.AddToRole(user.Id, name);
+                }
+
+                //// --------- Basic Flight information 
+
                 // Locations
                 var xloc = new Location { Name = "Kongsted" };
                 context.Locations.Add(xloc);

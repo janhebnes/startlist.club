@@ -6,10 +6,7 @@ namespace FlightJournal.Web.Models
 {
     public class UsersContext : DbContext
     {
-        public UsersContext()
-            : base("DefaultConnection")
-        {
-        }
+        public UsersContext() : base("FlightJournal.Membership") { }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
     }

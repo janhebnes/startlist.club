@@ -1,4 +1,6 @@
-﻿namespace FlightJournal.Web
+﻿using Microsoft.Web.WebPages.OAuth;
+
+namespace FlightJournal.Web
 {
     public static class AuthConfig
     {
@@ -11,15 +13,15 @@
             //    clientId: "",
             //    clientSecret: "");
 
-            //OAuthWebSecurity.RegisterTwitterClient(
-            //    consumerKey: "",
-            //    consumerSecret: "");
+            OAuthWebSecurity.RegisterTwitterClient(
+                consumerKey: "dKwmoLMH1zkqnvMblCMcQ",
+                consumerSecret: "G71eTw0Cm1s0ygVQygPQrw7ckSCR4WfbBWxGWqfiO4");
 
-            //OAuthWebSecurity.RegisterFacebookClient(
-            //    appId: "",
-            //    appSecret: "");
+            OAuthWebSecurity.RegisterFacebookClient(
+                appId: "266255723422800",
+                appSecret: "d564ffde30d649ca216f604cae5cbea3");
 
-            //OAuthWebSecurity.RegisterGoogleClient();
+            OAuthWebSecurity.RegisterGoogleClient();
         }
     }
 }

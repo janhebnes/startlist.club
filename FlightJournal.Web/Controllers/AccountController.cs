@@ -7,6 +7,8 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using FlightJournal.Web.Filters;
 using FlightJournal.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 
