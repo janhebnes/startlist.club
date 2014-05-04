@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace FlightJournal.Web.Models
 {
@@ -112,35 +107,32 @@ namespace FlightJournal.Web.Models
             protected override void Seed(FlightContext context)
             {
                 //// --------- Basic user information 
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-                var myinfo = new MyUserInfo() { FirstName = "Pranav", LastName = "Rastogi" };
-                string name = "Admin";
-                string password = "123456";
-                string test = "test";
+                ////var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                ////var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+                ////string name = "Admin";
+                ////string password = "123456";
+                ////string test = "test";
 
-                //Create Role Test and User Test
-                RoleManager.Create(new IdentityRole(test));
-                UserManager.Create(new ApplicationUser() { UserName = test });
+                //////Create Role Test and User Test
+                ////RoleManager.Create(new IdentityRole(test));
+                ////UserManager.Create(new ApplicationUser() { UserName = test });
 
-                //Create Role Admin if it does not exist
-                if (!RoleManager.RoleExists(name))
-                {
-                    var roleresult = RoleManager.Create(new IdentityRole(name));
-                }
+                //////Create Role Admin if it does not exist
+                ////if (!RoleManager.RoleExists(name))
+                ////{
+                ////    var roleresult = RoleManager.Create(new IdentityRole(name));
+                ////}
 
-                //Create User=Admin with password=123456
-                var user = new ApplicationUser();
-                user.UserName = name;
-                user.HomeTown = "Seattle";
-                user.MyUserInfo = myinfo;
-                var adminresult = UserManager.Create(user, password);
+                //////Create User=Admin with password=123456
+                ////var user = new ApplicationUser();
+                ////user.UserName = name;
+                ////var adminresult = UserManager.Create(user, password);
 
-                //Add User Admin to Role Admin
-                if (adminresult.Succeeded)
-                {
-                    var result = UserManager.AddToRole(user.Id, name);
-                }
+                //////Add User Admin to Role Admin
+                ////if (adminresult.Succeeded)
+                ////{
+                ////    var result = UserManager.AddToRole(user.Id, name);
+                ////}
 
                 //// --------- Basic Flight information 
 

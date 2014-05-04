@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
-using FlightJournal.Web.ViewModels.Report;
 
 namespace FlightJournal.Web.Controllers
 {
