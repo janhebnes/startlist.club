@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using FlightJournal.Web
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -17,29 +18,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Startlisten", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                    <li>@Html.MenuLink("Dagsrapporter", "Index", "Report")</li>
+                    <li>@Html.MenuLink("Startlisten", "Grid", "Flight")</li>
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.MenuLink("Historik", "History", "Flight")</li>
                     }
-                            <li>@Html.ActionLink("Dagsrapporter", "Index", "Report")</li>
-                            <li>@Html.ActionLink("Startlisten", "Grid", "Flight")</li>
-                            @if (Context.User.Identity.IsAuthenticated)
-                            {
-                                <li>@Html.ActionLink("Historik", "History", "Flight")</li>
-                            }
-                            @*@if (User.IsInRole("Administrator") || User.IsInRole("Editor")) 
-                            { 
-                                <li>@Html.ActionLink("Administration", "Administration", "Home")</li>
-                            }*@
-                            <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+                    <li>@Html.MenuLink("Kontakt", "Contact", "Home")</li>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                          <li>@Html.MenuLink("Fly", "Index", "Plane")</li>
+                          <li>@Html.MenuLink("Piloter", "Index", "Pilot")</li>
+                          <li>@Html.MenuLink("Startmetoder", "Index", "StartType")</li>
+                          <li>@Html.MenuLink("Landingssteder", "Index", "Location")</li>
+                        <li class="divider"></li>
+                          <li>@Html.MenuLink("Roles", "Index", "RolesAdmin")</li>
+                          <li>@Html.MenuLink("Users", "Index", "UsersAdmin")</li>
+                        <li class="divider"></li>
+                          <li>@Html.MenuLink("Klubber", "Index", "Club")</li>
+                      </ul>
+                    </li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

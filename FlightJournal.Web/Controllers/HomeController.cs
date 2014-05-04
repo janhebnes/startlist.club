@@ -1,21 +1,21 @@
 ﻿using System.Web.Mvc;
 
-namespace FlightJournal.Web.Controllers{
-    public class HomeController : Controller {
+namespace FlightJournal.Web.Controllers
+{
+    public class HomeController : Controller
+    {
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About() {
-            ViewBag.Message = "Your app description page.";
-
+        public ActionResult Administration()
+        {
             return View();
         }
 
-        public ActionResult Contact() {
-            ViewBag.Message = "Your contact page.";
-
+        public ActionResult Contact()
+        {
             return View();
         }
     }

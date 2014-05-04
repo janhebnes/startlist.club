@@ -7,6 +7,7 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ClubController : Controller
     {
         private FlightContext db = new FlightContext();
@@ -74,31 +75,18 @@ namespace FlightJournal.Web.Controllers
             }
         }
 
-        private void ValidateForAdminPriviledges()
-        {
-            if (!Request.RequestContext.HttpContext.User.IsInRole("Administrator"))
-            {
-                throw new UnauthorizedAccessException(
-                    string.Format(
-                        "Access Denied to User {0}", this.Request.RequestContext.HttpContext.User.Identity.Name));
-            }
-        }
-
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            base.Initialize(requestContext);
-        }
-
         /// <summary>
         /// Used by main layout for header switch between flight club filters
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public PartialViewResult ClubSelector()
         {
             return this.PartialView(db.Clubs.OrderBy(c=>c.Name).ToList());
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateInput(false)]
         public ViewResult SetCurrentClub(string shortName)
         {
@@ -116,29 +104,23 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Club/
-
         public ViewResult Index()
         {
-            ValidateForAdminPriviledges();
             return View(db.Clubs.ToList());
         }
 
         //
         // GET: /Club/Details/5
-
         public ViewResult Details(int id)
         {
-            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             return View(club);
         }
 
         //
         // GET: /Club/Create
-
         public ActionResult Create()
         {
-            ValidateForAdminPriviledges();
             return View();
         }
 
@@ -148,7 +130,6 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public ActionResult Create(Club club)
         {
-            ValidateForAdminPriviledges();
             if (ModelState.IsValid)
             {
                 db.Clubs.Add(club);
@@ -161,10 +142,8 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Club/Edit/5
-
         public ActionResult Edit(int id)
         {
-            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             return View(club);
         }
@@ -175,7 +154,6 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public ActionResult Edit(Club club)
         {
-            ValidateForAdminPriviledges();
             if (ModelState.IsValid)
             {
                 db.Entry(club).State = EntityState.Modified;
@@ -187,21 +165,17 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Club/Delete/5
-
         public ActionResult Delete(int id)
         {
-            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             return View(club);
         }
 
         //
         // POST: /Club/Delete/5
-
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            ValidateForAdminPriviledges();
             Club club = db.Clubs.Find(id);
             db.Clubs.Remove(club);
             db.SaveChanges();

@@ -1,19 +1,20 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Startlisten";
+    using (var db = new FlightJournal.Web.Models.FlightContext())
+    {
+        ViewBag.Message = db.Flights.Count().ToString();
+        ViewBag.Message += " registrerede flyvninger";
+    }    
 }
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
+                <h1>@ViewBag.Title</h1>
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                To learn more about ASP.NET MVC visit
-                <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET MVC.
-                If you have any questions about ASP.NET MVC visit
-                <a href="http://forums.asp.net/1146.aspx/1?MVC" title="ASP.NET MVC Forum">our forums</a>.
+                Startliste system oprindeligt udviklet til <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a> og udvidet så den kan håndtere flere klubber på samme platform.<br />
             </p>
         </div>
     </section>
@@ -21,25 +22,30 @@
 <h3>We suggest the following:</h3>
 <ol class="round">
     <li class="one">
-        <h5>Getting Started</h5>
-        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-        enables a clean separation of concerns and that gives you full control over markup
-        for enjoyable, agile development. ASP.NET MVC includes many features that enable
-        fast, TDD-friendly development for creating sophisticated applications that use
-        the latest web standards.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn more…</a>
+        <h5>Kildekode</h5>
+        Løsningen er baseret på ASP.Net MVC 5 og Entity Framework 6.1 med en Code First tilgang til databasen.<br />
+        Det er muligt at bidrage til kildekoden via projektet på Github.<br />
+        <br />
+        <a href="https://github.com/janhebnes/FlightJournal">https://github.com/janhebnes/FlightJournal</a><br />
+        <br />
     </li>
 
     <li class="two">
-        <h5>Add NuGet packages and jump-start your coding</h5>
-        NuGet makes it easy to install and update free libraries and tools.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Learn more…</a>
+        Platform er holdt generel således at flere klubber kan bruge samme platform og website til at administrere deres startlister.
     </li>
 
     <li class="three">
-        <h5>Find Web Hosting</h5>
-        You can easily find a web hosting company that offers the right mix of features
-        and price for your applications.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
+        <h5>Status på systemet</h5>
+        Det er på nuværende muligt at registrere flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel, logge på via Facebook og Google. <br />
+        Der er mulighed for at filtrere baggrund af klub, denne visning fastholder klub piloter eller klub flyveplads i visninger og statistikker.<br />
+        <br />
+        Login systemet er gjort uafhængigt af Pilot listerne så ønsker du at blive oprettet som pilot skal du tag fat i din klubs redaktør. <br />
+        Rettelses historikken fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem som har rettet hvilke flyvninger, dette kan gøres op til 48 timer efter flyvningen fandt sted.<br />
+        <br />
+        Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
+        <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den
+        registerede dato. Der er rettelseshistorik på alle ændringer.<br />
+        <b>Redaktøren</b> kan ændre alle former for data for klubben, alle startliste oplysninger,
+        registrere nye fly og piloter, samt slette flvyninger.
     </li>
 </ol>

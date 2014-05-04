@@ -1,0 +1,28 @@
+@{
+    ViewBag.Title = "Administration";
+}
+<h2>Administration</h2>
+<p>
+    Redigering af grundværdier
+</p>
+<p>
+    @if (Context.User.IsInRole("Administrator") || Context.User.IsInRole("Editor"))
+    {
+        @Html.ActionLink("Fly", "Index", "Plane", null, new { @class = "awesomeBtn" })
+         
+        @Html.ActionLink("Piloter", "Index", "Pilot", null, new { @class = "awesomeBtn" })
+         
+        @Html.ActionLink("Start typer", "Index", "StartType", null, new { @class = "awesomeBtn" })
+         
+        @*Not in use yet*@        
+        @*@Html.ActionLink("Pilot status", "Index", "PilotStatus", null, new { @class = "awesomeBtn" })*@
+         
+        @Html.ActionLink("Landingssteder", "Index", "Location", null, new { @class = "awesomeBtn" })
+         
+        if (Context.User.IsInRole("Administrator"))
+        {
+        @Html.ActionLink("Klubber", "Index", "Club", null, new { @class = "awesomeBtn" })
+        }
+    }
+</p>
+
