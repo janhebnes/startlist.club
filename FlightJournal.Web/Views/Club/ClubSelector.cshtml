@@ -2,8 +2,8 @@
 @model IEnumerable<FlightJournal.Web.Models.Club>
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
-    <select name="shortName" onchange="submit()">
-        <option value="">--- Alle klubber ---</option>
+    <select name="shortName" onchange="submit()" class="btn btn-default btn-xs">
+        <option value="">Vælg Flyveklub (viser lige nu fælleslisten)</option>
         @foreach (var item in Model)
         {
             <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{

@@ -56,7 +56,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p class="pull-right btn-xs"><span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f") </p>
             @Html.Action("ClubSelector", "Club")
         </footer>
     </div>
