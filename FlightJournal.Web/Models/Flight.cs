@@ -20,6 +20,7 @@ namespace FlightJournal.Web.Models
             this.FlightId = Guid.NewGuid();
             this.Date = DateTime.Today;
             this.LastUpdated = DateTime.Now;
+            this.LandingCount = 1;
         }
         [Key]
         public Guid FlightId { get; set; }
@@ -101,6 +102,10 @@ namespace FlightJournal.Web.Models
                 }
             }
         }
+        [DisplayName("Antal")]
+        [Required]
+        public int LandingCount { get; set; }
+
         [DisplayName("Fly")]
         [Required]
         public int PlaneId { get; set; }
@@ -142,6 +147,7 @@ namespace FlightJournal.Web.Models
 
         [DisplayName("Tacho slut")]
         public double? TachoLanding { get; set; }
+        
         [DisplayName("Opgave km")]
         public double? TaskDistance { get; set; }
 

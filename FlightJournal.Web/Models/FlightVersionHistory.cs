@@ -34,6 +34,7 @@ namespace FlightJournal.Web.Models
             this.Date = f.Date;
             this.Departure = f.Departure;
             this.Landing = f.Landing;
+            this.LandingCount = f.LandingCount;
             this.PlaneId = f.PlaneId;
             this.PilotId = f.PilotId;
             this.PilotBackseatId = f.PilotBackseatId;
@@ -58,6 +59,8 @@ namespace FlightJournal.Web.Models
         public DateTime? Departure { get; set; }
         [DataType(DataType.Time)]
         public DateTime? Landing { get; set; }
+        [Required]
+        public int LandingCount { get; set; }
         [Required]
         public int PlaneId { get; set; }
         public virtual Plane Plane { get; set; }

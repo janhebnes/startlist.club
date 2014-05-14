@@ -194,6 +194,14 @@
     <Compile Include="Migrations\201405142204384_Pilot Mobil and Email added.Designer.cs">
       <DependentUpon>201405142204384_Pilot Mobil and Email added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405142317466_Flight landing count added.cs" />
+    <Compile Include="Migrations\201405142317466_Flight landing count added.Designer.cs">
+      <DependentUpon>201405142317466_Flight landing count added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405142324502_FlightVersionHistory landing count added.cs" />
+    <Compile Include="Migrations\201405142324502_FlightVersionHistory landing count added.Designer.cs">
+      <DependentUpon>201405142324502_FlightVersionHistory landing count added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
@@ -425,6 +433,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201405142204384_Pilot Mobil and Email added.resx">
       <DependentUpon>201405142204384_Pilot Mobil and Email added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405142317466_Flight landing count added.resx">
+      <DependentUpon>201405142317466_Flight landing count added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405142324502_FlightVersionHistory landing count added.resx">
+      <DependentUpon>201405142324502_FlightVersionHistory landing count added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
