@@ -33,7 +33,7 @@ namespace FlightJournal.Web.Controllers
                         if (club != null)
                         {
                             ghost = new Club();
-                            ghost.DefaultStartLocationId = club.DefaultStartLocationId;
+                            ghost.LocationId = club.LocationId;
                             ghost.ShortName = club.ShortName;
                             ghost.ClubId = club.ClubId;
 

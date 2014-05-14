@@ -259,8 +259,8 @@ namespace FlightJournal.Web.Models
         public static bool IsCurrent(Flight arg)
         {
             return ClubController.CurrentClub.ShortName == null
-                || arg.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
-                || arg.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                || arg.StartedFromId == ClubController.CurrentClub.LocationId
+                || arg.LandedOnId == ClubController.CurrentClub.LocationId
                 || (arg.Pilot != null && arg.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                 || (arg.PilotBackseat != null && arg.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                 || (arg.Betaler != null && arg.Betaler.ClubId == ClubController.CurrentClub.ClubId);

@@ -27,8 +27,8 @@ namespace FlightJournal.Web.Controllers
                 .Where(s => !locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value))
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => ClubController.CurrentClub.ShortName == null
-                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
-                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                    || f.StartedFromId == ClubController.CurrentClub.LocationId
+                    || f.LandedOnId == ClubController.CurrentClub.LocationId
                     || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
@@ -54,8 +54,8 @@ namespace FlightJournal.Web.Controllers
                 this.db.FlightVersions.Where(s => !locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value))
                         .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => ClubController.CurrentClub.ShortName == null
-                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
-                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                    || f.StartedFromId == ClubController.CurrentClub.LocationId
+                    || f.LandedOnId == ClubController.CurrentClub.LocationId
                     || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))

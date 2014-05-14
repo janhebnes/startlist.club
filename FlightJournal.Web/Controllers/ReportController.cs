@@ -33,8 +33,8 @@ namespace FlightJournal.Web.Controllers
                         rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year)
                             .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                             .Where(f => ClubController.CurrentClub.ShortName == null
-                                || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
-                                || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                                || f.StartedFromId == ClubController.CurrentClub.LocationId
+                                || f.LandedOnId == ClubController.CurrentClub.LocationId
                                 || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                                 || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                                 || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
@@ -63,8 +63,8 @@ namespace FlightJournal.Web.Controllers
                 rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year)
                     .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                     .Where(f => ClubController.CurrentClub.ShortName == null
-                        || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
-                        || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                        || f.StartedFromId == ClubController.CurrentClub.LocationId
+                        || f.LandedOnId == ClubController.CurrentClub.LocationId
                         || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                         || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                         || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
@@ -94,8 +94,8 @@ namespace FlightJournal.Web.Controllers
             rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => ClubController.CurrentClub.ShortName == null
-                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId
-                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId
+                    || f.StartedFromId == ClubController.CurrentClub.LocationId
+                    || f.LandedOnId == ClubController.CurrentClub.LocationId
                     || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
@@ -149,8 +149,8 @@ namespace FlightJournal.Web.Controllers
             var availableDates = this.db.Flights
                 .Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => ClubController.CurrentClub.ShortName == null 
-                    || f.StartedFromId == ClubController.CurrentClub.DefaultStartLocationId 
-                    || f.LandedOnId == ClubController.CurrentClub.DefaultStartLocationId 
+                    || f.StartedFromId == ClubController.CurrentClub.LocationId
+                    || f.LandedOnId == ClubController.CurrentClub.LocationId 
                     || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId) 
                     || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId) 
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))

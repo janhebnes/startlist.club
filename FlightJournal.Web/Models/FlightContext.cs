@@ -142,7 +142,7 @@ namespace FlightJournal.Web.Models
                 context.SaveChanges();
 
                 // Clubs
-                var xclub = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = xloc };
+                var xclub = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = xloc };
                 context.Clubs.Add(xclub);
                 context.SaveChanges();
 
@@ -158,7 +158,7 @@ namespace FlightJournal.Web.Models
                 context.SaveChanges();
 
                 // Clubs
-                var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", DefaultStartLocation = loc };
+                var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = loc };
                 context.Clubs.Add(club);
                 context.SaveChanges();
 

@@ -177,6 +177,7 @@
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\FlightController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PilotController.cs" />
@@ -201,6 +202,10 @@
     <Compile Include="Migrations\201405142324502_FlightVersionHistory landing count added.cs" />
     <Compile Include="Migrations\201405142324502_FlightVersionHistory landing count added.Designer.cs">
       <DependentUpon>201405142324502_FlightVersionHistory landing count added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.cs" />
+    <Compile Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.Designer.cs">
+      <DependentUpon>201405142345084_Club defaultstartlocation changed to Location virtual reference.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -423,6 +428,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Home\Administration.cshtml" />
     <Content Include="Views\Home\UHB530.cshtml" />
+    <Content Include="Views\Import\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -439,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405142324502_FlightVersionHistory landing count added.resx">
       <DependentUpon>201405142324502_FlightVersionHistory landing count added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.resx">
+      <DependentUpon>201405142345084_Club defaultstartlocation changed to Location virtual reference.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
