@@ -14,7 +14,7 @@ namespace FlightJournal.Web.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult UHB530()
         {
             return View();
         }

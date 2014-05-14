@@ -1,51 +1,57 @@
 ﻿@{
-    ViewBag.Title = "Startlisten";
+    ViewBag.Count = "0";
     using (var db = new FlightJournal.Web.Models.FlightContext())
     {
-        ViewBag.Message = db.Flights.Count().ToString();
-        ViewBag.Message += " registrerede flyvninger";
-    }    
+        ViewBag.Count = db.Flights.Count().ToString();
+    }
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-                <h2>@ViewBag.Message</h2>
-            </hgroup>
-            <p>
-                Startliste system oprindeligt udviklet til <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a> og udvidet så den kan håndtere flere klubber på samme platform.<br />
-            </p>
-        </div>
-    </section>
-}
-<h3>We suggest the following:</h3>
-<ol class="round">
-    <li class="one">
-        <h5>Kildekode</h5>
-        Løsningen er baseret på ASP.Net MVC 5 og Entity Framework 6.1 med en Code First tilgang til databasen.<br />
-        Det er muligt at bidrage til kildekoden via projektet på Github.<br />
-        <br />
-        <a href="https://github.com/janhebnes/FlightJournal">https://github.com/janhebnes/FlightJournal</a><br />
-        <br />
-    </li>
 
-    <li class="two">
-        Platform er holdt generel således at flere klubber kan bruge samme platform og website til at administrere deres startlister.
-    </li>
+<div class="jumbotron">
+    <h1>Startlisten til din flyveklub</h1>
+    <p>
+        Startlisten er udviklet som et fælles projekt mellem flere flyveklubber i danmark. Systemet er opbygget på baggrund af erfaringerne i Øst-Sjællands flyveklub <a href="http://www.flyveklubben.dk">http://www.flyveklubben.dk</a> og dialogen med mange af de andre danske klubber.
+    </p>
+    <p>
+        <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/FlightJournal">Projektside på Github.com (Kildekode) </a> <br />
+        <small><a href="https://github.com/janhebnes/FlightJournal">https://github.com/janhebnes/FlightJournal</a></small>
+    </p>
 
-    <li class="three">
-        <h5>Status på systemet</h5>
-        Det er på nuværende muligt at registrere flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel, logge på via Facebook og Google. <br />
-        Der er mulighed for at filtrere baggrund af klub, denne visning fastholder klub piloter eller klub flyveplads i visninger og statistikker.<br />
-        <br />
-        Login systemet er gjort uafhængigt af Pilot listerne så ønsker du at blive oprettet som pilot skal du tag fat i din klubs redaktør. <br />
-        Rettelses historikken fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem som har rettet hvilke flyvninger, dette kan gøres op til 48 timer efter flyvningen fandt sted.<br />
-        <br />
-        Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
-        <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den
-        registerede dato. Der er rettelseshistorik på alle ændringer.<br />
-        <b>Redaktøren</b> kan ændre alle former for data for klubben, alle startliste oplysninger,
-        registrere nye fly og piloter, samt slette flvyninger.
-    </li>
-</ol>
+</div>
+<div class="alert alert-success">@ViewBag.Count Registrerede flyvninger</div>
+<h2>Projekt fælles startliste</h2>
+<p>
+    Kildekoden er open source og du er velkommen til at kopiere, tilpasse og bruge koden som et passer ind. Hovedformålet er dog at få en samlet platform til alle klubberne i Danmark og måske Norden som dækker de basale klub flyvningsregistreringer som i dag i mange klubber fortages på papir med efterfølgende massiv databehandling. <br />
+    Der har været rigtig mange systemer udviklet ude i klubberne og dette er et forsøg på at få alle kræfterne samlet til at lave et fælles system som alle kan have gavn af, således at den ildsjæl den enkelte klub eventuelt kan bidrage med kan bruge kræfterne så det gavner alle svæveflyveklubber og ikke på at genopfinde grundsystemet. <br />
+</p>
+<h2>Kom i gang med din klub</h2>
+<p>
+    Ønsker du at gøre brug af platformen bedes en fra bestyrelsen kontakte Jan Hebnes på <a href="mailto:jan.hebnes@gmail.com">jan.hebnes@gmail.com</a> med oplysninger om jeres Kassers e-mail og en yderligere liste redaktør.
+</p>
+<h3>
+    Hvad kan systemet
+</h3>
+<p>
+    Det er på nuværende muligt at registrere flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel (CSV), logge på via Facebook og Google. <br />
+    Der er mulighed for at filtrere på baggrund af klub, denne visning fastholder klub piloter eller klub flyveplads i visninger og statistikker.<br />
+    <br />
+    Login systemet er gjort uafhængigt af Pilot listerne så ønsker du at blive oprettet som pilot skal du tag fat i din klubs redaktør. <br />
+    Rettelses historikken fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem som har rettet hvilke flyvninger, dette kan gøres op til 48 timer efter flyvningen fandt sted.<br />
+    <br />
+    Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
+    <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den registerede dato. Der er rettelseshistorik på alle ændringer.<br />
+    <b>Redaktøren</b> kan ændre alle former for data for klubben, alle startliste oplysninger, registrere nye fly og piloter, samt slette flvyninger.
+</p>
+<h3>
+    Kildekode
+</h3>
+<p>
+    Løsningen er baseret på ASP.Net MVC 5 og Entity Framework 6.1 med en Code First tilgang til databasen. Det er muligt at bidrage til kildekoden via projektet på Github.<br/>
+    Forudsætningen for at bidrag tages med i kernen er at den kode som bidrages har generel værdi for alle klubber og ikke udgør en specialisering som vil gøre systemet mere besværligt for andre at udnytte. <br />
+    Den nuværende design filosofi er at man kan klare sig rigtig langt ved at kasseren udlæser statistik en gang om måneden og de rette kommentarer undervejs.
+</p>
+<p>
+    <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/FlightJournal">Projektside på Github.com (Kildekode) </a> <br/>
+    <small><a href="https://github.com/janhebnes/FlightJournal">https://github.com/janhebnes/FlightJournal</a></small>
+</p>
+
+
