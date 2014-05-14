@@ -9,25 +9,48 @@
 <fieldset>
     <legend>Pilot</legend>
 
-    <div class="display-label">Name</div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
-    <div class="display-label">UnionId</div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.MobilNumber)
+    </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UnionId)
+        @Html.DisplayFor(model => model.MobilNumber)
+    </div>
+    
+    <div class="display-label">
+        @Html.LabelFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
     </div>
 
-    <div class="display-label">MemberId</div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.MemberId)
+    </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.MemberId)
     </div>
 
-    <div class="display-label">Club</div>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Club)
+    </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Club.ShortName)
     </div>
+
+    <div class="display-label">
+        @Html.LabelFor(model => model.UnionId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UnionId)
+    </div>
+
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.PilotId }) |

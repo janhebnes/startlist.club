@@ -19,7 +19,9 @@ namespace FlightJournal.Web.Models
         }
         public string UnionId { get; set; }
         public string MemberId { get; set; }
-        
+        public string MobilNumber { get; set; }
+        public string Email { get; set; }
+
         public int ClubId { get; set; }
         public virtual Club Club { get; set; }
 
