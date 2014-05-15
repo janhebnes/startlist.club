@@ -6,20 +6,10 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
-
+    [Authorize(Roles = "Admin,Manager")]
     public class PilotStatusController : Controller
     {
         private FlightContext db = new FlightContext();
-
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            if (!requestContext.HttpContext.User.IsInRole("Administrator") && !requestContext.HttpContext.User.IsInRole("Editor"))
-            {
-                throw new UnauthorizedAccessException(string.Format("Access Denied to User {0}", this.Request.RequestContext.HttpContext.User.Identity.Name));
-            }
-
-            base.Initialize(requestContext);
-        }
 
         //
         // GET: /PilotStatus/

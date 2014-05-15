@@ -38,11 +38,9 @@ namespace FlightJournal.Web.Controllers
         }
 
         // POST: /Flight/History
+        [Authorize]
         public ViewResult History(int? skip, int? take, int? locationid)
         {
-            if (!Request.IsAuthenticated) 
-                return null;
-
             ViewBag.Skip = skip.HasValue ? skip.Value : 0;
             ViewBag.Take = take.HasValue ? take.Value : 100;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
@@ -110,10 +108,9 @@ namespace FlightJournal.Web.Controllers
         /// <param name="id">Flight Id for the flight not having the landing set</param>
         /// <param name="offSet">Minutes to offset the time</param>
         /// <returns>Action link</returns>
+        [Authorize]
         public ActionResult Land(Guid id, int? offSet)
         {
-            if (!Request.IsAuthenticated) return null;
-
             Flight flight = this.db.Flights.Find(id);
             if ((flight != null) && (flight.Landing == null))
             {
@@ -131,6 +128,7 @@ namespace FlightJournal.Web.Controllers
         /// <param name="id">Flight Id for the flight not having the landing set</param>
         /// /// <param name="offSet">Minutes to offset the time</param>
         /// <returns>Action link</returns>
+        [Authorize]
         public ActionResult Depart(Guid id, int? offSet)
         {
             if (!Request.IsAuthenticated) return null;
@@ -145,10 +143,9 @@ namespace FlightJournal.Web.Controllers
             return RedirectToAction("Grid");
         }
 
+        [Authorize]
         public ActionResult Clone(Guid id)
         {
-            if (!Request.IsAuthenticated) return null;
-
             Flight originalFlight = this.db.Flights.Find(id);
             var flight = new Flight
             {
@@ -172,10 +169,9 @@ namespace FlightJournal.Web.Controllers
             return Create(flight);
         }
 
+        [Authorize]
         public ActionResult Create()
         {
-            if (!Request.IsAuthenticated) return null;
-
             var flight = new Flight
                 {
                     Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)
@@ -203,13 +199,13 @@ namespace FlightJournal.Web.Controllers
             return View(flight);
         }
 
+        [Authorize]
         public ActionResult SetComment(Guid id, string comment)
         {
             bool isEditable = false;
-            if (!Request.IsAuthenticated) return null;
 
-            if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
-            if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Admin")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Manager")) { isEditable = true; }
 
             Flight flight = this.db.Flights.Find(id);
 
@@ -236,10 +232,9 @@ namespace FlightJournal.Web.Controllers
         //
         // POST: /Flight/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Flight flight)
         {
-            if (!Request.IsAuthenticated) return null;
-
             if (ModelState.IsValid)
             {
                 // Remember base information in cookies
@@ -268,9 +263,9 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Flight/Edit/5
+        [Authorize]
         public ActionResult Edit(Guid id)
         {
-            if (!Request.IsAuthenticated) return null;
             bool isEditable = false;
             if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
             if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
@@ -296,12 +291,12 @@ namespace FlightJournal.Web.Controllers
         //
         // POST: /Default1/Edit/5
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Flight flight)
         {
-            if (!Request.IsAuthenticated) return null;
             bool isEditable = false;
-            if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
-            if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Admin")) { isEditable = true; }
+            if (Request.RequestContext.HttpContext.User.IsInRole("Manager")) { isEditable = true; }
             if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
             {
                 isEditable = true;
@@ -328,11 +323,11 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Flight/Delete/5
+        [Authorize]
         public ActionResult Delete(Guid id)
         {
-            if (!Request.IsAuthenticated || 
-                (!Request.RequestContext.HttpContext.User.IsInRole("Editor") &&
-                 !Request.RequestContext.HttpContext.User.IsInRole("Administrator")))
+            if ((!Request.RequestContext.HttpContext.User.IsInRole("Admin") &&
+                 !Request.RequestContext.HttpContext.User.IsInRole("Manager")))
             {
                 return null;
             }
@@ -348,11 +343,12 @@ namespace FlightJournal.Web.Controllers
         // POST: /Flight/Delete/5
         [HttpPost]
         [ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(Guid id)
         {
             if (!Request.IsAuthenticated ||
-                (!Request.RequestContext.HttpContext.User.IsInRole("Editor") &&
-                 !Request.RequestContext.HttpContext.User.IsInRole("Administrator")))
+                (!Request.RequestContext.HttpContext.User.IsInRole("Manager") &&
+                 !Request.RequestContext.HttpContext.User.IsInRole("Admin")))
             {
                 return null;
             }
