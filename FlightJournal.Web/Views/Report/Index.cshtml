@@ -90,6 +90,11 @@
             <tr>
                 <td>
                     @(++startNr)
+                    @if (item.LandingCount > 1)
+                    {
+                        startNr = startNr + item.LandingCount;
+                        <text> - </text> @(startNr)
+                    }
                 </td>
                 <td>
                     @item.Plane

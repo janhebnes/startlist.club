@@ -1,18 +1,17 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
 @using System.Web.Script.Serialization;
 @{
-	ViewBag.Title = "Startlisten " + ViewBag.Date.ToShortDateString();
-	int startNr = Model.Count();
+    ViewBag.Title = "Startlisten " + ViewBag.Date.ToShortDateString();
+    int startNr = Model.Count();
 }
 <p>
-    @if(Request.IsAuthenticated) {
-        @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "awesomeBtn" })
-        <text> | </text>
-    }
-    @Html.ActionLink("Tidligere flyvninger", "Index")
-    @*<span style="float:right">
-        @Html.DropDownList("FilterLocationId", "Filter on airport")
-    </span>*@
+    <div class="btn-group">
+        @if (Request.IsAuthenticated)
+        {
+            @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "btn btn-info", type = "button" })
+        }
+        @Html.ActionLink("Tidligere flyvninger", "Index", new { skip = 0 }, new { @class = "btn btn-default", type = "button" })
+    </div>
 </p>
 <table id="myTable" class="tablesorter">
     <thead>
@@ -54,6 +53,11 @@
             <tr>
                 <td>
                     @(startNr--)
+                    @if (item.LandingCount > 1)
+                    {
+                        startNr = startNr + item.LandingCount;
+                        <text> - </text> @(startNr)
+                    }
                 </td>
                 <td>
                     @item.Plane
@@ -69,31 +73,31 @@
                         <text> (</text>@item.Betaler.Name<text> betaler)</text>
                     }
                     @if ((item.Betaler == null) && (item.Pilot != null))
-                    { 
+                    {
                         <text> (mangler betaler) </text>
                     }
                 </td>
                 <td>
-					@if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
+                    @if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
                     {
                         <span style="white-space: nowrap;">
-                            @Html.ActionLink("-10 min", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "awesomeBtn"  })
-                            <text> </text>@Html.ActionLink("-5 min", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "awesomeBtn"  })
-                            <text> </text>@Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "awesomeBtn"  })
+                            @Html.ActionLink("-10 min", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            <text> </text>@Html.ActionLink("-5 min", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            <text> </text>@Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                         </span>
                     }
-					else if (item.Departure.HasValue)
-					{
-						@item.Departure.Value.ToString("HH:mm");
-					}
+                    else if (item.Departure.HasValue)
+                    {
+                        @item.Departure.Value.ToString("HH:mm");
+                    }
                 </td>
                 <td>
-					@if (!item.Landing.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
+                    @if (!item.Landing.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
                     {
                         <span style="white-space: nowrap;">
-                            @Html.ActionLink("-10 min", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "awesomeBtn" })
-                            <text> </text>@Html.ActionLink("-5 min", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "awesomeBtn"  })
-                            <text> </text>@Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "awesomeBtn"  })
+                            @Html.ActionLink("-10 min", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            <text> </text>@Html.ActionLink("-5 min", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            <text> </text>@Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                         </span>
                     }
                     else if (item.Landing.HasValue)
@@ -106,11 +110,11 @@
                     {
                         if (item.Landing.Value >= item.Departure.Value)
                         {
-                        @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
                         }
                         else
                         {
-                        <text><span class="error">Fejl: landing før start</span></text>
+                            <text><span class="error">Fejl: landing før start</span></text>
                         }
                     }
                 </td>
@@ -127,7 +131,7 @@
                     @if (item.Departure.HasValue && item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
                         <text> / </text>
-                        @item.TachoLanding 
+                        @item.TachoLanding
                         <text> (</text>
                         @(item.TachoLanding.Value - item.TachoDeparture.Value)
                         <text>)</text>
@@ -135,22 +139,22 @@
                 </td>
                 <td>
                     <span>
-                        @Html.DisplayFor(modelItem => item.Description, "Description") 
+                        @Html.DisplayFor(modelItem => item.Description, "Description")
                         @if (Request.IsAuthenticated)
                         {
-                        <a href="#" class="editComment">Edit</a>
+                            <a href="#" class="editComment">Edit</a>
                         }
                     </span>
                     @if (Request.IsAuthenticated)
                     {
-                    <span style="display:none;">
-					    @using (Html.BeginForm("SetComment", "Flight"))
-                        {
-						    <input type="hidden" name="id" value="@item.FlightId" />
-						    <input type="text" name="comment" value="@item.Description" />
-						    <a href="#" class="setComment">Set</a>
-                        }
-                     </span>
+                        <span style="display:none;">
+                            @using (Html.BeginForm("SetComment", "Flight"))
+                            {
+                                <input type="hidden" name="id" value="@item.FlightId" />
+                                <input type="text" name="comment" value="@item.Description" />
+                                <a href="#" class="setComment">Set</a>
+                            }
+                        </span>
                     }
                 </td>
                 <td class="noprint">
@@ -162,14 +166,14 @@
                         if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
                         if (isEditable)
                         {
-                            @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                            @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                         }
                     }
-					@if (Request.IsAuthenticated) 
+                    @if (Request.IsAuthenticated)
                     {
-                        @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "awesomeBtn" }) 
+                        @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                     }
-                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                 </td>
             </tr>
         }

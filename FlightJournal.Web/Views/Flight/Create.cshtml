@@ -1,9 +1,7 @@
 ﻿@model FlightJournal.Web.Models.Flight
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Opret flyvning";
 }
-<h2>
-    Create</h2>
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/EditorHookup.js")" type="text/javascript"></script>
@@ -20,122 +18,133 @@
         $("#LandedOnId").combobox();
     });
 </script>
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Flight</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
-            @Html.ValidationMessageFor(model => model.Date)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Departure)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Departure)
-            @Html.ValidationMessageFor(model => model.Departure)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Landing)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Landing)
-            @Html.ValidationMessageFor(model => model.Landing)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PlaneId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PlaneId", String.Empty)
-            @Html.ValidationMessageFor(model => model.PlaneId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.BetalerId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("BetalerId", String.Empty)
-            @Html.ValidationMessageFor(model => model.BetalerId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PilotId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PilotId", String.Empty)
-            @Html.ValidationMessageFor(model => model.PilotId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PilotBackseatId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("PilotBackseatId", String.Empty)
-            @Html.ValidationMessageFor(model => model.PilotBackseatId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StartTypeId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("StartTypeId", String.Empty)
-            @Html.ValidationMessageFor(model => model.StartTypeId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StartedFromId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("StartedFromId", String.Empty)
-            @Html.ValidationMessageFor(model => model.StartedFromId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.LandedOnId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("LandedOnId", String.Empty)
-            @Html.ValidationMessageFor(model => model.LandedOnId)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-        <div class="editor-label">
-        </div>
-        <div class="editor-field">
-            <input type="submit" value="Create" class="submit"/>
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TachoDeparture)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TachoDeparture)
-            @Html.ValidationMessageFor(model => model.TachoDeparture)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TachoLanding)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TachoLanding)
-            @Html.ValidationMessageFor(model => model.TachoLanding)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TaskDistance)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TaskDistance)
-            @Html.ValidationMessageFor(model => model.TaskDistance)
-        </div>
-        <div class="editor-label">
-        </div>
-        <div class="editor-field">
-            <input type="submit" value="Create" class="submit"/>
-        </div>
-    </fieldset>
-}
+<p>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Opret flyvning</legend>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Date)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Date)
+                @Html.ValidationMessageFor(model => model.Date)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Departure)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Departure)
+                @Html.ValidationMessageFor(model => model.Departure)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Landing)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Landing)
+                @Html.ValidationMessageFor(model => model.Landing)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PlaneId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("PlaneId", String.Empty)
+                @Html.ValidationMessageFor(model => model.PlaneId)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.BetalerId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("BetalerId", String.Empty)
+                @Html.ValidationMessageFor(model => model.BetalerId)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PilotId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("PilotId", String.Empty)
+                @Html.ValidationMessageFor(model => model.PilotId)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PilotBackseatId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("PilotBackseatId", String.Empty)
+                @Html.ValidationMessageFor(model => model.PilotBackseatId)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.StartTypeId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("StartTypeId", String.Empty)
+                @Html.ValidationMessageFor(model => model.StartTypeId)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.StartedFromId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("StartedFromId", String.Empty)
+                @Html.ValidationMessageFor(model => model.StartedFromId)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.LandedOnId)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("LandedOnId", String.Empty)
+                @Html.ValidationMessageFor(model => model.LandedOnId)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Description)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+            <p>
+                <div class="editor-field">
+                    <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+                </div>
+            </p>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.TachoDeparture)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.TachoDeparture)
+                @Html.ValidationMessageFor(model => model.TachoDeparture)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.TachoLanding)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.TachoLanding)
+                @Html.ValidationMessageFor(model => model.TachoLanding)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.LandingCount)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.LandingCount)
+                @Html.ValidationMessageFor(model => model.LandingCount)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.TaskDistance)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.TaskDistance)
+                @Html.ValidationMessageFor(model => model.TaskDistance)
+            </div>
+            <div class="editor-label">
+            </div>
+            <div class="editor-field">
+                <input type="submit" value="Create" class="btn btn-primary btn-lg"/>
+            </div>
+        </fieldset>
+    }
+</p>
 <div>
     <a href="/" class="back">Tilbage til listen</a>
 </div>
