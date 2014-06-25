@@ -19,6 +19,10 @@ namespace FlightJournal.Web.Models
         public int LocationId { get; set; }
         public virtual Location Location { get; set; }
 
+        [DisplayName("Website")]
+        public string Website { get; set; }
+
+
         [XmlIgnore]
         public virtual ICollection<StartType> StartTypes { get; set; }
         [XmlIgnore]

@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.Designer.cs">
       <DependentUpon>201405142345084_Club defaultstartlocation changed to Location virtual reference.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406252355039_Club Website.cs" />
+    <Compile Include="Migrations\201406252355039_Club Website.Designer.cs">
+      <DependentUpon>201406252355039_Club Website.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
@@ -452,6 +456,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.resx">
       <DependentUpon>201405142345084_Club defaultstartlocation changed to Location virtual reference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406252355039_Club Website.resx">
+      <DependentUpon>201406252355039_Club Website.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
