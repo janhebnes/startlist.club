@@ -1,8 +1,22 @@
-﻿@model FlightJournal.Web.Models.ReportViewModel
+﻿@using FlightJournal.Web.Controllers
+@model FlightJournal.Web.Models.ReportViewModel
 @{
     ViewBag.Title = "Dagsrapporter";
-    int startNr = 0;
+    
 }
+
+@section head
+{
+    <style>
+        .termik {
+            font-weight: bold;
+            background-color: Lime;
+        }
+    </style>
+}
+
+@section scripts
+{
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -12,7 +26,7 @@
             @foreach (var item in Model.AvailableDates.Keys)
             {
             <text>if (dmy=="</text>@item.ToString("yyyy-M-d")<text>") return [true,"</text>@((Model.AvailableDates[item] > 20) ? "termik" : "")<text>", "</text>@Model.AvailableDates[item]<text> starter."];</text>
-            } 
+            }
             return [false, "", "ingen flyvning"];
         }
 
@@ -20,7 +34,7 @@
             // Redirect page to date report
             location = '/' + dmy;
         }
-        
+
         $("#datepicker").datepicker({
             beforeShowDay: available,
             maxDate: 0,
@@ -34,23 +48,20 @@
         });
 
         $("#datepicker").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
+
+        $("#myTable").tablesorter();
     });
-</script>
-<style>
-    .termik
-    {
-        font-weight: bold;
-        background-color: Lime;
-    }
-</style>
+</script>    
+}
+
 <div align="center">
-    <div id="datepicker" class="noprint">
+    <div id="datepicker" class="hidden-print">
     </div>
 </div>
 <br style="clear: both;" />
 <h2>
-    Startliste @Model.Date.ToShortDateString()</h2>
-<table id="myTable" class="tablesorter">
+    Startliste @Model.Date.ToShortDateString() <small>@(ClubController.CurrentClub != null ? @ClubController.CurrentClub.Name : string.Empty)</small></h2>
+<table id="myTable" class="tablesorter table table-responsive table-striped table-hover table-condensed">
     <thead>
         <tr>
             <th>
@@ -62,10 +73,10 @@
             <th>
                 Pilote(r)
             </th>
-            <th>
+            <th class="hidden-xs">
                 Start
             </th>
-            <th>
+            <th class="hidden-xs">
                 Landing
             </th>
             <th>
@@ -74,17 +85,18 @@
             <th>
                 Flyveplads
             </th>
-            <th>
+            <th class="hidden-xs hidden-sm">
                 Tacho
             </th>
-            <th>
+            <th class="hidden-xs">
                 Note
             </th>
-            <th class="noprint">
+            <th class="hidden-print">
             </th>
         </tr>
     </thead>
     <tbody>
+        @{ int startNr = 0; }
         @foreach (var item in Model.Flights)
         {
             <tr>
@@ -110,17 +122,17 @@
                         <text> (Anden betaler)</text>
                     }
                     @if ((item.Betaler == null) && (item.Pilot != null))
-                    { 
+                    {
                         <text> (mangler betaler) </text>
                     }
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @if (item.Departure.HasValue)
                     {
                         @item.Departure.Value.ToString("HH:mm");
                     }
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @if (item.Landing.HasValue)
                     {
                         @item.Landing.Value.ToString("HH:mm");
@@ -131,11 +143,11 @@
                     {
                         if (item.Landing.Value >= item.Departure.Value)
                         {
-                        @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
                         }
                         else
                         {
-                        <text><span class="error">Fejl: landing før start</span></text>
+                            <text><span class="error">Fejl: landing før start</span></text>
                         }
                     }
                 </td>
@@ -147,12 +159,12 @@
                         @item.LandedOn.Name
                     }
                 </td>
-                <td>
+                <td class="hidden-xs hidden-sm">
                     @item.TachoDeparture
                     @if (item.Departure.HasValue && item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
                         <text> / </text>
-                        @item.TachoLanding 
+                        @item.TachoLanding
                         <text> (</text>
                         @(item.TachoLanding.Value - item.TachoDeparture.Value);
                         <text>)</text>
@@ -161,7 +173,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
-                <td class="noprint">
+                <td class="hidden-print">
                     @if (Request.IsAuthenticated)
                     {
                         bool isEditable = false;
@@ -170,35 +182,30 @@
                         if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
                         if (isEditable)
                         {
-                            @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                            @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
                         }
                     }
-                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
                     @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
-                    @Html.ActionLink("Slet", "Delete", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
+            @Html.ActionLink("Slet", "Delete", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#myTable").tablesorter();
-    }
-);
-</script>
+
+
+
 <p style="color: silver" class="noprint">
     <em>Rettelser kan udføres op til 48 timer efter flyvningen fandt sted.</em>
 </p>
 <br style="page-break-after: always;" />
 <h2>
-    Logbøger @Model.Date.ToShortDateString()</h2>
-<h3>
-    Fly</h3>
-<table>
+    Logbøger / Fly @Model.Date.ToShortDateString() <small>@(ClubController.CurrentClub != null ? @ClubController.CurrentClub.Name : string.Empty)</small></h2>
+<table class="table">
     <tr>
         <td valign="top">
-            <table>
+            <table class="table table-striped table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -241,7 +248,7 @@
             </table>
         </td>
         <td valign="top">
-            <table>
+            <table class="table table-striped table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -286,12 +293,13 @@
         </td>
     </tr>
 </table>
-<h3>
-    Piloter</h3>
-<table>
+<h2>
+    Logbøger / Piloter @Model.Date.ToShortDateString() <small>@(ClubController.CurrentClub != null ? @ClubController.CurrentClub.Name : string.Empty)</small>
+</h2>
+<table class="table">
     <tr>
         <td valign="top">
-            <table>
+            <table class="table table-striped table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -334,7 +342,7 @@
             </table>
         </td>
         <td valign="top">
-            <table>
+            <table class="table table-striped table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -381,8 +389,10 @@
 </table>
 <br />
 <p>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn">Statistik
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik
         for @Model.Date.ToString("yyyy")</a> @*<a href="@Url.Content("~/")@Model.Date.AddMonths(-1).ToString("yyyy-MM")" class="awesomeBtn">Statistik for @Model.Date.AddMonths(-1).ToString("MMMM")</a>*@
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="awesomeBtn">Statistik
-        for @Model.Date.ToString("MMMM")</a>
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">
+        Statistik
+        for @Model.Date.ToString("MMMM")
+    </a>
 </p>
