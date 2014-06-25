@@ -177,15 +177,15 @@ namespace FlightJournal.Web.Models
             get
             {
                 return
-                    "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde unionsnr;Bagsæde medlemsnr;Bagsæde navn;Bagsæde unionsnr;Betaler medlemsnr;Betaler navn;Betaler unionsnr;Startet;Landed;Flyvetid;Tacho start;Tacho slut;Tacho;Note;Km;Starttype;Start fra;Landed på;Sidst opdateret;Sidst opdateret af;Nøgle\n";
+                    "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde unionsnr;Bagsæde medlemsnr;Bagsæde navn;Bagsæde unionsnr;Betaler medlemsnr;Betaler navn;Betaler unionsnr;Startet;Landed;Flyvetid;Tacho start;Tacho slut;Tacho;Note;Km;Starttype;Start fra;Landed på;Sidst opdateret;Sidst opdateret af\n";
             }
         }
 
         public string ToCsvString()
         {
-            return
+                return
                 string.Format(
-                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24};{25};{26};{27},{28}\n",
+                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23}\n",
                     this.Date.ToShortDateString(),
                     this.Plane,
                     this.Pilot != null ? this.Pilot.MemberId : string.Empty,
@@ -209,8 +209,8 @@ namespace FlightJournal.Web.Models
                     this.StartedFrom,
                     this.LandedOn,
                     this.LastUpdated,
-                    this.LastUpdatedBy,
-                    this.RecordKey);
+                    this.LastUpdatedBy);
+            
         }
 
         public double TotalCost()
