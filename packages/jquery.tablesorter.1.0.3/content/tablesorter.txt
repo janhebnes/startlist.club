@@ -1,0 +1,31 @@
+﻿简要说明：
+这是一个相当不错的分页和排序插件，作者是 Christian Bach：http://tablesorter.com/docs/
+这是由陈希章(ares@xizhang.com)整理的,并且稍作了修改。
+
+注意：table必须有thead,而且里面必须用th作标题行。
+
+
+如何使用：
+	$(function() {
+		$("table")
+			.tablesorter({widthFixed: true, widgets: ['zebra']})
+			.tablesorterPager({container: $("#pager")});
+	});
+
+
+分页需要一个container：
+<div id="pager" class="pager">
+	<form>
+		<img src="pager/first.png" class="first"/>
+		<img src="pager/prev.png" class="prev"/>
+		<input type="text" class="pagedisplay"/>
+		<img src="pager/next.png" class="next"/>
+		<img src="pager/last.png" class="last"/>
+		<select class="pagesize">
+			<option selected="selected"  value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option  value="40">40</option>
+		</select>
+	</form>
+</div>

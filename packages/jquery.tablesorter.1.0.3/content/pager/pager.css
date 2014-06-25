@@ -1,0 +1,18 @@
+﻿.pager
+{
+    float: right;
+    margin-bottom: 5px;
+}
+.pagedisplay
+{
+    text-align: center;
+}
+
+.emptydatatemplate
+{
+    display:none
+}
+.exportlink
+{
+    display:none
+}
