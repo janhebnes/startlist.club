@@ -13,14 +13,14 @@ Contributing
 ------------
 
 1. Fork it.
-2. Create a branch (`git checkout -b my_markup`)
-3. Commit your changes (`git commit -am "Added Snarkdown"`)
-4. Push to the branch (`git push origin my_markup`)
+2. Create a branch (`git checkout -b my_feature`)
+3. Commit your changes (`git commit -am "Added feature x"`)
+4. Push to the branch (`git push origin my_feature`)
 
 Watch the Trello board for upcomming request.
 https://trello.com/board/flight-journal/4f592a73bb5d895218126fed
 
-Establishing a local database environment for development using the Entity Framework 
+Establishing local development - Requires using the Entity Framework for generating the databases
 ------------
 1. Visual Studio and SQL or SQLExpress must be installed and your user account must have owner priviledges
 2. Enable the #if DEBUG section in \FlightJournal.Web\App_Start\IdentityConfig.cs for allowing FlightJournal.Membership database to be auto created (the admin user is seeded inside this section)
