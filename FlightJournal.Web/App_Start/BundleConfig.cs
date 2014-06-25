@@ -42,6 +42,10 @@ namespace FlightJournal.Web
                       "~/Content/themes/base/jquery.ui.datepicker.css",
                       "~/Content/themes/base/jquery.ui.progressbar.css",
                       "~/Content/themes/base/jquery.ui.theme.css"));
+            
+            //// When using deployment and not running in debug mode it is expected that the bundling automatically takes place
+            //// BundleTable.EnableOptimizations = true;
+
         }
     }
 }
