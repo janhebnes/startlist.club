@@ -35,8 +35,8 @@ namespace FlightJournal.Web.Controllers
                             ghost = new Club();
                             ghost.LocationId = club.LocationId;
                             ghost.ShortName = club.ShortName;
+                            ghost.Name = club.Name;
                             ghost.ClubId = club.ClubId;
-
                         }
                     }
 

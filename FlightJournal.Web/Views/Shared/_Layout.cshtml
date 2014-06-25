@@ -1,4 +1,5 @@
 ﻿@using FlightJournal.Web
+@using FlightJournal.Web.Controllers
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @RenderSection("head", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -18,7 +19,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Startlisten", "Index", "Home", null, new { @class = "navbar-brand" })
+                @if (ClubController.CurrentClub != null)
+                {
+                    @Html.ActionLink(ClubController.CurrentClub.Name, "Index", "Home", null, new { @class = "navbar-brand" })
+                }
+                else
+                {
+                    @Html.ActionLink("Startlisten", "Index", "Home", null, new { @class = "navbar-brand" })
+                }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -62,6 +70,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
