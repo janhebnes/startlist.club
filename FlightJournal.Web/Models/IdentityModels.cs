@@ -22,9 +22,11 @@ namespace FlightJournal.Web.Models
         }
 
         static ApplicationDbContext() {
-            // Set the database intializer which is run once during application start
-            // This seeds the database with admin user credentials and admin role
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+#if DEBUG
+            ////// Set the database intializer which is run once during application start
+            ////// This seeds the database with admin user credentials and admin role
+            ////Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+#endif
         }
 
         public static ApplicationDbContext Create() {

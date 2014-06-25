@@ -24,8 +24,9 @@ Establishing local development - Requires using the Entity Framework for generat
 ------------
 1. Visual Studio and SQL or SQLExpress must be installed and your user account must have owner priviledges
 2. Enable the #if DEBUG section in \FlightJournal.Web\App_Start\IdentityConfig.cs for allowing FlightJournal.Membership database to be auto created (the admin user is seeded inside this section)
-3. Enable the #if DEBUG section in \FlightJournal.Web\Models\FlightContext.cs for allowing FlightJournal database to be auto created
-4. Launch the application or Update to latest Code Migration using the Package Manager Console and "PM> Update-Database", this will create the Table model and create seed data for development (if step 2 and 3 are uncommented).
+3. Enable the #if DEBUG section in \FlightJournal.Web\Models\IdentityModels.cs for allowing FlightJournal.Membership database to be auto created 
+4. Enable the #if DEBUG section in \FlightJournal.Web\Models\FlightContext.cs for allowing FlightJournal database to be auto created
+5. Launch the application or Update to latest Code Migration using the Package Manager Console and "PM> Update-Database", this will create the Table model and create seed data for development (if step 2 and 3 are uncommented).
 
 Ps. Further migration scripts are stored native to Entity Framework practices in the .\Migrations folder 
 
