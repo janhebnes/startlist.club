@@ -17,7 +17,7 @@
     Historik</h2>
 <fieldset>
     <legend>Flight</legend>
-    <table id="myTable" class="tablesorter">
+    <table id="myTable" class="tablesorter table table-striped table-condensed" >
         <thead>
         <tr>
             <th>
@@ -122,7 +122,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
-                <td>@Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                <td>@Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "btn btn-default btn-sm" })
                 </td>
                 <td>
                     @if (item.State == "Deleted")
@@ -146,9 +146,12 @@
     <text> | </text>
     @Html.ActionLink("Forrige rettelser", "History", new { skip = ViewBag.Skip + 100 })
 </p>
+@section scripts
+{
 <script type="text/javascript">
     $(document).ready(function () {
         $("#myTable").tablesorter();
     }
 );
-</script>
+</script>    
+}
