@@ -36,6 +36,14 @@ namespace FlightJournal.Web.Controllers
                             ghost.LocationId = club.LocationId;
                             ghost.ShortName = club.ShortName;
                             ghost.Name = club.Name;
+                            if (club.Website != null && club.Website.StartsWith("http://"))
+                            {
+                                ghost.Website = club.Website;
+                            }
+                            else if (club.Website != null && !club.Website.StartsWith("http://"))
+                            {
+                                ghost.Website = "http://" + club.Website;
+                            }
                             ghost.ClubId = club.ClubId;
                         }
                     }

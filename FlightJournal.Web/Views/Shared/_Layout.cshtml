@@ -21,7 +21,14 @@
                 </button>
                 @if (ClubController.CurrentClub != null)
                 {
-                    @Html.ActionLink(ClubController.CurrentClub.Name, "Index", "Home", null, new { @class = "navbar-brand" })
+                    if (!String.IsNullOrWhiteSpace(ClubController.CurrentClub.Website))
+                    {
+                        <a class="navbar-brand" href="@ClubController.CurrentClub.Website">@ClubController.CurrentClub.Name</a>
+                    }
+                    else
+                    {
+                        @Html.ActionLink(ClubController.CurrentClub.Name, "Index", "Home", null, new { @class = "navbar-brand" })
+                    }
                 }
                 else
                 {

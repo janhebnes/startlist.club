@@ -437,6 +437,7 @@
     <Content Include="Views\Home\Administration.cshtml" />
     <Content Include="Views\Home\UHB530.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Location.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

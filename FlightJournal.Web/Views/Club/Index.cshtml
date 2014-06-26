@@ -9,16 +9,19 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
+<table class="table table-striped">
     <tr>
         <th>
-            ShortName
+            @Html.LabelFor(model => Model.FirstOrDefault().ShortName)
         </th>
         <th>
-            Name
+            @Html.LabelFor(model => Model.FirstOrDefault().Name)
         </th>
         <th>
-            DefaultStartLocationId
+            @Html.LabelFor(model => Model.FirstOrDefault().Website)
+        </th>
+        <th>
+            @Html.LabelFor(model => Model.FirstOrDefault().Location)
         </th>
         <th></th>
     </tr>
@@ -32,7 +35,10 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DefaultStartLocationId)
+            @Html.DisplayFor(modelItem => item.Website)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ClubId }) |

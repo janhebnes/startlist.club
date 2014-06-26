@@ -10,19 +10,24 @@
 <fieldset>
     <legend>Club</legend>
 
-    <div class="display-label">ShortName</div>
+    <div class="display-label">@Html.LabelFor(model => model.ShortName)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.ShortName)
     </div>
 
-    <div class="display-label">Name</div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
-
-    <div class="display-label">DefaultStartLocationId</div>
+    
+    <div class="display-label">@Html.LabelFor(model => model.Website)</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.DefaultStartLocationId)
+        @Html.DisplayFor(model => model.Website)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Location)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Location)
     </div>
 </fieldset>
 @using (Html.BeginForm()) {
