@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
+<table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
             Name
@@ -23,23 +23,24 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Club.ShortName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PilotStatusId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PilotStatusId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PilotStatusId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Club.ShortName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PilotStatusId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PilotStatusId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PilotStatusId })
+            </td>
+        </tr>
+    }
 
 </table>

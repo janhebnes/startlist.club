@@ -3,22 +3,25 @@
     ViewBag.Title = "Månedsrapport";
 }
 <p>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn">@Model.Date.ToString("yyyy")</a>
-    <a href="@Url.Content("~/")@Model.Date.AddMonths(-1).ToString("yyyy-MM")" class="awesomeBtn">@Model.Date.AddMonths(-1).ToString("MMMM")</a>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="awesomeBtn"><strong>@Model.Date.ToString("MMMM")</strong></a>
-    @if (DateTime.Today > Model.Date.AddMonths(1))
-    {
-        <a href="@Url.Content("~/")@Model.Date.AddMonths(1).ToString("yyyy-MM")" class="awesomeBtn">@Model.Date.AddMonths(1).ToString("MMMM")</a>
-    }
-    @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
-    {
-        <a href="@Url.Content("~/")@Model.Date.AddYears(1).ToString("yyyy")" class="awesomeBtn">@Model.Date.AddYears(1).ToString("yyyy")</a>
-    }
+    <div class="btn-group">
+        <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="btn btn-default">@Model.Date.ToString("yyyy")</a>
+        <a href="@Url.Content("~/")@Model.Date.AddMonths(-1).ToString("yyyy-MM")" class="btn btn-default">@Model.Date.AddMonths(-1).ToString("MMMM")</a>
+        <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Date.ToString("MMMM")</strong></a>
+        @if (DateTime.Today > Model.Date.AddMonths(1))
+        {
+            <a href="@Url.Content("~/")@Model.Date.AddMonths(1).ToString("yyyy-MM")" class="btn btn-default">@Model.Date.AddMonths(1).ToString("MMMM")</a>
+        }
+        @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
+        {
+            <a href="@Url.Content("~/")@Model.Date.AddYears(1).ToString("yyyy")" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
+        }
+    </div>
+    <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
 </p>
 
 <h2>
     Statistik for @Model.Date.ToString("MMMM yyyy")</h2>
-<table>
+<table class="table table-condensed table-striped ">
     <tr>
         <td>
             Flyvedage
@@ -68,17 +71,14 @@
         </td>
     </tr>
 </table>
-<p>
-    <br />
-    @Html.ActionLink("Eksporter startlisten for " + Model.Date.ToString("MMMM yyyy"), "Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month }, new { @class = "awesomeBtn" })
-</p>
+
 <h2>
     Logbøger for @Model.Date.ToString("MMMM yyyy")</h2>
 
-<table>
+<table class="table">
     <tr>
         <td valign="top">
-            <table id="mySummary" class="tablesorter">
+            <table id="mySummary" class="tablesorter table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -121,7 +121,7 @@
             </table>
         </td>
         <td valign="top">
-            <table id="mySummary2" class="tablesorter">
+            <table id="mySummary2" class="tablesorter table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -166,18 +166,14 @@
         </td>
     </tr>
 </table>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#mySummary").tablesorter();
-        $("#mySummary2").tablesorter();
-    }
-);
-</script>
 
+<div class="text-center hidden-print">
+    <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
+</div>
 <br style="page-break-after: always;" />
 <h2>
     Startlister for @Model.Date.ToString("MMMM yyyy")</h2>
-<table id="myTable" class="tablesorter">
+<table id="myTable" class="tablesorter table table-responsive table-striped table-hover table-condensed">
     <thead>
         <tr>
             <th>
@@ -198,13 +194,13 @@
             <th>
                 Flyvetid
             </th>
-            <th>
+            <th class="hidden-sm">
                 Flyveplads
             </th>
-            <th>
+            <th class="hidden-sm">
                 Tacho
             </th>
-            <th>
+            <th class="hidden-xs">
                 Note
             </th>
             <th>
@@ -250,7 +246,7 @@
                         @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
                     }
                 </td>
-                <td>
+                <td class="hidden-sm">
                     @item.StartedFrom.Name
                     @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
                     {
@@ -258,31 +254,38 @@
                         @item.LandedOn.Name
                     }
                 </td>
-                <td>
+                <td class="hidden-sm">
                     @item.TachoDeparture
                     @if (item.Departure.HasValue && item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
                         <text> / </text>
-                        @item.TachoLanding 
+                        @item.TachoLanding
                         <text> (diff: </text>
                         @(item.TachoDeparture.Value - item.TachoLanding.Value);
                         <text> ) </text>
                     }
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td>
-                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
+                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
                     @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section scripts
+{
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#mySummary").tablesorter();
+        $("#mySummary2").tablesorter();
         $("#myTable").tablesorter();
     }
-);
-</script>
+    );
+</script>    
+}
+

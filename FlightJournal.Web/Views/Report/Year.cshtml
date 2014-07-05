@@ -3,20 +3,23 @@
     ViewBag.Title = "Årsrapport";
 }
 <p>
-    <a href="@Url.Content("~/")@Model.Date.AddYears(-1).ToString("yyyy")" class="awesomeBtn">@Model.Date.AddYears(-1).ToString("yyyy")</a>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="awesomeBtn"><strong>@Model.Date.ToString("yyyy")</strong></a>
-    @foreach (var month in @Model.Flights.Select(d => d.Date.Month).Distinct().OrderBy(o => o))
-    {
-        <a href="@Url.Content("~/")@Model.Date.AddMonths(month - 1).ToString("yyyy-MM")" class="awesomeBtn">@Model.Date.AddMonths(month - 1).ToString("MMMM")</a>
-    }
-    @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
-    {
-        <a href="@Url.Content("~/")@Model.Date.AddYears(1).ToString("yyyy")" class="awesomeBtn">@Model.Date.AddYears(1).ToString("yyyy")</a>
-    }
+    <div class="btn-group">
+        <a href="@Url.Content("~/")@Model.Date.AddYears(-1).ToString("yyyy")" class="btn btn-default">@Model.Date.AddYears(-1).ToString("yyyy")</a>
+        <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Date.ToString("yyyy")</strong></a>
+        @foreach (var month in @Model.Flights.Select(d => d.Date.Month).Distinct().OrderBy(o => o))
+        {
+            <a href="@Url.Content("~/")@Model.Date.AddMonths(month - 1).ToString("yyyy-MM")" class="btn btn-default">@Model.Date.AddMonths(month - 1).ToString("MMMM")</a>
+        }
+        @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
+        {
+            <a href="@Url.Content("~/")@Model.Date.AddYears(1).ToString("yyyy")" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
+        }
+    </div>
+    <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("yyyy")</a>
 </p>
 <h2>
     Statistik for @Model.Date.ToString("yyyy")</h2>
-<table>
+<table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -87,7 +90,7 @@
             </td>
             @for (int i = 1; i <= 12; i++)
             {
-                var count = Model.Flights.Where(f => f.Date.Month == i).Count();
+                var count = Model.Flights.Count(f => f.Date.Month == i);
                 <td align="right">
                     @(count != 0 ? count.ToString() : "")
                 </td>
@@ -130,13 +133,10 @@
         </tr>
     </tbody>
 </table>
-<p>
-    <br />
-    @Html.ActionLink("Eksporter startlisten for " + Model.Date.ToString("yyyy"), "Export", "Report", new { year = Model.Date.Year }, new { @class = "awesomeBtn" })
-</p>
+
 <h3>
     Pilot statistik</h3>
-<table id="myPilotTable" class="tablesorter">
+<table id="myPilotTable" class="tablesorter table table-striped table-hover table-condensed table-bordered">
     <thead>
         <tr>
             <th>
@@ -220,19 +220,13 @@
         }
     </tbody>
 </table>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#myPilotTable").tablesorter();
-    }
-);
-</script>
 
 <h2>
     Logbøger for @Model.Date.ToString("yyyy")</h2>
-<table >
+<table class="table">
     <tr>
         <td valign="top">
-            <table id="myPilotStatTable" class="tablesorter">
+            <table id="myPilotStatTable" class="tablesorter table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -251,13 +245,13 @@
                 </thead>
                 <tbody>
                     @foreach (var item in from c in Model.Flights
-                                         group c by new { c.Pilot, c.Plane } into g
-                                         select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+                        group c by new { c.Pilot, c.Plane } into g
+                        select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                     {
-                         var time = new TimeSpan(item.ItemFlights
+                        var time = new TimeSpan(item.ItemFlights
                             .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                            .Sum(f => f.myTime)); 
-                        
+                            .Sum(f => f.myTime));
+
                         <tr>
                             <td>
                                 @item.Plane
@@ -275,9 +269,10 @@
                     }
                 </tbody>
             </table>
+
         </td>
         <td valign="top">
-            <table id="myPilotStatTable2" class="tablesorter">
+            <table id="myPilotStatTable2" class="tablesorter table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -296,14 +291,14 @@
                 </thead>
                 <tbody>
                     @foreach (var item in from c in Model.Flights
-                                         where c.PilotBackseat != null
-                                         group c by new { c.PilotBackseat, c.Plane } into g
-                                         select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+                        where c.PilotBackseat != null
+                        group c by new { c.PilotBackseat, c.Plane } into g
+                        select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                     {
-                          var time = new TimeSpan(item.ItemFlights
+                        var time = new TimeSpan(item.ItemFlights
                             .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                            .Sum(f => f.myTime)); 
-                         
+                            .Sum(f => f.myTime));
+
                         <tr>
                             <td>
                                 @item.Plane
@@ -321,13 +316,20 @@
                     }
                 </tbody>
             </table>
+
         </td>
     </tr>
 </table>
+
+@section scripts
+{
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#myPilotTable").tablesorter();
         $("#myPilotStatTable").tablesorter();
         $("#myPilotStatTable2").tablesorter();
+
     }
-);
-</script>
+    );
+</script>    
+}

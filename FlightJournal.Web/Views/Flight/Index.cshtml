@@ -4,12 +4,11 @@
     {
         if (input.Year == DateTime.Today.Year)
         {
-    @(input.ToString("ddd. ") + input.ToString("d MMM"));
+            @(input.ToString("ddd. ") + input.ToString("d MMM"));
         }
         else
         {
-            <a href="@Url.Content("~/")@input.ToString("yyyy-MM-dd")" class="awesomeBtn">@input.ToString("dd/MM")</a>
-            @*@Html.ActionLink(input.ToShortDateString(), "Date", new { date = input })*@
+            <a href="@Url.Content("~/")@input.ToString("yyyy-MM-dd")" class="btn btn-info">@input.ToString("dd/MM")</a>
         }
 }
 @{

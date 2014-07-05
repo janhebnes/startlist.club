@@ -170,7 +170,7 @@
                         <text>)</text>
                     }
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td class="hidden-print">
@@ -186,8 +186,6 @@
                         }
                     }
                     @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
-                    @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })
-            @Html.ActionLink("Slet", "Delete", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
                 </td>
             </tr>
         }
@@ -389,10 +387,7 @@
 </table>
 <br />
 <p>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik
-        for @Model.Date.ToString("yyyy")</a> @*<a href="@Url.Content("~/")@Model.Date.AddMonths(-1).ToString("yyyy-MM")" class="awesomeBtn">Statistik for @Model.Date.AddMonths(-1).ToString("MMMM")</a>*@
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">
-        Statistik
-        for @Model.Date.ToString("MMMM")
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
+    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")
     </a>
 </p>
