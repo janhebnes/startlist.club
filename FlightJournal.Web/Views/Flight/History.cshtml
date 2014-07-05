@@ -17,7 +17,7 @@
     Historik</h2>
 <fieldset>
     <legend>Flight</legend>
-    <table id="myTable" class="tablesorter table table-striped table-condensed" >
+    <table id="myTable" class="tablesorter table table-striped table-condensed table-hover" >
         <thead>
         <tr>
             <th>
@@ -42,9 +42,6 @@
                 Landing
             </th>
             <th>
-                Start metode
-            </th>
-            <th>
                 Flyveplads
             </th>
             <th>
@@ -55,11 +52,11 @@
             </th>
             <th>
             </th>
-            <th>
+            <th>Action
             </th>
-            <th>
+            @*<th>
                 Flight Id
-            </th>
+            </th>*@
         </tr>
         </thead>
         <tbody>
@@ -100,9 +97,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Landing)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.StartType)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.StartedFrom.Name)
                     @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
@@ -134,8 +131,8 @@
                         @item.State
                     }
                 </td>
-                <td>@item.FlightId
-                </td>
+                @*<td>@item.FlightId
+                </td>*@
             </tr>
         }
         </tbody>
