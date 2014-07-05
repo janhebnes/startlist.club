@@ -48,13 +48,13 @@
             <th>
                 Pilote(r)
             </th>
-            <th>
+            <th class="hidden-sm">
                 Flyveplads
             </th>
-            <th>
+            <th class="hidden-sm">
                 Tacho
             </th>
-            <th>
+            <th class="hidden-xs">
                 Note
             </th>
             <th class="hidden-print">
@@ -128,7 +128,7 @@
                         <text> (mangler betaler) </text>
                     }
                 </td>
-                <td>
+                <td class="hidden-sm">
                     @item.StartedFrom.Name
                     @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
                     {
@@ -136,7 +136,7 @@
                         @item.LandedOn.Name
                     }
                 </td>
-                <td>
+                <td class="hidden-sm">
                     @item.TachoDeparture
                     @if (item.TachoLanding.HasValue && item.TachoLanding > 0)
                     {
@@ -147,7 +147,7 @@
                         <text>)</text>
                     }
                 </td>
-                <td>
+                <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td class="hidden-print">
