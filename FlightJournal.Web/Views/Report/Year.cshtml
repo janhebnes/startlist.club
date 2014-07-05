@@ -320,7 +320,9 @@
         </td>
     </tr>
 </table>
-
+<div class="text-center hidden-print">
+    <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("yyyy")</a>
+</div>
 @section scripts
 {
 <script type="text/javascript">
