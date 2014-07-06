@@ -2,22 +2,7 @@
 @{
     ViewBag.Title = "Opret flyvning";
 }
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/EditorHookup.js")" type="text/javascript"></script>
-@*<script src="@Url.Content("~/Scripts/RangeDateValidator.js")" type="text/javascript"></script>*@
-<script src="@Url.Content("~/Scripts/AutoCompleteCombobox.js")" type="text/javascript"></script>
-<script>
-    $(function () {
-        $("#PlaneId").combobox();
-        $("#PilotId").combobox();
-        $("#PilotBackseatId").combobox();
-        $("#BetalerId").combobox();
-        $("#StartTypeId").combobox();
-        $("#StartedFromId").combobox();
-        $("#LandedOnId").combobox();
-    });
-</script>
+
 <p>
     @using (Html.BeginForm())
     {
@@ -31,63 +16,63 @@
                 @Html.EditorFor(model => model.Date)
                 @Html.ValidationMessageFor(model => model.Date)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.Departure)
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Departure)
                 @Html.ValidationMessageFor(model => model.Departure)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.Landing)
             </div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.Landing)
                 @Html.ValidationMessageFor(model => model.Landing)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.PlaneId)
             </div>
-            <div class="editor-field">
+            <div class="editor-field ">
                 @Html.DropDownList("PlaneId", String.Empty)
                 @Html.ValidationMessageFor(model => model.PlaneId)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.BetalerId)
             </div>
             <div class="editor-field">
                 @Html.DropDownList("BetalerId", String.Empty)
                 @Html.ValidationMessageFor(model => model.BetalerId)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.PilotId)
             </div>
             <div class="editor-field">
                 @Html.DropDownList("PilotId", String.Empty)
                 @Html.ValidationMessageFor(model => model.PilotId)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.PilotBackseatId)
             </div>
             <div class="editor-field">
                 @Html.DropDownList("PilotBackseatId", String.Empty)
                 @Html.ValidationMessageFor(model => model.PilotBackseatId)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.StartTypeId)
             </div>
             <div class="editor-field">
                 @Html.DropDownList("StartTypeId", String.Empty)
                 @Html.ValidationMessageFor(model => model.StartTypeId)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.StartedFromId)
             </div>
             <div class="editor-field">
                 @Html.DropDownList("StartedFromId", String.Empty)
                 @Html.ValidationMessageFor(model => model.StartedFromId)
             </div>
-            <div class="editor-label">
+            <div class="editor-label clearfix">
                 @Html.LabelFor(model => model.LandedOnId)
             </div>
             <div class="editor-field">
@@ -148,10 +133,29 @@
 <div>
     <a href="/" class="back">Tilbage til listen</a>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").css("border", "3px solid #888");
-        $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").first().focus();
-    }
-);
-</script>
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
+    <script>
+        $(function() {
+            $("#PlaneId").combobox();
+            $("#PilotId").combobox();
+            $("#PilotBackseatId").combobox();
+            $("#BetalerId").combobox();
+            $("#StartTypeId").combobox();
+            $("#StartedFromId").combobox();
+            $("#LandedOnId").combobox();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+                $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").css("border", "3px solid #888");
+                $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").first().focus();
+            }
+        );
+    </script>
+}

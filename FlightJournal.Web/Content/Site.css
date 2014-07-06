@@ -41,6 +41,19 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+/* Editing Forms */
+.display-label, .editor-label {
+    clear:both;
+    float:left;
+    width:150px;
+    text-align:right;
+    margin: 1em 1em 0 0;
+}
+
+.display-field, .editor-field {
+    margin: 1em 0 0 0;
+}
+
 /* tablesorter */
 table.tablesorter thead tr .header {
 	background-image: url(tablesorter.bg.gif);

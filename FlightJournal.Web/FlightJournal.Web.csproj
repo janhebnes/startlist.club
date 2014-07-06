@@ -323,6 +323,8 @@
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.autocomplete-combobox.js" />
+    <Content Include="Scripts\jquery.editorhookup.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
