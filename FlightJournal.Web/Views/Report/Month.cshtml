@@ -21,20 +21,48 @@
 
 <h2>
     Statistik for @Model.Date.ToString("MMMM yyyy")</h2>
+@{
+    var dateCount = Model.Flights.Select(s => s.Date).Distinct().Count();
+    var dates = Model.Flights.Select(s => s.Date).Distinct();
+}
 <table class="table table-condensed table-striped ">
     <tr>
         <td>
             Flyvedage
         </td>
-        <td align="right">@Model.Flights.Select(s => s.Date).Distinct().Count()
-        </td>
+        <td align="right">@Model.Flights.Select(s => s.Date).Distinct().Count()</td>
+        
+        @foreach (var source in dates)
+        {
+            <td align="right">
+                <a href="/@source.ToString("yyyy-MM-dd")">
+                    @if (dateCount > 10)
+                    {
+                        @source.ToString("dd")
+                    }
+                    else if (dateCount > 5)
+                    {
+                        @source.ToString("M")
+                    }
+                    else
+                    {
+                        @source.ToString("d")
+                    }
+                </a>
+            </td>
+        }
     </tr>
     <tr>
         <td>
             Starter
         </td>
-        <td align="right">@Model.Flights.Count()
-        </td>
+        <td align="right">@Model.Flights.Count()</td>
+        @foreach (var date in dates)
+        {
+            <td align="right">
+                @Model.Flights.Count(d => d.Date == date)
+            </td>
+        }
     </tr>
     @{
         var time = new TimeSpan(@Model.Flights.ToList()
@@ -46,22 +74,42 @@
             Flyvetid
         </td>
         <td align="right">
-                    @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")) , time.Minutes.ToString("#00")) : "")
+            @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")) , time.Minutes.ToString("#00")) : "")
         </td>
+        @foreach (var date in dates)
+        {
+            var separateTime = new TimeSpan(@Model.Flights.Where(d => d.Date == date).ToList()
+                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                .Sum(f => f.myTime));
+            <td align="right">
+                @(separateTime.TotalMinutes > 0 ? string.Format("{0}:{1}", separateTime.TotalHours.ToString("#00.0").Substring(0, separateTime.TotalHours.ToString("#00.0").IndexOf(",")), separateTime.Minutes.ToString("#00")) : "")
+            </td>
+        }
     </tr>
     <tr>
         <td>
             Piloter
         </td>
-        <td align="right">@Model.Flights.Select(s => s.Pilot).Union(Model.Flights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
-        </td>
+        <td align="right">@Model.Flights.Select(s => s.Pilot).Union(Model.Flights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()</td>
+        @foreach (var date in dates)
+        {
+            <td align="right">
+                @Model.Flights.Where(s => s.Date == date).Select(s => s.Pilot).Union(Model.Flights.Where(s => s.Date == date && s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
+            </td>
+        }
     </tr>
     <tr>
         <td>
             Stræk opgaver
         </td>
-        <td align="right">@Model.Flights.Where(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0).Count()
+        <td align="right">@Model.Flights.Count(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0)
         </td>
+        @foreach (var date in dates)
+        {
+            <td align="right">
+                @Model.Flights.Count(w => w.Date == date && w.TaskDistance.HasValue && w.TaskDistance.Value > 0)
+            </td>
+        }
     </tr>
     <tr>
         <td>
@@ -69,6 +117,12 @@
         </td>
         <td align="right">@Model.Flights.Where(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0).Sum(d => d.TaskDistance)
         </td>
+        @foreach (var date in dates)
+        {
+            <td align="right">
+                @Model.Flights.Where(w => w.Date == date && w.TaskDistance.HasValue && w.TaskDistance.Value > 0).Sum(d => d.TaskDistance)
+            </td>
+        }
     </tr>
 </table>
 
