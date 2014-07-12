@@ -1,0 +1,22 @@
+﻿@model FlightJournal.Web.Models.Flight
+@if (Model.TachoDeparture.HasValue && Model.TachoLanding.HasValue)
+{
+    @(Model.TachoLanding.Value - Model.TachoDeparture.Value)
+    @: ( 
+    @Model.TachoDeparture 
+    @: -  
+    @Model.TachoLanding 
+    @:) 
+}
+else if (Model.TachoDeparture.HasValue)
+{
+    <text>? (</text>
+    @Model.TachoDeparture
+    <text> - ?)</text> 
+}
+else if (Model.TachoLanding.HasValue)
+{
+    <text>? ( ? - </text>
+    @Model.TachoLanding 
+    <text>) </text>
+}

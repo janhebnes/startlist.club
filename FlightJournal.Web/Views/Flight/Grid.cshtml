@@ -131,19 +131,7 @@
                     }
                 </td>
                 <td class="hidden-sm">
-                    @if (item.TachoDeparture.HasValue && item.TachoLanding.HasValue)
-                    {
-                        @(item.TachoLanding.Value - item.TachoDeparture.Value)
-                        @:" (" @item.TachoDeparture @:" - " @item.TachoLanding @:") ":") "
-                    }
-                    else if (item.TachoDeparture.HasValue)
-                    {
-                        @:"? (" @item.TachoDeparture @:" - ?) "
-                    }
-                    else if (item.TachoLanding.HasValue)
-                    {
-                        @:"? ( ? - " @item.TachoLanding @:") "
-                    }
+                    @Html.Partial("DisplayTemplates/_TachoPartial", item);
                 </td>
                 <td class="hidden-xs">
                     <span>

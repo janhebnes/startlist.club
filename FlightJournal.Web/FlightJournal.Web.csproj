@@ -440,6 +440,7 @@
     <Content Include="Views\Home\UHB530.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Location.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\_TachoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
