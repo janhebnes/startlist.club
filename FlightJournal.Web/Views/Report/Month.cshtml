@@ -309,14 +309,18 @@
                     }
                 </td>
                 <td class="hidden-sm">
-                    @item.TachoDeparture
-                    @if (item.Departure.HasValue && item.TachoLanding.HasValue && item.TachoLanding > 0)
+                    @if (item.TachoDeparture.HasValue && item.TachoLanding.HasValue)
                     {
-                        <text> / </text>
-                        @item.TachoLanding
-                        <text> (diff: </text>
-                        @(item.TachoDeparture.Value - item.TachoLanding.Value);
-                        <text> ) </text>
+                        @(item.TachoLanding.Value - item.TachoDeparture.Value)
+                        @:" (" @item.TachoDeparture @:" - " @item.TachoLanding @:") "
+                    }
+                    else if (item.TachoDeparture.HasValue)
+                    {
+                        @:"? (" @item.TachoDeparture @:" - ?) "
+                    }
+                    else if (item.TachoLanding.HasValue)
+                    {
+                        @:"? ( ? - " @item.TachoLanding @:") "
                     }
                 </td>
                 <td class="hidden-xs">
