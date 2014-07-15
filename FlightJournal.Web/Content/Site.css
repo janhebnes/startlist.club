@@ -43,7 +43,7 @@ input[type="checkbox"].input-validation-error {
 
 /* Editing Forms */
 .display-label, .editor-label {
-    clear:both;
+    /*clear:both;*/
     float:left;
     width:150px;
     text-align:right;
@@ -61,7 +61,6 @@ table.tablesorter thead tr .header {
 	background-position: center right;
 	cursor: pointer;
 }
-
 table.tablesorter tbody tr.odd td {
 	background-color:#F0F0F6;
 }
@@ -71,3 +70,13 @@ table.tablesorter thead tr .headerSortUp {
 table.tablesorter thead tr .headerSortDown {
     background-image: url(tablesorter.desc.gif);
 }
+.ui-autocomplete .ui-menu-item{
+    /*position: relative;*/
+    list-style: none;
+    /*display: inline-block;*/
+}
+.custom-combobox-input {
+    /*margin: 0;
+    padding: 0.3em;*/
+}
+
