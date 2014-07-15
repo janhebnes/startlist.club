@@ -59,17 +59,13 @@ $(function() {
 
             $("<a>")
                 .attr("tabIndex", -1)
-                .attr("title", "Show All Items")
+                .attr("title", "Show All")
                 .tooltip()
-                .appendTo(this.wrapper)
-                .button({
-                    icons: {
-                        primary: "ui-icon-triangle-1-s"
-                    },
-                    text: false
-                })
-                .removeClass("ui-corner-all")
                 .addClass("custom-combobox-toggle ui-corner-right")
+                .attr("style", "margin-left:5px;margin-right:5px;cursor:pointer;")
+                .html("&#x25BC;")
+                .appendTo(this.wrapper)
+                .removeClass("ui-corner-all")
                 .mousedown(function () {
                     wasOpen = input.autocomplete("widget").is(":visible");
                 })
