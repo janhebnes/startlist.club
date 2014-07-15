@@ -43,7 +43,6 @@ input[type="checkbox"].input-validation-error {
 
 /* Editing Forms */
 .display-label, .editor-label {
-    /*clear:both;*/
     float:left;
     width:150px;
     text-align:right;
@@ -79,17 +78,10 @@ table.tablesorter thead tr .headerSortDown {
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
 }
-
-.ui-autocomplete .ui-menu-item{
-    /*display: inline-block;*/
-}
-.custom-combobox-input {
-    /*margin: 0;
-    padding: 0.3em;*/
-}
 .ui-autocomplete .ui-menu-item a {
-text-decoration: none;
-display: block;
-padding: .2em .4em;
-line-height: 1.5;
-zoom: 1;
+    text-decoration: none;
+    display: block;
+    padding: .2em .4em;
+    line-height: 1.5;
+    zoom: 1;
+}
