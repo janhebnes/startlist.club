@@ -19,16 +19,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @if (ClubController.CurrentClub != null)
+                @if (ClubController.CurrentClub != null && !String.IsNullOrWhiteSpace(ClubController.CurrentClub.Website))
                 {
-                    if (!String.IsNullOrWhiteSpace(ClubController.CurrentClub.Website))
-                    {
-                        <a class="navbar-brand" href="@ClubController.CurrentClub.Website">@ClubController.CurrentClub.Name</a>
-                    }
-                    else
-                    {
-                        @Html.ActionLink(ClubController.CurrentClub.Name, "Index", "Home", null, new { @class = "navbar-brand" })
-                    }
+                    <a class="navbar-brand" href="@ClubController.CurrentClub.Website">@ClubController.CurrentClub.Name</a>
+                }
+                else if (ClubController.CurrentClub != null && !String.IsNullOrWhiteSpace(ClubController.CurrentClub.Name))
+                {
+                    @Html.ActionLink(ClubController.CurrentClub.Name, "Index", "Home", null, new { @class = "navbar-brand" })
                 }
                 else
                 {
