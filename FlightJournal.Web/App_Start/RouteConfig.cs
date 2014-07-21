@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq.Expressions;
+using System.Security.Policy;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace FlightJournal.Web{
@@ -19,10 +21,20 @@ namespace FlightJournal.Web{
                 new { controller = "Club", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
             routes.MapRoute(
+                "ClubDefault", // Route name
+                "Club/{action}/{id}", // URL with parameters
+                new { controller = "Club", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+            );
+            routes.MapRoute(
                 "Flight", // Route name
                 "Flight", // URL with parameters
                 new { controller = "Flight", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
+            ////routes.MapRoute(
+            ////    "FlightGrid", // Route name
+            ////    "Flight/Grid", // URL with parameters
+            ////    new { controller = "Flight", action = "Grid", id = UrlParameter.Optional } // Parameter defaults
+            ////);
             routes.MapRoute(
                 "Home", // Route name
                 "Home", // URL with parameters
@@ -71,18 +83,46 @@ namespace FlightJournal.Web{
 
             // ---------------------------
             // Allowing the reports to be visible from the root addresses /{year} or /{year}/{month} and browsing startlists using {date yyyy-mm-dd}
+            
             routes.MapRoute(
-                "Reporting", // Route name
-                "{date}", // URL with parameters
-                new { controller = "Report", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                "Root", // Route name
+                "", // URL with parameters
+                new { controller = "Report", action = "Index" }
             );
 
-            // Default map
+            //routes.MapRoute(
+            //    "RootClub", // Route name
+            //    "{club}", // URL with parameters
+            //    new { controller = "Report", action = "Index" },
+            //    new { club = @"\d" }
+            //);
+
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional }
+                "ReportingDate", // Route name
+                "{date}", // URL with parameters
+                new { controller = "Report", action = "Index" }
             );
+
+           routes.MapRoute(
+                "ReportingClubDate", // Route name
+                "{club}/{date}", // URL with parameters
+                new { controller = "Report", action = "Index"}
+            );
+            
+            routes.MapRoute(
+                name: "Default", // Route name
+                url: "{club}/{controller}/{action}/{id}", // URL with parameters
+                defaults: new { club = UrlParameter.Optional, controller = "Report", action = "Index", id = UrlParameter.Optional }
+                //,constraints: new { club = @"\D{3}" , controller = @"\D"}
+            );
+
+            //// Default map
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional }
+            //);
+
         }
     }
 }

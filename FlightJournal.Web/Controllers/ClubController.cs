@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -14,73 +16,95 @@ namespace FlightJournal.Web.Controllers
 
         public static Club CurrentClub
         {
-            get
-            {
-                // Return Session Cache if set
-                if (System.Web.HttpContext.Current.Session["CurrentClub"] != null)
-                {
-                    return System.Web.HttpContext.Current.Session["CurrentClub"] as Club;
-                }
-
-                // Read Cookie 
-                var cookie = System.Web.HttpContext.Current.Request.Cookies.Get("CurrentClub");
-                if (cookie != null)
-                {
-                    Club ghost = new Club();
-                    using (var shortDb = new FlightContext())
-                    {
-                        var club = shortDb.Clubs.SingleOrDefault(d => d.ShortName == cookie.Value);
-                        if (club != null)
-                        {
-                            ghost = new Club();
-                            ghost.LocationId = club.LocationId;
-                            ghost.ShortName = club.ShortName;
-                            ghost.Name = club.Name;
-                            if (club.Website != null && club.Website.StartsWith("http://"))
-                            {
-                                ghost.Website = club.Website;
-                            }
-                            else if (club.Website != null && !club.Website.StartsWith("http://"))
-                            {
-                                ghost.Website = "http://" + club.Website;
-                            }
-                            ghost.ClubId = club.ClubId;
-                        }
-                    }
-
-                    // Set Session Cache
-                    System.Web.HttpContext.Current.Session.Add("CurrentClub", ghost);
-
-                    // Return Current Club
-                    return ghost;
-                }
-
-                // Return Empty Club
-                return new Club();
+            get {
+                return GetCurrentClub();
             }
+        }
 
-            private set
+        /// <summary>
+        /// Method parameters allows for UnitTesting 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="routeData"></param>
+        /// <returns></returns>
+        public static Club GetCurrentClub(HttpContextBase context, RouteData routeData)
+        {
+            
+            // Fetch from URL 
+            var urlClubFilter = routeData.Values["club"] as string;
+
+            // If in the direct access we can be dealing with /{ClubId}
+            if (urlClubFilter == null && context.Request.Url != null)
             {
-                // Remove cookie and cache
-                if (System.Web.HttpContext.Current.Response.Cookies["CurrentClub"] != null)
-                    System.Web.HttpContext.Current.Response.Cookies["CurrentClub"].Expires = DateTime.Now.AddDays(-2);
-
-                if (System.Web.HttpContext.Current.Session["CurrentClub"] != null)
-                    System.Web.HttpContext.Current.Session.Remove("CurrentClub");
-
-                // Set Cookie and Session Cache
-                if (value != null && value.ShortName != null)
+                var absolutePath = context.Request.Url.AbsolutePath;
+                if (absolutePath != "/Club/SetCurrentClub" || context.Request.UrlReferrer == null)
                 {
-                    System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie("CurrentClub", value.ShortName) { Expires = DateTime.Now.AddDays(72) });
-                    System.Web.HttpContext.Current.Session.Add("CurrentClub", value);
+                    urlClubFilter = absolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
+                    urlClubFilter = context.Server.UrlDecode(urlClubFilter);
                 }
                 else
                 {
-                    System.Web.HttpContext.Current.Response.Cookies.Add(new HttpCookie("CurrentClub", string.Empty) { Expires = DateTime.Now.AddDays(72) });
-                    System.Web.HttpContext.Current.Session.Add("CurrentClub", new Club());
+                    urlClubFilter = context.Request.UrlReferrer.AbsolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
+                    urlClubFilter = context.Server.UrlDecode(urlClubFilter);
                 }
-                
             }
+
+            // Return Session Cache if set
+            if (context.Items["CurrentClub"] != null)
+            {
+                var ghostClubSession = context.Items["CurrentClub"] as Club;
+                if (ghostClubSession != null && Equals(ghostClubSession.ShortName, urlClubFilter))
+                {
+                    return ghostClubSession;
+                }
+            }
+
+            // Read Url
+            if (urlClubFilter != null && !string.IsNullOrWhiteSpace(urlClubFilter))
+            {
+                Club ghost = new Club();
+                using (var shortDb = new FlightContext())
+                {
+                    var club = shortDb.Clubs.SingleOrDefault(d => d.ShortName == urlClubFilter);
+                    if (club != null)
+                    {
+                        ghost = new Club();
+                        ghost.LocationId = club.LocationId;
+                        ghost.ShortName = club.ShortName;
+                        ghost.Name = club.Name;
+                        if (club.Website != null && club.Website.StartsWith("http://"))
+                        {
+                            ghost.Website = club.Website;
+                        }
+                        else if (club.Website != null && !club.Website.StartsWith("http://"))
+                        {
+                            ghost.Website = "http://" + club.Website;
+                        }
+                        ghost.ClubId = club.ClubId;
+                    }
+                }
+
+                // Set Session Cache
+                context.Items.Remove("CurrentClub");
+                context.Items.Add("CurrentClub", ghost);
+
+                // Return Current Club
+                return ghost;
+            }
+            return new Club();
+        }
+
+        public static Club GetCurrentClub()
+        {
+            var context = new HttpContextWrapper(System.Web.HttpContext.Current);
+            var routeData = RouteTable.Routes.GetRouteData(context);
+            if (routeData == null)
+            {
+                // Return empty object for allowing more optimize linq request on the filtered data
+                return new Club();
+            }
+
+            return GetCurrentClub(context, routeData);
         }
 
         /// <summary>
@@ -93,18 +117,34 @@ namespace FlightJournal.Web.Controllers
             return this.PartialView(db.Clubs.OrderBy(c=>c.Name).ToList());
         }
 
+        /// <summary>
+        /// Redirect the visitor to the actual path and adding the current club identifier to the Url
+        /// </summary>
+        /// <param name="shortName"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateInput(false)]
         public ViewResult SetCurrentClub(string shortName)
         {
-            // Set Current Club
-            CurrentClub = this.db.Clubs.SingleOrDefault(d => d.ShortName == shortName);    
+            var club = this.db.Clubs.SingleOrDefault(d => d.ShortName == shortName);
 
             // Return to actual path
-            if (this.Request.UrlReferrer != null && this.Request.UrlReferrer.AbsolutePath != "/Club/SetCurrentClub")
+            if (club != null && this.Request.UrlReferrer != null && this.Request.UrlReferrer.AbsolutePath != "/Club/SetCurrentClub")
             {
-                this.Response.Redirect(this.Request.UrlReferrer.AbsolutePath);
+                if (CurrentClub != null && !string.IsNullOrWhiteSpace(CurrentClub.ShortName))
+                {
+                    //// var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(this.Server.UrlPathEncode(CurrentClub.ShortName), club.ShortName);
+                    /// // HACK: the original implementation has an bug because UrlPathEncode sends back encoded danish characters with little c instead of big C like from the original raw request. 
+                    var currentClubUrl = this.Request.UrlReferrer.AbsolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
+                    if (currentClubUrl != null)
+                    {
+                        var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(currentClubUrl, club.ShortName);
+                        this.Response.Redirect(redirectPath);
+                    }
+                }
+                var liveRedirectPath = string.Format("/{0}{1}", club.ShortName, this.Request.UrlReferrer.AbsolutePath);
+                this.Response.Redirect(liveRedirectPath);    
             }
 
             return this.View(CurrentClub);

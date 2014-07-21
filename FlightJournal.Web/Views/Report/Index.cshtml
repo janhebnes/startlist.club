@@ -32,7 +32,12 @@
 
         function selectDate(dmy) {
             // Redirect page to date report
-            location = '/' + dmy;
+            @if (ClubController.CurrentClub.ShortName == null)
+            {
+                <text>location = '/' + dmy;</text>
+            }else{
+                <text>location = '/@Server.UrlPathEncode(ClubController.CurrentClub.ShortName)/' + dmy;</text>
+            }
         }
 
         $("#datepicker").datepicker({

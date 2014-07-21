@@ -11,8 +11,13 @@ namespace FlightJournal.Web.Controllers
     {
         private FlightContext db = new FlightContext();
 
-        // GET: /Report/
-        public ActionResult Index(DateTime? date)
+        /// <summary>
+        /// If Route with club is used the club id is available directly from the method, it is only shown here for example as the CurrentClub method handles returning the current club in all contexts
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="club"></param>
+        /// <returns></returns>
+        public ActionResult Index(DateTime? date, string club = null)
         {
             // URL information can be reviewed using RouteData.Values["date"]
             var raw = RouteData.Values["date"];
@@ -154,9 +159,13 @@ namespace FlightJournal.Web.Controllers
                     || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId) 
                     || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId) 
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                    .GroupBy(p => p.Date)
-                    .Select(g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
-            return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(x => x.Date, x => x.Hours);
+                    .GroupBy(p => p.Date);
+            if (availableDates.Any())
+            {
+                return availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() } ).ToDictionary(x=>x.Date, x=>x.FlightCount);
+            }
+
+            return null;
         }
     }
 }
