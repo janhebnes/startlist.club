@@ -90,12 +90,12 @@ namespace FlightJournal.Web{
                 new { controller = "Report", action = "Index" }
             );
 
-            //routes.MapRoute(
-            //    "RootClub", // Route name
-            //    "{club}", // URL with parameters
-            //    new { controller = "Report", action = "Index" },
-            //    new { club = @"\d" }
-            //);
+            routes.MapRoute(
+                "RootClub", // Route name
+                "{club}", // URL with parameters
+                new { controller = "Report", action = "Index" },
+                new { club = new ClubRouteConstraint(new ClubValidator()) } 
+            );
 
             routes.MapRoute(
                 "ReportingDate", // Route name
@@ -106,22 +106,23 @@ namespace FlightJournal.Web{
            routes.MapRoute(
                 "ReportingClubDate", // Route name
                 "{club}/{date}", // URL with parameters
-                new { controller = "Report", action = "Index"}
+                new { controller = "Report", action = "Index"},
+                new { club = new ClubRouteConstraint(new ClubValidator()) } 
             );
             
             routes.MapRoute(
-                name: "Default", // Route name
-                url: "{club}/{controller}/{action}/{id}", // URL with parameters
-                defaults: new { club = UrlParameter.Optional, controller = "Report", action = "Index", id = UrlParameter.Optional }
-                //,constraints: new { club = @"\D{3}" , controller = @"\D"}
+                "DefaultWithClubFlavor", // Route name
+                "{club}/{controller}/{action}/{id}", // URL with parameters
+                new { club = UrlParameter.Optional, controller = "Report", action = "Index", id = UrlParameter.Optional },
+                new { club = new ClubRouteConstraint(new ClubValidator()) } 
             );
 
-            //// Default map
-            //routes.MapRoute(
-            //    name: "Default",
-            //    url: "{controller}/{action}/{id}",
-            //    defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional }
-            //);
+            // Default map
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional }
+            );
 
         }
     }

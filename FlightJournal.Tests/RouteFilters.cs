@@ -119,7 +119,7 @@ namespace FlightJournal.Tests
         public void Root_and_a_non_existing_club_should_send_to_an_error_404_page()
         {
             // TODO: Wrong club should return 404 page 
-            should_return_expected_controller_and_action("~/MISSINGCLUB", "Club", "ClubPageDoesNotExist");
+            should_return_expected_controller_and_action("~/MISSINGCLUB", "Club", "NotFound");
         }
 
         [TestMethod]
@@ -129,6 +129,19 @@ namespace FlightJournal.Tests
             should_return_expected_club("~/ØSF/2014", "ØSF");
             should_return_expected_club("~/AASVK/2014-03", "AASVK");
             should_return_expected_club("~/AASVK/2014-06-21", "AASVK");
+        }
+
+        [TestMethod]
+        [TestCategory("Routes")]
+        public void Club_validator_test()
+        {
+            var validator = new ClubValidator();
+
+            // Valid Country
+            Assert.IsTrue(validator.IsValid("ØSF"), "ØSF should be valid");
+
+            // Invalid Country
+            Assert.IsFalse(validator.IsValid("OST"), "OSF should not validate");
         }
 
         [TestMethod]
@@ -160,7 +173,16 @@ namespace FlightJournal.Tests
             Assert.IsNotNull(routeData.Values["date"]);
             Assert.AreEqual(routeData.Values["date"].ToString().ToLower(), "2014");
         }
-        
+
+        [TestMethod]
+        [TestCategory("Routes")]
+        public void Root_club_and_date_as_year_should_set_routedata_club_to_incomming_path_information()
+        {
+            var routeData = GetRouteData("~/ØSF/2014");
+            Assert.IsNotNull(routeData.Values["club"]);
+            Assert.AreEqual(routeData.Values["club"].ToString().ToLower(), "øsf");
+        }
+
         [TestMethod]
         [TestCategory("Routes")]
         public void Root_club_and_date_as_year_month_day_should_set_routedata_date_to_incomming_path_information()
@@ -168,6 +190,15 @@ namespace FlightJournal.Tests
             var routeData1 = GetRouteData("~/ØSF/2014-03-22");
             Assert.IsNotNull(routeData1.Values["date"]);
             Assert.AreEqual(routeData1.Values["date"].ToString().ToLower(), "2014-03-22");
+        }
+        
+        [TestMethod]
+        [TestCategory("Routes")]
+        public void Root_club_and_date_as_year_month_day_should_set_routedata_club_to_incomming_path_information()
+        {
+            var routeData1 = GetRouteData("~/ØSF/2014-03-22");
+            Assert.IsNotNull(routeData1.Values["club"]);
+            Assert.AreEqual(routeData1.Values["club"].ToString().ToLower(), "øsf");
         }
 
         public RouteData GetRouteData(string path)
@@ -178,6 +209,8 @@ namespace FlightJournal.Tests
             Assert.IsNotNull(routeData);
             return routeData;
         }
+
+
 
         public void should_return_expected_controller_and_action(string path, string expectedController, string expectedAction)
         {

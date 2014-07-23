@@ -173,6 +173,8 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="ClubRouteConstraint.cs" />
+    <Compile Include="ClubValidator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\FlightController.cs" />
@@ -442,6 +444,7 @@
     <Content Include="Views\Import\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Location.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\_TachoPartial.cshtml" />
+    <Content Include="Views\Club\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

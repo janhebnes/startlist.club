@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Web;
@@ -37,12 +39,8 @@ namespace FlightJournal.Web.Controllers
             if (urlClubFilter == null && context.Request.Url != null)
             {
                 var absolutePath = context.Request.Url.AbsolutePath;
-                if (absolutePath != "/Club/SetCurrentClub" || context.Request.UrlReferrer == null)
-                {
-                    urlClubFilter = absolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
-                    urlClubFilter = context.Server.UrlDecode(urlClubFilter);
-                }
-                else
+                // Handle switching between one club to another
+                if (absolutePath == "/Club/SetCurrentClub" && context.Request.UrlReferrer != null)
                 {
                     urlClubFilter = context.Request.UrlReferrer.AbsolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
                     urlClubFilter = context.Server.UrlDecode(urlClubFilter);
@@ -81,6 +79,10 @@ namespace FlightJournal.Web.Controllers
                             ghost.Website = "http://" + club.Website;
                         }
                         ghost.ClubId = club.ClubId;
+                    }
+                    else
+                    {
+                        throw new InvalidDataException("No club found for short url " + urlClubFilter);
                     }
                 }
 
@@ -135,7 +137,7 @@ namespace FlightJournal.Web.Controllers
                 if (CurrentClub != null && !string.IsNullOrWhiteSpace(CurrentClub.ShortName))
                 {
                     //// var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(this.Server.UrlPathEncode(CurrentClub.ShortName), club.ShortName);
-                    /// // HACK: the original implementation has an bug because UrlPathEncode sends back encoded danish characters with little c instead of big C like from the original raw request. 
+                    /// // HACK: the original implementation has a bug because UrlPathEncode sends back encoded danish characters with little c instead of big C like from the original raw request. 
                     var currentClubUrl = this.Request.UrlReferrer.AbsolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
                     if (currentClubUrl != null)
                     {
@@ -228,6 +230,11 @@ namespace FlightJournal.Web.Controllers
             db.Clubs.Remove(club);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult NotFound()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)
