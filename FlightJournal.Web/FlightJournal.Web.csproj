@@ -449,7 +449,9 @@
     <Content Include="Views\Shared\DisplayTemplates\_TachoPartial.cshtml" />
     <Content Include="Views\Club\NotFound.cshtml" />
     <Content Include="Views\Error\PageNotFound.cshtml" />
-    <Content Include="Views\Error\RuntimeError.cshtml" />
+    <Content Include="Views\Error\Runtime.cshtml" />
+    <Content Include="Views\Error\Report.cshtml" />
+    <Content Include="Views\Error\Submit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

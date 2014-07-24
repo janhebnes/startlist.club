@@ -1,0 +1,27 @@
+﻿
+@if (Server.GetLastError() != null)
+{
+    <h3>Message</h3>
+    <p class="error">
+        @Server.GetLastError().Message
+    </p>
+
+    <h3>Source</h3>
+    <p class="error">
+        @Server.GetLastError().Source
+    </p>
+
+    <h4>StackTrace</h4>
+    <p class="warning">
+        @Server.GetLastError().StackTrace   
+    </p>
+
+    using (Html.BeginForm("Submit", "Error", FormMethod.Post))
+    {
+        <input type="text" value="@Server.GetLastError().ToString()" />
+        <h2>Report error message</h2>
+        <p>Please fill in as detailed as possible how the error was produced</p>
+        <textarea id="ContextDescription"> </textarea>
+        <input type="button" class="btn btn-primary" value="Report" />
+    }
+}
