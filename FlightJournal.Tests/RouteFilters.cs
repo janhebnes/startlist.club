@@ -133,7 +133,7 @@ namespace FlightJournal.Tests
 
         [TestMethod]
         [TestCategory("Routes")]
-        public void Club_validator_test()
+        public void RouteConstrint_Club_validator_test()
         {
             var validator = new ClubValidator();
 
@@ -142,6 +142,22 @@ namespace FlightJournal.Tests
 
             // Invalid Country
             Assert.IsFalse(validator.IsValid("OST"), "OSF should not validate");
+        }
+
+        [TestMethod]
+        [TestCategory("Routes")]
+        public void RouteConstrint_DateRoute_validator_test()
+        {
+            var validator = new DatePathValidator();
+
+            // Valid Country
+            Assert.IsTrue(validator.IsValid("2014"), "2014 is a valid format");
+            Assert.IsTrue(validator.IsValid("2014-03"), "2014-03 is a valid format");
+            Assert.IsTrue(validator.IsValid("2014-03-03"), "2014-03-03 is a valid format");
+
+            // Invalid formats
+            Assert.IsFalse(validator.IsValid("ØSF"), "ØSF should not be valid");
+            Assert.IsFalse(validator.IsValid("201403"), "201403 should not be valid");
         }
 
         [TestMethod]
@@ -209,8 +225,6 @@ namespace FlightJournal.Tests
             Assert.IsNotNull(routeData);
             return routeData;
         }
-
-
 
         public void should_return_expected_controller_and_action(string path, string expectedController, string expectedAction)
         {

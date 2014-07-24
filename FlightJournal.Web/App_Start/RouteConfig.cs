@@ -20,21 +20,13 @@ namespace FlightJournal.Web{
                 "Club", // URL with parameters
                 new { controller = "Club", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-            routes.MapRoute(
-                "ClubDefault", // Route name
-                "Club/{action}/{id}", // URL with parameters
-                new { controller = "Club", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            );
+
             routes.MapRoute(
                 "Flight", // Route name
                 "Flight", // URL with parameters
                 new { controller = "Flight", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-            ////routes.MapRoute(
-            ////    "FlightGrid", // Route name
-            ////    "Flight/Grid", // URL with parameters
-            ////    new { controller = "Flight", action = "Grid", id = UrlParameter.Optional } // Parameter defaults
-            ////);
+
             routes.MapRoute(
                 "Home", // Route name
                 "Home", // URL with parameters
@@ -83,12 +75,6 @@ namespace FlightJournal.Web{
 
             // ---------------------------
             // Allowing the reports to be visible from the root addresses /{year} or /{year}/{month} and browsing startlists using {date yyyy-mm-dd}
-            
-            routes.MapRoute(
-                "Root", // Route name
-                "", // URL with parameters
-                new { controller = "Report", action = "Index" }
-            );
 
             routes.MapRoute(
                 "RootClub", // Route name
@@ -100,14 +86,15 @@ namespace FlightJournal.Web{
             routes.MapRoute(
                 "ReportingDate", // Route name
                 "{date}", // URL with parameters
-                new { controller = "Report", action = "Index" }
+                new { controller = "Report", action = "Index" },
+                new { date = new DateRouteConstraint(new DatePathValidator()) }
             );
 
            routes.MapRoute(
                 "ReportingClubDate", // Route name
                 "{club}/{date}", // URL with parameters
                 new { controller = "Report", action = "Index"},
-                new { club = new ClubRouteConstraint(new ClubValidator()) } 
+                new { club = new ClubRouteConstraint(new ClubValidator()), date = new DateRouteConstraint(new DatePathValidator()) } 
             );
             
             routes.MapRoute(
@@ -123,7 +110,6 @@ namespace FlightJournal.Web{
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional }
             );
-
         }
     }
 }

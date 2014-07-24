@@ -177,6 +177,7 @@
     <Compile Include="ClubValidator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FlightController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
@@ -189,6 +190,8 @@
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\StartTypeController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
+    <Compile Include="DateRouteConstraint.cs" />
+    <Compile Include="DatePathValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -445,6 +448,8 @@
     <Content Include="Views\Shared\EditorTemplates\Location.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\_TachoPartial.cshtml" />
     <Content Include="Views\Club\NotFound.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Error\RuntimeError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

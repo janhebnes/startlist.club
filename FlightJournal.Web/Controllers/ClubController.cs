@@ -80,10 +80,6 @@ namespace FlightJournal.Web.Controllers
                         }
                         ghost.ClubId = club.ClubId;
                     }
-                    else
-                    {
-                        throw new InvalidDataException("No club found for short url " + urlClubFilter);
-                    }
                 }
 
                 // Set Session Cache
@@ -230,11 +226,6 @@ namespace FlightJournal.Web.Controllers
             db.Clubs.Remove(club);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public ActionResult NotFound()
-        {
-            return View();
         }
 
         protected override void Dispose(bool disposing)

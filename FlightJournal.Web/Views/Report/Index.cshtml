@@ -384,7 +384,6 @@
 </table>
 <br />
 <p>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
-    <a href="@Url.Content("~/")@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")
-    </a>
+    <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
+    <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
 </p>
