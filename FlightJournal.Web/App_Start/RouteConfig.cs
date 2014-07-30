@@ -7,13 +7,13 @@ namespace FlightJournal.Web{
     public class RouteConfig {
         public static void RegisterRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            
+
             // Custom club Urls
             routes.MapRoute(
                 "RootClub", // Route name
                 "{club}", // URL with parameters
                 new { controller = "Report", action = "Index" },
-                new { club = new ClubRouteConstraint(new ClubValidator()) } 
+                new { club = new ClubRouteConstraint(new ClubValidator()) }
             );
 
             // Custom report url /{yyyy} or /{yyyy-MM} or startlist on date {yyyy-MM-dd}
@@ -25,19 +25,20 @@ namespace FlightJournal.Web{
             );
 
             // Custom club Urls with custom Date
-           routes.MapRoute(
-                "ReportingClubDate", // Route name
-                "{club}/{date}", // URL with parameters
-                new { controller = "Report", action = "Index"},
-                new { club = new ClubRouteConstraint(new ClubValidator()), date = new DateRouteConstraint(new DatePathValidator()) } 
-            );
+            routes.MapRoute(
+                 "ReportingClubDate", // Route name
+                 "{club}/{date}", // URL with parameters
+                 new { controller = "Report", action = "Index" },
+                 new { club = new ClubRouteConstraint(new ClubValidator())
+                     , date = new DateRouteConstraint(new DatePathValidator()) }
+             );
 
-           // Custom club Urls with default behavior
+            // Custom club Urls with default behavior
             routes.MapRoute(
                 "DefaultWithClubFlavor", // Route name
                 "{club}/{controller}/{action}/{id}", // URL with parameters
                 new { club = UrlParameter.Optional, controller = "Report", action = "Index", id = UrlParameter.Optional },
-                new { club = new ClubRouteConstraint(new ClubValidator()) } 
+                new { club = new ClubRouteConstraint(new ClubValidator()) }
             );
 
             // Default behaviour
