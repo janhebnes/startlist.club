@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Configuration;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using FlightJournal.Web.Models;
+using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 
@@ -39,20 +42,33 @@ namespace FlightJournal.Web {
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
+            // Custom Config section for allowing hiding of the values
+            var settings = ConfigurationManager.GetSection("authentication") as AuthenticationConfigurationSection;
+
+            if (settings == null)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(settings.FacebookAppId)) 
+            {
+                app.UseFacebookAuthentication(
+                   appId: settings.FacebookAppId,
+                   appSecret: settings.FacebookAppSecret);
+            }
+            
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
             //    clientId: "",
             //    clientSecret: "");
 
-            app.UseTwitterAuthentication(
-               consumerKey: "dKwmoLMH1zkqnvMblCMcQ",
-               consumerSecret: "G71eTw0Cm1s0ygVQygPQrw7ckSCR4WfbBWxGWqfiO4");
+            //app.UseTwitterAuthentication(
+            //   consumerKey: "dKwmoLMH1zkqnvMblCMcQ",
+            //   consumerSecret: "G71eTw0Cm1s0ygVQygPQrw7ckSCR4WfbBWxGWqfiO4");
 
-            app.UseFacebookAuthentication(
-               appId: "266255723422800",
-               appSecret: "d564ffde30d649ca216f604cae5cbea3");
-
-            app.UseGoogleAuthentication();
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    AuthenticationMode = AuthenticationMode.Active,
+                
+            //});
         }
     }
 }
