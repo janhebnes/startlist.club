@@ -2,7 +2,7 @@ namespace FlightJournal.Web.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+#if (!DEBUG)
     public partial class Flightlandingcountadded : DbMigration
     {
         public override void Up()
@@ -15,4 +15,5 @@ namespace FlightJournal.Web.Migrations
             DropColumn("dbo.Flights", "LandingCount");
         }
     }
+#endif
 }

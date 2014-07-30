@@ -12,7 +12,6 @@ namespace FlightJournal.Web.Models
         public FlightContext() : base("FlightJournal")
         {
 #if DEBUG
-            //Database.SetInitializer<FlightContext>(new CreateDatabaseIfNotExists<FlightContext>());
             Database.SetInitializer<FlightContext>(new FlightContextInitializer());
 #endif
         }
@@ -99,6 +98,16 @@ namespace FlightJournal.Web.Models
                         .HasRequired(m => m.Betaler)
                         .WithMany(t => t.FlightHistory_Betalers)
                         .HasForeignKey(m => m.BetalerId)
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<PilotLogEntry>()
+                        .HasRequired(i => i.Pilot)
+                        .WithMany()
+                        .WillCascadeOnDelete(true);
+            
+            modelBuilder.Entity<PilotLogEntry>()
+                        .HasRequired(i => i.Flight)
+                        .WithMany()
                         .WillCascadeOnDelete(false);
 
         }
@@ -193,7 +202,7 @@ namespace FlightJournal.Web.Models
                         StartedFrom = location,
                         Pilot = pilot,
                         StartType = start,
-                        Description = "Demo flight",
+                        Description = "Demo flight (login with admin@admin.com and password Admin@123456",
                         LastUpdatedBy = pilot.ToString()
                     },
                     new Flight

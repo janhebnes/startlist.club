@@ -155,8 +155,8 @@ namespace FlightJournal.Web.Models
         public string Description { get; set; }
         [XmlIgnore]
         public virtual ICollection<Note> Notes { get; set; }
-        [XmlIgnore]
-        public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
+        //[XmlIgnore]
+        //public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
 
         [DisplayName("Betaler")]
         public int BetalerId { get; set; }

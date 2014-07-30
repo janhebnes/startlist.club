@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 
 namespace FlightJournal.Web.Models
 {
@@ -7,13 +8,16 @@ namespace FlightJournal.Web.Models
     {
         [Key]
         public Guid PilotLogid { get; set; }
-        public string Lesson { get; set; }
-        public string Description { get; set; }
-
-        public int PilotId { get; set; }
+        
+        [Required]
+        [XmlIgnore]
         public virtual Pilot Pilot { get; set; }
 
-        public Guid FlightId { get; set; }
+        [Required]
+        [XmlIgnore]
         public virtual Flight Flight { get; set; }
+
+        public string Lesson { get; set; }
+        public string Description { get; set; }
     }
 }

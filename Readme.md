@@ -20,7 +20,7 @@ Contributing
 Watch the Trello board for upcomming request.
 https://trello.com/board/flight-journal/4f592a73bb5d895218126fed
 
-Establishing local development - Requires using the Entity Framework for generating the databases
+Establishing local development - Requires using the Entity Framework for generating the databases (session user must have dbcreate sql rights for creating the database automatically)
 ------------
 1. Visual Studio and SQL or SQLExpress must be installed and your user account must have owner priviledges
 2. Enable the #if DEBUG section in \FlightJournal.Web\Models\IdentityModels.cs for allowing FlightJournal.Membership database to be auto created 

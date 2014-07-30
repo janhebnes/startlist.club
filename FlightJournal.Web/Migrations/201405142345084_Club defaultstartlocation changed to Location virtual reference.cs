@@ -2,7 +2,7 @@ namespace FlightJournal.Web.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+#if (!DEBUG)
     public partial class ClubdefaultstartlocationchangedtoLocationvirtualreference : DbMigration
     {
         public override void Up()
@@ -27,4 +27,5 @@ namespace FlightJournal.Web.Migrations
             AddForeignKey("dbo.Clubs", "DefaultStartLocation_LocationId", "dbo.Locations", "LocationId");
         }
     }
+#endif
 }

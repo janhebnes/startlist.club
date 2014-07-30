@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System.Linq;
+using System.Web;
+using FlightJournal.Web.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
