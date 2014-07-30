@@ -23,9 +23,12 @@
 
         function available(date) {
             dmy = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-            @foreach (var item in Model.AvailableDates.Keys)
+            @if (Model.AvailableDates != null)
             {
-            <text>if (dmy=="</text>@item.ToString("yyyy-M-d")<text>") return [true,"</text>@((Model.AvailableDates[item] > 20) ? "termik" : "")<text>", "</text>@Model.AvailableDates[item]<text> starter."];</text>
+                foreach (var item in Model.AvailableDates.Keys)
+                {
+                <text>if (dmy=="</text>@item.ToString("yyyy-M-d")<text>") return [true,"</text>@((Model.AvailableDates[item] > 20) ? "termik" : "")<text>", "</text>@Model.AvailableDates[item]<text> starter."];</text>
+                }   
             }
             return [false, "", "ingen flyvning"];
         }

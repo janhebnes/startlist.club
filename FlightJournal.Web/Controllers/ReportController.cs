@@ -78,10 +78,12 @@ namespace FlightJournal.Web.Controllers
 
                 return this.View("month", rptMonth);
             }
-
+            
             var rpt = new ReportViewModel();
             rpt.AvailableDates = this.AvailableDates();
-            if (rpt.AvailableDates.Count > 0 && !date.HasValue)
+            if (rpt.AvailableDates != null 
+                && rpt.AvailableDates.Count > 0 
+                && !date.HasValue)
             {
                 rpt.Date = rpt.AvailableDates.Max(d => d.Key);
             }
