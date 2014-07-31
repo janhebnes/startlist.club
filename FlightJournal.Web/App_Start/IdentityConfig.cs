@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Configuration;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
+using Twilio;
 
 namespace FlightJournal.Web.Models
 {
@@ -149,8 +151,31 @@ namespace FlightJournal.Web.Models
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your sms service here to send a text message.
-            return Task.FromResult(0);
+            var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
+            if (settings == null)
+                throw new ConfigurationErrorsException("Missing ServiceCredentials section");
+
+            if (!string.IsNullOrWhiteSpace(settings.TwilioAccountSid)
+                && !string.IsNullOrWhiteSpace(settings.TwilioAuthToken)
+                && !string.IsNullOrWhiteSpace(settings.TwilioFromNumber))
+            {
+
+                // Plug in your sms service here to send a text message.
+                // Find your Account Sid and Auth Token at twilio.com/user/account 
+                var twilio = new TwilioRestClient(settings.TwilioAccountSid, settings.TwilioAuthToken);
+
+                var smsmessage = twilio.SendMessage(settings.TwilioFromNumber, message.Destination, message.Body);
+                if (smsmessage.ErrorMessage != null)
+                {
+                    Task.FromResult(1);
+                    throw new Exception(smsmessage.ErrorMessage);
+                }
+                return Task.FromResult(0);
+            }
+            else
+            {
+                return Task.FromResult(1);    
+            }
         }
     }
 

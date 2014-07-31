@@ -44,10 +44,9 @@ namespace FlightJournal.Web {
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Custom Config section for allowing hiding of the values
-            var settings = ConfigurationManager.GetSection("authentication") as AuthenticationConfigurationSection;
-
+            var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
             if (settings == null)
-                return;
+                throw new ConfigurationErrorsException("Missing ServiceCredentials section");
 
             if (!string.IsNullOrWhiteSpace(settings.FacebookAppId) 
                 && !string.IsNullOrWhiteSpace(settings.FacebookAppSecret)) 

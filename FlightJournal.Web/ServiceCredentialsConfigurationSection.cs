@@ -6,9 +6,9 @@ using System.Web;
 
 namespace FlightJournal.Web
 {
-    public class AuthenticationConfigurationSection : ConfigurationSection
+    public class ServiceCredentialsConfigurationSection : ConfigurationSection
     {
-        private AuthenticationConfigurationSection() { }
+        private ServiceCredentialsConfigurationSection() { }
 
         [ConfigurationProperty("FacebookAppId", DefaultValue = "")]
         public string FacebookAppId
@@ -38,5 +38,26 @@ namespace FlightJournal.Web
             set { this["GoogleClientSecret"] = value; }
         }
 
+        [ConfigurationProperty("TwilioAccountSid", DefaultValue = "")]
+        public string TwilioAccountSid
+        {
+            get { return (string)this["TwilioAccountSid"]; }
+            set { this["TwilioAccountSid"] = value; }
+        }
+        
+        [ConfigurationProperty("TwilioAuthToken", DefaultValue = "")]
+        public string TwilioAuthToken
+        {
+            get { return (string)this["TwilioAuthToken"]; }
+            set { this["TwilioAuthToken"] = value; }
+        }
+
+        [ConfigurationProperty("TwilioFromNumber", DefaultValue = "")]
+        public string TwilioFromNumber
+        {
+            get { return (string)this["TwilioFromNumber"]; }
+            set { this["TwilioFromNumber"] = value; }
+        }
+        
     }
 }
