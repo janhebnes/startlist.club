@@ -35,3 +35,4 @@ _ReSharper*/
 /FlightLog.Web/App_Data/ASPNETDB.MDF
 /FlightLog.Web/App_Data/aspnetdb_log.ldf
 /FlightLog.Web/FlightLog.Web.Publish.xml
+FlightJournal.Web/App_Data/ServiceCredentials.prod.config

@@ -1,5 +1,7 @@
 ﻿using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
+using SendGrid;
 using Twilio;
 
 namespace FlightJournal.Web.Models
@@ -143,7 +146,37 @@ namespace FlightJournal.Web.Models
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+
+            var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
+            if (settings == null)
+                throw new ConfigurationErrorsException("Missing ServiceCredentials section");
+
+            if (!string.IsNullOrWhiteSpace(settings.TwilioAccountSid)
+                && !string.IsNullOrWhiteSpace(settings.TwilioAuthToken)
+                && !string.IsNullOrWhiteSpace(settings.TwilioFromNumber))
+            {
+                // Create the email object first, then add the properties.
+                SendGridMessage myMessage = new SendGridMessage();
+                myMessage.AddTo(message.Destination);
+                myMessage.From = new MailAddress(settings.SendGridFromEmail, settings.SendGridFromName);
+                myMessage.Subject = message.Subject;
+                myMessage.Text = message.Body;
+
+                // Create credentials, specifying your user name and password.
+                var credentials = new NetworkCredential(settings.SendGridUserName, settings.SendGridPassword);
+
+                // Create an Web transport for sending email.
+                var transportWeb = new SendGrid.Web(credentials);
+
+                // Send the email.
+                transportWeb.Deliver(myMessage);
+
+                return Task.FromResult(0);
+            }
+            else
+            {
+                return Task.FromResult(1);
+            }
         }
     }
 
@@ -151,6 +184,8 @@ namespace FlightJournal.Web.Models
     {
         public Task SendAsync(IdentityMessage message)
         {
+            // Plug in your sms service here to send a text message.
+            
             var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
             if (settings == null)
                 throw new ConfigurationErrorsException("Missing ServiceCredentials section");
@@ -160,7 +195,6 @@ namespace FlightJournal.Web.Models
                 && !string.IsNullOrWhiteSpace(settings.TwilioFromNumber))
             {
 
-                // Plug in your sms service here to send a text message.
                 // Find your Account Sid and Auth Token at twilio.com/user/account 
                 var twilio = new TwilioRestClient(settings.TwilioAccountSid, settings.TwilioAuthToken);
 

@@ -58,6 +58,33 @@ namespace FlightJournal.Web
             get { return (string)this["TwilioFromNumber"]; }
             set { this["TwilioFromNumber"] = value; }
         }
-        
+
+        [ConfigurationProperty("SendGridUserName", DefaultValue = "")]
+        public string SendGridUserName
+        {
+            get { return (string)this["SendGridUserName"]; }
+            set { this["SendGridUserName"] = value; }
+        }
+
+        [ConfigurationProperty("SendGridPassword", DefaultValue = "")]
+        public string SendGridPassword
+        {
+            get { return (string)this["SendGridPassword"]; }
+            set { this["SendGridPassword"] = value; }
+        }
+
+        [ConfigurationProperty("SendGridFromEmail", DefaultValue = "")]
+        public string SendGridFromEmail
+        {
+            get { return (string)this["SendGridFromEmail"]; }
+            set { this["SendGridFromEmail"] = value; }
+        }
+
+        [ConfigurationProperty("SendGridFromName", DefaultValue = "")]
+        public string SendGridFromName
+        {
+            get { return (string)this["SendGridFromName"]; }
+            set { this["SendGridFromName"] = value; }
+        }
     }
 }
