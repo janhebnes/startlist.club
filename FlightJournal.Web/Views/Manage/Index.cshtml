@@ -28,6 +28,16 @@
             ]
         </p>
         <p>
+            @if (Model.HasPilotBinding)
+            {
+                @:Account is bound to a pilot profile. 
+            }
+            else
+            {
+                @:Account must be matched to a pilot profile with a verified Email or Phonenumber.
+            }
+        </p>
+        <p>
             External Logins: @Model.Logins.Count
             @Html.ActionLink("[Manage]", "ManageLogins")
         </p>

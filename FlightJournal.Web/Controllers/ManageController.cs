@@ -45,6 +45,7 @@ namespace FlightJournal.Web.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "The phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.BindToPilotSuccess ? "Pilot has been bound to account."
                 : "";
 
             var model = new IndexViewModel
@@ -53,7 +54,8 @@ namespace FlightJournal.Web.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),
                 Logins = await UserManager.GetLoginsAsync(User.Identity.GetUserId()),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId()),
+                HasPilotBinding = HasPilotBinding()
             };
             return View(model);
         }
@@ -383,6 +385,16 @@ namespace FlightJournal.Web.Controllers
             }
             return false;
         }
+        
+        private bool HasPilotBinding()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user != null)
+            {
+                return user.BoundToPilotId != null;
+            }
+            return false;
+        }
 
         public enum ManageMessageId
         {
@@ -392,7 +404,8 @@ namespace FlightJournal.Web.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            BindToPilotSuccess
         }
 
         #endregion
