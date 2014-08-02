@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
@@ -24,6 +25,8 @@ namespace FlightJournal.Web.Models
 
         public int ClubId { get; set; }
         public virtual Club Club { get; set; }
+
+        public DateTime? ExitDate { get; set; }
 
         public PilotStatusType PilotStatus { get; set; }
 
