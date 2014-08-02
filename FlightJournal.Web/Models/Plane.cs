@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
@@ -12,13 +13,21 @@ namespace FlightJournal.Web.Models
         public string Registration { get; set; }
         [Required]
         public string CompetitionId { get; set; }
-        
-        [Required, Range(1,2)]
-        public double Seats { get; set; }
-        [Required, Range(0, 1)]
-        public double Engines { get; set; }
 
-        public DateTime EntryDate { get; set; }
+        /// <summary>
+        /// Overrides registration and competition (Must be unique)
+        /// </summary>
+        public string ShortName { get; set; }
+
+        //public string Class { get; set; }
+        //public string Type { get; set; }
+        //public string Model { get; set; }
+
+        [Required, Range(1,2)]
+        public int Seats { get; set; }
+        [Required, Range(0, 1)]
+        public int Engines { get; set; }
+
         public DateTime? ExitDate { get; set; }
 
         public int? StartTypeId { get; set; }
@@ -28,6 +37,10 @@ namespace FlightJournal.Web.Models
         {
             get
             {
+                if (!string.IsNullOrWhiteSpace(this.ShortName))
+                {
+                    return this.ShortName;
+                }
                 return string.Format("{0} ({1})", this.CompetitionId, this.Registration);
             }
         }
@@ -40,7 +53,7 @@ namespace FlightJournal.Web.Models
 
         public override string ToString()
         {
-            return string.Format("{0} ({1})", this.CompetitionId, this.Registration);
+            return this.RenderName;
         }
     }
 }
