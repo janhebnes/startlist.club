@@ -18,6 +18,8 @@ namespace FlightJournal.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string BoundToPilotId { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
@@ -71,6 +73,7 @@ namespace FlightJournal.Web.Models
                 user = new ApplicationUser { UserName = name, Email = name };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
+                user.BoundToPilotId = "Bound for life";
             }
 
             // Add user admin to Role Admin if not already added
