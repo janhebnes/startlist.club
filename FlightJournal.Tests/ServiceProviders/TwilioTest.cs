@@ -1,6 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using FlightJournal.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twilio;
@@ -27,6 +25,7 @@ namespace FlightJournal.Tests.ServiceProviders
                 var twilio = new TwilioRestClient(settings.TwilioAccountSid, settings.TwilioAuthToken);
                 var smsmessage = twilio.SendMessage(settings.TwilioFromNumber, "+4524250682", "Twilio Testing account setup for startlist.club");
 
+                Assert.IsNotNull(smsmessage.Sid);
                 Assert.IsNull(smsmessage.ErrorMessage);
             }
             else
