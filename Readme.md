@@ -23,11 +23,18 @@ https://trello.com/board/flight-journal/4f592a73bb5d895218126fed
 Establishing local development - Requires using the Entity Framework for generating the databases (session user must have dbcreate sql rights for creating the database automatically)
 ------------
 1. Visual Studio and SQL or SQLExpress must be installed and your user account must have owner priviledges
-2. Enable the #if DEBUG section in \FlightJournal.Web\Models\IdentityModels.cs for allowing FlightJournal.Membership database to be auto created 
-3. Enable the #if DEBUG section in \FlightJournal.Web\Models\FlightContext.cs for allowing FlightJournal database to be auto created
-4. Launch the application or Update to latest Code Migration using the Package Manager Console and "PM> Update-Database", this will create the Table model and create seed data for development (if step 2 and 3 are uncommented).
+2. Run the application in debug build and the databases specified in the ConnectionStrings will be created by the CreateDatabaseIfNotExists Initializer available in debug build
 
-Ps. Further migration scripts are stored native to Entity Framework practices in the .\Migrations folder 
+h3. FlightJournal
+Defined in \FlightJournal.Web\Models\FlightContext.cs - automigrations are enabled 
+
+h3. FlightJournal.Membership
+Defined in \FlightJournal.Web\Models\IdentityModels.cs - contains the user authentication informations (auto migrations are not enabled)
+
+Database Migrations
+------------
+Launch the application or Update to latest Code Migration using the Package Manager Console and "PM> Update-Database", this will create the Table model and create seed data for development (if step 2 and 3 are uncommented).
+Further migration scripts are stored native to Entity Framework practices in the .\Migrations folder 
 
 Tips
 -------------
