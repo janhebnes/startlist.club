@@ -150,8 +150,7 @@ namespace FlightJournal.Web.Models
                     Registration = "OY-XMO",
                     Seats = 2,
                     DefaultStartType = start,
-                    Engines = 0,
-                    EntryDate = DateTime.Now
+                    Engines = 0
                 };
                 context.Planes.Add(pl2);
                 var pla = new Plane
@@ -160,8 +159,7 @@ namespace FlightJournal.Web.Models
                     Registration = "OY-RRX",
                     Seats = 2,
                     DefaultStartType = start,
-                    Engines = 1,
-                    EntryDate = DateTime.Now
+                    Engines = 1
                 };
                 context.Planes.Add(pla);
                 var pl1 = new Plane
@@ -170,8 +168,7 @@ namespace FlightJournal.Web.Models
                     Registration = "OY-XPU",
                     Seats = 1,
                     DefaultStartType = start,
-                    Engines = 0,
-                    EntryDate = DateTime.Now
+                    Engines = 0
                 };
                 context.Planes.Add(pl1);
                 context.SaveChanges();
