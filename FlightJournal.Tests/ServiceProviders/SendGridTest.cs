@@ -13,6 +13,7 @@ namespace FlightJournal.Tests.ServiceProviders
     
     public class SendGridTest
     {
+        [Ignore] // The service costs money - the test does not need to run on each cycle
         [TestMethod]
         [TestCategory("ServiceProviders")]
         public void SendGrid_Send_Mail_with_API()

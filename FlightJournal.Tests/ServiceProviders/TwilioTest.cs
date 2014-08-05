@@ -8,6 +8,7 @@ namespace FlightJournal.Tests.ServiceProviders
     [TestClass]
     public class TwilioTest
     {
+        [Ignore] // The service costs money - the test does not need to run on each cycle
         [TestMethod]
         [TestCategory("ServiceProviders")]
         public void Twilio_Send_SMS_with_API()
