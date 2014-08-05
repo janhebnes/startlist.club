@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -199,6 +200,11 @@ namespace FlightJournal.Web.Models
                 var twilio = new TwilioRestClient(settings.TwilioAccountSid, settings.TwilioAuthToken);
 
                 var smsmessage = twilio.SendMessage(settings.TwilioFromNumber, message.Destination, message.Body);
+                if (smsmessage.Sid == null)
+                {
+                    Task.FromResult(1);
+                    throw new Exception("Twilio did not respond with a valid message sid when sending to destination "+ message.Destination +" - no sms sent");
+                }
                 if (smsmessage.ErrorMessage != null)
                 {
                     Task.FromResult(1);
