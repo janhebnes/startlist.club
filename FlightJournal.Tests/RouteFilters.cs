@@ -109,17 +109,10 @@ namespace FlightJournal.Tests
         
         [TestMethod]
         [TestCategory("Routes")]
-        public void Root_and_a_non_existing_club_should_send_to_report_controller_and_index_action()
+        public void Root_and_a_non_existing_club_should_send_to_non_existing_controller_and_index_action()
         {
-            should_return_expected_controller_and_action("~/MISSINGCLUB", "Report", "Index");
-        }
-
-        [TestMethod]
-        [TestCategory("Routes")]
-        public void Root_and_a_non_existing_club_should_send_to_an_error_404_page()
-        {
-            // TODO: Wrong club should return 404 page 
-            should_return_expected_controller_and_action("~/MISSINGCLUB", "Club", "NotFound");
+            // Will send through the route pipeline and land on the controller default route (missingclub does not exist and will result in a 404)
+            should_return_expected_controller_and_action("~/MISSINGCLUB", "missingclub", "Index");
         }
 
         [TestMethod]
@@ -232,8 +225,8 @@ namespace FlightJournal.Tests
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
             var routeData = RouteTable.Routes.GetRouteData(httpContext);
             Assert.IsNotNull(routeData);
-            Assert.AreEqual(routeData.Values["controller"].ToString().ToLower(), expectedController.ToLower());
-            Assert.AreEqual(routeData.Values["action"].ToString().ToLower(), expectedAction.ToLower());
+            Assert.AreEqual(expectedController.ToLower(), routeData.Values["controller"].ToString().ToLower());
+            Assert.AreEqual(expectedAction.ToLower(), routeData.Values["action"].ToString().ToLower());
         }
 
         public void should_return_expected_club(string path, string expectedClub)
@@ -245,7 +238,7 @@ namespace FlightJournal.Tests
             Assert.IsNotNull(routeData);
             var currentClub = ClubController.GetCurrentClub(httpContext, routeData);
             Assert.IsNotNull(currentClub);
-            Assert.AreEqual(currentClub.ShortName, expectedClub);
+            Assert.AreEqual(expectedClub, currentClub.ShortName);
         }
 
         /// <summary>

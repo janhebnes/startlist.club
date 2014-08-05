@@ -135,12 +135,16 @@ namespace FlightJournal.Web.Models
                 // Locations
                 var location = new Location {Name = "Kongsted"};
                 context.Locations.Add(location);
+                var location2 = new Location { Name = "True" };
+                context.Locations.Add(location2);
                 context.Locations.Add(new Location() {Name = "Arnborg"});
                 context.SaveChanges();
 
                 // Clubs
                 var club = new Club() {ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = location};
                 context.Clubs.Add(club);
+                var club2 = new Club() { ClubId = 99, ShortName = "AASVK", Name = "Århus Svæveflyveklub", Location = location2 };
+                context.Clubs.Add(club2);
                 context.SaveChanges();
 
                 // Planes
