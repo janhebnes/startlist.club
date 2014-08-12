@@ -1,0 +1,47 @@
+﻿@using System.Globalization
+@using FlightJournal.Web.Models
+@using Microsoft.AspNet.Identity
+@model FlightJournal.Web.Models.ManagePilotBindingViewModel
+@{ ViewBag.Title = "Link your account to Pilot"; }
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+@if (Model.CurrentPilotBinding != null)
+{
+    <h4>Your account is linked to Pilot @Model.CurrentPilotBinding.Name from @Model.CurrentPilotBinding.Club.Name</h4>
+    using (Html.BeginForm("RemovePilotBinding", "Manage"))
+    {
+        @Html.AntiForgeryToken()
+        <div>
+            @Html.Hidden("currentPilotIdBinding", Model.CurrentPilotBinding.PilotId)
+            <input type="submit" class="btn btn-danger" value="Remove" title="Remove pilot @Model.CurrentPilotBinding.Name from your account" />
+        </div>
+    }
+}
+else if (Model.PotentialPilotBindings.Count > 0)
+{
+    <hr />
+    <h4>Link pilot to log in</h4>
+    using (Html.BeginForm("LinkPilot", "Manage"))
+    {
+        @Html.AntiForgeryToken()
+        <div id="pilotLinkList">
+            <p>
+                @foreach (Pilot p in Model.PotentialPilotBindings)
+                {
+                    <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Link pilot @p.Name from @p.Club.ShortName to Log in">Link @p.Name from @p.Club.ShortName to Log in</button>
+                }
+            </p>
+        </div>
+    }
+}
+else if (Model.PotentialPilotBindings.Count == 0)
+{
+    <div>
+        <p class="text-warning">
+            There are no pilot profiles matching your authenticated email (@User.Identity.GetUserName()) or phone number.<br />
+            Your authenticated email or phone number must match the pilot profil setup by your club manager for allowing a link to be created.
+        </p>
+    </div>
+}
+

@@ -70,10 +70,10 @@ namespace FlightJournal.Web.Models
             var user = userManager.FindByName(name);
             if (user == null)
             {
-                user = new ApplicationUser { UserName = name, Email = name };
+                // Allowing match to be made on Pilot Binding
+                user = new ApplicationUser { UserName = name, Email = name, PhoneNumber = "+4524250682", PhoneNumberConfirmed = true};
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
-                user.BoundToPilotId = "Bound for life";
             }
 
             // Add user admin to Role Admin if not already added

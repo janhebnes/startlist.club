@@ -19,6 +19,15 @@ namespace FlightJournal.Web.Models
         public IList<AuthenticationDescription> OtherLogins { get; set; }
     }
 
+    /// <summary>
+    /// Custom
+    /// </summary>
+    public class ManagePilotBindingViewModel
+    {
+        public Pilot CurrentPilotBinding { get; set; }
+        public IList<Pilot> PotentialPilotBindings { get; set; }
+    }
+
     public class FactorViewModel {
         public string Purpose { get; set; }
     }

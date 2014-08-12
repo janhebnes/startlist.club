@@ -178,7 +178,7 @@ namespace FlightJournal.Web.Models
                 context.SaveChanges();
 
                 // Pilots
-                var pilot = new Pilot {Name = "Jan Hebnes", MemberId = "1241", Club = club};
+                var pilot = new Pilot {Name = "Jan Hebnes", MemberId = "1241", Club = club, Email = "jan.hebnes@gmail.com", MobilNumber = "+4524250682"};
                 context.Pilots.Add(pilot);
                 context.Pilots.Add(new Pilot {Name = "Søren Sarup", MemberId = "1125", Club = club});
 

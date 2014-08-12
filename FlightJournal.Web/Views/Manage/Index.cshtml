@@ -9,54 +9,49 @@
     <div class="col-md-8">
         <p>
             @if (Model.HasPassword) {
-                @Html.ActionLink("Change your password", "ChangePassword")
+                @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn btn-default"})
             }
             else {
                 @Html.ActionLink("Pick a password", "SetPassword")
             }
         </p>
         <p>
-            Phone Number: @(Model.PhoneNumber ?? "None") [
-            @if (Model.PhoneNumber != null) {
-                @Html.ActionLink("Change", "AddPhoneNumber")
-                @: &nbsp;|&nbsp;
-                @Html.ActionLink("Remove", "RemovePhoneNumber")
-            }
-            else {
-                @Html.ActionLink("Add", "AddPhoneNumber")
-            }
-            ]
+            Pilot linked: @Model.HasPilotBinding
+            @Html.ActionLink("Manage", "ManagePilotBinding", null, new { @class = "btn btn-default" })
         </p>
         <p>
-            @if (Model.HasPilotBinding)
-            {
-                @:Account is bound to a pilot profile. 
+            Phone Number: @(Model.PhoneNumber ?? "None") 
+            @if (Model.PhoneNumber != null) {
+                <div class="btn-group">
+                    @Html.ActionLink("Change", "AddPhoneNumber", null, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Remove", "RemovePhoneNumber", null, new { @class = "btn btn-danger" })
+                </div>
             }
-            else
-            {
-                @:Account must be matched to a pilot profile with a verified Email or Phonenumber.
+            else {
+                @Html.ActionLink("Add", "AddPhoneNumber", null, new { @class = "btn btn-default" })
             }
+            
         </p>
         <p>
             External Logins: @Model.Logins.Count
-            @Html.ActionLink("[Manage]", "ManageLogins")
+            @Html.ActionLink("Manage", "ManageLogins", null, new { @class = "btn btn-default" })
         </p>
         <p>
             Two Factor Enabled: @(Model.TwoFactor)
             @if (Model.TwoFactor) {
-                @Html.ActionLink("[Disable]", "DisableTFA")
+                @Html.ActionLink("Disable", "DisableTFA", null, new { @class = "btn btn-default" })
             }
             else {
-                @Html.ActionLink("[Enable]", "EnableTFA")
+                @Html.ActionLink("Enable", "EnableTFA", null, new { @class = "btn btn-default" })
             }
         </p>
         <p>
             Two Factor Browser Remembered?: @Model.BrowserRemembered
             @if (Model.BrowserRemembered) {
-                @Html.ActionLink("[Forget]", "ForgetBrowser")
+                @Html.ActionLink("Forget", "ForgetBrowser", null, new { @class = "btn btn-default" })
             }
             else {
-                @Html.ActionLink("[Remember]", "RememberBrowser")
+                @Html.ActionLink("Remember", "RememberBrowser", null, new { @class = "btn btn-default" })
             }
         </p>
     </div>

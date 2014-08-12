@@ -1,4 +1,9 @@
-﻿using FlightJournal.Web.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Globalization;
+using FlightJournal.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -91,6 +96,40 @@ namespace FlightJournal.Web.Controllers
                 message = ManageMessageId.Error;
             }
             return RedirectToAction("ManageLogins", new { Message = message });
+        }
+
+        //
+        // POST: /Manage/RemovePilotBinding
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemovePilotBinding(string currentPilotIdBinding)
+        {
+            ManageMessageId? message = ManageMessageId.Error;
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user != null)
+            {
+                using (var context = new FlightContext())
+                {
+                    if (user.BoundToPilotId != null)
+                    {
+                        var userPilotBinding = context.Pilots.Find(Convert.ToInt32(user.BoundToPilotId));
+                        if (userPilotBinding.PilotId.ToString(CultureInfo.InvariantCulture) == currentPilotIdBinding)
+                        {
+                            using (var db = new ApplicationDbContext())
+                            {
+                                var dbUser = db.Users.Find(user.Id);
+                                if (dbUser != null)
+                                {
+                                    dbUser.BoundToPilotId = null;
+                                    db.SaveChanges();
+                                    message = ManageMessageId.RemovePilotBindingSuccess;        
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("ManagePilotBinding", new { Message = message });
         }
 
         //
@@ -307,6 +346,87 @@ namespace FlightJournal.Web.Controllers
             });
         }
 
+
+        //
+        // GET: /Account/Manage
+        public async Task<ActionResult> ManagePilotBinding(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.RemovePilotBindingSuccess ? "The pilot link was removed."
+                : message == ManageMessageId.BindToPilotSuccess ? "The pilot was linked succesfully!"
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : "";
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            Pilot userPilotBinding = null;
+            List<Pilot> otherPilots = new List<Pilot>();
+            using (var context = new FlightContext())
+            {
+                if (user.BoundToPilotId != null)
+                {
+                    userPilotBinding = context.Pilots.Find(Convert.ToInt32(user.BoundToPilotId));
+                    // Load club reference information 
+                    context.Entry(userPilotBinding).Reference(p => p.Club).Load();
+                }
+
+                if (user.EmailConfirmed && user.PhoneNumberConfirmed)
+                {
+                    otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber || p.Email == user.Email).Include(c=>c.Club).ToList();
+                }
+                else if (user.EmailConfirmed)
+                {
+                    otherPilots = context.Pilots.Where(p => p.Email == user.Email).Include(c => c.Club).ToList();
+                }
+                else if (user.PhoneNumberConfirmed)
+                {
+                    otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber).Include(c => c.Club).ToList();
+                }
+            }
+
+            return View(new ManagePilotBindingViewModel
+            {
+                CurrentPilotBinding = userPilotBinding,
+                PotentialPilotBindings = otherPilots
+            });
+        }
+
+        //
+        // POST: /Manage/LinkLogin
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LinkPilot(string pilot)
+        {
+            ManageMessageId? message = ManageMessageId.Error;
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (user != null)
+            {
+                using (var context = new FlightContext())
+                {
+                    var userPilotBinding = context.Pilots.Find(Convert.ToInt32(pilot));
+                    if (userPilotBinding != null)
+                    {
+                        // Validate User and Pilot have Email or Phone Number in Common
+
+                        using (var db = new ApplicationDbContext())
+                        {
+                            var dbUser = db.Users.Find(user.Id);
+                            if (dbUser != null)
+                            {
+                                dbUser.BoundToPilotId = userPilotBinding.PilotId.ToString(CultureInfo.InvariantCulture);
+                                db.SaveChanges();
+                                message = ManageMessageId.BindToPilotSuccess;
+                            }
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("ManagePilotBinding", new { Message = message });
+        }
+
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
@@ -403,6 +523,7 @@ namespace FlightJournal.Web.Controllers
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
+            RemovePilotBindingSuccess,
             RemovePhoneSuccess,
             Error,
             BindToPilotSuccess

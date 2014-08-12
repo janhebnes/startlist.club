@@ -468,6 +468,7 @@
     <Content Include="Views\Error\Runtime.cshtml" />
     <Content Include="Views\Error\Report.cshtml" />
     <Content Include="Views\Error\Submit.cshtml" />
+    <Content Include="Views\Manage\ManagePilotBinding.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
