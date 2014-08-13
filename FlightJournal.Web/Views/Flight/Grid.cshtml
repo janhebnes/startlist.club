@@ -80,13 +80,11 @@
                 <td>
                     @if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
                     {
-                        <span style="white-space: nowrap;">
-                            <div class="btn-group">
-                                @Html.ActionLink("-10 min", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                                <text> </text>@Html.ActionLink("-5 min", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                                <text> </text>@Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            </div>
-                        </span>
+                        <div class="btn-block" style="white-space: nowrap;">
+                            @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            @Html.ActionLink("-05", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            @Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                        </div>
                     }
                     else if (item.Departure.HasValue)
                     {
@@ -96,13 +94,12 @@
                 <td>
                     @if (!item.Landing.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
                     {
-                        <span style="white-space: nowrap;">
-                            <div class="btn-group">
-                                @Html.ActionLink("-10 min", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                                <text> </text>@Html.ActionLink("-5 min", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                                <text> </text>@Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            </div>
-                        </span>
+                        <div class="btn-block" style="white-space: nowrap;">
+                            @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            @Html.ActionLink("-05", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                            @Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
+                        </div>
+                        
                     }
                     else if (item.Landing.HasValue)
                     {
@@ -131,15 +128,15 @@
                     }
                 </td>
                 <td class="hidden-sm">
-                    @Html.Partial("DisplayTemplates/_TachoPartial", item);
+                    @Html.Partial("DisplayTemplates/_TachoPartial", item)
                 </td>
                 <td class="hidden-xs">
                     <span>
-                        @Html.DisplayFor(modelItem => item.Description, "Description")
                         @if (Request.IsAuthenticated)
                         {
-                            <a href="#" class="editComment">Edit</a>
+                            <a href="#" class="editComment btn btn-xs btn-default hidden-print">Note</a>
                         }
+                        @Html.DisplayFor(modelItem => item.Description, "Description")
                     </span>
                     @if (Request.IsAuthenticated)
                     {
@@ -154,7 +151,7 @@
                     }
                 </td>
                 <td class="hidden-print">
-                    <div class="btn-group">
+                    <div class="btn-block" style="white-space: nowrap;">
                         @if (Request.IsAuthenticated)
                         {
                             bool isEditable = false;
@@ -187,6 +184,25 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#myTable").tablesorter();
+
+            $('a.editComment').click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this).closest("td");
+                $this.children("span:first").hide();
+                $this.children("span:last").fadeToggle("slow");
+
+                return false;
+            });
+
+            $('a.setComment').click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this).closest("form");
+
+                $this.submit();
+                return false;
+            });
         }
     );
     </script>
