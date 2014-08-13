@@ -169,8 +169,12 @@
                         @if (Request.IsAuthenticated)
                         {
                             @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+                            @Html.ActionLink("Gentag", "Duplicate", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                         }
-                        @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+                        else
+                        {
+                            @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+                        }
                     </div>
                 </td>
             </tr>

@@ -161,6 +161,34 @@ namespace FlightJournal.Web.Controllers
             this.PopulateViewBag(flight);
             return View("Create", flight);
         }
+
+        //
+        // POST: /Flight/Create
+        [HttpGet]
+        public ActionResult Duplicate(Guid id)
+        {
+            Flight originalFlight = this.db.Flights.Find(id);
+            var flight = new Flight
+            {
+                Date = originalFlight.Date,
+                PlaneId = originalFlight.PlaneId,
+                PilotId = originalFlight.PilotId,
+                PilotBackseatId = originalFlight.PilotBackseatId,
+                BetalerId = originalFlight.BetalerId,
+                StartTypeId = originalFlight.StartTypeId,
+                StartedFromId = originalFlight.StartedFromId,
+                LandedOnId = originalFlight.LandedOnId
+            };
+    
+            // Create base flight information fields
+            flight.FlightId = Guid.NewGuid();
+            flight.LastUpdated = DateTime.Now;
+            flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
+            this.db.Flights.Add(flight);
+            this.db.SaveChanges();
+            return RedirectToAction("Grid");
+        }
+
         //
         // POST: /Flight/Create
         [HttpPost]
