@@ -1,5 +1,6 @@
 ﻿@using FlightJournal.Web
 @using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Models
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,19 +30,40 @@
                 }
                 else
                 {
-                    @Html.ActionLink("Startlisten", "Index", "Home", null, new { @class = "navbar-brand" })
+                    @Html.ActionLink("Startlist", "Index", "Home", null, new { @class = "navbar-brand" })
                 }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.MenuLink("Dagsrapporter", "Index", "Report")</li>
-                    <li>@Html.MenuLink("Startlisten", "Grid", "Flight")</li>
                     @if (Context.User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.MenuLink("Historik", "History", "Flight")</li>
+                        <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
                     }
-                    <li>@Html.MenuLink("UHB530", "UHB530", "Home")</li>
-                    <li>@Html.MenuLink("Om", "Index", "Home")</li>
+                    @if (Context.User.Identity.IsAuthenticated && ManageController.CurrentUserPilot.Name != null)
+                    {
+                        <li>@Html.MenuLink("Logbog", "Index", "Report")</li>
+                    }
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Om <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.MenuLink("Bidrag til koden", "Index", "Home")</li>
+                                <li>@Html.MenuLink("Bestemmelser for føring af logbog (UHB530)", "UHB530", "Home")</li>
+                                @if (Context.User.Identity.IsAuthenticated)
+                                {
+                                    <li class="divider"></li>
+                                    <li>@Html.MenuLink("Rettelses historik", "History", "Flight")</li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>@Html.MenuLink("Om", "Index", "Home")</li>
+                    }
+                    
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>

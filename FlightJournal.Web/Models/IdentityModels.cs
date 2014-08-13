@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using FlightJournal.Web.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -20,6 +23,21 @@ namespace FlightJournal.Web.Models
         }
 
         public string BoundToPilotId { get; set; }
+        [NotMapped]
+        public Pilot Pilot
+        {
+            get
+            {
+                if (BoundToPilotId == null) return null;
+                using (var context = new FlightContext())
+                {
+                    var userPilotBinding = context.Pilots.Find(Convert.ToInt32(this.BoundToPilotId));
+                    // Load club reference information 
+                    context.Entry(userPilotBinding).Reference(p => p.Club).Load();
+                    return userPilotBinding;
+                }
+            }
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
