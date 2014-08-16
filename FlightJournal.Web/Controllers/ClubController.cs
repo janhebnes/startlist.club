@@ -142,7 +142,17 @@ namespace FlightJournal.Web.Controllers
                     }
                 }
                 var liveRedirectPath = string.Format("/{0}{1}", club.ShortName, this.Request.UrlReferrer.AbsolutePath);
-                this.Response.Redirect(liveRedirectPath);    
+                this.Response.Redirect(liveRedirectPath);
+            }
+            else if (string.IsNullOrWhiteSpace(shortName))
+            {
+                // We are redirecting from an actual club to an empty club - remove the club part of the url
+                var currentClubUrl = this.Request.UrlReferrer.AbsolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
+                if (currentClubUrl != null)
+                {
+                    var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace("/" + currentClubUrl, string.Empty);
+                    this.Response.Redirect(redirectPath);
+                }
             }
 
             return this.View(CurrentClub);
