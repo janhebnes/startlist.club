@@ -14,6 +14,11 @@ namespace FlightJournal.Web.Controllers
             return View();
         }
 
+        public ActionResult PilotNotFound()
+        {
+            //Response.StatusCode = 404;
+            return View();
+        }
     // The server.GetLastError is currently not preserved... so the 500 handling is currently disabled
     ////    public ActionResult Runtime()
     ////    {

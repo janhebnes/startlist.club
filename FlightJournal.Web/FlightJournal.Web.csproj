@@ -236,7 +236,7 @@
     <Compile Include="Models\FlightViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ReportViewModel.cs" />
+    <Compile Include="Models\ReportViewModels.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Flight.cs" />
@@ -469,6 +469,7 @@
     <Content Include="Views\Error\Report.cshtml" />
     <Content Include="Views\Error\Submit.cshtml" />
     <Content Include="Views\Manage\ManagePilotBinding.cshtml" />
+    <Content Include="Views\Error\PilotNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

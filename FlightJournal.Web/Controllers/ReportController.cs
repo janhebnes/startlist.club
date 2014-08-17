@@ -169,5 +169,26 @@ namespace FlightJournal.Web.Controllers
 
             return null;
         }
+
+        public ActionResult Pilot()
+        {
+            if (string.IsNullOrWhiteSpace(Models.Pilot.CurrentUserPilot.Name))
+                return RedirectToAction("PilotNotFound", "Error");
+            
+            PilotReportViewModel model = new PilotReportViewModel();
+
+            model.Pilot = Models.Pilot.CurrentUserPilot;
+
+            // Custom inline Pilot filtering for allowing maximum performance
+            model.Flights = this.db.Flights
+                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                .Where(f => (f.Pilot != null && f.Pilot.PilotId == model.Pilot.PilotId)
+                    || (f.PilotBackseat != null && f.PilotBackseat.PilotId == model.Pilot.PilotId)
+                    || (f.Betaler != null && f.Betaler.PilotId == model.Pilot.PilotId))
+                .OrderBy(o => o.Departure)
+                .AsQueryable();
+
+            return this.View(model);
+        }
     }
 }

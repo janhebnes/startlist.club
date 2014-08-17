@@ -1,10 +1,10 @@
-@using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Models
 @using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated) {
     string accountName = User.Identity.GetUserName();
-    if (ManageController.CurrentUserPilot.Name != null)
+    if (Pilot.CurrentUserPilot.Name != null)
     {
-        accountName = ManageController.CurrentUserPilot.RenderName;
+        accountName = Pilot.CurrentUserPilot.RenderName;
     }
 
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))

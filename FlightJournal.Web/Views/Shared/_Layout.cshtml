@@ -40,9 +40,9 @@
                     {
                         <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
                     }
-                    @if (Context.User.Identity.IsAuthenticated && ManageController.CurrentUserPilot.Name != null)
+                    @if (Context.User.Identity.IsAuthenticated && Pilot.CurrentUserPilot.Name != null)
                     {
-                        <li>@Html.MenuLink("Logbog", "Index", "Report")</li>
+                        <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
                     }
                     @if (Context.User.Identity.IsAuthenticated)
                     {
