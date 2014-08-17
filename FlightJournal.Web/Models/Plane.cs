@@ -15,14 +15,18 @@ namespace FlightJournal.Web.Models
         public string CompetitionId { get; set; }
 
         /// <summary>
-        /// Overrides registration and competition (Must be unique)
+        /// Overrides registration and competition (Must be unique) for dropdown lists
         /// </summary>
         public string ShortName { get; set; }
 
-        //public string Class { get; set; }
-        //public string Type { get; set; }
-        //public string Model { get; set; }
+        [Required]
+        public string Type { get; set; }
+        public string Model { get; set; }
+        public string Class { get; set; }
 
+        public string Owner { get; set; }
+        public string Note { get; set; }
+        
         [Required, Range(1,2)]
         public int Seats { get; set; }
         [Required, Range(0, 1)]

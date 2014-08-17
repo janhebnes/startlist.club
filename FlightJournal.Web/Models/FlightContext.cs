@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
+using FlightJournal.Web.Migrations.FlightContext;
 
 namespace FlightJournal.Web.Models
 {
@@ -11,9 +13,7 @@ namespace FlightJournal.Web.Models
     {
         public FlightContext() : base("FlightJournal")
         {
-#if DEBUG
-            Database.SetInitializer<FlightContext>(new FlightContextInitializer());
-#endif
+            Database.SetInitializer<FlightContext>(new MigrateDatabaseToLatestVersion<FlightContext, Configuration>());
         }
 
         public DbSet<Flight> Flights { get; set; }
@@ -111,146 +111,5 @@ namespace FlightJournal.Web.Models
                         .WillCascadeOnDelete(false);
 
         }
-
-        
-#if DEBUG
-        /// HACK: Enabled only when working on database structure on the solution in development otherwise it might remove the database data 
-        public class FlightContextInitializer : CreateDatabaseIfNotExists<FlightContext>
-        {
-            protected override void Seed(FlightContext context)
-            {
-                InitializeDemoFlightsForEF(context);
-                base.Seed(context);
-            }
-
-            public static void InitializeDemoFlightsForEF(FlightContext context)
-            {
-                // StartType
-                var start = new StartType() {Name = "Spilstart", ShortName = "S"};
-                context.StartTypes.Add(start);
-                context.StartTypes.Add(new StartType() {Name = "Flyslæb", ShortName = "F"});
-                context.StartTypes.Add(new StartType() {Name = "Selvstart", ShortName = "M"});
-                context.SaveChanges();
-
-                // Locations
-                var location = new Location {Name = "Kongsted"};
-                context.Locations.Add(location);
-                var location2 = new Location { Name = "True" };
-                context.Locations.Add(location2);
-                context.Locations.Add(new Location() {Name = "Arnborg"});
-                context.SaveChanges();
-
-                // Clubs
-                var club = new Club() {ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = location};
-                context.Clubs.Add(club);
-                var club2 = new Club() { ClubId = 99, ShortName = "AASVK", Name = "Århus Svæveflyveklub", Location = location2 };
-                context.Clubs.Add(club2);
-                context.SaveChanges();
-
-                // Planes
-                var pl2 = new Plane
-                {
-                    CompetitionId = "R2",
-                    Registration = "OY-XMO",
-                    Seats = 2,
-                    DefaultStartType = start,
-                    Engines = 0
-                };
-                context.Planes.Add(pl2);
-                var pla = new Plane
-                {
-                    CompetitionId = "RR",
-                    Registration = "OY-RRX",
-                    Seats = 2,
-                    DefaultStartType = start,
-                    Engines = 1
-                };
-                context.Planes.Add(pla);
-                var pl1 = new Plane
-                {
-                    CompetitionId = "PU",
-                    Registration = "OY-XPU",
-                    Seats = 1,
-                    DefaultStartType = start,
-                    Engines = 0
-                };
-                context.Planes.Add(pl1);
-                context.SaveChanges();
-
-                // Pilots
-                var pilot = new Pilot {Name = "Jan Hebnes", MemberId = "1241", Club = club, Email = "jan.hebnes@gmail.com", MobilNumber = "+4524250682"};
-                context.Pilots.Add(pilot);
-                context.Pilots.Add(new Pilot {Name = "Søren Sarup", MemberId = "1125", Club = club});
-
-                context.SaveChanges();
-                var s = new List<Flight>
-                {
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-3),
-                        Landing = DateTime.Now.AddHours(-3).AddMinutes(15),
-                        Plane = pl1,
-                        StartedFrom = location,
-                        LandedOn = location,
-                        Pilot = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    },
-                    new Flight
-                    {
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        StartType = start,
-                        Description = "Demo flight (login with admin@admin.com and password Admin@123456",
-                        LastUpdatedBy = pilot.ToString()
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-2),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        StartType = start,
-                        LastUpdatedBy = pilot.ToString(),
-                        Description = "Demo flight"
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-1),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-4),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        StartType = start,
-                        LastUpdatedBy = pilot.ToString(),
-                        Description = "Demo flight"
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-3).AddMinutes(10),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    }
-                };
-                s.ForEach(b => context.Flights.Add(b));
-                context.SaveChanges();
-            }
-        }
-#endif
     }
 }

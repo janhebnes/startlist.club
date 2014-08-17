@@ -186,6 +186,20 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
+    <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
+      <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
+    <Compile Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.cs" />
+    <Compile Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.Designer.cs">
+      <DependentUpon>201408171339304_InitialDatabaseCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\201408171402469_Renamed Plane Description to Note.cs" />
+    <Compile Include="Migrations\FlightContext\201408171402469_Renamed Plane Description to Note.Designer.cs">
+      <DependentUpon>201408171402469_Renamed Plane Description to Note.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\Configuration.cs" />
     <Compile Include="ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="ClubRouteConstraint.cs" />
     <Compile Include="ClubValidator.cs" />
@@ -210,27 +224,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HtmlExtension.cs" />
-    <Compile Include="Migrations\201405142204384_Pilot Mobil and Email added.cs" />
-    <Compile Include="Migrations\201405142204384_Pilot Mobil and Email added.Designer.cs">
-      <DependentUpon>201405142204384_Pilot Mobil and Email added.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405142317466_Flight landing count added.cs" />
-    <Compile Include="Migrations\201405142317466_Flight landing count added.Designer.cs">
-      <DependentUpon>201405142317466_Flight landing count added.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405142324502_FlightVersionHistory landing count added.cs" />
-    <Compile Include="Migrations\201405142324502_FlightVersionHistory landing count added.Designer.cs">
-      <DependentUpon>201405142324502_FlightVersionHistory landing count added.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.cs" />
-    <Compile Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.Designer.cs">
-      <DependentUpon>201405142345084_Club defaultstartlocation changed to Location virtual reference.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201406252355039_Club Website.cs" />
-    <Compile Include="Migrations\201406252355039_Club Website.Designer.cs">
-      <DependentUpon>201406252355039_Club Website.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\FlightViewModel.cs" />
@@ -324,6 +317,8 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <None Include="Migrations\FlightContext\201408171402469_Renamed Plane Description to Note.sql" />
+    <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -476,20 +471,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201405142204384_Pilot Mobil and Email added.resx">
-      <DependentUpon>201405142204384_Pilot Mobil and Email added.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.resx">
+      <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405142317466_Flight landing count added.resx">
-      <DependentUpon>201405142317466_Flight landing count added.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.resx">
+      <DependentUpon>201408171339304_InitialDatabaseCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405142324502_FlightVersionHistory landing count added.resx">
-      <DependentUpon>201405142324502_FlightVersionHistory landing count added.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405142345084_Club defaultstartlocation changed to Location virtual reference.resx">
-      <DependentUpon>201405142345084_Club defaultstartlocation changed to Location virtual reference.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201406252355039_Club Website.resx">
-      <DependentUpon>201406252355039_Club Website.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\FlightContext\201408171402469_Renamed Plane Description to Note.resx">
+      <DependentUpon>201408171402469_Renamed Plane Description to Note.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

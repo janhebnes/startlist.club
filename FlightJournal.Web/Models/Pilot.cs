@@ -25,10 +25,11 @@ namespace FlightJournal.Web.Models
         public string MemberId { get; set; }
         public string MobilNumber { get; set; }
         public string Email { get; set; }
-
+        
         public int ClubId { get; set; }
         public virtual Club Club { get; set; }
 
+        public string Note { get; set; }
         public DateTime? ExitDate { get; set; }
 
         public PilotStatusType PilotStatus { get; set; }
