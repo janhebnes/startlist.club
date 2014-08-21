@@ -83,7 +83,7 @@ namespace FlightJournal.Web.Controllers
 
         public ViewResult Details(Guid id)
         {
-            Flight flight = this.db.Flights.Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType").FirstOrDefault(f=>f.FlightId == id);
+            Flight flight = this.db.Flights.Where(f => f.FlightId == id).Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType").FirstOrDefault();
             ViewBag.FlightId = id;
             ViewBag.ChangeHistory = this.GetChangeHistory(id);
             return View(flight);

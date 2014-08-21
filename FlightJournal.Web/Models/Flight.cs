@@ -113,15 +113,8 @@ namespace FlightJournal.Web.Models
         [DisplayName("Pilot")]
         [Required]
         public int PilotId { get; set; }
-        public virtual Pilot Pilot
-        {
-            get { return m_Pilot; }
-            set
-            {
-                m_Pilot = value;
-                if (Betaler == null) Betaler = m_Pilot;
-            }
-        }
+        public virtual Pilot Pilot { get; set; }
+
         [DisplayName("Bagsæde")]
         public int? PilotBackseatId { get; set; }
         public virtual Pilot PilotBackseat { get; set; }
