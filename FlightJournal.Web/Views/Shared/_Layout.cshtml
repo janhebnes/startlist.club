@@ -44,22 +44,7 @@
                     {
                         <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
                     }
-                    @if (Context.User.Identity.IsAuthenticated)
-                    {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Om <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.MenuLink("Startlisten til din klub", "Index", "Home")</li>
-                                <li>@Html.MenuLink("Unionshåndbog UBH530", "UHB530", "Home")</li>
-                                @if (Context.User.Identity.IsAuthenticated)
-                                {
-                                    <li class="divider"></li>
-                                    <li>@Html.MenuLink("Rettelses historik", "History", "Flight")</li>
-                                }
-                            </ul>
-                        </li>
-                    }
-                    else
+                    @if (!Context.User.Identity.IsAuthenticated)
                     {
                         <li>@Html.MenuLink("Om", "Index", "Home")</li>
                     }

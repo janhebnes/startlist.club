@@ -1,3 +1,4 @@
+@using FlightJournal.Web
 @using FlightJournal.Web.Models
 @using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated) {
@@ -7,21 +8,35 @@
         accountName = Pilot.CurrentUserPilot.RenderName;
     }
 
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
     {
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + accountName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    @accountName
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Profile", "Index", "Manage", routeValues: null, htmlAttributes: new {title = "Manage"})</li>
+                    <li>@Html.MenuLink("Rettelses historik", "History", "Flight")</li>
+                    <li>@Html.MenuLink("UHB530", "UHB530", "Home")</li>
+                    <li class="divider"></li>
+                    <li>@Html.MenuLink("Kontakt", "Index", "Home")</li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                </ul>
+            
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
     }
-}
-else {
+
+} else {
+
     <ul class="nav navbar-nav navbar-right">
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
+
 }
