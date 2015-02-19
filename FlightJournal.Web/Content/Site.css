@@ -85,8 +85,3 @@ table.tablesorter thead tr .headerSortDown {
     line-height: 1.5;
     zoom: 1;
 }
-
-/* Override jquery-ui- default theme and bootstrap theme */
-body, .ui-widget {
-font-family:"Segoe UI", Verdana, Arial, sans-serif;
-}
