@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using SignInStatus = FlightJournal.Web.Models.SignInStatus;
 
 namespace FlightJournal.Web.Controllers
 {

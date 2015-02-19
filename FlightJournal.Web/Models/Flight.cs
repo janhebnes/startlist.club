@@ -10,7 +10,6 @@ namespace FlightJournal.Web.Models
 {
     public class Flight
     {
-        private Pilot m_Pilot;
         private DateTime m_Date;
         private DateTime? m_Departure;
         private DateTime? m_Landing;
