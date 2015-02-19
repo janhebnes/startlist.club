@@ -51,7 +51,7 @@
                     
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                     <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opsætning <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                           <li>@Html.MenuLink("Piloter", "Index", "Pilot")</li>
                           <li>@Html.MenuLink("Fly", "Index", "Plane")</li>
