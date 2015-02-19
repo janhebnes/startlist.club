@@ -7,7 +7,19 @@
     {
         accountName = Pilot.CurrentUserPilot.RenderName;
     }
-
+    if (User.IsInRole("Admin"))
+    {
+        accountName = "Administrator " + accountName;   // System administrators can create clubs
+    }
+    else if (User.IsInRole("Manager"))
+    {
+        accountName = "Manager " + accountName;         // System managers can manage club pilots create planes and create locations
+    }
+    else if (User.IsInRole("Editor"))
+    {
+        accountName = "Editor " + accountName;          // System editors can edit flights without time restrictions
+    }
+    
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
     {
         @Html.AntiForgeryToken()
