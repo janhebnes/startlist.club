@@ -26,7 +26,7 @@ Establishing local development - Requires using the Entity Framework for generat
 2. Run the application in debug build and the databases specified in the ConnectionStrings will be created by the CreateDatabaseIfNotExists Initializer available in debug build
 
 h3. FlightJournal
-Defined in \FlightJournal.Web\Models\FlightContext.cs - automigrations are enabled 
+Defined in \FlightJournal.Web\Models\FlightContext.cs - automigrations are enabled
 
 h3. FlightJournal.Membership
 Defined in \FlightJournal.Web\Models\IdentityModels.cs - contains the user authentication informations (auto migrations are not enabled)

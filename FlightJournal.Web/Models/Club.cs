@@ -22,6 +22,9 @@ namespace FlightJournal.Web.Models
         [DisplayName("Website")]
         public string Website { get; set; }
 
+        [DisplayName("Kontaktoplysninger")]
+        public string ContactInformation { get; set; }
+
 
         [XmlIgnore]
         public virtual ICollection<StartType> StartTypes { get; set; }

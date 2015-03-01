@@ -68,6 +68,7 @@ namespace FlightJournal.Web.Controllers
                     {
                         ghost = new Club();
                         ghost.LocationId = club.LocationId;
+                        ghost.ContactInformation = club.ContactInformation;
                         ghost.ShortName = club.ShortName;
                         ghost.Name = club.Name;
                         if (club.Website != null && club.Website.StartsWith("http://"))
@@ -113,6 +114,16 @@ namespace FlightJournal.Web.Controllers
         public PartialViewResult ClubSelector()
         {
             return this.PartialView(db.Clubs.OrderBy(c=>c.Name).ToList());
+        }
+
+        /// <summary>
+        /// Used by info page to present the club information and introduce the club filter
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public PartialViewResult ClubPresentation()
+        {
+            return this.PartialView(db.Clubs.OrderBy(c => c.Name).ToList());
         }
 
         /// <summary>
