@@ -2,7 +2,7 @@
 @model IEnumerable<FlightJournal.Web.Models.Club>
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
-    if (ClubController.CurrentClub == null)
+    if (ClubController.CurrentClub == null || ClubController.CurrentClub.ClubId == null || ClubController.CurrentClub.ClubId == 0)
     {
         <p>Alle registrerede flyvninger vises, du kan filtrere på hvilken klub som fremvises ved at filtrere på klubbens aktiviteter via listen i bunden af siderne.</p>
     }
@@ -23,19 +23,15 @@
             }
         </p>
     }
-}>
-    
     <select name="shortName" onchange="submit()" class="btn btn-default btn-xs">
-        <option value="">Vælg Flyveklub (viser lige nu fælleslisten)</option>
+        <option value="">Fælleslisten (vælg eventuelt flyveklub filtrering)</option>
         @foreach (var item in Model)
         {
-            <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{
-            if (ClubController.CurrentClub.ShortName == item.ShortName)
-            {
-                <text>selected</text>
-            }}>
+            <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{ if (ClubController.CurrentClub.ShortName == item.ShortName) { <text> selected</text>
+        }}>
                 @Html.DisplayFor(modelItem => item.Name)
             </option>
         }
     </select>
 }
+    
