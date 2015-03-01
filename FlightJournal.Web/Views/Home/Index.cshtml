@@ -15,8 +15,12 @@
     @Html.Action("ClubPresentation", "Club")
 </div>
 <div class="alert alert-warning">
-    #TODO: Introducer invitation til at binde bruger profilen til en pilot hvis der er match på email adressen#<br/>
-    Herved får man adgang til startlisten og oprettelse og redigering af flyvninger foretaget på ens klubfly, startklub eller piloter i ens klub.<br/>
+    @Html.Action("ManagePilotBinding", "Manage")
+
+    #TODO: Håndtere submit besked svaret på PilotBinding 
+    #TODO: Håndtere manglende match på pilot og besked om hvordan man får et match<br/>
+    f.eks. Herved får man adgang til startlisten og oprettelse og redigering af flyvninger foretaget på ens klubfly, startklub eller piloter i ens klub.<br/>
+    #TODO: Validere at opret bruger processen har en god og pæn validering af bruger proces<br/>
     #TODO: Detaljeret visninger på flyvning mangler styling<br/>
     #TODO: Listen over felter på rediger flyvning mangler styling<br/>
     #TODO: Antiforgery fejler når man skifter klub efter upgrade <br/>

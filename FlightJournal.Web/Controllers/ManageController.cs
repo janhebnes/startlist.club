@@ -346,20 +346,19 @@ namespace FlightJournal.Web.Controllers
             });
         }
 
-
         //
         // GET: /Account/Manage
-        public async Task<ActionResult> ManagePilotBinding(ManageMessageId? message)
+        public PartialViewResult ManagePilotBinding(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.RemovePilotBindingSuccess ? "The pilot link was removed."
                 : message == ManageMessageId.BindToPilotSuccess ? "The pilot was linked succesfully!"
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (user == null)
             {
-                return View("Error");
+                return PartialView("Error");
             }
 
             Pilot userPilotBinding = null;
@@ -387,7 +386,7 @@ namespace FlightJournal.Web.Controllers
                 }
             }
 
-            return View(new ManagePilotBindingViewModel
+            return PartialView(new ManagePilotBindingViewModel
             {
                 CurrentPilotBinding = userPilotBinding,
                 PotentialPilotBindings = otherPilots
