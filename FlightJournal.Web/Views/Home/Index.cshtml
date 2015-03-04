@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.ServiceModel.Channels
+@{
     ViewBag.Count = "0";
     using (var db = new FlightJournal.Web.Models.FlightContext())
     {
@@ -15,7 +16,7 @@
     @Html.Action("ClubPresentation", "Club")
 </div>
 <div class="alert alert-warning">
-    @Html.Action("ManagePilotBinding", "Manage")
+    @Html.Action("ManagePilotBindingPartial", "Manage")
 
     #TODO: Håndtere submit besked svaret på PilotBinding 
     #TODO: Håndtere manglende match på pilot og besked om hvordan man får et match<br/>
