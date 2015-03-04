@@ -1,4 +1,5 @@
-﻿@using FlightJournal.Web.Controllers
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Controllers
 @model IEnumerable<FlightJournal.Web.Models.Club>
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
@@ -7,7 +8,7 @@
         @foreach (var item in Model)
         {
             <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{
-            if (ClubController.CurrentClub.ShortName == item.ShortName)
+            if (Request.Club().ShortName == item.ShortName)
             {
                 <text>selected</text>
             }}>

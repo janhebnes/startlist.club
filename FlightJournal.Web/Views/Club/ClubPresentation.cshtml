@@ -1,25 +1,26 @@
-﻿@using FlightJournal.Web.Controllers
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Controllers
 @model IEnumerable<FlightJournal.Web.Models.Club>
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
-    if (ClubController.CurrentClub == null || ClubController.CurrentClub.ClubId == null || ClubController.CurrentClub.ClubId == 0)
+    if (!Request.IsClub())
     {
         <p>Alle registrerede flyvninger vises, du kan filtrere på hvilken klub som fremvises ved at filtrere på klubbens aktiviteter via listen i bunden af siderne.</p>
     }
     else
     {
-        <p>@ClubController.CurrentClub.Name er valgt, de viste flyvninger og summeringer er på baggrund af klubbens piloter og hjemmeflyveplads.</p>
+        <p>@Request.Club().Name er valgt, de viste flyvninger og summeringer er på baggrund af klubbens piloter og hjemmeflyveplads.</p>
         <p>
-            <a href="@ClubController.CurrentClub.Website">@ClubController.CurrentClub.Website</a>
+            <a href="@Request.Club().Website">@Request.Club().Website</a>
         </p>
         <p>
-            @if (ClubController.CurrentClub.ContactInformation != null)
+            @if (Request.Club().ContactInformation != null)
             {
-                <span>Kontakt: @ClubController.CurrentClub.ContactInformation</span>
+                <span>Kontakt: @Request.Club().ContactInformation</span>
             }
-            @if (ClubController.CurrentClub.Pilots != null)
+            @if (Request.Club().Pilots != null)
             {
-                <br /><span>Klubben har @ClubController.CurrentClub.Pilots.Count registrerede piloter.</span>
+                <br /><span>Klubben har @Request.Club().Pilots.Count registrerede piloter.</span>
             }
         </p>
     }
@@ -27,7 +28,7 @@
         <option value="">Fælleslisten (vælg eventuelt flyveklub filtrering)</option>
         @foreach (var item in Model)
         {
-            <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{ if (ClubController.CurrentClub.ShortName == item.ShortName) { <text> selected</text>
+            <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{ if (Request.Club().ShortName == item.ShortName) { <text> selected</text>
         }}>
                 @Html.DisplayFor(modelItem => item.Name)
             </option>

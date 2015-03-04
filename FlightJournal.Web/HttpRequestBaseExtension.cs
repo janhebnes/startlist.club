@@ -37,15 +37,48 @@ namespace FlightJournal.Web
             if (request == null)
                 return false;
 
-            return (PilotController.GetCurrentUserPilot().PilotId > 0);
+            return (PilotController.CurrentUserPilot != null 
+                && PilotController.CurrentUserPilot.PilotId > 0);
         }
 
+        /// <summary>
+        /// Returns the active pilot profile bound to the authenticated user session
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public static Pilot Pilot(this HttpRequestBase request)
         {
             if (request == null)
                 return null;
 
-            return PilotController.GetCurrentUserPilot();
+            return PilotController.CurrentUserPilot;
+        }
+
+        /// <summary>
+        /// Validates if a club is active based on the route filter information of the current request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static bool IsClub(this HttpRequestBase request)
+        {
+            if (request == null)
+                return false;
+            
+            return (ClubController.CurrentClub != null 
+                && ClubController.CurrentClub.ClubId > 0);
+        }
+
+        /// <summary>
+        /// Returns the Club that is active based on the route filter information of the current request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static Club Club(this HttpRequestBase request)
+        {
+            if (request == null)
+                return null;
+
+            return ClubController.CurrentClub;
         }
 
     }
