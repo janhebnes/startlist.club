@@ -3,7 +3,7 @@ using System.Web.Mvc.Html;
 
 namespace FlightJournal.Web
 {
-    public static class HtmlHelpers
+    public static class HtmlHelperExtension
     {
         public static MvcHtmlString MenuLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName)
         {
