@@ -36,15 +36,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.MenuLink("Dagsrapporter", "Index", "Report")</li>
-                    @if (Context.User.Identity.IsAuthenticated)
+                    @if (Request.IsAuthenticated)
                     {
                         <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
                     }
-                    @if (Context.User.Identity.IsAuthenticated && Pilot.CurrentUserPilot.Name != null)
+                    @if (Request.IsPilot())
                     {
                         <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
                     }
-                    @if (!Context.User.Identity.IsAuthenticated)
+                    @if (!Request.IsAuthenticated)
                     {
                         <li>@Html.MenuLink("Om", "Index", "Home")</li>
                     }

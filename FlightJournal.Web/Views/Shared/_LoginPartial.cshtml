@@ -3,9 +3,9 @@
 @using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated) {
     string accountName = User.Identity.GetUserName();
-    if (Pilot.CurrentUserPilot.Name != null)
+    if (Request.Pilot().Name != null)
     {
-        accountName = Pilot.CurrentUserPilot.RenderName;
+        accountName = Request.Pilot().RenderName;
     }
     if (User.IsInRole("Admin"))
     {

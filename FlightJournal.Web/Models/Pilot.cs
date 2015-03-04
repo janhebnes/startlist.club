@@ -55,55 +55,5 @@ namespace FlightJournal.Web.Models
         [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_Betalers { get; set; }
 
-
-        public static Pilot CurrentUserPilot
-        {
-            get
-            {
-                return GetCurrentUserPilot();
-            }
-        }
-
-        public static Pilot GetCurrentUserPilot(HttpContextBase context)
-        {
-            // Return Session Cache if set
-            if (context.Items["CurrentUserPilot"] != null)
-            {
-                var ghostUserPilotSession = context.Items["CurrentUserPilot"] as Pilot;
-                if (ghostUserPilotSession != null)
-                {
-                    return ghostUserPilotSession;
-                }
-            }
-
-            if (!context.Request.IsAuthenticated) return new Pilot();
-
-            var userManager = context.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var user = userManager.FindById(context.User.Identity.GetUserId());
-            Pilot ghost = new Pilot();
-            if (user != null)
-            {
-                ghost = user.Pilot ?? new Pilot();
-            }
-
-            // Set Session Cache
-            context.Items.Remove("CurrentUserPilot");
-            context.Items.Add("CurrentUserPilot", ghost);
-
-            // Return Current User Pilot
-            return ghost;
-        }
-
-        public static Pilot GetCurrentUserPilot()
-        {
-            var context = new HttpContextWrapper(System.Web.HttpContext.Current);
-            if (!context.Request.IsAuthenticated)
-            {
-                // Return empty object for allowing more optimize linq request on the filtered data
-                return new Pilot();
-            }
-
-            return GetCurrentUserPilot(context);
-        }
     }
 }

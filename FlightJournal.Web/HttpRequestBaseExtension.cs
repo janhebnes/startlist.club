@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using FlightJournal.Web.Controllers;
 
 namespace FlightJournal.Web
 {
@@ -36,7 +37,15 @@ namespace FlightJournal.Web
             if (request == null)
                 return false;
 
-            return (Pilot.GetCurrentUserPilot().PilotId > 0);
+            return (PilotController.GetCurrentUserPilot().PilotId > 0);
+        }
+
+        public static Pilot Pilot(this HttpRequestBase request)
+        {
+            if (request == null)
+                return null;
+
+            return PilotController.GetCurrentUserPilot();
         }
 
     }
