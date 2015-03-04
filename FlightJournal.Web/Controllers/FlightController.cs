@@ -165,6 +165,7 @@ namespace FlightJournal.Web.Controllers
         //
         // POST: /Flight/Create
         [HttpGet]
+        [Authorize]
         public ActionResult Duplicate(Guid id)
         {
             Flight originalFlight = this.db.Flights.Find(id);
@@ -192,6 +193,7 @@ namespace FlightJournal.Web.Controllers
         //
         // POST: /Flight/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Clone(Flight flight)
         {
             return Create(flight);

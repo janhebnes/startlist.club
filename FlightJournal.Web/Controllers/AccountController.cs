@@ -390,7 +390,7 @@ namespace FlightJournal.Web.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]    //For allowing the SetCurrentClub to redirect from within the controller antiforgery must not be on LogOff because it is used globally (any page with antiforgery will fail upon club filter change)
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();

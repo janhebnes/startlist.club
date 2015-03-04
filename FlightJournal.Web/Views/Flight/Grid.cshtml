@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
 @using System.Web.Script.Serialization;
+@using FlightJournal.Web
 @{
     ViewBag.Title = "Startlisten " + ViewBag.Date.ToShortDateString();
     int startNr = Model.Count();
 }
 <p>
     <div class="btn-group">
-        @if (Request.IsAuthenticated)
+        @if (Request.IsAuthenticated && Request.IsPilot())
         {
             @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "btn btn-info", type = "button" })
         }
@@ -78,7 +79,7 @@
                     }
                 </td>
                 <td>
-                    @if (!item.Departure.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
+                    @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
                     {
                         <div class="btn-block" style="white-space: nowrap;">
                             @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
@@ -92,7 +93,7 @@
                     }
                 </td>
                 <td>
-                    @if (!item.Landing.HasValue && Request.IsAuthenticated && item.Date == DateTime.Today)
+                    @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
                     {
                         <div class="btn-block" style="white-space: nowrap;">
                             @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
@@ -132,13 +133,13 @@
                 </td>
                 <td class="hidden-xs">
                     <span>
-                        @if (Request.IsAuthenticated)
+                        @if (Request.IsPilot())
                         {
                             <a href="#" class="editComment btn btn-xs btn-default hidden-print">Note</a>
                         }
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </span>
-                    @if (Request.IsAuthenticated)
+                    @if (Request.IsPilot())
                     {
                         <span style="display:none;">
                             @using (Html.BeginForm("SetComment", "Flight"))
@@ -152,7 +153,7 @@
                 </td>
                 <td class="hidden-print">
                     <div class="btn-block" style="white-space: nowrap;">
-                        @if (Request.IsAuthenticated)
+                        @if (Request.IsPilot())
                         {
                             bool isEditable = false;
                             if (Context.User.IsInRole("Administrator")) { isEditable = true; }
@@ -163,7 +164,7 @@
                                 @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                             }
                         }
-                        @if (Request.IsAuthenticated)
+                        @if (Request.IsPilot())
                         {
                             @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                             @Html.ActionLink("Gentag", "Duplicate", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })

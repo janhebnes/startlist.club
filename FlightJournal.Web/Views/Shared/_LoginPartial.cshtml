@@ -22,7 +22,7 @@
     
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
     {
-        @Html.AntiForgeryToken()
+        @*@Html.AntiForgeryToken() Conflicts with SetCurrentClub Redirect from within the Controller Action *@
 
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">

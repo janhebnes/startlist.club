@@ -1,4 +1,7 @@
 ﻿@model FlightJournal.Web.Models.Club
-    <p>Aktive flyveklub filtrering sat til </p>
-    @Html.DisplayFor(modelItem => Model.ShortName)
-    @Html.DisplayFor(modelItem => Model.Name)
+@section head
+{
+    <meta http-equiv="Refresh" content="0;url=@ViewBag.Redirect" />
+}
+
+<p>Skifter klub filtreringen til @Model.Name på stien @Model.ShortName</p>
