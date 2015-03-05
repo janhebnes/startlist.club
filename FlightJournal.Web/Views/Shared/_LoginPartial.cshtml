@@ -7,15 +7,15 @@
     {
         accountName = Request.Pilot().RenderName;
     }
-    if (User.IsInRole("Admin"))
+    if (User.IsAdministrator())
     {
         accountName = "Administrator " + accountName;   // System administrators can create clubs
     }
-    else if (User.IsInRole("Manager"))
+    else if (User.IsManager())
     {
         accountName = "Manager " + accountName;         // System managers can manage club pilots create planes and create locations
     }
-    else if (User.IsInRole("Editor"))
+    else if (User.IsEditor())
     {
         accountName = "Editor " + accountName;          // System editors can edit flights without time restrictions
     }
