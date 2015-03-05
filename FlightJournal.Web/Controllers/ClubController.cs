@@ -134,7 +134,7 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateInput(false)]
-        public ViewResult SetCurrentClub(string shortName)
+        public void SetCurrentClub(string shortName)
         {
             var club = this.db.Clubs.SingleOrDefault(d => d.ShortName == shortName);
 
@@ -151,26 +151,20 @@ namespace FlightJournal.Web.Controllers
                     {
                         // Redirect on the same path as was allready filtered but with another clubfilter.
                         var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(currentClubUrl, club.ShortName);
-                        this.Response.Redirect(redirectPath);
-                        this.Response.End();
-                        ViewBag.Redirect = redirectPath;
-                        return this.View(CurrentClub);
+                        this.Response.Redirect(redirectPath, true);
+                        return;
                     }
                     else
                     {
                         // handle any parsing errors by falling back to the primary club page url
-                        this.Response.Redirect(string.Concat("/",club.ShortName));
-                        this.Response.End();
-                        ViewBag.Redirect = string.Concat("/", club.ShortName);
-                        return this.View(CurrentClub);
+                        this.Response.Redirect(string.Concat("/",club.ShortName), true);
+                        return;
                     }
                 }
                 // Redirecting from empty to club filtered path
                 var liveRedirectPath = string.Format("/{0}{1}", club.ShortName, this.Request.UrlReferrer.AbsolutePath);
-                this.Response.Redirect(liveRedirectPath);
-                this.Response.End();
-                ViewBag.Redirect = liveRedirectPath;
-                return this.View(CurrentClub);
+                this.Response.Redirect(liveRedirectPath, true);
+                return;
             }
             else if (string.IsNullOrWhiteSpace(shortName))
             {
@@ -179,13 +173,9 @@ namespace FlightJournal.Web.Controllers
                 if (currentClubUrl != null)
                 {
                     var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace("/" + currentClubUrl, string.Empty);
-                    ViewBag.Redirect = redirectPath;
-                    this.Response.Redirect(redirectPath);
-                    this.Response.End();
+                    this.Response.Redirect(redirectPath, true);
                 }
             }
-
-            return this.View(CurrentClub);
         }
 
         //
