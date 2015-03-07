@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Routing;
+using FlightJournal.Web.Validators;
 
-namespace FlightJournal.Web
+namespace FlightJournal.Web.Constraints
 {
     public class ClubRouteConstraint : IRouteConstraint
     {

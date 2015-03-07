@@ -199,7 +199,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="HttpRequestBaseExtension.cs" />
+    <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
       <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
@@ -218,9 +218,9 @@
       <DependentUpon>201503011247488_ClubContactInformationAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\FlightContext\Configuration.cs" />
-    <Compile Include="ServiceCredentialsConfigurationSection.cs" />
-    <Compile Include="ClubRouteConstraint.cs" />
-    <Compile Include="ClubValidator.cs" />
+    <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
+    <Compile Include="Constraints\ClubRouteConstraint.cs" />
+    <Compile Include="Validators\ClubValidator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -236,12 +236,12 @@
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\StartTypeController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
-    <Compile Include="DateRouteConstraint.cs" />
-    <Compile Include="DatePathValidator.cs" />
+    <Compile Include="Constraints\DateRouteConstraint.cs" />
+    <Compile Include="Validators\DatePathValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HtmlHelperExtension.cs" />
+    <Compile Include="Extensions\HtmlHelperExtension.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\FlightViewModel.cs" />
@@ -261,7 +261,7 @@
     <Compile Include="Models\Plane.cs" />
     <Compile Include="Models\StartType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IPrincipalExtension.cs" />
+    <Compile Include="Extensions\IPrincipalExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

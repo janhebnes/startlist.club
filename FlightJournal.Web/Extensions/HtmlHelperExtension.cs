@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
-namespace FlightJournal.Web
+namespace FlightJournal.Web.Extensions
 {
     public static class HtmlHelperExtension
     {

@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
 @using System.Web.Script.Serialization;
 @using FlightJournal.Web
+@using FlightJournal.Web.Extensions
 @{
     ViewBag.Title = "Startlisten " + ViewBag.Date.ToShortDateString();
     int startNr = Model.Count();

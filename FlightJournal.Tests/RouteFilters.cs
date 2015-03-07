@@ -12,6 +12,7 @@ using System.Web.Routing;
 using FakeItEasy;
 using FlightJournal.Web;
 using FlightJournal.Web.Controllers;
+using FlightJournal.Web.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FlightJournal.Tests

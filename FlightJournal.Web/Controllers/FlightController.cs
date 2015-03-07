@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers

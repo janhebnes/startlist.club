@@ -1,5 +1,6 @@
 ﻿@using FlightJournal.Web
 @using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.ReportViewModel
 @{
     ViewBag.Title = "Dagsrapporter";
@@ -384,8 +385,11 @@
         </td>
     </tr>
 </table>
-<br />
-<p>
-    <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
-    <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
-</p>
+<br/>
+@if (Request.IsClub())
+{
+    <p>
+        <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
+        <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
+    </p>
+}
