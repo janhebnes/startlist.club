@@ -49,7 +49,7 @@
                         <li>@Html.MenuLink("Om", "Index", "Home")</li>
                     }
                     
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                    @if (Request.IsAuthenticated && User.IsAdministrator()) {
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opsætning <b class="caret"></b></a>
                       <ul class="dropdown-menu">

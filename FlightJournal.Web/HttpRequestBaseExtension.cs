@@ -45,6 +45,7 @@ namespace FlightJournal.Web
         /// Returns the active pilot profile bound to the authenticated user session
         /// </summary>
         /// <param name="request"></param>
+        /// <example>Allows the user of Request.Pilot</example>
         /// <returns></returns>
         public static Pilot Pilot(this HttpRequestBase request)
         {
@@ -58,6 +59,7 @@ namespace FlightJournal.Web
         /// Validates if a club is active based on the route filter information of the current request
         /// </summary>
         /// <param name="request"></param>
+        /// <example>Allows the user of Request.IsClub</example>
         /// <returns></returns>
         public static bool IsClub(this HttpRequestBase request)
         {
@@ -72,6 +74,7 @@ namespace FlightJournal.Web
         /// Returns the Club that is active based on the route filter information of the current request
         /// </summary>
         /// <param name="request"></param>
+        /// <example>Allows the user of Request.Club</example>
         /// <returns></returns>
         public static Club Club(this HttpRequestBase request)
         {

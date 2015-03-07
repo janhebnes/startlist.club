@@ -146,9 +146,7 @@
                     <div class="btn-group">
                         @if (Request.IsAuthenticated)
                         {
-                            bool isEditable = false;
-                            if (Context.User.IsInRole("Administrator")) { isEditable = true; }
-                            if (Context.User.IsInRole("Editor")) { isEditable = true; }
+                            bool isEditable = User.IsEditor();
                             if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
                             if (isEditable)
                             {

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>
+﻿@using FlightJournal.Web
+@model IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>
 
 @helper TruncateDate(DateTime input)
 {
@@ -128,10 +129,7 @@
 </fieldset>
 <p>
     @if (Request.IsAuthenticated) {
-        bool isEditable = false;
-        if (Context.User.IsInRole("Administrator")) { isEditable = true; }
-        if (Context.User.IsInRole("Editor")) { isEditable = true; }
-        if (isEditable)
+        if (User.IsEditor())
         {
             @Html.ActionLink("Rediger", "Edit", new { id = ViewBag.FlightId }, new { @class = "btn btn-default" })
             <text> | </text>

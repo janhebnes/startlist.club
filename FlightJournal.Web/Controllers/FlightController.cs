@@ -233,9 +233,9 @@ namespace FlightJournal.Web.Controllers
         public ActionResult SetComment(Guid id, string comment)
         {
             bool isEditable = false;
-
-            if (Request.RequestContext.HttpContext.User.IsInRole("Admin")) { isEditable = true; }
-            if (Request.RequestContext.HttpContext.User.IsInRole("Manager")) { isEditable = true; }
+            
+            if (User.IsAdministrator()) { isEditable = true; }
+            if (User.IsManager()) { isEditable = true; }
 
             Flight flight = this.db.Flights.Find(id);
 
@@ -296,9 +296,7 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Edit(Guid id)
         {
-            bool isEditable = false;
-            if (Request.RequestContext.HttpContext.User.IsInRole("Administrator")) { isEditable = true; }
-            if (Request.RequestContext.HttpContext.User.IsInRole("Editor")) { isEditable = true; }
+            bool isEditable = User.IsEditor();
             
             Flight flight = this.db.Flights.Find(id);
 
@@ -325,8 +323,8 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Edit(Flight flight)
         {
             bool isEditable = false;
-            if (Request.RequestContext.HttpContext.User.IsInRole("Admin")) { isEditable = true; }
-            if (Request.RequestContext.HttpContext.User.IsInRole("Manager")) { isEditable = true; }
+            if (User.IsAdministrator()) { isEditable = true; }
+            if (User.IsManager()) { isEditable = true; }
             if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
             {
                 isEditable = true;
@@ -356,8 +354,8 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Delete(Guid id)
         {
-            if ((!Request.RequestContext.HttpContext.User.IsInRole("Admin") &&
-                 !Request.RequestContext.HttpContext.User.IsInRole("Manager")))
+            if ((!User.IsAdministrator() &&
+                 !User.IsManager()))
             {
                 return null;
             }
@@ -377,8 +375,8 @@ namespace FlightJournal.Web.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             if (!Request.IsAuthenticated ||
-                (!Request.RequestContext.HttpContext.User.IsInRole("Manager") &&
-                 !Request.RequestContext.HttpContext.User.IsInRole("Admin")))
+                (!User.IsManager() &&
+                 !User.IsAdministrator()))
             {
                 return null;
             }
