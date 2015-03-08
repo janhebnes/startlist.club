@@ -4,15 +4,15 @@
 }
 <p>
     <div class="btn-group">
-        <a href="@Url.Action("Index", "Report")/@Model.Date.AddYears(-1).ToString("yyyy")" class="btn btn-default">@Model.Date.AddYears(-1).ToString("yyyy")</a>
-        <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy")" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Date.ToString("yyyy")</strong></a>
+        <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.AddYears(-1).ToString("yyyy"))" class="btn btn-default">@Model.Date.AddYears(-1).ToString("yyyy")</a>
+        <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy"))" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Date.ToString("yyyy")</strong></a>
         @foreach (var month in @Model.Flights.Select(d => d.Date.Month).Distinct().OrderBy(o => o))
         {
-            <a href="@Url.Action("Index", "Report")/@Model.Date.AddMonths(month - 1).ToString("yyyy-MM")" class="btn btn-default">@Model.Date.AddMonths(month - 1).ToString("MMMM")</a>
+            <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.AddMonths(month - 1).ToString("yyyy-MM"))" class="btn btn-default">@Model.Date.AddMonths(month - 1).ToString("MMMM")</a>
         }
         @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
         {
-            <a href="@Url.Action("Index", "Report")/@Model.Date.AddYears(1).ToString("yyyy")" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
+            <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.AddYears(1).ToString("yyyy"))" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
         }
     </div>
     <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("yyyy")</a>
