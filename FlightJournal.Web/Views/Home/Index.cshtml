@@ -1,4 +1,5 @@
 ﻿@using System.ServiceModel.Channels
+@using FlightJournal.Web.Extensions
 @{
     ViewBag.Count = "0";
     using (var db = new FlightJournal.Web.Models.FlightContext())
@@ -12,27 +13,36 @@
     </p>
 </div>
 
-<div class="alert alert-success">
+@{
+    var pilotAlertClass = (User.IsPilot()) ? "alert-success" : "alert-warning";
+}
+<div class="alert @pilotAlertClass">
+    @Html.Action("ManagePilotBindingPartial", "Manage")
+</div>
+@{
+    var clubAlertClass = (Request.IsClub()) ? "alert-success" : "alert-warning";
+}
+<div class="alert @clubAlertClass">
     @Html.Action("ClubPresentation", "Club")
 </div>
-<div class="alert alert-warning">
-    @Html.Action("ManagePilotBindingPartial", "Manage")
+
+<div class="alert alert-info">
+    <h3>TODO for 2015 release</h3>
+    #TODO: Consider introducing a wizard upon user creation @*http://vadimg.com/twitter-bootstrap-wizard-example/examples/basic-progressbar.html#*@<br/>
     #TODO: Valider besked når der er manglende match på pilot og besked om hvordan man får et match<br/>
     f.eks. Herved får man adgang til startlisten og oprettelse og redigering af flyvninger foretaget på ens klubfly, startklub eller piloter i ens klub.<br/>
     #TODO: Validere at opret bruger processen har en god og pæn validering af bruger proces<br/>
-    #TODO: Detaljeret visninger på flyvning mangler styling<br/>
-    #TODO: Listen over felter på rediger flyvning mangler styling<br/>
-    #TODO: Validere proces for administrator med administration af managere<br />
+    #TODO: Validere proces for administrator med administration af managere<br/>
     #TODO: Validere proces for manager med administration af piloter<br/>
-    #TODO: Validere proces for manager med administration af editor<br />
+    #TODO: Validere proces for manager med administration af editor<br/>
     #TODO: Validere proces for editor med administration af landingspladser og fly
 </div>
 
-    <h2>Projekt fælles startliste</h2>
+<h2>Projekt fælles startliste</h2>
 <p>
-    Systemet er opbygget på baggrund af erfaringerne i <a href="http://www.flyveklubben.dk">Øst-Sjællands flyveklub</a>.<br/>
+    Systemet er opbygget på baggrund af erfaringerne i <a href="http://www.flyveklubben.dk">Øst-Sjællands flyveklub</a>.<br />
     Kildekoden er open source og du er velkommen til at kopiere, tilpasse og bruge koden. Hovedformålet med projektet er at få en samlet platform til alle klubberne i Danmark og måske Norden som dækker de basale startliste behov for (svæve-)flyveklubber som i dag i mange klubber fortages på papir.
-    Der findes rigtig mange forskellige systemer udviklet ude i klubberne og dette er et forsøg på at få alle kræfterne samlet til at lave et fælles system som alle kan have gavn af og kan bidrage til. <br/>
+    Der findes rigtig mange forskellige systemer udviklet ude i klubberne og dette er et forsøg på at få alle kræfterne samlet til at lave et fælles system som alle kan have gavn af og kan bidrage til. <br />
 </p>
 <div class="alert alert-success">
     @ViewBag.Count Registrerede flyvninger (totalt)
