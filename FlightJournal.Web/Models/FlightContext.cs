@@ -13,7 +13,7 @@ namespace FlightJournal.Web.Models
     {
         public FlightContext() : base("FlightJournal")
         {
-            Database.SetInitializer<FlightContext>(new MigrateDatabaseToLatestVersion<FlightContext, Configuration>());
+            Database.SetInitializer<FlightContext>(new MigrateDatabaseToLatestVersion<FlightContext, Migrations.FlightContext.Configuration>());
         }
 
         public DbSet<Flight> Flights { get; set; }

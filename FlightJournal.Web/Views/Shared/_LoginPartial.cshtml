@@ -1,21 +1,22 @@
 @using FlightJournal.Web
+@using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Models
 @using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated) {
     string accountName = User.Identity.GetUserName();
-    if (Pilot.CurrentUserPilot.Name != null)
+    if (Request.Pilot().Name != null)
     {
-        accountName = Pilot.CurrentUserPilot.RenderName;
+        accountName = Request.Pilot().RenderName;
     }
-    if (User.IsInRole("Admin"))
+    if (User.IsAdministrator())
     {
         accountName = "Administrator " + accountName;   // System administrators can create clubs
     }
-    else if (User.IsInRole("Manager"))
+    else if (User.IsManager())
     {
         accountName = "Manager " + accountName;         // System managers can manage club pilots create planes and create locations
     }
-    else if (User.IsInRole("Editor"))
+    else if (User.IsEditor())
     {
         accountName = "Editor " + accountName;          // System editors can edit flights without time restrictions
     }
@@ -23,7 +24,7 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
     {
         @Html.AntiForgeryToken()
-
+    
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">

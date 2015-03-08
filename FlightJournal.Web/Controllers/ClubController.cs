@@ -68,6 +68,7 @@ namespace FlightJournal.Web.Controllers
                     {
                         ghost = new Club();
                         ghost.LocationId = club.LocationId;
+                        ghost.ContactInformation = club.ContactInformation;
                         ghost.ShortName = club.ShortName;
                         ghost.Name = club.Name;
                         if (club.Website != null && club.Website.StartsWith("http://"))
@@ -116,6 +117,16 @@ namespace FlightJournal.Web.Controllers
         }
 
         /// <summary>
+        /// Used by info page to present the club information and introduce the club filter
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public PartialViewResult ClubPresentation()
+        {
+            return this.PartialView(db.Clubs.OrderBy(c => c.Name).ToList());
+        }
+
+        /// <summary>
         /// Redirect the visitor to the actual path and adding the current club identifier to the Url
         /// </summary>
         /// <param name="shortName"></param>
@@ -123,7 +134,7 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateInput(false)]
-        public ViewResult SetCurrentClub(string shortName)
+        public void SetCurrentClub(string shortName)
         {
             var club = this.db.Clubs.SingleOrDefault(d => d.ShortName == shortName);
 
@@ -132,17 +143,28 @@ namespace FlightJournal.Web.Controllers
             {
                 if (CurrentClub != null && !string.IsNullOrWhiteSpace(CurrentClub.ShortName))
                 {
-                    //// var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(this.Server.UrlPathEncode(CurrentClub.ShortName), club.ShortName);
-                    /// // HACK: the original implementation has a bug because UrlPathEncode sends back encoded danish characters with little c instead of big C like from the original raw request. 
+                    // HACK: the original implementation has a bug because UrlPathEncode sends back encoded danish characters with little c instead of big C like from the original raw request, so we dont match (avoid this implementation). 
+                    /// var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(this.Server.UrlPathEncode(CurrentClub.ShortName), club.ShortName);
+                    // Find the first url element 
                     var currentClubUrl = this.Request.UrlReferrer.AbsolutePath.Split('/').FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
-                    if (currentClubUrl != null)
+                    if (!string.IsNullOrWhiteSpace(currentClubUrl))
                     {
+                        // Redirect on the same path as was allready filtered but with another clubfilter.
                         var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace(currentClubUrl, club.ShortName);
-                        this.Response.Redirect(redirectPath);
+                        this.Response.Redirect(redirectPath, true);
+                        return;
+                    }
+                    else
+                    {
+                        // handle any parsing errors by falling back to the primary club page url
+                        this.Response.Redirect(string.Concat("/",club.ShortName), true);
+                        return;
                     }
                 }
+                // Redirecting from empty to club filtered path
                 var liveRedirectPath = string.Format("/{0}{1}", club.ShortName, this.Request.UrlReferrer.AbsolutePath);
-                this.Response.Redirect(liveRedirectPath);
+                this.Response.Redirect(liveRedirectPath, true);
+                return;
             }
             else if (string.IsNullOrWhiteSpace(shortName))
             {
@@ -151,11 +173,9 @@ namespace FlightJournal.Web.Controllers
                 if (currentClubUrl != null)
                 {
                     var redirectPath = this.Request.UrlReferrer.AbsolutePath.Replace("/" + currentClubUrl, string.Empty);
-                    this.Response.Redirect(redirectPath);
+                    this.Response.Redirect(redirectPath, true);
                 }
             }
-
-            return this.View(CurrentClub);
         }
 
         //

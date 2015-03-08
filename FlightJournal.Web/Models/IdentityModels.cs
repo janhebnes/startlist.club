@@ -47,7 +47,7 @@ namespace FlightJournal.Web.Models
         }
 
         static ApplicationDbContext() {
-            Database.SetInitializer<ApplicationDbContext>(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
+            Database.SetInitializer<ApplicationDbContext>(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.ApplicationDbContext.Configuration>());
         }
 
         public static ApplicationDbContext Create() {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -172,12 +173,12 @@ namespace FlightJournal.Web.Controllers
 
         public ActionResult Pilot()
         {
-            if (string.IsNullOrWhiteSpace(Models.Pilot.CurrentUserPilot.Name))
+            if (!Request.IsPilot())
                 return RedirectToAction("PilotNotFound", "Error");
             
             PilotReportViewModel model = new PilotReportViewModel();
-
-            model.Pilot = Models.Pilot.CurrentUserPilot;
+            
+            model.Pilot = Request.Pilot();
 
             // Custom inline Pilot filtering for allowing maximum performance
             model.Flights = this.db.Flights

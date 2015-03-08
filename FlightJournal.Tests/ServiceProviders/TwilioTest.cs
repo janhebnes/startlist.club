@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using FlightJournal.Web;
+using FlightJournal.Web.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twilio;
 

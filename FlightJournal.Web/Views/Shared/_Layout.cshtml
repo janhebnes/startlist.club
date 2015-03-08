@@ -1,5 +1,6 @@
 ﻿@using FlightJournal.Web
 @using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Models
 <!DOCTYPE html>
 <html>
@@ -20,13 +21,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @if (ClubController.CurrentClub != null && !String.IsNullOrWhiteSpace(ClubController.CurrentClub.Website))
+                @if (Request.IsClub() && !String.IsNullOrWhiteSpace(Request.Club().Website))
                 {
-                    <a class="navbar-brand" href="@ClubController.CurrentClub.Website">@ClubController.CurrentClub.Name</a>
+                    <a class="navbar-brand" href="@Request.Club().Website">@Request.Club().Name</a>
                 }
-                else if (ClubController.CurrentClub != null && !String.IsNullOrWhiteSpace(ClubController.CurrentClub.Name))
+                else if (Request.IsClub() && !String.IsNullOrWhiteSpace(Request.Club().Name))
                 {
-                    @Html.ActionLink(ClubController.CurrentClub.Name, "Index", "Home", null, new { @class = "navbar-brand" })
+                    @Html.ActionLink(Request.Club().Name, "Index", "Home", null, new { @class = "navbar-brand" })
                 }
                 else
                 {
@@ -36,20 +37,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.MenuLink("Dagsrapporter", "Index", "Report")</li>
-                    @if (Context.User.Identity.IsAuthenticated)
+                    @if (Request.IsAuthenticated)
                     {
                         <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
                     }
-                    @if (Context.User.Identity.IsAuthenticated && Pilot.CurrentUserPilot.Name != null)
+                    @if (Request.IsPilot())
                     {
                         <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
                     }
-                    @if (!Context.User.Identity.IsAuthenticated)
+                    @if (!Request.IsAuthenticated)
                     {
                         <li>@Html.MenuLink("Om", "Index", "Home")</li>
                     }
                     
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                    @if (Request.IsAuthenticated && User.IsAdministrator()) {
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opsætning <b class="caret"></b></a>
                       <ul class="dropdown-menu">

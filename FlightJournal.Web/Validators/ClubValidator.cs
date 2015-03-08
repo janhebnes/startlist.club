@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using FlightJournal.Web.Models;
 
-namespace FlightJournal.Web
+namespace FlightJournal.Web.Validators
 {
     public interface IClubValidator
     {

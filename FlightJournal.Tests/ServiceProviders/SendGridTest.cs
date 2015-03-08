@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using FlightJournal.Web;
+using FlightJournal.Web.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SendGrid;
 

@@ -1,0 +1,43 @@
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Extensions
+@model IEnumerable<FlightJournal.Web.Models.Club>
+@using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
+{
+    if (!Request.IsClub())
+    {
+        <p>Alle registrerede flyvninger vises, du kan filtrere på hvilken klub som fremvises ved at filtrere på klubbens aktiviteter via listen i bunden af siderne.</p>
+    }
+    else
+    {
+        <p>@Request.Club().Name er valgt, de viste flyvninger og summeringer er på baggrund af klubbens piloter og hjemmeflyveplads.</p>
+        <p>
+            <a href="@Request.Club().Website">@Request.Club().Website</a>
+        </p>
+        <p>
+            @if (Request.Club().ContactInformation != null)
+            {
+                <span>Kontakt: @Request.Club().ContactInformation</span>
+            }
+            else
+            {
+                <span>Klubben har ingen registreret kontakt person.</span>
+            }
+            @if (Request.Club().Pilots != null)
+            {
+                <br /><span>Klubben har @Request.Club().Pilots.Count registrerede piloter.</span>
+            }
+        </p>
+    }
+    <select name="shortName" onchange="submit()" class="btn btn-default btn-xs">
+        <option value="">Fælleslisten (vælg eventuelt flyveklub filtrering)</option>
+        @foreach (var item in Model)
+        {
+            <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{ if (Request.Club().ShortName == item.ShortName) { <text> selected</text>
+        }}>
+                @Html.DisplayFor(modelItem => item.Name)
+            </option>
+        }
+    </select>
+}
+    

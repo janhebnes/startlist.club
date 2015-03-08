@@ -9,6 +9,7 @@ using FlightJournal.Web.Models;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
+using FlightJournal.Web.Configuration;
 
 namespace FlightJournal.Web {
     public partial class Startup {

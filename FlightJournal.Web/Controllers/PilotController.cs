@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -106,6 +109,57 @@ namespace FlightJournal.Web.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+
+        public static Pilot CurrentUserPilot
+        {
+            get
+            {
+                return GetCurrentUserPilot();
+            }
+        }
+
+        public static Pilot GetCurrentUserPilot(HttpContextBase context)
+        {
+            // Return Session Cache if set
+            if (context.Items["CurrentUserPilot"] != null)
+            {
+                var ghostUserPilotSession = context.Items["CurrentUserPilot"] as Pilot;
+                if (ghostUserPilotSession != null)
+                {
+                    return ghostUserPilotSession;
+                }
+            }
+
+            if (!context.Request.IsAuthenticated) return new Pilot();
+
+            var userManager = context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindById(context.User.Identity.GetUserId());
+            Pilot ghost = new Pilot();
+            if (user != null)
+            {
+                ghost = user.Pilot ?? new Pilot();
+            }
+
+            // Set Session Cache
+            context.Items.Remove("CurrentUserPilot");
+            context.Items.Add("CurrentUserPilot", ghost);
+
+            // Return Current User Pilot
+            return ghost;
+        }
+
+        public static Pilot GetCurrentUserPilot()
+        {
+            var context = new HttpContextWrapper(System.Web.HttpContext.Current);
+            if (!context.Request.IsAuthenticated)
+            {
+                // Return empty object for allowing more optimize linq request on the filtered data
+                return new Pilot();
+            }
+
+            return GetCurrentUserPilot(context);
         }
     }
 }

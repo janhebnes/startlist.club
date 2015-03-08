@@ -346,22 +346,46 @@ namespace FlightJournal.Web.Controllers
             });
         }
 
-
         //
         // GET: /Account/Manage
-        public async Task<ActionResult> ManagePilotBinding(ManageMessageId? message)
+        public PartialViewResult ManagePilotBindingPartial(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.RemovePilotBindingSuccess ? "The pilot link was removed."
                 : message == ManageMessageId.BindToPilotSuccess ? "The pilot was linked succesfully!"
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return PartialView("Error");
+            }
+
+            var result = ManagePilotBindingViewModel(user);
+
+            return PartialView("ManagePilotBinding",result);
+        }
+
+        public ViewResult ManagePilotBinding(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.RemovePilotBindingSuccess ? "The pilot link was removed."
+                : message == ManageMessageId.BindToPilotSuccess ? "The pilot was linked succesfully!"
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : "";
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (user == null)
             {
                 return View("Error");
             }
 
+            var result = ManagePilotBindingViewModel(user);
+
+            return View(result);
+        }
+
+        private static ManagePilotBindingViewModel ManagePilotBindingViewModel(ApplicationUser user)
+        {
             Pilot userPilotBinding = null;
             List<Pilot> otherPilots = new List<Pilot>();
             using (var context = new FlightContext())
@@ -375,7 +399,10 @@ namespace FlightJournal.Web.Controllers
 
                 if (user.EmailConfirmed && user.PhoneNumberConfirmed)
                 {
-                    otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber || p.Email == user.Email).Include(c=>c.Club).ToList();
+                    otherPilots =
+                        context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber || p.Email == user.Email)
+                            .Include(c => c.Club)
+                            .ToList();
                 }
                 else if (user.EmailConfirmed)
                 {
@@ -386,12 +413,12 @@ namespace FlightJournal.Web.Controllers
                     otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber).Include(c => c.Club).ToList();
                 }
             }
-
-            return View(new ManagePilotBindingViewModel
+            var result = new ManagePilotBindingViewModel
             {
                 CurrentPilotBinding = userPilotBinding,
                 PotentialPilotBindings = otherPilots
-            });
+            };
+            return result;
         }
 
         //

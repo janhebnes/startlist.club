@@ -1,4 +1,6 @@
-﻿@using FlightJournal.Web.Controllers
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.ReportViewModel
 @{
     ViewBag.Title = "Dagsrapporter";
@@ -35,11 +37,11 @@
 
         function selectDate(dmy) {
             // Redirect page to date report
-            @if (ClubController.CurrentClub.ShortName == null)
+            @if (!Request.IsClub() || string.IsNullOrWhiteSpace(Request.Club().ShortName))
             {
                 <text>location = '/' + dmy;</text>
             }else{
-                <text>location = '/@Server.UrlPathEncode(ClubController.CurrentClub.ShortName)/' + dmy;</text>
+                <text>location = '/@Server.UrlPathEncode(Request.Club().ShortName)/' + dmy;</text>
             }
         }
 
@@ -68,7 +70,7 @@
 </div>
 <br class="clearfix" />
 <h2>
-    Startlist @Model.Date.ToShortDateString() <small>@(ClubController.CurrentClub != null ? @ClubController.CurrentClub.Name : string.Empty)</small></h2>
+    Startlist @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small></h2>
 <table id="myTable" class="tablesorter table table-responsive table-striped table-hover table-condensed">
     <thead>
         <tr>
@@ -176,9 +178,7 @@
                 <td class="hidden-print">
                     @if (Request.IsAuthenticated)
                     {
-                        bool isEditable = false;
-                        if (Context.User.IsInRole("Administrator")) { isEditable = true; }
-                        if (Context.User.IsInRole("Editor")) { isEditable = true; }
+                        bool isEditable = User.IsEditor();
                         if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
                         if (isEditable)
                         {
@@ -199,7 +199,7 @@
 </p>
 <br style="page-break-after: always;" />
 <h2>
-    Logbøger / Fly @Model.Date.ToShortDateString() <small>@(ClubController.CurrentClub != null ? @ClubController.CurrentClub.Name : string.Empty)</small></h2>
+    Logbøger / Fly @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small></h2>
 <table class="table">
     <tr>
         <td valign="top">
@@ -292,7 +292,7 @@
     </tr>
 </table>
 <h2>
-    Logbøger / Piloter @Model.Date.ToShortDateString() <small>@(ClubController.CurrentClub != null ? @ClubController.CurrentClub.Name : string.Empty)</small>
+    Logbøger / Piloter @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
 </h2>
 <table class="table">
     <tr>
@@ -385,8 +385,8 @@
         </td>
     </tr>
 </table>
-<br />
+<br/>
 <p>
-    <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
-    <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
+    <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy"))" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
+    <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
 </p>

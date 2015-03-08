@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
 @using System.Web.Script.Serialization;
+@using FlightJournal.Web
+@using FlightJournal.Web.Extensions
 @helper TruncateDate(DateTime input)
     {
         if (input.Year == DateTime.Today.Year)
@@ -18,7 +20,7 @@
 
 <p>
     <div class="btn-group">
-        @if (Request.IsAuthenticated)
+        @if (Request.IsAuthenticated && Request.IsPilot())
         {
             @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "btn btn-info", type = "button" })
             @*@Html.ActionLink("Importer eksisterende flyvedata", "Import")*@
@@ -145,9 +147,7 @@
                     <div class="btn-group">
                         @if (Request.IsAuthenticated)
                         {
-                            bool isEditable = false;
-                            if (Context.User.IsInRole("Administrator")) { isEditable = true; }
-                            if (Context.User.IsInRole("Editor")) { isEditable = true; }
+                            bool isEditable = User.IsEditor();
                             if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
                             if (isEditable)
                             {

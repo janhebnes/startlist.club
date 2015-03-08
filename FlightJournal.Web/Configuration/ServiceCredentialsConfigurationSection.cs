@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
+﻿using System.Configuration;
 
-namespace FlightJournal.Web
+namespace FlightJournal.Web.Configuration
 {
     public class ServiceCredentialsConfigurationSection : ConfigurationSection
     {

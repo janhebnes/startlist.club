@@ -1,11 +1,10 @@
-﻿@model FlightJournal.Web.Models.Flight
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Flight
 @{
     ViewBag.Title = "Edit";
 }
-<h2>
-    Edit</h2>
-
-
+<h2>Edit</h2>
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
@@ -93,7 +92,7 @@
         </div>
         <div class="editor-field">
             <input type="submit" value="Gem" class="submit" />
-            @if (Context.User.IsInRole("Editor"))
+            @if (User.IsEditor())
             {
                 <text> | </text>
                 @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId })
@@ -133,7 +132,7 @@
         </div>
         <div class="editor-field">
             <input type="submit" value="Gem" class="submit" />
-            @if (Context.User.IsInRole("Editor"))
+            @if (User.IsEditor())
             {
                 <text> | </text>
                 @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId })
