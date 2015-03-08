@@ -44,6 +44,7 @@ input[type="checkbox"].input-validation-error {
 /* Editing Forms */
 .display-label, .editor-label {
     float:left;
+	clear:both;
     width:150px;
     text-align:right;
     margin: 1em 1em 0 0;
@@ -51,6 +52,7 @@ input[type="checkbox"].input-validation-error {
 
 .display-field, .editor-field {
     margin: 1em 0 0 0;
+	min-height: 25px;
 }
 
 /* tablesorter */
@@ -89,4 +91,18 @@ table.tablesorter thead tr .headerSortDown {
 /* Override jquery-ui- default theme and bootstrap theme */
 body, .ui-widget {
 font-family:"Segoe UI", Verdana, Arial, sans-serif;
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	input[type="date"],
+	input[type="time"],
+	input[type="datetime-local"],
+	input[type="month"] {
+		line-height: inherit;
+	}
+}
+
+.ui-widget {
+	font-size: inherit;
 }
