@@ -386,10 +386,7 @@
     </tr>
 </table>
 <br/>
-@if (Request.IsClub())
-{
-    <p>
-        <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy")" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
-        <a href="@Url.Action("Index", "Report")/@Model.Date.ToString("yyyy-MM")" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
-    </p>
-}
+<p>
+    <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy"))" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
+    <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
+</p>
