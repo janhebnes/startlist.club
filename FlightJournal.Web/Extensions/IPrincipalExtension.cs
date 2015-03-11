@@ -14,7 +14,7 @@ namespace FlightJournal.Web.Extensions
         /// <example> instead of using Request.RequestContext.HttpContext.User.IsInRole("Admin") you can now User.IsAdministrator </example>
         public static bool IsAdministrator(this IPrincipal principal)
         {
-            if (principal == null)
+            if (principal == null || !principal.Identity.IsAuthenticated)
                 return false;
 
             return principal.IsInRole("Administrator");
@@ -28,7 +28,7 @@ namespace FlightJournal.Web.Extensions
         /// <returns></returns>
         public static bool IsManager(this IPrincipal principal)
         {
-            if (principal == null)
+            if (principal == null || !principal.Identity.IsAuthenticated)
                 return false;
 
             return (principal.IsInRole("Manager") 
@@ -44,7 +44,7 @@ namespace FlightJournal.Web.Extensions
         /// <returns></returns>
         public static bool IsEditor(this IPrincipal principal)
         {
-            if (principal == null)
+            if (principal == null || !principal.Identity.IsAuthenticated)
                 return false;
 
             return ((principal.IsInRole("Manager") || principal.IsInRole("Editor"))
@@ -60,7 +60,7 @@ namespace FlightJournal.Web.Extensions
         /// <example>in razor you can simply ask User.IsPilot</example>
         public static bool IsPilot(this IPrincipal principal)
         {
-            if (principal == null)
+            if (principal == null || !principal.Identity.IsAuthenticated)
                 return false;
 
             return (PilotController.CurrentUserPilot != null
