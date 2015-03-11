@@ -94,7 +94,7 @@
     </fieldset>
 }
 <p>
-    @if (Request.IsAuthenticated)
+    @if (Request.IsPilot())
     {
         bool isEditable = User.IsEditor();
         if (Model != null && Model.Date != null && Model.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }

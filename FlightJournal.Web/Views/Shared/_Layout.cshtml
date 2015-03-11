@@ -50,19 +50,26 @@
                         <li>@Html.MenuLink("Om", "Index", "Home")</li>
                     }
                     
-                    @if (Request.IsAuthenticated && User.IsAdministrator()) {
+                    @if (User.IsEditor()) 
+                    {
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opsætning <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li>@Html.MenuLink("Piloter", "Index", "Pilot")</li>
                           <li>@Html.MenuLink("Fly", "Index", "Plane")</li>
                           <li>@Html.MenuLink("Landingssteder", "Index", "Location")</li>
-                        <li class="divider"></li>
-                          <li>@Html.MenuLink("Roles", "Index", "RolesAdmin")</li>
-                          <li>@Html.MenuLink("Users", "Index", "UsersAdmin")</li>
-                        <li class="divider"></li>
-                          <li>@Html.MenuLink("Startmetoder", "Index", "StartType")</li>
-                          <li>@Html.MenuLink("Klubber", "Index", "Club")</li>
+                          @if (User.IsManager())
+                          {
+                              <li>@Html.MenuLink("Piloter", "Index", "Pilot")</li>
+                          }
+                          @if (User.IsAdministrator())
+                          {
+                              <li class="divider"></li>
+                              <li>@Html.MenuLink("Roles", "Index", "RolesAdmin")</li>
+                              <li>@Html.MenuLink("Users", "Index", "UsersAdmin")</li>
+                              <li class="divider"></li>
+                              <li>@Html.MenuLink("Startmetoder", "Index", "StartType")</li>
+                              <li>@Html.MenuLink("Klubber", "Index", "Club")</li>
+                          }
                       </ul>
                     </li>
                     }

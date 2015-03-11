@@ -8,7 +8,7 @@
 }
 <p>
     <div class="btn-group">
-        @if (Request.IsAuthenticated && Request.IsPilot())
+        @if (Request.IsPilot())
         {
             @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "btn btn-info", type = "button" })
         }
@@ -154,7 +154,7 @@
                 </td>
                 <td class="hidden-print">
                     <div class="btn-block" style="white-space: nowrap;">
-                        @if (Request.IsPilot())
+                        @if (User.IsPilot())
                         {
                             bool isEditable = User.IsEditor();
                             if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
@@ -163,7 +163,7 @@
                                 @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                             }
                         }
-                        @if (Request.IsPilot())
+                        @if (User.IsPilot())
                         {
                             @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                             @Html.ActionLink("Gentag", "Duplicate", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })

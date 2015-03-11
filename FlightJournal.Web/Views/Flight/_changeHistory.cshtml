@@ -129,14 +129,12 @@
     </table>
 </fieldset>
 <p>
-    @if (Request.IsAuthenticated) {
-        if (User.IsEditor())
+    @if (User.IsEditor())
         {
             @Html.ActionLink("Rediger", "Edit", new { id = ViewBag.FlightId }, new { @class = "btn btn-default" })
             <text> | </text>
             @Html.ActionLink("Slet", "Delete", new { id = ViewBag.FlightId }, new { @class = "btn btn-danger" })
             <text> | </text>
         }
-    }
     <a href="/" class="back">Tilbage til listen</a>
 </p>

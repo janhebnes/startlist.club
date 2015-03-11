@@ -176,7 +176,7 @@
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td class="hidden-print">
-                    @if (Request.IsAuthenticated)
+                    @if (Request.IsPilot())
                     {
                         bool isEditable = User.IsEditor();
                         if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }

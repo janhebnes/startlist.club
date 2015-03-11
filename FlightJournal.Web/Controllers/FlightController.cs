@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Services.Description;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 
@@ -112,6 +114,8 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Land(Guid id, int? offSet)
         {
+            if (!Request.IsPilot()) return RedirectToAction("Restricted", "Error", new { message = "Pilot binding required to land planes " });
+
             Flight flight = this.db.Flights.Find(id);
             if ((flight != null) && (flight.Landing == null))
             {
@@ -132,7 +136,7 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Depart(Guid id, int? offSet)
         {
-            if (!Request.IsAuthenticated) return null;
+            if (!Request.IsPilot()) return RedirectToAction("Restricted", "Error", new { message = "Pilot binding required to depart planes "});
 
             Flight flight = this.db.Flights.Find(id);
             if ((flight != null) && (flight.Landing == null))
@@ -234,8 +238,6 @@ namespace FlightJournal.Web.Controllers
         public ActionResult SetComment(Guid id, string comment)
         {
             bool isEditable = false;
-            
-            if (User.IsAdministrator()) { isEditable = true; }
             if (User.IsManager()) { isEditable = true; }
 
             Flight flight = this.db.Flights.Find(id);
@@ -247,6 +249,7 @@ namespace FlightJournal.Web.Controllers
 
             if (!isEditable)
             {
+                // TODO: Evaluate security error handling procedure vs. error controller and generel logging model of the platform
                 throw new UnauthorizedAccessException(
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
@@ -375,9 +378,7 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            if (!Request.IsAuthenticated ||
-                (!User.IsManager() &&
-                 !User.IsAdministrator()))
+            if (!User.IsEditor())
             {
                 return null;
             }

@@ -19,6 +19,13 @@ namespace FlightJournal.Web.Controllers
             //Response.StatusCode = 404;
             return View();
         }
+
+        public ActionResult Restricted(string message)
+        {
+            ViewBag.Message = message;
+            return View();
+        }
+
     // The server.GetLastError is currently not preserved... so the 500 handling is currently disabled
     ////    public ActionResult Runtime()
     ////    {

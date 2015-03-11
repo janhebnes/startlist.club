@@ -461,6 +461,7 @@
     <Content Include="Views\Manage\ManagePilotBinding.cshtml" />
     <Content Include="Views\Error\PilotNotFound.cshtml" />
     <Content Include="Views\Club\ClubPresentation.cshtml" />
+    <Content Include="Views\Error\Restricted.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
