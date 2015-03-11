@@ -3,9 +3,12 @@
 }
 <h2>@ViewBag.Title.</h2>
 <p class="text-info">
-    Please click the confirmation link which was sent to you via Email. 
+    Please click the confirmation link which was sent to you via Email.
     You will not be able to access the site until your email has been verified.
 </p>
-<p class="text-danger">
-    For DEVELOPMENT only: You can click this link to confirm the email: <a href="@ViewBag.Link">link</a>
-</p>
+@if (HttpContext.Current.IsDebuggingEnabled)
+{
+    <p class="text-danger">
+        For DEVELOPMENT only: You can click this link to confirm the email: <a href="@ViewBag.Link">link</a>
+    </p>
+}   
