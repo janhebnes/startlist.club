@@ -56,6 +56,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Locations.Add(location);
             var location2 = new Location { Name = "True" };
             context.Locations.Add(location2);
+            var location3 = new Location { Name = "Slaglille" };
+            context.Locations.Add(location3);
             context.Locations.Add(new Location() { Name = "Arnborg" });
             context.SaveChanges();
 
@@ -64,6 +66,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Clubs.Add(club);
             var club2 = new Club() { ClubId = 99, ShortName = "AASVK", Name = "Århus Svæveflyveklub", Location = location2 };
             context.Clubs.Add(club2);
+            var club3 = new Club() { ClubId = 199, ShortName = "MSF", Name = "Midtsjællands Svæveflyveklub", Location = location3 };
+            context.Clubs.Add(club3);
             context.SaveChanges();
 
             // Planes
@@ -118,6 +122,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                         StartedFrom = location,
                         LandedOn = location,
                         Pilot = pilot,
+                        Betaler = pilot,
                         StartType = start,
                         Description = "Demo flight",
                         LastUpdatedBy = pilot.ToString()
@@ -127,8 +132,9 @@ namespace FlightJournal.Web.Migrations.FlightContext
                         Plane = pl2,
                         StartedFrom = location,
                         Pilot = pilot,
+                        Betaler = pilot,
                         StartType = start,
-                        Description = "Demo flight (admin@admin.com/Admin@123456)",
+                        Description = "Demo flight",
                         LastUpdatedBy = pilot.ToString()
                     },
                     new Flight
@@ -137,6 +143,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                         Plane = pl2,
                         StartedFrom = location,
                         Pilot = pilot,
+                        Betaler = pilot,
                         StartType = start,
                         LastUpdatedBy = pilot.ToString(),
                         Description = "Demo flight"
@@ -147,6 +154,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                         Plane = pl2,
                         StartedFrom = location,
                         Pilot = pilot,
+                        Betaler = pilot,
                         StartType = start,
                         Description = "Demo flight",
                         LastUpdatedBy = pilot.ToString()
@@ -157,6 +165,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                         Plane = pl2,
                         StartedFrom = location,
                         Pilot = pilot,
+                        Betaler = pilot,
                         StartType = start,
                         LastUpdatedBy = pilot.ToString(),
                         Description = "Demo flight"
@@ -167,6 +176,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                         Plane = pl2,
                         StartedFrom = location,
                         Pilot = pilot,
+                        Betaler = pilot,
                         StartType = start,
                         Description = "Demo flight",
                         LastUpdatedBy = pilot.ToString()
