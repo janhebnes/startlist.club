@@ -2,8 +2,10 @@
 
 namespace FlightJournal.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
@@ -14,6 +16,7 @@ namespace FlightJournal.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult UHB530()
         {
             return View();
