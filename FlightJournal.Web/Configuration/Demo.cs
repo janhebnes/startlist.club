@@ -51,7 +51,7 @@ namespace FlightJournal.Web.Configuration
             {
                 return new List<DemoMembership>
                 {
-                    new DemoMembership("Admin", "admin@demo.startlist.club", "admin", "+4500000000"),
+                    new DemoMembership("Administrator", "admin@demo.startlist.club", "admin", "+4500000000"),
                     new DemoMembership("Manager", "manager@demo.startlist.club", "manager", "+4500000001"),
                     new DemoMembership("Editor", "editor@demo.startlist.club", "editor", "+4500000002"),
                     new DemoMembership(string.Empty, "pilot@demo.startlist.club", "pilot", "+4500000003"),
