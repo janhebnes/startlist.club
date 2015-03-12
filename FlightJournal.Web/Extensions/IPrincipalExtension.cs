@@ -1,6 +1,9 @@
-﻿using System.Security.Principal;
+﻿using System.Net.Mime;
+using System.Security.Principal;
+using System.Web;
 using FlightJournal.Web.Controllers;
 using FlightJournal.Web.Models;
+using Microsoft.AspNet.Identity;
 
 namespace FlightJournal.Web.Extensions
 {
@@ -31,9 +34,12 @@ namespace FlightJournal.Web.Extensions
             if (principal == null || !principal.Identity.IsAuthenticated)
                 return false;
 
+            if (principal.IsInRole("Administrator"))
+                return true;
+
             return (principal.IsInRole("Manager") 
                 && (PilotController.CurrentUserPilot.ClubId > 0)
-                && (PilotController.CurrentUserPilot.ClubId == ClubController.CurrentClub.ClubId)) || principal.IsInRole("Administrator"); 
+                && (PilotController.CurrentUserPilot.ClubId == ClubController.CurrentClub.ClubId)); 
         }
 
         /// <summary>
@@ -47,11 +53,14 @@ namespace FlightJournal.Web.Extensions
             if (principal == null || !principal.Identity.IsAuthenticated)
                 return false;
 
+            if (principal.IsInRole("Administrator"))
+                return true;
+
             return ((principal.IsInRole("Manager") || principal.IsInRole("Editor"))
                 && (PilotController.CurrentUserPilot.ClubId > 0)
-                && (PilotController.CurrentUserPilot.ClubId == ClubController.CurrentClub.ClubId)) || principal.IsInRole("Administrator"); 
+                && (PilotController.CurrentUserPilot.ClubId == ClubController.CurrentClub.ClubId)); 
         }
-        
+
         /// <summary>
         /// Validates if the visiting request is bound to a pilot profile
         /// </summary>
@@ -80,5 +89,24 @@ namespace FlightJournal.Web.Extensions
 
             return PilotController.CurrentUserPilot;
         }
+
+        /// <summary>
+        /// Returns the ApplocationUser Profile of the current user logged on the system 
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <example>Allows the use of User>.Profile</example>
+        /// <returns></returns>
+        public static ApplicationUser Profile(this IPrincipal principal)
+        {
+            if (principal == null)
+                return null;
+
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var user = db.Users.Find(principal.Identity.GetUserId());
+                return user;
+            }
+        }
+
     }
 }
