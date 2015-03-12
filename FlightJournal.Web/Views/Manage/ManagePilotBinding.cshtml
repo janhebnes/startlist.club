@@ -1,47 +1,99 @@
 ﻿@using System.Globalization
+@using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Models
 @using Microsoft.AspNet.Identity
 @model FlightJournal.Web.Models.ManagePilotBindingViewModel
-@{ ViewBag.Title = "Link your account to Pilot"; }
-<h2>@ViewBag.Title</h2>
+@{
+    ViewBag.Title = "Link your account to Pilot";
+    var userprofile = User.Profile();
+    var pilotAlertClass = (User.IsPilot()) ? "alert-success" : "alert-warning";
+}
+@*<h2>@ViewBag.Title</h2>*@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 @if (Model.CurrentPilotBinding != null)
 {
-    <h4>Your account is linked to Pilot @Model.CurrentPilotBinding.Name from @Model.CurrentPilotBinding.Club.Name</h4>
-    using (Html.BeginForm("RemovePilotBinding", "Manage"))
-    {
-        @Html.AntiForgeryToken()
-        <div>
-            @Html.Hidden("currentPilotIdBinding", Model.CurrentPilotBinding.PilotId)
-            <input type="submit" class="btn btn-danger" value="Remove" title="Remove pilot @Model.CurrentPilotBinding.Name from your account" />
-        </div>
-    }
+    <div class="alert @pilotAlertClass">
+        <h4>Din brugerprofil er bundet til pilotprofilen @Model.CurrentPilotBinding.Name fra @Model.CurrentPilotBinding.Club.Name</h4>
+        @using (Html.BeginForm("RemovePilotBinding", "Manage"))
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                @Html.Hidden("currentPilotIdBinding", Model.CurrentPilotBinding.PilotId)
+                <input type="submit" class="btn btn-danger" value="Fjern relation" title="Fjern relation til piloten @Model.CurrentPilotBinding.Name" />
+            </div>
+        }
+    </div>
 }
 else if (Model.PotentialPilotBindings.Count > 0)
 {
-    <hr />
-    <h4>Link pilot to log in</h4>
-    using (Html.BeginForm("LinkPilot", "Manage"))
-    {
-        @Html.AntiForgeryToken()
-        <div id="pilotLinkList">
-            <p>
-                @foreach (Pilot p in Model.PotentialPilotBindings)
-                {
-                    <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Link pilot @p.Name from @p.Club.ShortName to Log in">Link @p.Name from @p.Club.ShortName to Log in</button>
-                }
-            </p>
-        </div>
-    }
+    <div class="alert @pilotAlertClass">
+        <h4>Opret pilot relation</h4>
+        @using (Html.BeginForm("LinkPilot", "Manage"))
+        {
+            @Html.AntiForgeryToken()
+            <div id="pilotLinkList">
+                <p>
+                    @foreach (Pilot p in Model.PotentialPilotBindings)
+                    {
+                        <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Opret relation til piloten @p.Name fra @p.Club.ShortName">Opret relation til piloten @p.Name fra @p.Club.ShortName</button>
+                    }
+                </p>
+            </div>
+        }
+    </div>
 }
 else if (Model.PotentialPilotBindings.Count == 0)
 {
-    <div>
-        <p class="text-warning">
-            There are no pilot profiles matching your authenticated email (@User.Identity.GetUserName()) or phone number.<br />
-            Your authenticated email or phone number must match the pilot profil setup by your club manager for allowing a link to be created.
+    <div class="alert alert-danger">
+        <p>
+            <span class="glyphicon glyphicon-alert"></span>
+            Der findes ingen pilotprofiler som matcher
+            @if (userprofile.EmailConfirmed)
+            {
+                @: din validerede email (@userprofile.Email)
+            }
+
+            @if (userprofile.EmailConfirmed && userprofile.PhoneNumberConfirmed)
+            {
+                @: eller
+            }
+
+            @if (userprofile.PhoneNumberConfirmed)
+            {
+                @: dit validerede mobilnummer (@userprofile.PhoneNumber)
+            }
+            else
+            {
+                @:. Er din pilotprofil registreret med mobilnummer kræves det at du @Html.ActionLink("tilføjer et mobil nummer", "AddPhoneNumber", "Manage") på din brugerprofil.
+            }
+
+            <br />
+            En pilotprofil skal være oprettet af en klub som matcher enten din email eller dit mobilnummer for at din brugerprofil kan binde til en pilotprofil.
+            <br />
+            <br />
+            <em>Du skal kontakte den ansvarlige i din klub for at få oprettet en pilotprofil.</em>
+
+            @if (Request.IsClub())
+            {
+                <br />
+                <em>
+                    Kontakt oplysninger til den ansvarlige i <strong>@Request.Club().Name</strong> er
+                    @if (!string.IsNullOrWhiteSpace(Request.Club().ContactInformation))
+                    {
+                        @Request.Club().ContactInformation
+                    }
+                    else
+                    {
+                        @: ikke oplyst.
+                    }
+                </em>
+            }
         </p>
+
+
+        @*There are no pilot profiles matching your authenticated email (@User.Identity.GetUserName()) or phone number.<br/>
+            Your authenticated email or phone number must match the pilot profil setup by your club manager for allowing a link to be created.*@
     </div>
 }
 

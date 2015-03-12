@@ -13,12 +13,9 @@
     </p>
 </div>
 
-@{
-    var pilotAlertClass = (User.IsPilot()) ? "alert-success" : "alert-warning";
-}
-<div class="alert @pilotAlertClass">
-    @Html.Action("ManagePilotBindingPartial", "Manage")
-</div>
+@*Renderes with alert box notifications*@
+@Html.Action("ManagePilotBindingPartial", "Manage")
+
 @{
     var clubAlertClass = (Request.IsClub()) ? "alert-success" : "alert-warning";
 }
