@@ -47,7 +47,7 @@
                     }
                     @if (!Request.IsAuthenticated)
                     {
-                        <li>@Html.MenuLink("Om", "Index", "Home")</li>
+                        <li>@Html.MenuLink("Om startlist.club", "Index", "Home")</li>
                     }
                     
                     @if (User.IsEditor()) 
@@ -72,6 +72,10 @@
                           }
                       </ul>
                     </li>
+                    }
+                    @if (!User.IsPilot())
+                    {
+                        <li>@Html.MenuLink("[Opret relation til pilotprofil]","ManagePilotBinding","Manage")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
