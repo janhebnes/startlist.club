@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using FlightJournal.Web.Configuration;
 using SignInStatus = FlightJournal.Web.Models.SignInStatus;
 
 namespace FlightJournal.Web.Controllers
@@ -43,6 +44,7 @@ namespace FlightJournal.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -102,7 +104,7 @@ namespace FlightJournal.Web.Controllers
                 return View("Error");
             }
             var user = await UserManager.FindByIdAsync(await SignInHelper.GetVerifiedUserIdAsync());
-            if (user != null)
+            if (user != null && HttpContext.IsDebuggingEnabled)
             {
                 // To exercise the flow without actually sending codes, uncomment the following line
                 ViewBag.Status = "For DEMO purposes the current " + provider + " code is: " + await UserManager.GenerateTwoFactorTokenAsync(user.Id, provider);

@@ -67,8 +67,7 @@ namespace FlightJournal.Web.Configuration
 
         public static List<DemoMembership> GetLiveDemoMemberships()
         {
-            return GetDemoMembershipTemplates.Where(d => d.GetApplicationUser != null) as List<DemoMembership>;
+            return GetDemoMembershipTemplates.Where(user => user.GetApplicationUser != null && user.GetApplicationUser.Id != null).ToList();
         }
-            
     }
 }
