@@ -14,6 +14,7 @@
 @if (Model.CurrentPilotBinding != null)
 {
     <div class="alert @pilotAlertClass">
+        <span class="glyphicon glyphicon-ok-sign"></span>
         <h4>Din brugerprofil er bundet til pilotprofilen @Model.CurrentPilotBinding.Name fra @Model.CurrentPilotBinding.Club.Name</h4>
         @using (Html.BeginForm("RemovePilotBinding", "Manage"))
         {
@@ -47,7 +48,7 @@ else if (Model.PotentialPilotBindings.Count == 0)
 {
     <div class="alert alert-danger">
         <p>
-            <span class="glyphicon glyphicon-alert"></span>
+            <span class="glyphicon glyphicon-remove-sign"></span>
             Der findes ingen pilotprofiler som matcher
             @if (userprofile.EmailConfirmed)
             {
@@ -68,15 +69,15 @@ else if (Model.PotentialPilotBindings.Count == 0)
                 @:. Er din pilotprofil registreret med mobilnummer kræves det at du @Html.ActionLink("tilføjer et mobil nummer", "AddPhoneNumber", "Manage") på din brugerprofil.
             }
 
-            <br />
+            <br/>
             En pilotprofil skal være oprettet af en klub som matcher enten din email eller dit mobilnummer for at din brugerprofil kan binde til en pilotprofil.
-            <br />
-            <br />
+            <br/>
+            <br/>
             <em>Du skal kontakte den ansvarlige i din klub for at få oprettet en pilotprofil.</em>
 
             @if (Request.IsClub())
             {
-                <br />
+                <br/>
                 <em>
                     Kontakt oplysninger til den ansvarlige i <strong>@Request.Club().Name</strong> er
                     @if (!string.IsNullOrWhiteSpace(Request.Club().ContactInformation))

@@ -13,15 +13,9 @@
     </p>
 </div>
 
-@*Renderes with alert box notifications*@
 @Html.Action("ManagePilotBindingPartial", "Manage")
 
-@{
-    var clubAlertClass = (Request.IsClub()) ? "alert-success" : "alert-warning";
-}
-<div class="alert @clubAlertClass">
-    @Html.Action("ClubPresentation", "Club")
-</div>
+@Html.Action("ClubPresentation", "Club")
 
 <div class="alert alert-info">
     <h3>TODO for 2015 release</h3>
