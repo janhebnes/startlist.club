@@ -73,7 +73,7 @@
                       </ul>
                     </li>
                     }
-                    @if (!User.IsPilot())
+                    @if (!User.IsPilot() && Request.IsAuthenticated)
                     {
                         <li>@Html.MenuLink("[Opret relation til pilotprofil]","ManagePilotBinding","Manage")</li>
                     }
