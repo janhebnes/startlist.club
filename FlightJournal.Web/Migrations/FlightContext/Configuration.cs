@@ -58,6 +58,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Locations.Add(location2);
             var location3 = new Location { Name = "Slaglille" };
             context.Locations.Add(location3);
+            var location4 = new Location { Name = "Tølløse" };
+            context.Locations.Add(location4);
             context.Locations.Add(new Location() { Name = "Arnborg" });
             context.SaveChanges();
 
@@ -68,6 +70,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Clubs.Add(club2);
             var club3 = new Club() { ClubId = 199, ShortName = "MSF", Name = "Midtsjællands Svæveflyveklub", Location = location3, Website = "http://slaglille.dk" };
             context.Clubs.Add(club3);
+            var club4 = new Club() { ClubId = 210, ShortName = "TØL", Name = "Tølløse Flyveklub", Location = location4, Website = "http://www.cumulus.dk/" };
+            context.Clubs.Add(club4);
             context.SaveChanges();
 
             // Planes
@@ -107,83 +111,117 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.SaveChanges();
 
             // Pilots
-            var pilot = new Pilot { Name = "Jan Hebnes", MemberId = "1241", Club = club, Email = "jan.hebnes@gmail.com", MobilNumber = "+4524250682" };
+            var pilot = new Pilot { Name = "Jan Hebnes", MemberId = "1241", Club = club, Email = "jan.hebnes@gmail.com", MobilNumber = "+4500000000" };
             context.Pilots.Add(pilot);
-            context.Pilots.Add(new Pilot { Name = "Søren Sarup", MemberId = "1125", Club = club });
+            var pilot1 = new Pilot { Name = "Mr Demo Manager", MemberId = "9991", Club = club, MobilNumber = "+4500000001" };
+            context.Pilots.Add(pilot1);
+            var pilot2 = new Pilot { Name = "Mr Demo Editor", MemberId = "9992", Club = club, MobilNumber = "+4500000002" };
+            context.Pilots.Add(pilot2);
+            var pilot3 = new Pilot {Name = "Mr Demo Pilot", MemberId = "9993", Club = club, MobilNumber = "+4500000003"};
+            context.Pilots.Add(pilot3);
+            var pilot1B = new Pilot { Name = "Mr Demo OtherClub Manager", MemberId = "9995", Club = club3, MobilNumber = "+4500000005" };
+            context.Pilots.Add(pilot1B);
+            var pilot2B = new Pilot { Name = "Mr Demo OtherClub Editor", MemberId = "9996", Club = club3, MobilNumber = "+4500000006" };
+            context.Pilots.Add(pilot2B);
+            var pilot3B = new Pilot { Name = "Mr Demo OtherClub Pilot", MemberId = "9997", Club = club3, MobilNumber = "+4500000007" };
+            context.Pilots.Add(pilot3B);
+
 
             context.SaveChanges();
-            var s = new List<Flight>
-                {
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-3),
-                        Landing = DateTime.Now.AddHours(-3).AddMinutes(15),
-                        Plane = pl1,
-                        StartedFrom = location,
-                        LandedOn = location,
-                        Pilot = pilot,
-                        Betaler = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    },
-                    new Flight
-                    {
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        Betaler = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-2),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        Betaler = pilot,
-                        StartType = start,
-                        LastUpdatedBy = pilot.ToString(),
-                        Description = "Demo flight"
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-1),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        Betaler = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-4),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        Betaler = pilot,
-                        StartType = start,
-                        LastUpdatedBy = pilot.ToString(),
-                        Description = "Demo flight"
-                    },
-                    new Flight
-                    {
-                        Departure = DateTime.Now.AddHours(-3).AddMinutes(10),
-                        Plane = pl2,
-                        StartedFrom = location,
-                        Pilot = pilot,
-                        Betaler = pilot,
-                        StartType = start,
-                        Description = "Demo flight",
-                        LastUpdatedBy = pilot.ToString()
-                    }
-                };
-            s.ForEach(b => context.Flights.Add(b));
+
+            GenerateFlights(pl1, pl2, location, pilot, start)
+                .ForEach(b => context.Flights.Add(b));
+
+            GenerateFlights(pl1, pl2, location, pilot2, start)
+                .ForEach(b => context.Flights.Add(b));
+            
+            GenerateFlights(pl1, pl2, location, pilot3, start)
+                .ForEach(b => context.Flights.Add(b));
+
+
+            GenerateFlights(pl1, pl2, location3, pilot2B, start)
+                .ForEach(b => context.Flights.Add(b));
+
+            GenerateFlights(pl1, pl2, location3, pilot3B, start)
+                .ForEach(b => context.Flights.Add(b));
+
             context.SaveChanges();
+
+        }
+
+        private static List<Flight> GenerateFlights(Plane pl1, Plane pl2, Location location, Pilot pilot, StartType start)
+        {
+            var s = new List<Flight>
+            {
+                new Flight
+                {
+                    Departure = DateTime.Now.AddHours(-3),
+                    Landing = DateTime.Now.AddHours(-3).AddMinutes(15),
+                    Plane = pl1,
+                    StartedFrom = location,
+                    LandedOn = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    Description = "Demo flight",
+                    LastUpdatedBy = pilot.ToString()
+                },
+                new Flight
+                {
+                    Plane = pl2,
+                    StartedFrom = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    Description = "Demo flight",
+                    LastUpdatedBy = pilot.ToString()
+                },
+                new Flight
+                {
+                    Departure = DateTime.Now.AddHours(-2),
+                    Plane = pl2,
+                    StartedFrom = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    LastUpdatedBy = pilot.ToString(),
+                    Description = "Demo flight"
+                },
+                new Flight
+                {
+                    Departure = DateTime.Now.AddHours(-1),
+                    Plane = pl2,
+                    StartedFrom = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    Description = "Demo flight",
+                    LastUpdatedBy = pilot.ToString()
+                },
+                new Flight
+                {
+                    Departure = DateTime.Now.AddHours(-4),
+                    Plane = pl2,
+                    StartedFrom = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    LastUpdatedBy = pilot.ToString(),
+                    Description = "Demo flight"
+                },
+                new Flight
+                {
+                    Departure = DateTime.Now.AddHours(-3).AddMinutes(10),
+                    Plane = pl2,
+                    StartedFrom = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    Description = "Demo flight",
+                    LastUpdatedBy = pilot.ToString()
+                }
+            };
+            return s;
         }
     }
 }
