@@ -82,7 +82,7 @@
                 <td>
                     @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
                     {
-                        <div class="btn-block" style="white-space: nowrap;">
+                        <div class="btn-group" style="white-space: nowrap;display: flex;">
                             @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                             @Html.ActionLink("-05", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                             @Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
@@ -96,7 +96,7 @@
                 <td>
                     @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
                     {
-                        <div class="btn-block" style="white-space: nowrap;">
+                        <div class="btn-group" style="white-space: nowrap;display: flex;">
                             @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                             @Html.ActionLink("-05", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                             @Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
@@ -136,7 +136,7 @@
                     <span>
                         @if (Request.IsPilot())
                         {
-                            <a href="#" class="editComment btn btn-xs btn-default hidden-print">Note</a>
+                            <a href="#" class="editComment btn btn-default hidden-print">Note</a>
                         }
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </span>
@@ -147,13 +147,13 @@
                             {
                                 <input type="hidden" name="id" value="@item.FlightId" />
                                 <input type="text" name="comment" value="@item.Description" />
-                                <a href="#" class="setComment">Set</a>
+                                <a href="#" class="setComment btn btn-primary">Gem</a>
                             }
                         </span>
                     }
                 </td>
                 <td class="hidden-print">
-                    <div class="btn-block" style="white-space: nowrap;">
+                    <div class="btn-group" style="white-space: nowrap;display: flex;">
                         @if (User.IsPilot())
                         {
                             bool isEditable = User.IsEditor();
@@ -162,9 +162,7 @@
                             {
                                 @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                             }
-                        }
-                        @if (User.IsPilot())
-                        {
+                            
                             @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                             @Html.ActionLink("Gentag", "Duplicate", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                         }
@@ -191,7 +189,6 @@
                 var $this = $(this).closest("td");
                 $this.children("span:first").hide();
                 $this.children("span:last").fadeToggle("slow");
-
                 return false;
             });
 
