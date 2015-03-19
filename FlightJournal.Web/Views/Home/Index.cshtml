@@ -12,66 +12,81 @@
         <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/FlightJournal">open source</a> projekt skabt for at understøtte alle nordiske flyveklubbers elektroniske startlister.
     </p>
 </div>
-
-@Html.Action("ManagePilotBindingPartial", "Manage")
-
-@Html.Action("ClubPresentation", "Club")
-
-<div class="alert alert-info">
-    <h3>TODO for 2015 release</h3>
-    #TODO: Trimme redigering af flyvningerne så pilot på tværs af klubberne hjælpes til at redigere de relevante flyvninger for dem og ikke de andres<br />
-    #TODO: Validere at opret bruger processen har en god og pæn validering af bruger proces<br />
-    #TODO: Validere proces for administrator med administration af managere<br />
-    #TODO: Validere proces for manager med administration af piloter<br />
-    #TODO: Validere proces for manager med administration af editor<br />
-    #TODO: Validere proces for editor med administration af landingspladser og fly
+<div class="row">
+    <div class="col-md-6">
+        @Html.Action("ManagePilotBindingPartial", "Manage")
+    </div>
+    <div class="col-md-6">
+        @Html.Action("ClubPresentation", "Club")
+    </div>
 </div>
-
-<h2>Projekt fælles startliste</h2>
-<p>
-    Kildekoden er open source og du er velkommen til at kopiere, tilpasse og bruge koden.
-    Systemet er opbygget på baggrund af erfaringerne i <a href="http://www.flyveklubben.dk">Øst-Sjællands flyveklub</a>.<br />
-</p>
-<p>
-    Formålet med dette projekt er, at gøre startlisten let tilgængelig, dynamisk og nem at håndtere. I mange (svæve-) flyveklubber bruger man i dag pen og papir til startlisten og der er udviklet mange forskellige systemer i klubberne. Med denne Startliste er der lavet en samlet platform til klubberne i Danmark og muligvis Norden. Dette er et forsøg på, at få alle kræfterne samlet til at lave et fælles system, som alle kan bidrage til, have gavn og glæde af.
-</p>
-<h2>Kom i gang med din klub</h2>
-<p>
-    Ønsker du at gøre brug af platformen bedes et medlem fra bestyrelsen kontakte Jan Hebnes på <a href="mailto:jan.hebnes@gmail.com">jan.hebnes@gmail.com</a>.
-</p>
-<hr />
-<h3>
-    Hvad kan systemet
-</h3>
-<p>
-    Det er nu muligt at registrere dine flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel (CSV) og logge på via Facebook og Google. <br />
-    Der er mulighed for at filtrere oplysninger på baggrund af klub og fastholde klubpiloter samt flyvepladser i alle visninger og statistikker.
-</p>
-<p>
-    Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
-    <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den registerede dato. Der er rettelseshistorik på alle ændringer.<br />
-    <b>Redaktøren</b> kan ændre alle former for data for klubben, alle startliste oplysninger, registrere nye fly og piloter, samt slette flvyninger.
-</p>
-<p>
-    <strong>Login systemet</strong> er uafhængigt af pilotlisterne så hvis du vil oprettes som pilot skal du kontakte din klubs redaktør.
-</p>
-<p>
-    <strong>Rettelses historikken</strong> fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem, der har rettet hvilke flyvninger. Dette kan gøres op til 48 timer efter flyvningen fandt sted.
-</p>
-<hr />
-<h3>
-    Tilpas systemet (til .Net udviklere)
-</h3>
-<p>
-    Løsningen er baseret på ASP.Net MVC og Entity Framework med en Code First tilgang til databasen. Det er muligt at bidrage til kildekoden via projektet på Github. 
-    Forudsætningen for at kode bidraget tages med i kernen er at koden har generel værdi for alle klubber og ikke udgør en specialisering, der vil gøre systemet mere besværligt for andre at bruge.
-</p>
-<p>
-    Grundtanken er at man kan klare sig rigtig langt ved at kassereren henter flyvestatistikken en gang om måneden og medlemmerne hjælper med de rette kommentarer til flyvningerne undervejs.
-<p>
-    <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/FlightJournal">
-        <span class="glyphicon glyphicon-cloud-upload"></span> Projektsiden på Github.com
-    </a>
-</p>
-
-
+<hr/>
+<div class="row">
+    <div class="col-md-8">
+        <h2>Projekt fælles startliste</h2>
+        <p>
+            Kildekoden er open source og du er velkommen til at kopiere, tilpasse og bruge koden.
+            Systemet er opbygget på baggrund af erfaringerne i <a href="http://www.flyveklubben.dk">Øst-Sjællands flyveklub</a>.<br />
+        </p>
+        <p>
+            Formålet med dette projekt er, at gøre startlisten let tilgængelig, dynamisk og nem at håndtere. I mange (svæve-) flyveklubber bruger man i dag pen og papir til startlisten og der er udviklet mange forskellige systemer i klubberne. Med denne Startliste er der lavet en samlet platform til klubberne i Danmark og muligvis Norden. Dette er et forsøg på, at få alle kræfterne samlet til at lave et fælles system, som alle kan bidrage til, have gavn og glæde af.
+        </p>
+        <h2>Kom i gang med din klub</h2>
+        <p>
+            Ønsker du at gøre brug af platformen bedes et medlem fra bestyrelsen kontakte Jan Hebnes på <a href="mailto:jan.hebnes@gmail.com">jan.hebnes@gmail.com</a>.
+        </p>
+        <hr />
+        <h3>
+            Hvad kan systemet
+        </h3>
+        <p>
+            Det er nu muligt at registrere dine flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel (CSV) og logge på via Facebook og Google. <br />
+            Der er mulighed for at filtrere oplysninger på baggrund af klub og fastholde klubpiloter samt flyvepladser i alle visninger og statistikker.
+        </p>
+        <p>
+            Der er to niveauer af rettigheder i systemet, en bruger og en redaktør.<br />
+            <b>En bruger</b> kan registrere flyvninger samt redigere i dem op til 48 efter den registerede dato. Der er rettelseshistorik på alle ændringer.<br />
+            <b>Redaktøren</b> kan ændre alle former for data for klubben, alle startliste oplysninger, registrere nye fly og piloter, samt slette flvyninger.
+        </p>
+        <p>
+            <strong>Login systemet</strong> er uafhængigt af pilotlisterne så hvis du vil oprettes som pilot skal du kontakte din klubs redaktør.
+        </p>
+        <p>
+            <strong>Rettelses historikken</strong> fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem, der har rettet hvilke flyvninger. Dette kan gøres op til 48 timer efter flyvningen fandt sted.
+        </p>
+        <hr />
+        <h3>
+            Tilpas systemet (til .Net udviklere)
+        </h3>
+        <p>
+            Løsningen er baseret på ASP.Net MVC og Entity Framework med en Code First tilgang til databasen. Det er muligt at bidrage til kildekoden via projektet på Github.
+            Forudsætningen for at kode bidraget tages med i kernen er at koden har generel værdi for alle klubber og ikke udgør en specialisering, der vil gøre systemet mere besværligt for andre at bruge.
+        </p>
+        <p>
+            Grundtanken er at man kan klare sig rigtig langt ved at kassereren henter flyvestatistikken en gang om måneden og medlemmerne hjælper med de rette kommentarer til flyvningerne undervejs.
+        <p>
+            <br/>
+            <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/FlightJournal">
+                <span class="glyphicon glyphicon-cloud-upload"></span> Projektsiden på Github.com
+            </a>
+            <br/>
+            <em>https://github.com/janhebnes/FlightJournal</em>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <p>
+            <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/FlightJournal">
+                <span class="glyphicon glyphicon-cloud-upload"></span> Projektsiden på Github.com
+            </a><em>https://github.com/janhebnes/FlightJournal</em>
+        </p>
+        <div class="alert alert-info">
+            <h4>TODO for 2015 release</h4>
+            #TODO: Trimme redigering af flyvningerne så pilot på tværs af klubberne hjælpes til at redigere de relevante flyvninger for dem og ikke de andres<br/>
+            #TODO: Validere at opret bruger processen har en god og pæn validering af bruger proces<br/>
+            #TODO: Validere proces for administrator med administration af managere<br/>
+            #TODO: Validere proces for manager med administration af piloter<br/>
+            #TODO: Validere proces for manager med administration af editor<br/>
+            #TODO: Validere proces for editor med administration af landingspladser og fly
+        </div>
+    </div>
+</div>

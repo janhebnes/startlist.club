@@ -6,30 +6,33 @@
 @{
     ViewBag.Title = "Link your account to Pilot";
     var userprofile = User.Profile();
-    var pilotAlertClass = (User.IsPilot()) ? "alert-success" : "alert-warning";
 }
 @*<h2>@ViewBag.Title</h2>*@
 
-<p class="text-success">@ViewBag.StatusMessage</p>
+@if (!string.IsNullOrWhiteSpace(ViewBag.StatusMessage))
+{
+    <p class="text-success">@ViewBag.StatusMessage</p>
+}
+
 @if (Model.CurrentPilotBinding != null)
 {
-    <div class="alert @pilotAlertClass">
-        <span class="glyphicon glyphicon-ok-sign"></span>
-        <h4>Din brugerprofil er bundet til pilotprofilen @Model.CurrentPilotBinding.Name fra @Model.CurrentPilotBinding.Club.Name</h4>
+    <div>
+        <h4>@Model.CurrentPilotBinding.Name fra @Model.CurrentPilotBinding.Club.Name</h4>
         @using (Html.BeginForm("RemovePilotBinding", "Manage"))
         {
             @Html.AntiForgeryToken()
             <div>
                 @Html.Hidden("currentPilotIdBinding", Model.CurrentPilotBinding.PilotId)
-                <input type="submit" class="btn btn-danger" value="Fjern relation" title="Fjern relation til piloten @Model.CurrentPilotBinding.Name" />
+                <button type="submit" class="btn btn-danger" title="Fjern relation til piloten @Model.CurrentPilotBinding.Name">
+                    <span class="glyphicon glyphicon-remove"></span> Fjern relation
+                </button>
             </div>
         }
     </div>
 }
 else if (Model.PotentialPilotBindings.Count > 0)
 {
-    <div class="alert @pilotAlertClass">
-        <h4>Opret pilot relation</h4>
+    <div>
         @using (Html.BeginForm("LinkPilot", "Manage"))
         {
             @Html.AntiForgeryToken()
@@ -37,7 +40,10 @@ else if (Model.PotentialPilotBindings.Count > 0)
                 <p>
                     @foreach (Pilot p in Model.PotentialPilotBindings)
                     {
-                        <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Opret relation til piloten @p.Name fra @p.Club.ShortName">Opret relation til piloten @p.Name fra @p.Club.ShortName</button>
+                        <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Opret relation til piloten @p.Name fra @p.Club.ShortName">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            Er du @p.Name fra @p.Club.Name ?
+                        </button>
                     }
                 </p>
             </div>
