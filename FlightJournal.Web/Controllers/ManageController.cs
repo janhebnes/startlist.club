@@ -136,7 +136,8 @@ namespace FlightJournal.Web.Controllers
         // GET: /Account/AddPhoneNumber
         public ActionResult AddPhoneNumber()
         {
-            return View();
+            var model = new AddPhoneNumberViewModel() { Number = "+45"};
+            return View(model);
         }
 
         //
