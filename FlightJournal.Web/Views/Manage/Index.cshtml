@@ -1,58 +1,77 @@
+@using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage your account " + User.Identity.Name;
+    ViewBag.Title = "Manage your account ";
 }
 
 <h2>@ViewBag.Title</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
+<h4>@User.Identity.Name @Model.PhoneNumber</h4>
+<hr/>
+@if (!string.IsNullOrWhiteSpace(ViewBag.StatusMessage))
+{
+    <div class="alert alert-info">@ViewBag.StatusMessage</div>
+}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-4">
         <p>
-            @if (Model.HasPassword) {
-                @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "btn btn-default"})
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword", null, new {@class = "btn btn-default"})
             }
-            else {
-                @Html.ActionLink("Pick a password", "SetPassword")
+            else
+            {
+                @Html.ActionLink("Pick a password", "SetPassword", null, new {@class = "btn btn-primary"})
             }
         </p>
         <p>
-            Pilot linked: @Model.HasPilotBinding
-            @Html.ActionLink("Manage", "ManagePilotBinding", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Manage External Logins (" + Model.Logins.Count + ")", "ManageLogins", null, new {@class = "btn btn-default"})
         </p>
+    </div>
+    <div class="col-md-4">
         <p>
-            Phone Number: @(Model.PhoneNumber ?? "None") 
-            @if (Model.PhoneNumber != null) {
+            @*Phone Number: @(Model.PhoneNumber ?? "None")*@
+            @if (Model.PhoneNumber != null)
+            {
                 <div class="btn-group">
-                    @Html.ActionLink("Change", "AddPhoneNumber", null, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Remove", "RemovePhoneNumber", null, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Change " + Model.PhoneNumber, "AddPhoneNumber", null, new {@class = "btn btn-default"})
+                    <a href="@Url.Action("RemovePhoneNumber")" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Remove </a>
                 </div>
             }
-            else {
-                @Html.ActionLink("Add", "AddPhoneNumber", null, new { @class = "btn btn-default" })
-            }
-            
-        </p>
-        <p>
-            External Logins: @Model.Logins.Count
-            @Html.ActionLink("Manage", "ManageLogins", null, new { @class = "btn btn-default" })
-        </p>
-        <p>
-            Two Factor Enabled: @(Model.TwoFactor)
-            @if (Model.TwoFactor) {
-                @Html.ActionLink("Disable", "DisableTFA", null, new { @class = "btn btn-default" })
-            }
-            else {
-                @Html.ActionLink("Enable", "EnableTFA", null, new { @class = "btn btn-default" })
-            }
-        </p>
-        <p>
-            Two Factor Browser Remembered?: @Model.BrowserRemembered
-            @if (Model.BrowserRemembered) {
-                @Html.ActionLink("Forget", "ForgetBrowser", null, new { @class = "btn btn-default" })
-            }
-            else {
-                @Html.ActionLink("Remember", "RememberBrowser", null, new { @class = "btn btn-default" })
+            else
+            {
+                @Html.ActionLink("Add Phone Number", "AddPhoneNumber", null, new {@class = "btn btn-primary"})
             }
         </p>
     </div>
+    <div class="col-md-4">
+        @if (User.Profile().PhoneNumberConfirmed)
+        {
+            <p>
+                @*Two Factor Enabled: @(Model.TwoFactor)*@
+                @if (Model.TwoFactor)
+                {
+                    <a href="@Url.Action("DisableTFA")" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Disable Two Factor Authentication </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("EnableTFA")" class="btn btn-info"><span class="glyphicon glyphicon-user"></span> Enable Two Factor Authentication </a>
+                }
+            </p>
+            <p>
+                @*Two Factor Browser Remembered?: @Model.BrowserRemembered*@
+                @if (Model.BrowserRemembered)
+                {
+                    <a href="@Url.Action("ForgetBrowser")" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Forget Two Factor Browser</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("RememberBrowser")" class="btn btn-info"><span class="glyphicon glyphicon-globe"></span> Remember Two Factor Browser</a>
+                }
+            </p>
+        }
+    </div>
 </div>
+<hr/>
+@*Pilot relation: @Model.HasPilotBinding*@
+@*@Html.ActionLink("Manage", "ManagePilotBinding", null, new { @class = "btn btn-default" })*@
+@Html.Action("ManagePilotBindingPartial", "Manage")
