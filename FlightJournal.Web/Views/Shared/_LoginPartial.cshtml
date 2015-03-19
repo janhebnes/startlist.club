@@ -20,12 +20,17 @@
     {
         accountName = "Editor " + accountName;          // System editors can edit flights without time restrictions
     }
-    
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
-    {
-        @Html.AntiForgeryToken()
-    
         <ul class="nav navbar-nav navbar-right">
+            @if (User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
+            {
+                <li>
+                    <a href="javascript:document.getElementById('goHomeForm').submit()"><span class="glyphicon glyphicon-home"></span> @User.Pilot().Club.ShortName</a>
+                    @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post, new { id = "goHomeForm", Style = "display:none;" }))
+                    {
+                        <input type="hidden" name="shortName" value="ØSF" />
+                    }
+                </li>
+            }
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-user"></span> @accountName
@@ -38,12 +43,18 @@
                     <li>@Html.MenuLink("UHB530 (Journalføring)", "UHB530", "Home")</li>
                     <li>@Html.MenuLink("Om startlist.club", "Index", "Home")</li>
                     <li class="divider"></li>
-                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", Style = "display:none;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            
+                        }
+                    </li>
                 </ul>
-            
+
             </li>
         </ul>
-    }
 
 } else {
 
