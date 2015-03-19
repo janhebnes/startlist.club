@@ -69,23 +69,26 @@ namespace FlightJournal.Web {
             if (!string.IsNullOrWhiteSpace(settings.GoogleClientId) 
                 && !string.IsNullOrWhiteSpace(settings.GoogleClientSecret))
             {
-                var googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions
-                {
-                    ClientId = settings.GoogleClientId,
-                    ClientSecret = settings.GoogleClientSecret,
-                    CallbackPath = new PathString("/Account/ExternalGoogleLoginCallback"),
-                    Provider = new GoogleOAuth2AuthenticationProvider()
-                    {
-                        OnAuthenticated = async context =>
-                        {
-                            context.Identity.AddClaim(new Claim("picture", context.User.GetValue("picture").ToString()));
-                            context.Identity.AddClaim(new Claim("profile", context.User.GetValue("profile").ToString()));
-                        }
-                    }
-                };
+                //var googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions
+                //{
+                //    ClientId = settings.GoogleClientId,
+                //    ClientSecret = settings.GoogleClientSecret,
+                //    CallbackPath = new PathString("/Account/ExternalLoginCallback"),
+                //    Provider = new GoogleOAuth2AuthenticationProvider()
+                //    {
+                //        OnAuthenticated = async context =>
+                //        {
+                //            context.Identity.AddClaim(new Claim("picture", context.User.GetValue("picture").ToString()));
+                //            context.Identity.AddClaim(new Claim("profile", context.User.GetValue("profile").ToString()));
+                //        }
+                //    }
+                //};
 
-                googleOAuth2AuthenticationOptions.Scope.Add("email");
-                app.UseGoogleAuthentication(googleOAuth2AuthenticationOptions);
+                //googleOAuth2AuthenticationOptions.Scope.Add("email");
+                //app.UseGoogleAuthentication(googleOAuth2AuthenticationOptions);
+                app.UseGoogleAuthentication(
+                    clientId: settings.GoogleClientId,
+                    clientSecret: settings.GoogleClientSecret);
             }
             // var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
             // var pictureClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type.Equals("picture"));
