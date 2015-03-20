@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Roles administration";
 }
 
-<h2>Index</h2>
+<h2>Roles administration</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)

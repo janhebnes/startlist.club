@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Club>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Club administration";
 }
 
-<h2>Index</h2>
+<h2>Club administration</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -19,6 +19,9 @@
         </th>
         <th>
             @Html.LabelFor(model => Model.FirstOrDefault().Website)
+        </th>
+        <th>
+            @Html.LabelFor(model => Model.FirstOrDefault().ContactInformation)
         </th>
         <th>
             @Html.LabelFor(model => Model.FirstOrDefault().Location)

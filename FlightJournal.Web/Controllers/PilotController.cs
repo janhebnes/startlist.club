@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace FlightJournal.Web.Controllers
 {
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Administrator,Manager")]
     public class PilotController : Controller
     {
         private FlightContext db = new FlightContext();

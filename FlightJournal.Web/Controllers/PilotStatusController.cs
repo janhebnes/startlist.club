@@ -6,7 +6,7 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Administrator,Manager")]
     public class PilotStatusController : Controller
     {
         private FlightContext db = new FlightContext();

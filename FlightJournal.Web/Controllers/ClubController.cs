@@ -11,7 +11,7 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrator")]
     public class ClubController : Controller
     {
         private FlightContext db = new FlightContext();

@@ -1,18 +1,27 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.ApplicationUser>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "User administration";
 }
 
-<h2>Index</h2>
+<h2>User administration</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pilot.Club.ShortName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pilot.Name)
         </th>
         <th>
 
@@ -24,6 +33,15 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pilot.Club.ShortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pilot.Name)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
