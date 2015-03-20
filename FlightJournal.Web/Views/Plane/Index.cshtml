@@ -1,43 +1,66 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Plane>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Plane administration";
 }
 
-<h2>Index</h2>
-
+<h2>Plane administration</h2>
+<h3>Bemærk at fly er tilgængelige på tværs af klubberne</h3>
+<hr/>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
-            Registration
+            @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
-            CompetitionId
+            @Html.DisplayNameFor(model => model.Model)
         </th>
         <th>
-            Seats
+            @Html.DisplayNameFor(model => model.Class)
         </th>
         <th>
-            Engines
+            @Html.DisplayNameFor(model => model.Registration)
         </th>
         <th>
-            EntryDate
+            @Html.DisplayNameFor(model => model.CompetitionId)
         </th>
         <th>
-            ExitDate
+            @Html.DisplayNameFor(model => model.Seats)
         </th>
         <th>
-            DefaultStartType
+            @Html.DisplayNameFor(model => model.Engines)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Note)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Owner)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExitDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DefaultStartType)
+        </th>
+
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Registration)
             </td>
@@ -51,7 +74,10 @@
                 @Html.DisplayFor(modelItem => item.Engines)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EntryDate)
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExitDate)
@@ -60,9 +86,9 @@
                 @Html.DisplayFor(modelItem => item.DefaultStartType.ShortName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.PlaneId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.PlaneId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.PlaneId })
+                @Html.ActionLink("Edit", "Edit", new {id = item.PlaneId}) |
+                @Html.ActionLink("Details", "Details", new {id = item.PlaneId}) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.PlaneId})
             </td>
         </tr>
     }

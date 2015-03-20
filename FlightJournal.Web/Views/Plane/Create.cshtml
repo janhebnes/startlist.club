@@ -15,6 +15,33 @@
         <legend>Plane</legend>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.Type)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Type)
+            @Html.ValidationMessageFor(model => model.Type)
+            <small>e.g. LS6</small>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Model)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Model)
+            @Html.ValidationMessageFor(model => model.Model)
+            <small>e.g. LS6a</small>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Class)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Class)
+            @Html.ValidationMessageFor(model => model.Class)
+            <small>e.g. 15-Meter</small>
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Registration)
         </div>
         <div class="editor-field">
@@ -36,6 +63,7 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Seats)
             @Html.ValidationMessageFor(model => model.Seats)
+            <small>e.g. 1</small>
         </div>
 
         <div class="editor-label">
@@ -44,26 +72,35 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Engines)
             @Html.ValidationMessageFor(model => model.Engines)
+            <small>e.g. 0</small>
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.EntryDate)
+            @Html.LabelFor(model => model.Note)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.EntryDate)
-            @Html.ValidationMessageFor(model => model.EntryDate)
+            @Html.EditorFor(model => model.Note)
+            @Html.ValidationMessageFor(model => model.Note)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Owner)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Owner)
+            @Html.ValidationMessageFor(model => model.Owner)
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.ExitDate)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ExitDate)
+            @Html.EditorFor(model => model.ExitDate, new { type = "datetime" })
             @Html.ValidationMessageFor(model => model.ExitDate)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.StartTypeId, "DefaultStartType")
+            @Html.LabelFor(model => model.StartTypeId, "Default StartType")
         </div>
         <div class="editor-field">
             @Html.DropDownList("StartTypeId", String.Empty)

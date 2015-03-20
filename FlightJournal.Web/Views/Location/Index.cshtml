@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Location>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Location administration";
 }
 
-<h2>Index</h2>
-
+<h2>Location administration</h2>
+<h3>Bemærk at lokationer er tilgængelige på tværs af klubberne</h3>
+<hr />
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -17,7 +18,7 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.OrderBy(d=>d.Name))
     {
         <tr>
             <td>
