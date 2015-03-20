@@ -38,6 +38,6 @@ Further migration scripts are stored native to Entity Framework practices in the
 
 Tips
 -------------
-The roles "Admin" and "Editor" must exist and have been created manually in the Role provider and attach to a user account for enabling administrative access, user accounts are created using the application.
+Starting with no database will generate the databases (requires dbowner og .\) and you can auto login with the demo accounts and the demo flights.
 
 
