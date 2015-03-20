@@ -3,12 +3,9 @@
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
-
-@if (ViewBag.Locked)
-
-<h3>Are you sure you want to delete this?</h3>
+<h2>Deletion not possible</h2>
+<hr/>
+<h3>The location is in use by flight records and therfore cannot be deleted</h3>
 <fieldset>
     <legend>Location</legend>
 
@@ -17,9 +14,6 @@
         @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
     </p>
-}

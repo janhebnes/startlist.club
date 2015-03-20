@@ -6,7 +6,7 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Administrator,Manager,Editor")]
     public class PlaneController : Controller
     {
         private FlightContext db = new FlightContext();
@@ -84,6 +84,12 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Delete(int id)
         {
             Plane plane = db.Planes.Find(id);
+
+            if (db.Flights.Any(f => f.PlaneId == id))
+            {
+                return View("DeleteLocked", plane);
+            }
+
             return View(plane);
         }
 

@@ -465,6 +465,8 @@
     <Content Include="Views\Error\PilotNotFound.cshtml" />
     <Content Include="Views\Club\ClubPresentation.cshtml" />
     <Content Include="Views\Error\Restricted.cshtml" />
+    <Content Include="Views\Location\DeleteLocked.cshtml" />
+    <Content Include="Views\Plane\DeleteLocked.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

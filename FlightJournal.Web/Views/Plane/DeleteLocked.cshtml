@@ -1,0 +1,44 @@
+﻿@model FlightJournal.Web.Models.Plane
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h2>Deletion not possible</h2>
+<hr />
+<h3>The plane is in use by flight records and therfore cannot be deleted</h3>
+<fieldset>
+    <legend>Plane</legend>
+
+    <div class="display-label">Registration</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Registration)
+    </div>
+
+    <div class="display-label">CompetitionId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompetitionId)
+    </div>
+
+    <div class="display-label">Seats</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Seats)
+    </div>
+
+    <div class="display-label">Engines</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Engines)
+    </div>
+
+    <div class="display-label">ExitDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExitDate)
+    </div>
+
+    <div class="display-label">DefaultStartType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DefaultStartType.ShortName)
+    </div>
+</fieldset>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
