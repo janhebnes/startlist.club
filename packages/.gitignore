@@ -1,1 +1,9 @@
-!*.dll
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!repositories.config
+
+# ...even if they are in subdirectories
+!*/
