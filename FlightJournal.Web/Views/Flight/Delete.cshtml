@@ -9,77 +9,107 @@
 <h3>Are you sure you want to delete this?</h3>
 <fieldset>
     <legend>Flight</legend>
-    <div class="display-label">
-        @Html.LabelFor(model => model.Date)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.Departure)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Departure)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.Landing)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Landing)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.PlaneId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Plane)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.BetalerId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Betaler.Name)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.PilotId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Pilot.Name)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.PilotBackseatId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PilotBackseat.Name)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.StartTypeId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.StartType)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.StartedFromId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.StartedFrom.Name)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.LandedOnId)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LandedOn.Name)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.TachoDeparture)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TachoDeparture)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.TachoLanding)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TachoLanding)
-    </div>
-    <div class="display-label">
-        @Html.LabelFor(model => model.Description)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
+    <div class="row">
+        <div class="col-md-4">
+            <div class="display-label">
+                @Html.LabelFor(model => model.Date)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Date)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.Departure)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Departure)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.Landing)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Landing)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.PlaneId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Plane)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.BetalerId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Betaler.Name)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.PilotId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Pilot.Name)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.PilotBackseatId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.PilotBackseat.Name)
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="display-label">
+                @Html.LabelFor(model => model.StartTypeId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.StartType)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.StartedFromId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.StartedFrom.Name)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.LandedOnId)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.LandedOn.Name)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.TachoDeparture)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.TachoDeparture)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.TachoLanding)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.TachoLanding)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.LandingCount)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.LandingCount)
+            </div>
+            <div class="display-label">
+                @Html.LabelFor(model => model.Description)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Description)
+            </div>
+        </div>
     </div>
 </fieldset>
-@using (Html.BeginForm()) {
-	<h3>Are you sure you want to delete this?</h3>
-	<p>
-        <input type="submit" value="Delete" /> |
-        <a href="/" class="back">Tilbage til listen</a>
-    </p>
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="alert alert-danger col-md-4">
+            <h4>Are you sure you want to delete this?</h4>
+            <div class="btn-group">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+            </div>
+        </div>
+    </div>
 }
 @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)

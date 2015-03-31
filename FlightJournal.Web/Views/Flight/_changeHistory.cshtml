@@ -4,7 +4,8 @@
 
 @helper TruncateDate(DateTime input)
 {
-    if (input.Year == DateTime.Today.Year) {
+    if (input.Year == DateTime.Today.Year)
+    {
         @(input.ToString("ddd. ") + input.ToString("m"));
     }
     else
@@ -16,10 +17,10 @@
 @{
     ViewBag.Title = "Startlisten / Historik";
 }
-<h2>Historik</h2>
+<br/>
 
 <fieldset>
-    <legend>Flight</legend>
+    <legend>Historik</legend>
 
     <table class="table table-striped table-hover table-condensed">
         <tr>
@@ -129,12 +130,12 @@
     </table>
 </fieldset>
 <p>
-    @if (User.IsEditor())
+    <div class="btn-group">
+        @if (User.IsEditor())
         {
             @Html.ActionLink("Rediger", "Edit", new { id = ViewBag.FlightId }, new { @class = "btn btn-default" })
-            <text> | </text>
-            @Html.ActionLink("Slet", "Delete", new { id = ViewBag.FlightId }, new { @class = "btn btn-danger" })
-            <text> | </text>
+            @Html.ActionLink("Slet", "Delete", new { id = ViewBag.FlightId }, new { @class = "btn btn-default" })
         }
-    <a href="/" class="back">Tilbage til listen</a>
+        <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+    </div>
 </p>

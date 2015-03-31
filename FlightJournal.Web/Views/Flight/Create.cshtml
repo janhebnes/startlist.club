@@ -7,143 +7,156 @@
     @using (Html.BeginForm())
     {
         @Html.ValidationSummary(true)
-        <fieldset>
-            <legend>Opret flyvning</legend>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Date)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Date)
-                @Html.ValidationMessageFor(model => model.Date)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.Departure)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Departure)
-                @Html.ValidationMessageFor(model => model.Departure)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.Landing)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Landing)
-                @Html.ValidationMessageFor(model => model.Landing)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.PlaneId)
-            </div>
-            <div class="editor-field ">
-                @Html.DropDownList("PlaneId", String.Empty)
-                @Html.ValidationMessageFor(model => model.PlaneId)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.BetalerId)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("BetalerId", String.Empty)
-                @Html.ValidationMessageFor(model => model.BetalerId)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.PilotId)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("PilotId", String.Empty)
-                @Html.ValidationMessageFor(model => model.PilotId)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.PilotBackseatId)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("PilotBackseatId", String.Empty)
-                @Html.ValidationMessageFor(model => model.PilotBackseatId)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.StartTypeId)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("StartTypeId", String.Empty)
-                @Html.ValidationMessageFor(model => model.StartTypeId)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.StartedFromId)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("StartedFromId", String.Empty)
-                @Html.ValidationMessageFor(model => model.StartedFromId)
-            </div>
-            <div class="editor-label clearfix">
-                @Html.LabelFor(model => model.LandedOnId)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("LandedOnId", String.Empty)
-                @Html.ValidationMessageFor(model => model.LandedOnId)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Description)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
-            </div>
-            <p>
-                <div class="editor-field">
-                    <input type="submit" value="Create" class="btn btn-primary btn-lg" />
+    <fieldset>
+        <legend>Opret flyvning</legend>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Date)
                 </div>
-            </p>
-            <br class="clearfix"/>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.TachoDeparture)
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Date)
+                    @Html.ValidationMessageFor(model => model.Date)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Departure)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Departure)
+                    @Html.ValidationMessageFor(model => model.Departure)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Landing)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Landing)
+                    @Html.ValidationMessageFor(model => model.Landing)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.PlaneId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("PlaneId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.PlaneId)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.BetalerId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("BetalerId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.BetalerId)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.PilotId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("PilotId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.PilotId)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.PilotBackseatId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("PilotBackseatId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.PilotBackseatId)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Description)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
             </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.TachoDeparture)
-                @Html.ValidationMessageFor(model => model.TachoDeparture)
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.StartTypeId)
+                </div>
+
+                <div class="editor-field">
+                    @Html.DropDownList("StartTypeId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.StartTypeId)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.StartedFromId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("StartedFromId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.StartedFromId)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LandedOnId)
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("LandedOnId", String.Empty)
+                    @Html.ValidationMessageFor(model => model.LandedOnId)
+                </div>
             </div>
-            <div class="editor-label">
-                @Html.LabelFor(model => model.TachoLanding)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.TachoLanding)
-                @Html.ValidationMessageFor(model => model.TachoLanding)
+            <!-- Add the extra clearfix for only the required viewport -->
+            <div class="clearfix visible-sm visible-xs"></div>
+            <div class="col-md-4 col-sm-12 visible-sm visible-xs">
+                <div class="btn-group btn-group-lg ">
+                    <input type="submit" value="Opret" class="btn btn-primary" />
+                </div>
             </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.LandingCount)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.LandingCount)
-                @Html.ValidationMessageFor(model => model.LandingCount)
-            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TachoDeparture)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.TachoDeparture)
+                    @Html.ValidationMessageFor(model => model.TachoDeparture)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TachoLanding)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.TachoLanding)
+                    @Html.ValidationMessageFor(model => model.TachoLanding)
+                </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.TaskDistance)
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LandingCount)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.LandingCount)
+                    @Html.ValidationMessageFor(model => model.LandingCount)
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.TaskDistance)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.TaskDistance)
+                    @Html.ValidationMessageFor(model => model.TaskDistance)
+                </div>
             </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.TaskDistance)
-                @Html.ValidationMessageFor(model => model.TaskDistance)
+        </div>
+        <div class="row" style="margin-top: 30px">
+            <div class="col-md-6">
+                <div class="btn-group btn-group-lg">
+                    <input type="submit" value="Opret" class="btn btn-primary" />
+                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                </div>
             </div>
-            <div class="editor-label">
-            </div>
-            <div class="editor-field">
-                <input type="submit" value="Create" class="btn btn-primary btn-lg"/>
-            </div>
-        </fieldset>
+        </div>
+
+    </fieldset>
     }
-</p>
-<div>
-    <a href="/" class="back">Tilbage til listen</a>
-</div>
+    </p>
+    <div>
 
-@section scripts
+    </div>
+
+    @section scripts
 {
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
+        <script type="text/javascript">
+            $(document).ready(function () {
                 $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").css("border", "3px solid #888");
                 $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").first().focus();
 
@@ -155,6 +168,6 @@
                 $("#StartedFromId").combobox();
                 $("#LandedOnId").combobox();
             }
-        );
-    </script>
-}
+            );
+        </script>
+    }

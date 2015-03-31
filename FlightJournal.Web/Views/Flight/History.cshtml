@@ -134,9 +134,9 @@
     </table>
 </fieldset>
 <p>
-    <a href="/" class="back">Tilbage til listen</a>
-    <text> | </text>
-    @Html.ActionLink("Forrige rettelser", "History", new { skip = ViewBag.Skip + 100 })
+    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+    
+    @Html.ActionLink("Forrige rettelser", "History", new { skip = ViewBag.Skip + 100 }, new { @class = "btn btn-default"})
 </p>
 @section scripts
 {
