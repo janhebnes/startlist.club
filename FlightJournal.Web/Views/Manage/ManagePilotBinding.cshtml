@@ -11,7 +11,7 @@
 
 @if (!string.IsNullOrWhiteSpace(ViewBag.StatusMessage))
 {
-    <p class="text-success">@ViewBag.StatusMessage</p>
+    <p class="alert alert-success">@ViewBag.StatusMessage</p>
 }
 
 @if (Model.CurrentPilotBinding != null)

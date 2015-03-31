@@ -350,15 +350,18 @@ namespace FlightJournal.Web.Controllers
             });
         }
 
+        private static string ManageMessageText(ManageMessageId? message)
+        {
+            return message == ManageMessageId.RemovePilotBindingSuccess ? "Pilot relationen er nu fjernet."
+                : message == ManageMessageId.BindToPilotSuccess ? string.Format("Pilot relationen oprettet! Du kan nu oprette og redigere flyvninger samt se din personlige logbog.")
+                    : message == ManageMessageId.Error ? "Der opstod en fejl."
+                        : "";
+        }
         //
         // GET: /Account/Manage
         public PartialViewResult ManagePilotBindingPartial(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.RemovePilotBindingSuccess ? "The pilot link was removed."
-                : message == ManageMessageId.BindToPilotSuccess ? "The pilot was linked succesfully!"
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+            ViewBag.StatusMessage = ManageMessageText(message);
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user == null)
             {
@@ -372,11 +375,7 @@ namespace FlightJournal.Web.Controllers
 
         public ViewResult ManagePilotBinding(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.RemovePilotBindingSuccess ? "The pilot link was removed."
-                : message == ManageMessageId.BindToPilotSuccess ? "The pilot was linked succesfully!"
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+            ViewBag.StatusMessage = ManageMessageText(message);
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user == null)
             {
