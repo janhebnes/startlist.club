@@ -13,15 +13,12 @@
     }
 
 }
-<h2>
-    Detaljer
-</h2>
 @using (Html.BeginForm())
 {
     <fieldset>
-        <legend>Flight</legend>
+        <legend>Flyvning</legend>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="display-label">
                     @Html.LabelFor(model => model.Date)
                 </div>
@@ -64,8 +61,14 @@
                 <div class="display-field">
                     @Html.DisplayFor(model => model.PilotBackseat.Name)
                 </div>
+                <div class="display-label">
+                    @Html.LabelFor(model => model.Description)
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="display-label">
                     @Html.LabelFor(model => model.StartTypeId)
                 </div>
@@ -84,6 +87,26 @@
                 <div class="display-field">
                     @Html.DisplayFor(model => model.LandedOn.Name)
                 </div>
+            </div>
+            <div class="clearfix visible-sm visible-xs"></div>
+            <div class="col-md-4 col-sm-12 visible-sm visible-xs">
+                <div class="btn-group">
+                    @if (Request.IsPilot())
+                    {
+                        bool isEditable = User.IsEditor();
+                        if (Model != null && Model.Date != null && Model.Date.AddDays(3) >= DateTime.Now)
+                        {
+                            isEditable = true;
+                        }
+                        if (isEditable)
+                        {
+                            @Html.ActionLink("Rediger", "Edit", new { id = Model.FlightId }, new { @class = "btn btn-primary" })
+                        }
+                    }
+                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
                 <div class="display-label">
                     @Html.LabelFor(model => model.TachoDeparture)
                 </div>
@@ -103,14 +126,13 @@
                     @Html.DisplayFor(model => model.LandingCount)
                 </div>
                 <div class="display-label">
-                    @Html.LabelFor(model => model.Description)
+                    @Html.LabelFor(model => model.TaskDistance)
                 </div>
                 <div class="display-field">
-                    @Html.DisplayFor(model => model.Description)
+                    @Html.DisplayFor(model => model.TaskDistance)
                 </div>
             </div>
         </div>
-
     </fieldset>
 }
 <p>
