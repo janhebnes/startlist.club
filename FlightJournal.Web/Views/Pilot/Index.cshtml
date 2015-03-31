@@ -1,27 +1,35 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.Pilot>
+﻿@using RestSharp.Extensions
+@model IEnumerable<FlightJournal.Web.Models.Pilot>
 
 @{
     ViewBag.Title = "Index";
 }
+<div class="pull-right alert alert-warning text-right"><span class="glyphicon glyphicon-warning-sign"></span> Bemærk at piloter kun kan redigeres af manager i klubben. De deles ikke på tværs af klubberne. <br/>Det forventes at piloter oprettes dobbelt ved dobbelt medlemskaber (er ikke færdig implementeret).</div>
 
-<h2>Index</h2>
+<h2>Piloter</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Opret pilot", "Create", null, new { @class = "btn btn-primary"})
 </p>
 <table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
-            Name
+            Navn
         </th>
         <th>
-            UnionId
+            Email
         </th>
         <th>
-            MemberId
+            Mobil
         </th>
         <th>
-            Club
+            Medlemsnr
+        </th>
+        <th>
+            Klub
+        </th>
+        <th>
+            Unionsnr
         </th>
         <th></th>
     </tr>
@@ -33,7 +41,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UnionId)
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobilNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MemberId)
@@ -42,9 +53,14 @@
                 @Html.DisplayFor(modelItem => item.Club.ShortName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.PilotId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.PilotId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.PilotId })
+                @Html.DisplayFor(modelItem => item.UnionId)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PilotId }, new { @class = "btn btn-default"})
+                    @Html.ActionLink("Details", "Details", new { id = item.PilotId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PilotId }, new { @class = "btn btn-default" })
+                </div>
             </td>
         </tr>
     }
