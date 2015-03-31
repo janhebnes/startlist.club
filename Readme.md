@@ -38,6 +38,6 @@ Further migration scripts are stored native to Entity Framework practices in the
 
 Tips
 -------------
-Starting with no database will generate the databases (requires dbowner og .\) and you can auto login with the demo accounts and the demo flights.
+Starting with no database will generate the databases (requires db owner on the local SQL .\ instance) and you can auto login with the demo accounts and the demo flights.
 
 
