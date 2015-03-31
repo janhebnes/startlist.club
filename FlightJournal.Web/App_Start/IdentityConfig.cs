@@ -330,7 +330,11 @@ namespace FlightJournal.Web.Models
 
         private async Task<SignInStatus> SignInOrTwoFactor(ApplicationUser user, bool isPersistent)
         {
-            if (await UserManager.GetTwoFactorEnabledAsync(user.Id) &&
+            // Validate that the user has valid TwoFactorProvider possible - otherwise the users access to the site is blocked 
+            var validTwoFactorProviders = await UserManager.GetValidTwoFactorProvidersAsync(user.Id);
+
+            if (validTwoFactorProviders.Any() && 
+                await UserManager.GetTwoFactorEnabledAsync(user.Id) &&
                 !await AuthenticationManager.TwoFactorBrowserRememberedAsync(user.Id))
             {
                 var identity = new ClaimsIdentity(DefaultAuthenticationTypes.TwoFactorCookie);
