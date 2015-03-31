@@ -16,7 +16,7 @@ namespace FlightJournal.Web.Controllers
 
         public ViewResult Index()
         {
-            return View(db.Locations.ToList());
+            return View(db.Locations.OrderBy(t=>t.Name).ToList());
         }
 
         //
