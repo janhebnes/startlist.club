@@ -12,17 +12,20 @@
         <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/FlightJournal">open source</a> projekt skabt for at understøtte alle nordiske flyveklubbers elektroniske startlister.
     </p>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        @Html.Action("ManagePilotBindingPartial", "Manage")
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-md-6">
+            @Html.Action("ManagePilotBindingPartial", "Manage")
+        </div>
+        <div class="col-md-6">
+            @Html.Action("ClubPresentation", "Club")
+        </div>
     </div>
-    <div class="col-md-6">
-        @Html.Action("ClubPresentation", "Club")
-    </div>
-</div>
+}
 <hr/>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
         <h2>Projekt fælles startliste</h2>
         <p>
             Kildekoden er open source og du er velkommen til at kopiere, tilpasse og bruge koden.
@@ -79,8 +82,18 @@
                 <span class="glyphicon glyphicon-cloud-upload"></span> Projektsiden på Github.com
             </a><em>https://github.com/janhebnes/FlightJournal</em>
         </p>
+
+        @if (!Request.IsAuthenticated)
+        {
+            <div class="alert alert-info">
+                <h4>Vælg flyveklub</h4>
+                @Html.Action("ClubPresentation", "Club")
+            </div>
+        }
+
         <div class="alert alert-info">
             <h4>TODO for 2015 release</h4>
+            #TODO: Startsteds tilstand til startliste maskinerne hvor der er flere brugere. <br/>
             #TODO: Trimme redigering af flyvningerne så pilot på tværs af klubberne hjælpes til at redigere de relevante flyvninger for dem og ikke de andres<br/>
             #TODO: Validere at opret bruger processen har en god og pæn validering af bruger proces<br/>
             #TODO: Validere proces for administrator med administration af managere<br/>
