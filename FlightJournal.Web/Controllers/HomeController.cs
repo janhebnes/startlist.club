@@ -21,5 +21,12 @@ namespace FlightJournal.Web.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
+        public PartialViewResult GoogleAnalyticsPartial()
+        {
+            return this.PartialView();
+        }
+
     }
 }

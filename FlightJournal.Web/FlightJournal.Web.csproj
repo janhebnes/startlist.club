@@ -467,6 +467,7 @@
     <Content Include="Views\Error\Restricted.cshtml" />
     <Content Include="Views\Location\DeleteLocked.cshtml" />
     <Content Include="Views\Plane\DeleteLocked.cshtml" />
+    <Content Include="Views\Home\GoogleAnalyticsPartial.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
