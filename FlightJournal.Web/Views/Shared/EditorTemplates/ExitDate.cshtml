@@ -1,0 +1,16 @@
+﻿@model DateTime?
+@Html.TextBox("", Model.HasValue ? Model.Value.ToString("yyyy-MM-dd") : "", new { @class = "dateISO" })
+
+@*@model DateTime?
+<div class='input-group date datePicker'>
+    <span class="input-group-sm">
+        @Html.TextBox("", Model.HasValue ? Model.Value.ToString("d") : String.Empty)
+    </span>
+</div>
+<script type="text/javascript">
+       $(function() {
+       $('.datePicker').datetimepicker({
+           pickTime: false
+       });
+   });
+</script>*@
