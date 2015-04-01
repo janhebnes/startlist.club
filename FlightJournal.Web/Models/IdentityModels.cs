@@ -12,11 +12,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 
-namespace FlightJournal.Web.Models 
+namespace FlightJournal.Web.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager) {
+    public class ApplicationUser : IdentityUser
+    {
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
@@ -33,24 +35,31 @@ namespace FlightJournal.Web.Models
                 using (var context = new FlightContext())
                 {
                     var userPilotBinding = context.Pilots.Find(Convert.ToInt32(this.BoundToPilotId));
-                    // Load club reference information 
-                    context.Entry(userPilotBinding).Reference(p => p.Club).Load();
+                    if (userPilotBinding != null)
+                    {
+                        // Load club reference information 
+                        context.Entry(userPilotBinding).Reference(p => p.Club).Load();
+                    }
                     return userPilotBinding;
                 }
             }
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    {
         public ApplicationDbContext()
-            : base("FlightJournal.Membership", throwIfV1Schema: false) {
+            : base("FlightJournal.Membership", throwIfV1Schema: false)
+        {
         }
 
-        static ApplicationDbContext() {
+        static ApplicationDbContext()
+        {
             Database.SetInitializer<ApplicationDbContext>(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.ApplicationDbContext.Configuration>());
         }
 
-        public static ApplicationDbContext Create() {
+        public static ApplicationDbContext Create()
+        {
             return new ApplicationDbContext();
         }
     }
