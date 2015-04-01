@@ -130,6 +130,8 @@ namespace FlightJournal.Web.Controllers
             if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
 
             Pilot pilot = db.Pilots.Find(id);
+            ViewBag.UsedCount = db.Flights.Count(f => f.PilotId == id || f.PilotBackseatId== id);
+
             return View(pilot);
         }
 

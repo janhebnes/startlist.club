@@ -1,4 +1,5 @@
-﻿@model FlightJournal.Web.Models.Pilot
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Pilot
 
 @{
     ViewBag.Title = "Delete";
@@ -43,9 +44,25 @@
 @using (Html.BeginForm()) {
     <p style="margin-top: 30px">
         <div class="btn-group">
-            <input type="submit" value="Bekræft sletning af @Model.Name" class="btn btn-danger" />
+            @if (@ViewBag.UsedCount == 0 || User.IsAdministrator())
+            {
+                <input type="submit" value="Bekræft sletning af @Model.Name" class="btn btn-danger" />
+            }
+            else
+            {
+                <input type="submit" value="Bekræft sletning af @Model.Name" class="btn btn-danger" disabled/>
+            }
             <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
         </div>
     </p>
+}
 
+@if (@ViewBag.UsedCount > 0)
+{
+    <div class="col-md-6">
+        <div class="alert alert-danger" style="margin-top: 10px">
+            <span class="glyphicon glyphicon-alert"></span> Piloten er tilknyttet @ViewBag.UsedCount flyvninger og kan derfor ikke slettes. <br/>Der vil på sigt kunne sættes piloter som inaktive.
+        </div>
+    </div>
+    <div class="clearfix"></div>
 }
