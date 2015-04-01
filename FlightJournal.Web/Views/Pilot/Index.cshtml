@@ -1,68 +1,86 @@
-﻿@using RestSharp.Extensions
+﻿@using FlightJournal.Web.Extensions
+@using RestSharp.Extensions
 @model IEnumerable<FlightJournal.Web.Models.Pilot>
-
 @{
     ViewBag.Title = "Index";
 }
-<div class="pull-right alert alert-warning text-right"><span class="glyphicon glyphicon-warning-sign"></span> Bemærk at piloter kun kan redigeres af manager i klubben. De deles ikke på tværs af klubberne. <br/>Det forventes at piloter oprettes dobbelt ved dobbelt medlemskaber (er ikke færdig implementeret).</div>
+@if (!User.IsManager())
+{
+    <div class="col-md-6">
+        <div class="alert alert-danger" style="margin-top: 10px">
+            <span class="glyphicon glyphicon-alert"></span> Du kan kun redigere piloterne i din egen klub hvis du er klub manager.
+        </div>
+    </div>
+    <div class="clearfix"></div>
+}
+else
+{
+    <div class="pull-right alert alert-warning text-right"><span class="glyphicon glyphicon-warning-sign"></span> Bemærk at piloter kun kan redigeres af manager i klubben. De deles ikke på tværs af klubberne. <br />Det forventes at piloter oprettes dobbelt ved dobbelt medlemskaber (er ikke færdig implementeret).</div>
 
-<h2>Piloter</h2>
+    <h2>Piloter <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small></h2>
 
-<p>
-    @Html.ActionLink("Opret pilot", "Create", null, new { @class = "btn btn-primary"})
-</p>
-<table class="table table-striped table-hover table-condensed">
-    <tr>
-        <th>
-            Navn
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Mobil
-        </th>
-        <th>
-            Medlemsnr
-        </th>
-        <th>
-            Klub
-        </th>
-        <th>
-            Unionsnr
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <p>
+        @Html.ActionLink("Opret pilot", "Create", null, new { @class = "btn btn-primary" })
+    </p>
+    <table class="table table-striped table-hover table-condensed">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MobilNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MemberId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Club.ShortName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnionId)
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.PilotId }, new { @class = "btn btn-default"})
-                    @Html.ActionLink("Details", "Details", new { id = item.PilotId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.PilotId }, new { @class = "btn btn-default" })
-                </div>
-            </td>
+            <th>
+                Navn
+            </th>
+            <th>
+                E-mail
+            </th>
+            <th>
+                Mobilnr
+            </th>
+            <th>
+                Medlemsnr
+            </th>
+            @if (User.IsAdministrator())
+            {
+                <th>
+                    Klub
+                </th>
+            }
+            <th>
+                Unionsnr
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MobilNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberId)
+                </td>
+                @if (User.IsAdministrator())
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Club.ShortName)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnionId)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @Html.ActionLink("Rediger", "Edit", new { id = item.PilotId }, new { @class = "btn btn-default" })
+                        @*@Html.ActionLink("Details", "Details", new { id = item.PilotId }, new { @class = "btn btn-default" })*@
+                        @Html.ActionLink("Slet", "Delete", new { id = item.PilotId }, new { @class = "btn btn-default" })
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+}

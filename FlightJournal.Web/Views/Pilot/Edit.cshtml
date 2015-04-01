@@ -1,4 +1,5 @@
-﻿@model FlightJournal.Web.Models.Pilot
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Pilot
 
 @{
     ViewBag.Title = "Edit";
@@ -49,14 +50,21 @@
             @Html.ValidationMessageFor(model => model.MemberId)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ClubId, "Club")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("ClubId", String.Empty)
-            @Html.ValidationMessageFor(model => model.ClubId)
-        </div>
-
+        @if (User.IsAdministrator())
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ClubId, "Club")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("ClubId", String.Empty)
+                @Html.ValidationMessageFor(model => model.ClubId)
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.ClubId)
+        }
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.UnionId)
         </div>

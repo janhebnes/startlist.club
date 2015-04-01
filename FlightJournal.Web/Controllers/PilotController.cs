@@ -20,7 +20,7 @@ namespace FlightJournal.Web.Controllers
         public ViewResult Index()
         {
             var pilots = db.Pilots.Include(p => p.Club);
-            return View(pilots.ToList().Where(d=>d.Club.IsCurrent()));
+            return View(pilots.ToList().Where(d=>d.Club.IsCurrent()).OrderBy(p=>p.Name));
         }
 
         //
