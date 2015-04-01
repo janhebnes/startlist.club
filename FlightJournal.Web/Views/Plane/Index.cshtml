@@ -8,7 +8,7 @@
 <h2>Fly</h2>
 <hr/>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Opret fly", "Create", null, new { @class = "btn btn-primary"})
 </p>
 <table class="table table-striped table-hover table-condensed">
     <tr>
@@ -86,9 +86,11 @@
                 @Html.DisplayFor(modelItem => item.DefaultStartType.ShortName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {id = item.PlaneId}) |
-                @Html.ActionLink("Details", "Details", new {id = item.PlaneId}) |
-                @Html.ActionLink("Delete", "Delete", new {id = item.PlaneId})
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PlaneId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Details", "Details", new { id = item.PlaneId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PlaneId }, new { @class = "btn btn-default" })
+                </div>
             </td>
         </tr>
     }
