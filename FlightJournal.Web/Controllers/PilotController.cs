@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -17,8 +18,10 @@ namespace FlightJournal.Web.Controllers
         //
         // GET: /Pilot/
 
-        public ViewResult Index()
+        public ActionResult Index()
         {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
             var pilots = db.Pilots.Include(p => p.Club);
             return View(pilots.ToList().Where(d=>d.Club.IsCurrent()).OrderBy(p=>p.Name));
         }
@@ -26,8 +29,10 @@ namespace FlightJournal.Web.Controllers
         //
         // GET: /Pilot/Details/5
 
-        public ViewResult Details(int id)
+        public ActionResult Details(int id)
         {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
             Pilot pilot = db.Pilots.Find(id);
             return View(pilot);
         }
@@ -37,7 +42,10 @@ namespace FlightJournal.Web.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ShortName");
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "Name", Request.Club().ClubId); 
+
             return View();
         } 
 
@@ -45,17 +53,36 @@ namespace FlightJournal.Web.Controllers
         // POST: /Pilot/Create
 
         [HttpPost]
-        public ActionResult Create(Pilot pilot)
+        public ActionResult Create(Pilot model)
         {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
+            // Create the pilot on the managers club if not it is invalid
+            if (!User.IsAdministrator()
+                && model.ClubId != User.Pilot().ClubId)
+            {
+                return RedirectToAction("Restricted", "Error", new { message = "Trying to create pilot in club where you are not a manager... " });
+            }
+
+            // Resolve club information manually to avoid conflict with club route
+            //model.Club = db.Clubs.Find(model.ClubId);
+
+            if (Request.IsClub())
+            {
+                // There is a bug where the club from the request is bound into the resolving of the club on the pilot modelstate validation, we force this through
+                // HACK: This probably means there is an evil bug hidden when we are going to save more information on club level.
+                ModelState.Remove("Club");
+            }
+
             if (ModelState.IsValid)
             {
-                db.Pilots.Add(pilot);
+                db.Pilots.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");  
             }
 
-            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ShortName", pilot.ClubId);
-            return View(pilot);
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "Name", model.ClubId);
+            return View(model);
         }
         
         //
@@ -63,6 +90,8 @@ namespace FlightJournal.Web.Controllers
  
         public ActionResult Edit(int id)
         {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
             Pilot pilot = db.Pilots.Find(id);
             ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ShortName", pilot.ClubId);
             return View(pilot);
@@ -74,6 +103,15 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public ActionResult Edit(Pilot pilot)
         {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
+            if (Request.IsClub())
+            {
+                // There is a bug where the club from the request is bound into the resolving of the club on the pilot modelstate validation, we force this through
+                // HACK: This probably means there is an evil bug hidden when we are going to save more information on club level.
+                ModelState.Remove("Club");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(pilot).State = EntityState.Modified;
@@ -89,6 +127,8 @@ namespace FlightJournal.Web.Controllers
  
         public ActionResult Delete(int id)
         {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
             Pilot pilot = db.Pilots.Find(id);
             return View(pilot);
         }
@@ -98,7 +138,9 @@ namespace FlightJournal.Web.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
+        {
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
             Pilot pilot = db.Pilots.Find(id);
             db.Pilots.Remove(pilot);
             db.SaveChanges();
