@@ -58,6 +58,8 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Edit(int id)
         {
             Location location = db.Locations.Find(id);
+            ViewBag.UsedCount = db.Flights.Count(f => f.StartedFromId == id || f.LandedOnId == id);
+
             return View(location);
         }
 

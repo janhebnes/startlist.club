@@ -3,17 +3,18 @@
 @{
     ViewBag.Title = "Delete";
 }
-<h2>Deletion not possible</h2>
-<hr/>
-<h3>The location is in use by flight records and therfore cannot be deleted</h3>
-<fieldset>
-    <legend>Location</legend>
 
-    <div class="display-label">Name</div>
+<div class="pull-right alert alert-danger text-right"><span class="glyphicon glyphicon-alert"></span> Landingsstedet er blevet taget i brug af en flyvning og kan derfor ikke slettes. <br/>Du skal fjerne de registreringer som benytter landingsstedet for at kunne fjerne det helt. 
+</div>
+
+<h2>Sletning ikke mulig</h2>
+<hr/>
+<fieldset>
+    <legend>Stednavn</legend>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
-    <p>
-        @Html.ActionLink("Back to List", "Index")
+    <p style="margin-top: 30px;">
+        <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
     </p>

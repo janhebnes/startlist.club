@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Location>
 
 @{
-    ViewBag.Title = "Location administration";
+    ViewBag.Title = "Landingssteder";
 }
 
-<div class="pull-right alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Bemærk at landingssteder er tilgængelige på tværs af klubber, som manager forventes du at forvalte dette forsvarligt.</div>
+<div class="pull-right alert alert-warning text-right"><span class="glyphicon glyphicon-warning-sign"></span> Bemærk at landingssteder er tilgængelige på tværs af klubber, som manager forventes du at forvalte dette forsvarligt.<br/>Valider venligst at stedet ikke er oprettet i forvejen og undgå at lave mærkelige lokationer, brug i stedet kommentar feltet.</div>
 
 <h2>Landingssteder</h2>
 
 <hr />
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Opret landingssted", "Create", null, new { @class = "btn btn-primary" })
 </p>
 <table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
-            Name
+            Stednavn
         </th>
         <th></th>
     </tr>
@@ -27,9 +27,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.LocationId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.LocationId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.LocationId })
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink("Rediger", "Edit", new { id = item.LocationId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Slet", "Delete", new { id = item.LocationId }, new { @class = "btn btn-default" })
+                </div>
             </td>
         </tr>
     }
