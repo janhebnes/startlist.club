@@ -72,6 +72,13 @@
     </div>
 </div>
 <hr/>
-@*Pilot relation: @Model.HasPilotBinding*@
-@*@Html.ActionLink("Manage", "ManagePilotBinding", null, new { @class = "btn btn-default" })*@
 @Html.Action("ManagePilotBindingPartial", "Manage")
+
+@if (!Request.IsPilot())
+{
+    <hr />
+    <h2>Opnå yderligere adgang til systemet</h2>
+    <p>Ønsker du at forvalte din klub på systemet skal du og et par "redaktører" starte med at validere mobilnummer, herefter skal I tage kontakt til Jan Hebnes og oplyse mobilnumre, navn og hvilket klub I ønsker at forvalte på systemet, så oprettes en af jer som Manager og resten som Editors (Redaktører).</p>
+    <p>Manageren kan redigere pilot profiler og redaktører kan hjælpe med fly og landingssteder samt redigere flyvninger fra jeres flyveplads eller jeres piloter, menige piloter får kun adgang til at redigere flyvningerne 48 timer tilbage i tiden, mens redaktøre og manager ikke har denne begrænsning.</p>
+}
+
