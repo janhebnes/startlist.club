@@ -218,6 +218,37 @@
                 }
             </tr>
         }
+        @foreach (var item in from c in Model.Flights.Where(d=>d.PilotBackseat != null)
+                             group c by new { c.PilotBackseat } into g
+                             select new { Pilot = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
+        {
+            <tr>
+                <td>
+                    @item.Pilot.Name (bagsæde)
+                </td>
+                <td align="right">
+                    @item.Count
+                </td>
+                <td align="right">
+                    @(new DateTime(item.ItemFlights
+                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                </td>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    var count = item.ItemFlights.Count(f => f.Date.Month == i);
+                    var time = (new TimeSpan(item.ItemFlights.Where(f => f.Date.Month == i)
+                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                                .Sum(f => f.myTime)));
+                    <td align="right">
+                        @(count != 0 ? count.ToString() : "")
+                    </td>
+                    <td align="right">
+                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>
 

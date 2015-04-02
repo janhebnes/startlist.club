@@ -29,8 +29,8 @@
             {
                 foreach (var item in Model.AvailableDates.Keys)
                 {
-                <text>if (dmy=="</text>@item.ToString("yyyy-M-d")<text>") return [true,"</text>@((Model.AvailableDates[item] > 20) ? "termik" : "")<text>", "</text>@Model.AvailableDates[item]<text> starter."];</text>
-                }   
+                <text>if (dmy == "</text>@item.ToString("yyyy-M-d")<text>") return [true, "</text>@((Model.AvailableDates[item] > 20) ? "termik" : "")<text>", "</text>@Model.AvailableDates[item]<text> starter."];</text>
+                }
             }
             return [false, "", "ingen flyvning"];
         }
@@ -57,15 +57,46 @@
             dayNamesMin: ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø']
         });
 
+        $("#datepickertablet").datepicker({
+            beforeShowDay: available,
+            maxDate: 0,
+            showWeek: true,
+            numberOfMonths: 2,
+            onSelect: selectDate,
+            firstDay: 1,
+            weekHeader: 'Uge',
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø']
+        });
+
+        $("#datepickermobil").datepicker({
+            beforeShowDay: available,
+            maxDate: 0,
+            showWeek: true,
+            numberOfMonths: 1,
+            onSelect: selectDate,
+            firstDay: 1,
+            weekHeader: 'Uge',
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø']
+        });
+
+
         $("#datepicker").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
+        $("#datepickertablet").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
+        $("#datepickermobil").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
 
         $("#myTable").tablesorter();
     });
 </script>    
 }
-
+@*#HACK: for allowing the mobil view to function better we introduce this fix*@
 <div align="center" class="hidden-print" style="font-size: 0.82em">
-    <div id="datepicker">
+    <div id="datepicker" class="visible-md visible-lg">
+    </div>
+    <div id="datepickertablet" class="visible-sm" style="margin-top: 60px">
+    </div>
+    <div id="datepickermobil" class="visible-xs">
     </div>
 </div>
 <br class="clearfix" />

@@ -3,7 +3,7 @@
     ViewBag.Title = "Pilot logbog";
 }
 
-<h2>Pilot logbog</h2>
+<h2>Pilot logbog @Model.Year-@(Model.Year-1)</h2>
 
 
 <h3>
@@ -60,13 +60,44 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in from c in Model.Flights
+        @foreach (var item in from c in Model.Flights.Where(f=>f.PilotId == Model.Pilot.PilotId)
             group c by new { c.Pilot } into g
             select new { Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
         {
             <tr>
                 <td>
                     @item.Pilot.Name
+                </td>
+                <td align="right">
+                    @item.Count
+                </td>
+                <td align="right">
+                    @(new DateTime(item.ItemFlights
+                          .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                          .Sum(f => f.myTime)).ToString("HH:mm"))
+                </td>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    var count = item.ItemFlights.Count(f => f.Date.Month == i);
+                    var time = (new TimeSpan(item.ItemFlights.Where(f => f.Date.Month == i)
+                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                        .Sum(f => f.myTime)));
+                    <td align="right">
+                        @(count != 0 ? count.ToString() : "")
+                    </td>
+                    <td align="right">
+                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                    </td>
+                }
+            </tr>
+        }
+        @foreach (var item in from c in Model.Flights.Where(f=>f.PilotBackseatId == Model.Pilot.PilotId)
+                             group c by new { c.PilotBackseat } into g
+                             select new { Pilot = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
+        {
+            <tr>
+                <td>
+                    @item.Pilot.Name (bagsæde)
                 </td>
                 <td align="right">
                     @item.Count
@@ -119,6 +150,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in from c in Model.Flights
+                                         where c.PilotId == Model.Pilot.PilotId
                                          group c by new { c.Pilot, c.Plane } into g
                                          select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                     {
@@ -165,7 +197,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in from c in Model.Flights
-                                         where c.PilotBackseat != null
+                                         where c.PilotBackseatId == Model.Pilot.PilotId
                                          group c by new { c.PilotBackseat, c.Plane } into g
                                          select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                     {
@@ -234,7 +266,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Flights)
+        @foreach (var item in Model.Flights.OrderByDescending(d=>d.Departure))
         {
             <tr>
                 <td>
