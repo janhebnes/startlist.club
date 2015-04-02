@@ -47,11 +47,11 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location)
+            @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Location)
-            @Html.ValidationMessageFor(model => model.Location)
+            @Html.DropDownList("LocationId")
+            @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
         <p>

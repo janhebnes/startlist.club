@@ -1,8 +1,0 @@
-﻿@using FlightJournal.Web.Models
-@model int
-@{
-    using (var context = new FlightContext())
-    {
-        @Html.DropDownListFor(model => model, context.Locations.Select(x => new SelectListItem { Text = x.Name, Value = x.LocationId.ToString(), Selected = x.LocationId.ToString() == Model.ToString()}))
-    }
-}

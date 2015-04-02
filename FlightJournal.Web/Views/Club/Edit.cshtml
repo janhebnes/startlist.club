@@ -37,6 +37,7 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Website)
+            @Html.ValidationMessageFor(model => model.Website)
         </div>
 
         <div class="editor-label">
@@ -44,13 +45,15 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.ContactInformation)
+            @Html.ValidationMessageFor(model => model.ContactInformation)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Location)
+            @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.LocationId, "Location", "LocationId")
+            @Html.DropDownList("LocationId")
+            @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
         <p>

@@ -454,7 +454,6 @@
     <Content Include="Views\Home\Administration.cshtml" />
     <Content Include="Views\Home\UHB530.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Location.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\_TachoPartial.cshtml" />
     <Content Include="Views\Club\NotFound.cshtml" />
     <Content Include="Views\Error\PageNotFound.cshtml" />

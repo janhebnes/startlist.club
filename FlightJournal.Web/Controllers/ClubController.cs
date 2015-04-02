@@ -197,6 +197,7 @@ namespace FlightJournal.Web.Controllers
         // GET: /Club/Create
         public ActionResult Create()
         {
+            this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name");
             return View();
         }
 
@@ -221,6 +222,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Edit(int id)
         {
             Club club = db.Clubs.Find(id);
+            this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (club == null) ? (object)null : club.LocationId);
             return View(club);
         }
 
@@ -244,6 +246,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Delete(int id)
         {
             Club club = db.Clubs.Find(id);
+            this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (club == null) ? (object)null : club.LocationId);
             return View(club);
         }
 
