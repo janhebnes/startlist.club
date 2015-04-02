@@ -171,7 +171,7 @@ namespace FlightJournal.Web.Controllers
             return null;
         }
 
-        public ActionResult Pilot()
+        public ActionResult Pilot(int? year)
         {
             if (!Request.IsPilot())
                 return RedirectToAction("PilotNotFound", "Error");
@@ -180,16 +180,26 @@ namespace FlightJournal.Web.Controllers
             
             model.Pilot = Request.Pilot();
 
+            model.Year = DateTime.Now.Year;
+            if (year.HasValue)
+            {
+                if ((DateTime.Now.Year >= year) && (year > 1990))
+                {
+                    model.Year = year.Value;
+                }
+            }
+
             // Custom inline Pilot filtering for allowing maximum performance
-            model.Flights = this.db.Flights
+            model.Flights = this.db.Flights.Where(f => f.Date.Year >= model.Year-1)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => (f.Pilot != null && f.Pilot.PilotId == model.Pilot.PilotId)
                     || (f.PilotBackseat != null && f.PilotBackseat.PilotId == model.Pilot.PilotId)
                     || (f.Betaler != null && f.Betaler.PilotId == model.Pilot.PilotId))
-                .OrderBy(o => o.Departure)
+                .OrderByDescending(o => o.Departure)
                 .AsQueryable();
 
             return this.View(model);
         }
+
     }
 }
