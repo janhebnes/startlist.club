@@ -112,6 +112,16 @@ namespace FlightJournal.Web.Controllers
                 ModelState.Remove("Club");
             }
 
+            if (!string.IsNullOrWhiteSpace(pilot.MobilNumber))
+            {
+                pilot.MobilNumber = pilot.MobilNumber.Replace(" ", "");
+
+                if (pilot.MobilNumber.Length == 8)
+                {
+                    pilot.MobilNumber = "+45" + pilot.MobilNumber;
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(pilot).State = EntityState.Modified;

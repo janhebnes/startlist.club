@@ -136,8 +136,7 @@ namespace FlightJournal.Web.Controllers
         // GET: /Account/AddPhoneNumber
         public ActionResult AddPhoneNumber()
         {
-            var model = new AddPhoneNumberViewModel() { Number = "+45"};
-            return View(model);
+            return View();
         }
 
         //
@@ -189,6 +188,16 @@ namespace FlightJournal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
+            if (!string.IsNullOrWhiteSpace(model.Number))
+            {
+                model.Number = model.Number.Replace(" ", "");
+
+                if (model.Number.Length == 8)
+                {
+                    model.Number = "+45" + model.Number;
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
