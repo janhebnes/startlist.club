@@ -13,8 +13,9 @@ namespace FlightJournal.Web.Models
 
     public class PilotReportViewModel
     {
-        public DateTime Date { get; set; }
+        public int Year { get; set; }
         public Pilot Pilot { get; set; }
         public IQueryable<Models.Flight> Flights { get; set; }
     }
+
 }
