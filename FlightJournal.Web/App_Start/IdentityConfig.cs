@@ -296,6 +296,11 @@ namespace FlightJournal.Web.Models
         public async Task<SignInStatus> TwoFactorSignIn(string provider, string code, bool isPersistent, bool rememberBrowser)
         {
             var userId = await GetVerifiedUserIdAsync();
+            return await TwoFactorSignIn(provider, code, isPersistent, rememberBrowser, userId);
+        }
+
+        public async Task<SignInStatus> TwoFactorSignIn(string provider, string code, bool isPersistent, bool rememberBrowser, string userId)
+        {
             if (userId == null)
             {
                 return SignInStatus.Failure;
@@ -408,11 +413,11 @@ namespace FlightJournal.Web.Models
                 // HACK: We only attach to the first pilot profil in this setup.
                 var pilot = pilots.First();
                 
-                // Create mobilPhone Application User
+                // Create mobilPhone Application User, Email is required and + is removed 
                 user = new ApplicationUser()
                 {
                     UserName = userName,
-                    Email = pilot.Email.ToLower(),
+                    Email = userName.Substring(userName.Length-1) + pilot.Email.ToLower(),
                     EmailConfirmed = true,
                     BoundToPilotId = pilot.PilotId.ToString(),
                     PhoneNumberConfirmed = true,

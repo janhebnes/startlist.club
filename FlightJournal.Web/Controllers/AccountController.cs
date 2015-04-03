@@ -188,7 +188,7 @@ namespace FlightJournal.Web.Controllers
             // Ready to handle Verification Code 
             if (!string.IsNullOrWhiteSpace(model.VerifyCode))
             {
-                var result = await SignInHelper.TwoFactorSignIn("PhoneCode", model.VerifyCode, isPersistent: model.RememberBrowser, rememberBrowser: model.RememberBrowser);
+                var result = await SignInHelper.TwoFactorSignIn("PhoneCode", model.VerifyCode, model.RememberBrowser, model.RememberBrowser);
                 switch (result)
                 {
                     case SignInStatus.Success:
