@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Validators;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -114,11 +115,13 @@ namespace FlightJournal.Web.Controllers
 
             if (!string.IsNullOrWhiteSpace(pilot.MobilNumber))
             {
-                pilot.MobilNumber = pilot.MobilNumber.Replace(" ", "");
-
-                if (pilot.MobilNumber.Length == 8)
+                if (!MobilNumberValidator.IsValid(pilot.MobilNumber, false))
                 {
-                    pilot.MobilNumber = "+45" + pilot.MobilNumber;
+                    ModelState.AddModelError("MobilNumber", "Invalid format, please use the format +4512345678");
+                }
+                else
+                {
+                    pilot.MobilNumber = MobilNumberValidator.ParseMobilNumber(pilot.MobilNumber);
                 }
             }
 
