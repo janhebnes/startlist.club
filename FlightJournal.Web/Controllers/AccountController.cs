@@ -140,6 +140,7 @@ namespace FlightJournal.Web.Controllers
                     {
                         case SignInStatus.LockedOut:
                             return View("Lockout");
+                        case SignInStatus.Success:
                         case SignInStatus.RequiresTwoFactorAuthentication:
                             model.MobilNumberValidated = true;
 
@@ -175,7 +176,6 @@ namespace FlightJournal.Web.Controllers
                             }
 
                             return View("Login", model);
-                        case SignInStatus.Success:
                         case SignInStatus.Failure:
                         default:
                             model.MobilNumberValidated = false;
