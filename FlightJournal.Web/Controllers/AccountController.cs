@@ -135,7 +135,7 @@ namespace FlightJournal.Web.Controllers
                     model.MobilNumberValidated = true;
                     model.MobilNumber = MobilNumberValidator.ParseMobilNumber(model.MobilNumber);
 
-                    var result = await SignInHelper.MobilSignIn(model.MobilNumber, false);
+                    var result = await SignInHelper.MobilSignIn(model.MobilNumber, model.RememberBrowser);
                     switch (result)
                     {
                         case SignInStatus.LockedOut:
@@ -188,7 +188,7 @@ namespace FlightJournal.Web.Controllers
             // Ready to handle Verification Code 
             if (!string.IsNullOrWhiteSpace(model.VerifyCode))
             {
-                var result = await SignInHelper.TwoFactorSignIn("PhoneCode", model.VerifyCode, isPersistent: false, rememberBrowser: false);
+                var result = await SignInHelper.TwoFactorSignIn("PhoneCode", model.VerifyCode, isPersistent: model.RememberBrowser, rememberBrowser: model.RememberBrowser);
                 switch (result)
                 {
                     case SignInStatus.Success:

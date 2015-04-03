@@ -9,9 +9,13 @@
 
 <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
     <ul id="myTab" class="nav nav-tabs" role="tablist">
-        @if (ViewBag.EnableDemo){<li role="presentation" class="@(Model.LoginState==LoginViewModel.State.Demo?"active":"")"><a href="#demo" id="demo-tab" role="tab" data-toggle="tab" aria-controls="demo" aria-expanded="false">Demo login</a></li>}
+        @if (ViewBag.EnableDemo)
+        {
+        <li role="presentation" class="@(Model.LoginState==LoginViewModel.State.Demo?"active":"")"><a href="#demo" id="demo-tab" role="tab" data-toggle="tab" aria-controls="demo" aria-expanded="false">Demo login</a></li>}
         <li role="presentation" class="@(Model.LoginState == LoginViewModel.State.Login ? "active" : "")"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Email login</a></li>
-        @if (ViewBag.EnableMobil){<li role="presentation" class="@(Model.LoginState==LoginViewModel.State.TokenLogin?"active":"")"><a href="#mobile" role="tab" id="mobile-tab" data-toggle="tab" aria-controls="mobile" aria-expanded="false">Mobil login</a></li>}
+        @if (ViewBag.EnableMobil)
+        {
+        <li role="presentation" class="@(Model.LoginState==LoginViewModel.State.TokenLogin?"active":"")"><a href="#mobile" role="tab" id="mobile-tab" data-toggle="tab" aria-controls="mobile" aria-expanded="false">Mobil login</a></li>}
     </ul>
     <div id="myTabContent" class="tab-content">
 
@@ -116,50 +120,58 @@
                     <div class="col-md-8">
                         <section id="tokenLoginForm">
                             @using (Html.BeginForm("TokenLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                        @Html.AntiForgeryToken()
-                        <h4>Sign-in with sms code</h4>
-                        <hr />
-                            if (!Model.MobilNumberValidated)
                             {
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.MobilNumber, new { @class = "col-md-4 control-label" })
-                            <div class="col-md-8">
-                                @Html.TextBoxFor(m => m.MobilNumber, new { @class = "form-control", placeholder = "+4500000000" })
-                                @Html.ValidationMessageFor(m => m.MobilNumber, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-10">
-                                <button class="btn btn-primary" onclick=" this.form.submit(); " name="button" type="submit" id="SendCode">
-                                    <span class="glyphicon glyphicon-phone"></span>
-                                    Send code
-                                </button>
-                            </div>
-                        </div>
-                            }
-                            else
-                            {
-                                @Html.HiddenFor(m => m.MobilNumber)
-                                @Html.HiddenFor(m => m.MobilNumberValidated)
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.VerifyCode, new { @class = "col-md-4 control-label" })
-                            <div class="col-md-8">
-                                @Html.PasswordFor(m => m.VerifyCode, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.VerifyCode, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-10">
-                                <button class="btn btn-success" onclick=" this.form.submit(); " name="button" type="submit" id="ValidateCode">
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                    Validate code sent to @Model.MobilNumber
-                                </button>
-                            </div>
-                        </div>
-                            }
+                                @Html.AntiForgeryToken()
+                                <h4>Sign-in with sms code</h4>
+                                <hr />
+                                if (!Model.MobilNumberValidated)
+                                {
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.MobilNumber, new { @class = "col-md-4 control-label" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.MobilNumber, new { @class = "form-control", placeholder = "+4500000000" })
+                                            @Html.ValidationMessageFor(m => m.MobilNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-10">
+                                            <button class="btn btn-primary" onclick=" this.form.submit(); " name="button" type="submit" id="SendCode">
+                                                <span class="glyphicon glyphicon-phone"></span>
+                                                Send code
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(m => m.MobilNumber)
+                                    @Html.HiddenFor(m => m.MobilNumberValidated)
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.VerifyCode, new { @class = "col-md-4 control-label" })
+                                        <div class="col-md-8">
+                                            @Html.PasswordFor(m => m.VerifyCode, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.VerifyCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-10">
+                                            <button class="btn btn-success" onclick=" this.form.submit(); " name="button" type="submit" id="ValidateCode">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                                Validate code sent to @Model.MobilNumber
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-10">
+                                            <div class="checkbox">
+                                                @Html.CheckBoxFor(m => m.RememberBrowser)
+                                                @Html.LabelFor(m => m.RememberBrowser)
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
 
-                        }
+                            }
                         </section>
                     </div>
 

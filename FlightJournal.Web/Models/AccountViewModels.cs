@@ -62,6 +62,9 @@ namespace FlightJournal.Web.Models {
         [Display(Name = "Security code")]
         public string VerifyCode { get; set; }
 
+        [Display(Name = "Husk mig?")]
+        public bool RememberBrowser { get; set; }
+
         public bool MobilNumberValidated { get; set; }
     }
 
