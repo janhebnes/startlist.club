@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Validators
@@ -25,14 +26,28 @@ namespace FlightJournal.Web.Validators
                     using (var shortDb = new FlightContext())
                     {
                         return shortDb.Pilots.Any(d => d.MobilNumber == cleanNumber);
-                    }        
+                    }
                 }
             }
             return false;
         }
 
+        public static List<Pilot> GetPilots(string mobilNumber)
+        {
+            mobilNumber = ParseMobilNumber(mobilNumber);
+            using (var shortDb = new FlightContext())
+            {
+                return shortDb.Pilots.Where(d => d.MobilNumber == mobilNumber).ToList();
+            }
+        }
+
         public static string ParseMobilNumber(string mobilNumber)
         {
+            if (mobilNumber == null)
+            {
+                return string.Empty;
+            }
+
             // Remove spaces
             var n = mobilNumber.Replace(" ", "");
 

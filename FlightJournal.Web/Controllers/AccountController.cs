@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Configuration;
+using FlightJournal.Web.Validators;
 using SignInStatus = FlightJournal.Web.Models.SignInStatus;
 
 namespace FlightJournal.Web.Controllers
@@ -44,9 +45,17 @@ namespace FlightJournal.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
+            ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+            ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+            return View(new LoginViewModel(){ LoginState = ViewBag.EnableDemo ? LoginViewModel.State.Demo : LoginViewModel.State.Login});
+        }
+
+        [AllowAnonymous]
+        public ActionResult TokenLogin(string returnUrl)
+        {
+            return RedirectToAction("Login", new {returnUrl = returnUrl});
         }
 
         private SignInHelper _helper;
@@ -72,6 +81,11 @@ namespace FlightJournal.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.ReturnUrl = returnUrl;
+                ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
+                ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+                ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+                model.LoginState = LoginViewModel.State.Login;
                 return View(model);
             }
 
@@ -88,9 +102,107 @@ namespace FlightJournal.Web.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
                 case SignInStatus.Failure:
                 default:
+                    ViewBag.ReturnUrl = returnUrl;
+                    ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
+                    ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+                    ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+                    model.LoginState = LoginViewModel.State.Login;
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> TokenLogin(LoginViewModel model, string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
+            ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+            ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+            model.LoginState = LoginViewModel.State.TokenLogin;
+
+            if (!model.MobilNumberValidated)
+            {
+                if (!MobilNumberValidator.IsValid(model.MobilNumber, true))
+                {
+                    ModelState.AddModelError("MobilNumber", "Der blev ikke fundet en pilot med dette nummer.");
+                    return View("Login", model);
+                }
+                else
+                {
+                    model.MobilNumberValidated = true;
+                    model.MobilNumber = MobilNumberValidator.ParseMobilNumber(model.MobilNumber);
+
+                    var result = await SignInHelper.MobilSignIn(model.MobilNumber, false);
+                    switch (result)
+                    {
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresTwoFactorAuthentication:
+                            model.MobilNumberValidated = true;
+
+                            // Does not function because we are working prior to cookies being written.
+                            //var userId = await SignInHelper.GetVerifiedUserIdAsync();
+                            var user = await UserManager.FindByNameAsync(model.MobilNumber);
+                            var userId = user.Id;
+                            if (userId == null)
+                            {
+                                model.MobilNumberValidated = false;
+                                ModelState.AddModelError("MobilNumber", "Unable to find verified user");
+                                return View("Login", model);
+                            }
+                            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+                            if (userFactors.All(p => p != "PhoneCode"))
+                            {
+                                model.MobilNumberValidated = false;
+                                ModelState.AddModelError("MobilNumber", "SMS Provider not available");
+                                return View("Login", model);
+                            }
+
+                            if (!await SignInHelper.SendTwoFactorCode("PhoneCode", userId))
+                            {
+                                model.MobilNumberValidated = false;
+                                ModelState.AddModelError("MobilNumber", "Unable to send verification code");
+                                return View("Login", model);
+                            }
+
+                            if (HttpContext.IsDebuggingEnabled)
+                            {
+                                // To exercise the flow without actually sending codes, uncomment the following line
+                                ModelState.AddModelError("VerifyCode", "For DEMO purposes the current verification code is: " + await UserManager.GenerateTwoFactorTokenAsync(userId, "PhoneCode"));
+                            }
+
+                            return View("Login", model);
+                        case SignInStatus.Success:
+                        case SignInStatus.Failure:
+                        default:
+                            model.MobilNumberValidated = false;
+                            ModelState.AddModelError("MobilNumber", "Unable to sign-in");
+                            return View("Login", model);
+                    }
+                }
+            }
+
+            // Ready to handle Verification Code 
+            if (!string.IsNullOrWhiteSpace(model.VerifyCode))
+            {
+                var result = await SignInHelper.TwoFactorSignIn("PhoneCode", model.VerifyCode, isPersistent: false, rememberBrowser: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("VerifyCode", "Invalid code");
+                        return View("Login", model);
+                }
+            }    
+
+            return View("Login", model);
         }
 
         //

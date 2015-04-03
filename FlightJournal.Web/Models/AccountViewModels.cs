@@ -38,6 +38,10 @@ namespace FlightJournal.Web.Models {
     }
 
     public class LoginViewModel {
+
+        public enum State { Demo, Login, TokenLogin }
+        public State LoginState { get; set; }
+
         [Required]
         [Display(Name = "Email")]
         [EmailAddress]
@@ -50,6 +54,15 @@ namespace FlightJournal.Web.Models {
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+        
+        [Display(Name = "Mobil number")]
+        [DataType(DataType.PhoneNumber)]
+        public string MobilNumber { get; set; }
+
+        [Display(Name = "Security code")]
+        public string VerifyCode { get; set; }
+
+        public bool MobilNumberValidated { get; set; }
     }
 
     public class RegisterViewModel {

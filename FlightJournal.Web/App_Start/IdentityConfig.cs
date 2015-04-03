@@ -12,9 +12,11 @@ using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Security;
 using System.Threading.Tasks;
 using System.Web;
 using FlightJournal.Web.Configuration;
+using FlightJournal.Web.Validators;
 using SendGrid;
 using Twilio;
 
@@ -41,7 +43,7 @@ namespace FlightJournal.Web.Models
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 5, 
+                RequiredLength = 4, 
                 RequireNonLetterOrDigit = false,
                 RequireDigit = false,
                 RequireLowercase = false,
@@ -260,6 +262,11 @@ namespace FlightJournal.Web.Models
         public async Task<bool> SendTwoFactorCode(string provider)
         {
             var userId = await GetVerifiedUserIdAsync();
+            return await SendTwoFactorCode(provider, userId);
+        }
+
+        public async Task<bool> SendTwoFactorCode(string provider, string userId)
+        {
             if (userId == null)
             {
                 return false;
@@ -349,6 +356,12 @@ namespace FlightJournal.Web.Models
 
         public async Task<SignInStatus> PasswordSignIn(string userName, string password, bool isPersistent, bool shouldLockout)
         {
+            // Disallow mobil userName signin through Password SignIn
+            if (MobilNumberValidator.IsValid(userName))
+            {
+                return SignInStatus.Failure;
+            }
+
             var user = await UserManager.FindByNameAsync(userName);
             if (user == null)
             {
@@ -372,6 +385,56 @@ namespace FlightJournal.Web.Models
                 }
             }
             return SignInStatus.Failure;
+        }
+
+        public async Task<SignInStatus> MobilSignIn(string userName, bool isPersistent)
+        {
+            // Restrict MobilSignIn to Only mobil UserName
+            if (!MobilNumberValidator.IsValid(userName, true))
+            {
+                return SignInStatus.Failure;
+            }
+            var user = await UserManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                var pilots = MobilNumberValidator.GetPilots(userName);
+                if (!pilots.Any())
+                    return SignInStatus.Failure;
+
+                // TODO: Handle multiple pilot profile registration
+                if (pilots.Count() > 1)
+                    return SignInStatus.Failure;
+
+                // HACK: We only attach to the first pilot profil in this setup.
+                var pilot = pilots.First();
+                
+                // Create mobilPhone Application User
+                user = new ApplicationUser()
+                {
+                    UserName = userName,
+                    Email = pilot.Email.ToLower(),
+                    EmailConfirmed = true,
+                    BoundToPilotId = pilot.PilotId.ToString(),
+                    PhoneNumberConfirmed = true,
+                    PhoneNumber = MobilNumberValidator.ParseMobilNumber(userName),
+                    TwoFactorEnabled = true
+                };
+                var result = UserManager.Create(user);
+                if (!result.Succeeded)
+                {
+                    throw new SecurityException(string.Format("Failed to generate user {0} for {1}", userName, result.Errors.FirstOrDefault()));
+                    return SignInStatus.Failure;
+                }
+                result = UserManager.SetLockoutEnabled(user.Id, false);
+                return await SignInOrTwoFactor(user, isPersistent);
+            }
+            if (await UserManager.IsLockedOutAsync(user.Id))
+            {
+                return SignInStatus.LockedOut;
+            }
+            
+            // Password is null we require TwoFactor
+            return await SignInOrTwoFactor(user, isPersistent);
         }
     }
 }

@@ -93,6 +93,7 @@ namespace FlightJournal.Web.Migrations.ApplicationDbContext
                 {
                     UserName = name,
                     Email = name,
+                    EmailConfirmed = true,
                     PhoneNumber = phoneNumber,
                     PhoneNumberConfirmed = true
                 };
