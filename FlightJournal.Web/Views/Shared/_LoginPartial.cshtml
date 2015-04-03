@@ -44,7 +44,7 @@
                     <li>@Html.MenuLink("Om startlist.club", "Index", "Home")</li>
                     <li class="divider"></li>
                     <li>
-                        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Log af</a>
                         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", Style = "display:none;" }))
                         {
                             @Html.AntiForgeryToken()
