@@ -37,8 +37,11 @@
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink("Profil", "Index", "Manage", routeValues: null, htmlAttributes: new {title = "Manage"})</li>
-                    <li>@Html.MenuLink("Rettelses historik", "History", "Flight")</li>
+                    @if (!User.IsMobilProfile())
+                    {
+                        <li>@Html.ActionLink("Profil", "Index", "Manage", routeValues: null, htmlAttributes: new {title = "Manage profile"})</li>
+                    }
+                    <li>@Html.MenuLink("Historik over rettelser", "History", "Flight")</li>
                     <li class="divider"></li>
                     <li>@Html.MenuLink("UHB530 (Journalføring)", "UHB530", "Home")</li>
                     <li>@Html.MenuLink("Om startlist.club", "Index", "Home")</li>

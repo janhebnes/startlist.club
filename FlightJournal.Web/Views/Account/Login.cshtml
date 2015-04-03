@@ -10,7 +10,7 @@
 <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
     <ul id="myTab" class="nav nav-tabs" role="tablist">
         @if (ViewBag.EnableDemo){<li role="presentation" class="@(Model.LoginState==LoginViewModel.State.Demo?"active":"")"><a href="#demo" id="demo-tab" role="tab" data-toggle="tab" aria-controls="demo" aria-expanded="false">Demo login</a></li>}
-        <li role="presentation" class="@(Model.LoginState == LoginViewModel.State.Login ? "active" : "")"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Profil login</a></li>
+        <li role="presentation" class="@(Model.LoginState == LoginViewModel.State.Login ? "active" : "")"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Email login</a></li>
         @if (ViewBag.EnableMobil){<li role="presentation" class="@(Model.LoginState==LoginViewModel.State.TokenLogin?"active":"")"><a href="#mobile" role="tab" id="mobile-tab" data-toggle="tab" aria-controls="mobile" aria-expanded="false">Mobil login</a></li>}
     </ul>
     <div id="myTabContent" class="tab-content">

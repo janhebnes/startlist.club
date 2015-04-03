@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web;
 using FlightJournal.Web.Controllers;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Validators;
 using Microsoft.AspNet.Identity;
 
 namespace FlightJournal.Web.Extensions
@@ -108,5 +109,15 @@ namespace FlightJournal.Web.Extensions
             }
         }
 
+        /// <summary>
+        /// Profilen kan enten være en mobil telefon token login eller en normal email bruger login
+        /// Mobil telefon login har ikke nogen profil visning... 
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <returns></returns>
+        public static bool IsMobilProfile(this IPrincipal principal)
+        {
+            return MobilNumberValidator.IsValid(principal.Identity.Name);
+        }
     }
 }
