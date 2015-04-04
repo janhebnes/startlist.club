@@ -23,14 +23,15 @@
             @Html.AntiForgeryToken()
             <div>
                 @Html.Hidden("currentPilotIdBinding", Model.CurrentPilotBinding.PilotId)
-                <button type="submit" class="btn btn-danger" title="Fjern relation til piloten @Model.CurrentPilotBinding.Name">
+                @*<button type="submit" class="btn btn-danger" title="Fjern relation til piloten @Model.CurrentPilotBinding.Name">
                     <span class="glyphicon glyphicon-remove"></span> Fjern relation
-                </button>
+                </button>*@
             </div>
         }
     </div>
 }
-else if (Model.PotentialPilotBindings.Count > 0)
+
+@if (Model.PotentialPilotBindings.Count > 0)
 {
     <div>
         @using (Html.BeginForm("LinkPilot", "Manage"))
@@ -42,7 +43,7 @@ else if (Model.PotentialPilotBindings.Count > 0)
                     {
                         <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Opret relation til piloten @p.Name fra @p.Club.ShortName">
                             <span class="glyphicon glyphicon-ok"></span>
-                            Er du @p.Name fra @p.Club.Name ?
+                            Skift til @p.Name fra @p.Club.Name ?
                         </button>
                     }
                 </p>

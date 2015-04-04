@@ -424,12 +424,23 @@ namespace FlightJournal.Web.Controllers
                 {
                     otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber).Include(c => c.Club).ToList();
                 }
+
+                // Auto set primary pilot binding information
+                if (string.IsNullOrEmpty(user.BoundToPilotId) && otherPilots.Count == 1)
+                {
+                    user.BoundToPilotId = otherPilots.First().PilotId.ToString();
+                    userPilotBinding = otherPilots.First();
+                    otherPilots = new List<Pilot>();
+                }
+
             }
+
             var result = new ManagePilotBindingViewModel
             {
                 CurrentPilotBinding = userPilotBinding,
                 PotentialPilotBindings = otherPilots
             };
+
             return result;
         }
 
