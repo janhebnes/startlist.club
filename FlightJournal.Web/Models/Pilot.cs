@@ -13,14 +13,6 @@ namespace FlightJournal.Web.Models
         public int PilotId { get; set; }
         [Required]
         public string Name { get; set; }
-        [XmlIgnore]
-        public string RenderName 
-        {
-            get
-            {
-                return string.Format("{0} ({1})", this.Name, this.MemberId);
-            }
-        }
         public string UnionId { get; set; }
         public string MemberId { get; set; }
         public string MobilNumber { get; set; }
@@ -36,7 +28,18 @@ namespace FlightJournal.Web.Models
 
         public override string ToString()
         {
-            return string.Format("{0} ({1})", this.Name, this.MemberId);
+            if (!string.IsNullOrWhiteSpace(this.MemberId))
+            {
+                return string.Format("{0} ({1})", this.Name, this.MemberId);
+            }
+            else if (!string.IsNullOrWhiteSpace(this.UnionId))
+            {
+                return string.Format("{0} ({1})", this.Name, this.UnionId);
+            }
+            else
+            {
+                return this.Name;
+            }
         }
 
         [XmlIgnore]

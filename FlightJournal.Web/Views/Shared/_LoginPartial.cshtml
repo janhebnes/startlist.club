@@ -6,7 +6,7 @@
     string accountName = User.Identity.GetUserName();
     if (Request.Pilot().Name != null)
     {
-        accountName = Request.Pilot().RenderName;
+        accountName = Request.Pilot().ToString();
     }
     if (User.IsAdministrator())
     {

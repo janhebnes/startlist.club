@@ -409,20 +409,20 @@ namespace FlightJournal.Web.Controllers
                     context.Entry(userPilotBinding).Reference(p => p.Club).Load();
                 }
 
-                if (user.EmailConfirmed && user.PhoneNumberConfirmed)
-                {
-                    otherPilots =
-                        context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber || p.Email == user.Email)
-                            .Include(c => c.Club)
-                            .ToList();
-                }
-                else if (user.EmailConfirmed)
+                if (user.EmailConfirmed)
                 {
                     otherPilots = context.Pilots.Where(p => p.Email == user.Email).Include(c => c.Club).ToList();
                 }
-                else if (user.PhoneNumberConfirmed)
+
+                if (user.PhoneNumberConfirmed)
                 {
                     otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber).Include(c => c.Club).ToList();
+                }
+
+                // Remove the existing pilot
+                if (userPilotBinding != null && otherPilots.Any())
+                {
+                    otherPilots = otherPilots.Where(p => p.PilotId != userPilotBinding.PilotId).ToList();
                 }
 
                 // Auto set primary pilot binding information
