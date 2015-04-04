@@ -64,6 +64,9 @@
             group c by new { c.Pilot } into g
             select new { Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
         {
+            var totalTime = new TimeSpan(item.ItemFlights
+                         .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                         .Sum(f => f.myTime));
             <tr>
                 <td>
                     @item.Pilot.Name
@@ -72,9 +75,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(new DateTime(item.ItemFlights
-                          .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                          .Sum(f => f.myTime)).ToString("HH:mm"))
+                    @(totalTime.TotalMinutes > 0 ? string.Format("{0}:{1}", totalTime.TotalHours.ToString("#00.0").Substring(0, totalTime.TotalHours.ToString("#00.0").IndexOf(",")), totalTime.Minutes.ToString("#00")) : "")
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -95,6 +96,9 @@
                              group c by new { c.PilotBackseat } into g
                              select new { Pilot = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
         {
+            var totalTime = new TimeSpan(item.ItemFlights
+                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
+                        .Sum(f => f.myTime));
             <tr>
                 <td>
                     @item.Pilot.Name (bagsæde)
@@ -103,9 +107,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(new DateTime(item.ItemFlights
-                          .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                          .Sum(f => f.myTime)).ToString("HH:mm"))
+                    @(totalTime.TotalMinutes > 0 ? string.Format("{0}:{1}", totalTime.TotalHours.ToString("#00.0").Substring(0, totalTime.TotalHours.ToString("#00.0").IndexOf(",")), totalTime.Minutes.ToString("#00")) : "")
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -113,6 +115,7 @@
                     var time = (new TimeSpan(item.ItemFlights.Where(f => f.Date.Month == i)
                         .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
                         .Sum(f => f.myTime)));
+                    
                     <td align="right">
                         @(count != 0 ? count.ToString() : "")
                     </td>
