@@ -55,10 +55,34 @@ else
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @if (!string.IsNullOrWhiteSpace(item.Email))
+                    {
+                        @Html.DisplayFor(modelItem => item.Email)
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("SetEmail", "Pilot"))
+                        {
+                            @Html.HiddenFor(modelItem => item.PilotId)
+                            @Html.EditorFor(modelItem => item.Email)
+                            <button type="submit" class="btn btn-default btn-sm" onclick=" setData(this) "><span class="glyphicon glyphicon-edit"></span></button>
+                        }
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MobilNumber)
+                    @if (!string.IsNullOrWhiteSpace(item.MobilNumber))
+                    {
+                        @Html.DisplayFor(modelItem => item.MobilNumber)
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("SetMobilNumber", "Pilot"))
+                        {
+                            @Html.HiddenFor(modelItem => item.PilotId)
+                            @Html.EditorFor(modelItem => item.MobilNumber)
+                            <button type="submit" class="btn btn-default btn-sm" onclick=" setData(this) "><span class="glyphicon glyphicon-edit"></span></button>
+                        }
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MemberId)
@@ -83,4 +107,52 @@ else
         }
 
     </table>
+}
+
+@section scripts
+{
+    <script>
+        function ConvertFormToJSON(form) {
+            var array = jQuery(form).serializeArray();
+            var json = {};
+
+            jQuery.each(array, function() {
+                var parsedname = this.name + "";
+                parsedname = parsedname.substring(5); // removing "input." from the source
+                json[parsedname] = this.value || "";
+            });
+
+            return json;
+        }
+
+        function setData(submitbutton) {
+            event.preventDefault();
+
+            var json = ConvertFormToJSON(submitbutton.form);
+            $.ajax({
+                type: "POST",
+                url: submitbutton.form.action,
+                data: json,
+                dataType: "json"
+            }).done(function(result) {
+                if (result.Success) {
+                    $(submitbutton).removeClass("btn-default").addClass("btn-success");
+                    $($(submitbutton).children('span')[0]).removeClass("glyphicon-edit").addClass("glyphicon-check");
+                    setTimeout(function () {
+                        $(submitbutton).removeClass("btn-success").addClass("btn-default");
+                        $($(submitbutton).children('span')[0]).removeClass("glyphicon-check").addClass("glyphicon-edit");
+                    }, 1500);
+                } else {
+                    $(submitbutton).removeClass("btn-default").addClass("btn-warning");
+                    setTimeout(function () {
+                        $(submitbutton).removeClass("btn-warning").addClass("btn-default");
+                    }, 1500);
+                }
+
+            }).error(function() {
+                alert("Error");
+                $(submitbutton).removeClass("btn-primary").addClass("btn-warning");
+            });
+        }
+    </script>
 }

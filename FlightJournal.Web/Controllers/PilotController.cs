@@ -135,6 +135,47 @@ namespace FlightJournal.Web.Controllers
             return View(pilot);
         }
 
+        [Authorize]
+        public ActionResult SetEmail(PilotSetEmailViewModel model)
+        {
+            Pilot pilot = this.db.Pilots.Find(model.PilotId);
+            if (pilot == null)
+            {
+                return new JsonResult() { @Data = new { Success = false }};
+            }
+
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+            if (!User.IsAdministrator() && Request.Club().ClubId != pilot.ClubId) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
+            pilot.Email = model.Email;
+            this.db.SaveChanges();
+
+            return new JsonResult() { @Data = new { Success = true }};
+        }
+
+        [Authorize]
+        public ActionResult SetMobilNumber(PilotSetMobilNumberViewModel model)
+        {
+            Pilot pilot = this.db.Pilots.Find(model.PilotId);
+            if (pilot == null)
+            {
+                return new JsonResult() { @Data = new { Success = false } };
+            }
+
+            if (!MobilNumberValidator.IsValid(model.MobilNumber))
+            {
+                return new JsonResult() { @Data = new { Success = false } };
+            }
+
+            if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+            if (!User.IsAdministrator() && Request.Club().ClubId != pilot.ClubId) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
+            pilot.MobilNumber = MobilNumberValidator.ParseMobilNumber(model.MobilNumber);
+            this.db.SaveChanges();
+
+            return new JsonResult() { @Data = new { Success = true } };
+        }
+
         //
         // GET: /Pilot/Delete/5
  
