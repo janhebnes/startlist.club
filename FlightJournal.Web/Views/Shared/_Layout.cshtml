@@ -24,8 +24,8 @@
                 </button>
                 @if (Request.IsClub() && !String.IsNullOrWhiteSpace(Request.Club().Website))
                 {
-                    <a class="navbar-brand hidden-sm hidden-xs" href="@Request.Club().Website">@Request.Club().Name</a>
-                    <a class="navbar-brand hidden-md hidden-lg" href="@Request.Club().Website">@Request.Club().ShortName</a>
+                    <a class="navbar-brand hidden-sm " href="@Request.Club().Website">@Request.Club().Name</a>
+                    <a class="navbar-brand hidden-xs hidden-md hidden-lg" href="@Request.Club().Website">@Request.Club().ShortName</a>
                 }
                 else if (Request.IsClub() && !String.IsNullOrWhiteSpace(Request.Club().Name))
                 {
