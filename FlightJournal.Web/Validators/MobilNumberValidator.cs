@@ -14,7 +14,22 @@ namespace FlightJournal.Web.Validators
         public static bool IsValid(string mobilNumber, bool isExistingPilot)
         {
             var cleanNumber = ParseMobilNumber(mobilNumber);
-            var valid = (cleanNumber.StartsWith("+") & cleanNumber.Length == 11);
+            var valid = false;
+            int num = 0;
+            valid = (cleanNumber.StartsWith("+")    // prefixed with internationational code
+                & int.TryParse(cleanNumber.Substring(1), out num)   // Numeric 
+                & cleanNumber.Length >= 11);    // Minimum length
+            if (cleanNumber.StartsWith("+45"))
+            {
+                // Danish number format validation
+                valid = (cleanNumber.Length == 11);
+            }
+            else if (cleanNumber.StartsWith("+46"))
+            {
+                // Swedish number format validation
+                valid = (cleanNumber.Length == 12);
+            }
+
             if (valid)
             {
                 if (!isExistingPilot)
@@ -52,7 +67,7 @@ namespace FlightJournal.Web.Validators
             var n = mobilNumber.Replace(" ", "");
 
             // Replace potential use of 00 instead of +
-            if (n.Length == 12 && n.StartsWith("00"))
+            if (n.StartsWith("00"))
             {
                 n = "+" + n.Substring(2);
             }
