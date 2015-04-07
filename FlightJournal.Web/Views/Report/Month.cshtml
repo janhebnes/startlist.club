@@ -129,10 +129,10 @@
 <h2>
     Logbøger for @Model.Date.ToString("MMMM yyyy")</h2>
 
-<table class="table">
-    <tr>
-        <td valign="top">
-            <table id="mySummary" class="tablesorter table table-striped table-hover table-condensed">
+<div class="row">
+    
+        <div class="col-md-6">
+            <table class="tablesorter table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>
@@ -173,165 +173,163 @@
                     }
                 </tbody>
             </table>
-        </td>
-        <td valign="top">
-            <table id="mySummary2" class="tablesorter table table-striped table-hover table-condensed">
-                <thead>
+        </div>
+    <div class="col-md-6">
+        <table class="tablesorter table table-striped table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        Fly
+                    </th>
+                    <th>
+                        Bagsæde
+                    </th>
+                    <th>
+                        Antal
+                    </th>
+                    <th>
+                        Flyvetid
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in from c in Model.Flights
+                                     where c.PilotBackseat != null
+                                     group c by new { c.Plane, c.PilotBackseat } into g
+                                     select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
+                {
                     <tr>
-                        <th>
-                            Fly
-                        </th>
-                        <th>
-                            Bagsæde
-                        </th>
-                        <th>
-                            Antal
-                        </th>
-                        <th>
-                            Flyvetid
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in from c in Model.Flights
-                                         where c.PilotBackseat != null
-                                         group c by new { c.Plane, c.PilotBackseat } into g
-                                         select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
-                    {
-                        <tr>
-                            <td>
-                                @item.Plane
-                            </td>
-                            <td>
-                                @item.PilotBackseat.Name
-                            </td>
-                            <td align="right">
-                                @item.Count
-                            </td>
-                            <td align="right">
-                                @(new DateTime(item.ItemFlights
+                        <td>
+                            @item.Plane
+                        </td>
+                        <td>
+                            @item.PilotBackseat.Name
+                        </td>
+                        <td align="right">
+                            @item.Count
+                        </td>
+                        <td align="right">
+                            @(new DateTime(item.ItemFlights
                                 .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
                                 .Sum(f => f.myTime)).ToString("HH:mm"))
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </td>
-    </tr>
-</table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+        </div>
 
-<div class="text-center hidden-print">
-    <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
-</div>
-<br style="page-break-after: always;" />
-<h2>
-    Startlister for @Model.Date.ToString("MMMM yyyy")</h2>
-<table id="myTable" class="tablesorter table table-responsive table-striped table-hover table-condensed">
-    <thead>
-        <tr>
-            <th>
-                Dato
-            </th>
-            <th>
-                Fly
-            </th>
-            <th>
-                Pilote(r)
-            </th>
-            <th>
-                Start
-            </th>
-            <th>
-                Landing
-            </th>
-            <th>
-                Flyvetid
-            </th>
-            <th class="hidden-sm">
-                Flyveplads
-            </th>
-            <th class="hidden-sm">
-                Tacho
-            </th>
-            <th class="hidden-xs">
-                Note
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Flights)
-        {
-            <tr>
-                <td>
-                    @item.Date.ToShortDateString()
-                </td>
-                <td>
-                    @item.Plane
-                </td>
-                <td>
-                    @item.Pilot.Name
-                    @if (item.PilotBackseat != null)
-                    {
-                        <text> / </text>@item.PilotBackseat.Name
-                    }
-                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                    {
-                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                    }
-                </td>
-                <td>
-                    @if (item.Departure.HasValue)
-                    {
-                        @item.Departure.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @if (item.Landing.HasValue)
-                    {
-                        @item.Landing.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @if (item.Departure != null && item.Landing != null && item.Landing.Value > item.Departure.Value)
-                    {
-                        @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
-                    }
-                </td>
-                <td class="hidden-sm">
-                    @item.StartedFrom.Name
-                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                    {
-                        <text>, </text>
-                        @item.LandedOn.Name
-                    }
-                </td>
-                <td class="hidden-sm">
-                    @Html.Partial("DisplayTemplates/_TachoPartial", item)
-                </td>
-                <td class="hidden-xs">
-                    @Html.DisplayFor(modelItem => item.Description, "Description")
-                </td>
-                <td>
-                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
-                    @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <div class="text-center hidden-print">
+            <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
+        </div>
+        <br style="page-break-after: always;" />
+        <h2>
+            Startlister for @Model.Date.ToString("MMMM yyyy")
+        </h2>
+        <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        Dato
+                    </th>
+                    <th>
+                        Fly
+                    </th>
+                    <th>
+                        Pilote(r)
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    <th>
+                        Landing
+                    </th>
+                    <th>
+                        Flyvetid
+                    </th>
+                    <th class="hidden-sm">
+                        Flyveplads
+                    </th>
+                    <th class="hidden-sm">
+                        Tacho
+                    </th>
+                    <th class="hidden-xs">
+                        Note
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Flights)
+                {
+                    <tr>
+                        <td>
+                            @item.Date.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.Plane
+                        </td>
+                        <td>
+                            @item.Pilot.Name
+                            @if (item.PilotBackseat != null)
+                            {
+                                <text> / </text>@item.PilotBackseat.Name
+                            }
+                            @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                            {
+                                <text> (</text>@item.Betaler.Name<text> betaler)</text>
+                            }
+                        </td>
+                        <td>
+                            @if (item.Departure.HasValue)
+                            {
+                                @item.Departure.Value.ToString("HH:mm");
+                            }
+                        </td>
+                        <td>
+                            @if (item.Landing.HasValue)
+                            {
+                                @item.Landing.Value.ToString("HH:mm");
+                            }
+                        </td>
+                        <td>
+                            @if (item.Departure != null && item.Landing != null && item.Landing.Value > item.Departure.Value)
+                            {
+                                @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                            }
+                        </td>
+                        <td class="hidden-sm">
+                            @item.StartedFrom.Name
+                            @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                            {
+                                <text>, </text>
+                                @item.LandedOn.Name
+                            }
+                        </td>
+                        <td class="hidden-sm">
+                            @Html.Partial("DisplayTemplates/_TachoPartial", item)
+                        </td>
+                        <td class="hidden-xs">
+                            @Html.DisplayFor(modelItem => item.Description, "Description")
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
+                            @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-@section scripts
+        @section scripts
 {
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#mySummary").tablesorter();
-        $("#mySummary2").tablesorter();
-        $("#myTable").tablesorter();
-    }
-    );
-</script>    
-}
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $(".tablesorter").tablesorter();
+                }
+                );
+            </script>
+        }
 
