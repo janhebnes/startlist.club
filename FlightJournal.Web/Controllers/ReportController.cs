@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Mime;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
@@ -144,6 +145,12 @@ namespace FlightJournal.Web.Controllers
 
         public Dictionary<DateTime, int> AvailableDates()
         {
+            // Cleared by the Flight Controller Create action if a creation is done on another day than the last creation
+            if (HttpContext.Application["AvailableDates"] != null)
+            {
+                return HttpContext.Application["AvailableDates"] as Dictionary<DateTime, int>;
+            }
+
             // Original implementation
             //var availableDates = this.db.Flights.GroupBy(p => p.Date).Select(g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
             //return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(x => x.Date, x => x.Hours);
@@ -165,7 +172,8 @@ namespace FlightJournal.Web.Controllers
                     .GroupBy(p => p.Date);
             if (availableDates.Any())
             {
-                return availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() } ).ToDictionary(x=>x.Date, x=>x.FlightCount);
+                HttpContext.Application["AvailableDates"] = availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() } ).ToDictionary(x=>x.Date, x=>x.FlightCount);
+                return HttpContext.Application["AvailableDates"] as Dictionary<DateTime, int>;
             }
 
             return null;
