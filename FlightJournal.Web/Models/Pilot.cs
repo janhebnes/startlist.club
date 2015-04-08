@@ -26,6 +26,18 @@ namespace FlightJournal.Web.Models
 
         public PilotStatusType PilotStatus { get; set; }
 
+        /// <summary>
+        /// Required by SelectList logic in FlightController
+        /// </summary>
+        [XmlIgnore]
+        public string RenderName 
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         public override string ToString()
         {
             if (!string.IsNullOrWhiteSpace(this.MemberId))
