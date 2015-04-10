@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Configuration;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Validators;
 using SignInStatus = FlightJournal.Web.Models.SignInStatus;
 
@@ -96,6 +97,8 @@ namespace FlightJournal.Web.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+                case SignInStatus.UnConfirmed:
+                    return RedirectToAction("EmailNotConfirmed");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresTwoFactorAuthentication:
@@ -140,6 +143,7 @@ namespace FlightJournal.Web.Controllers
                     {
                         case SignInStatus.LockedOut:
                             return View("Lockout");
+                        case SignInStatus.UnConfirmed:
                         case SignInStatus.Success:
                         case SignInStatus.RequiresTwoFactorAuthentication:
                             model.MobilNumberValidated = true;
@@ -193,6 +197,8 @@ namespace FlightJournal.Web.Controllers
                 {
                     case SignInStatus.Success:
                         return RedirectToLocal(returnUrl);
+                    case SignInStatus.UnConfirmed:
+                        return RedirectToAction("EmailNotConfirmed"); // State should not be possible to reach on mobil login accounts
                     case SignInStatus.LockedOut:
                         return View("Lockout");
                     case SignInStatus.Failure:
@@ -241,6 +247,8 @@ namespace FlightJournal.Web.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
+                case SignInStatus.UnConfirmed:
+                    return RedirectToAction("EmailNotConfirmed");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.Failure:
@@ -271,9 +279,7 @@ namespace FlightJournal.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                    var callbackUrl = await GenerateEmailConfirmationEmail(user);
                     ViewBag.Link = callbackUrl;
                     return View("DisplayEmail");
                 }
@@ -282,6 +288,26 @@ namespace FlightJournal.Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private async Task<string> GenerateEmailConfirmationEmail(ApplicationUser user)
+        {
+            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code = code}, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(user.Id, "startlist.club - Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+            return callbackUrl;
+        }
+
+        public async Task<ActionResult> EmailNotConfirmed()
+        {
+            return View("DisplayEmail");
+        }
+
+        public async Task<ActionResult> ReGenerateEmailConfirmationEmail()
+        {
+            var callbackUrl = GenerateEmailConfirmationEmail(User.Profile());
+            ViewBag.Link = await callbackUrl;
+            return View("DisplayEmail");
         }
 
         //
@@ -450,6 +476,8 @@ namespace FlightJournal.Web.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+                case SignInStatus.UnConfirmed:
+                    return RedirectToAction("EmailNotConfirmed");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresTwoFactorAuthentication:
@@ -491,7 +519,12 @@ namespace FlightJournal.Web.Controllers
                     if (result.Succeeded)
                     {
                         await SignInHelper.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        
+                        // Generete token email
+                        var callbackUrl = GenerateEmailConfirmationEmail(user);
+                        ViewBag.Link = callbackUrl;
+                        return RedirectToAction("DisplayEmail");
+                        //return RedirectToLocal(returnUrl);
                     }
                 }
                 AddErrors(result);

@@ -226,6 +226,7 @@ namespace FlightJournal.Web.Models
     public enum SignInStatus
     {
         Success,
+        UnConfirmed,
         LockedOut,
         RequiresTwoFactorAuthentication,
         Failure
@@ -314,6 +315,11 @@ namespace FlightJournal.Web.Models
             {
                 return SignInStatus.LockedOut;
             }
+            if (!user.EmailConfirmed)
+            {
+                await SignInAsync(user, false, false);
+                return SignInStatus.UnConfirmed;
+            }
             if (await UserManager.VerifyTwoFactorTokenAsync(user.Id, provider, code))
             {
                 // When token is verified correctly, clear the access failed count used for lockout
@@ -332,6 +338,11 @@ namespace FlightJournal.Web.Models
             if (user == null)
             {
                 return SignInStatus.Failure;
+            }
+            if (!user.EmailConfirmed)
+            {
+                await SignInAsync(user, false, false);
+                return SignInStatus.UnConfirmed;
             }
             if (await UserManager.IsLockedOutAsync(user.Id))
             {
@@ -371,6 +382,11 @@ namespace FlightJournal.Web.Models
             if (user == null)
             {
                 return SignInStatus.Failure;
+            }
+            if (!user.EmailConfirmed)
+            {
+                await SignInAsync(user, false, false);
+                return SignInStatus.UnConfirmed;
             }
             if (await UserManager.IsLockedOutAsync(user.Id))
             {
