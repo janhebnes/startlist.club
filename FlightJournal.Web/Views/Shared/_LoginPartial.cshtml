@@ -27,7 +27,7 @@
                     <a href="javascript:document.getElementById('goHomeForm').submit()"><span class="glyphicon glyphicon-home"></span> @User.Pilot().Club.ShortName</a>
                     @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post, new { id = "goHomeForm", Style = "display:none;" }))
                     {
-                        <input type="hidden" name="shortName" value="ØSF" />
+                        <input type="hidden" name="shortName" value="@User.Pilot().Club.ShortName" />
                     }
                 </li>
             }
