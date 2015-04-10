@@ -406,7 +406,10 @@ namespace FlightJournal.Web.Controllers
                 {
                     userPilotBinding = context.Pilots.Find(Convert.ToInt32(user.BoundToPilotId));
                     // Load club reference information 
-                    context.Entry(userPilotBinding).Reference(p => p.Club).Load();
+                    if (userPilotBinding != null)
+                    {
+                        context.Entry(userPilotBinding).Reference(p => p.Club).Load();
+                    }
                 }
 
                 if (user.EmailConfirmed)
@@ -429,6 +432,16 @@ namespace FlightJournal.Web.Controllers
                 if (string.IsNullOrEmpty(user.BoundToPilotId) && otherPilots.Count == 1)
                 {
                     user.BoundToPilotId = otherPilots.First().PilotId.ToString();
+                    // Save to database
+                    using (var appcontext = new ApplicationDbContext())
+                    {
+                        var appUser = appcontext.Users.Find(user.Id);
+                        if (appUser != null)
+                        {
+                            appUser.BoundToPilotId = user.BoundToPilotId;
+                            appcontext.SaveChanges();
+                        }
+                    }
                     userPilotBinding = otherPilots.First();
                     otherPilots = new List<Pilot>();
                 }
