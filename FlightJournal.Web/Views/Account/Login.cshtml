@@ -149,7 +149,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.VerifyCode, new { @class = "col-md-4 control-label" })
                                         <div class="col-md-8">
-                                            @Html.PasswordFor(m => m.VerifyCode, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.VerifyCode, new { @class = "form-control" })
                                             @Html.ValidationMessageFor(m => m.VerifyCode, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
