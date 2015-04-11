@@ -1,12 +1,10 @@
 @using FlightJournal.Web.Extensions
 @{
-    ViewBag.Title = "Confirm Your Email Address";
+    ViewBag.Title = "Confirm your Email";
 }
 <h2>@ViewBag.Title</h2>
-<p class="text-info">
-    Please click the confirmation link which was sent to you via Email.
-    You will not be able to access the site until your email has been verified.
-</p>
+<div class="alert alert-danger"><span class="glyphicon glyphicon-alert"></span> Please click the confirmation link which was sent to you via Email.</div>
+<p>You will not be able to access the site until your email has been verified.</p>
 @if (HttpContext.Current.IsDebuggingEnabled && !string.IsNullOrWhiteSpace(ViewBag.Link))
 {
     <p class="text-danger">
@@ -20,5 +18,5 @@
 }
 else
 {
-    <div class="alert alert-success">The Email has been sent @DateTime.Now.ToShortTimeString() with subject: <strong>startlist.club - Confirm your account</strong>, please check your spam filters.</div>
+    <div class="alert alert-success"><span class="glyphicon glyphicon-envelope"></span> The Email has been sent @DateTime.Now.ToShortTimeString() with subject: <strong>startlist.club - Confirm your account</strong>, please check your spam filters.</div>
 }
