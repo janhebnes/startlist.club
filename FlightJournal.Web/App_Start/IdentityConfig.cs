@@ -415,7 +415,7 @@ namespace FlightJournal.Web.Models
             var user = await UserManager.FindByNameAsync(userName);
             if (user == null)
             {
-                var pilots = MobilNumberValidator.GetPilots(userName);
+                var pilots = MobilNumberValidator.FindPilotsByMobilNumber(userName); // userName is mobil number
                 if (!pilots.Any())
                     return SignInStatus.Failure;
 

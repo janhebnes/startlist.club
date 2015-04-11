@@ -47,7 +47,7 @@ namespace FlightJournal.Web.Validators
             return false;
         }
 
-        public static List<Pilot> GetPilots(string mobilNumber)
+        public static List<Pilot> FindPilotsByMobilNumber(string mobilNumber)
         {
             mobilNumber = ParseMobilNumber(mobilNumber);
             using (var shortDb = new FlightContext())
