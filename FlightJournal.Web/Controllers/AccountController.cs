@@ -294,7 +294,7 @@ namespace FlightJournal.Web.Controllers
         {
             var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
             var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code = code}, protocol: Request.Url.Scheme);
-            await UserManager.SendEmailAsync(user.Id, "startlist.club - Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+            await UserManager.SendEmailAsync(user.Id, "Startlist.club - Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
             return callbackUrl;
         }
 
@@ -308,21 +308,17 @@ namespace FlightJournal.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ReGenerateEmailConfirmationEmail(string email)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                var user = db.Users.FirstOrDefault(u=>u.Email == email && u.UserName == email);
-                
-                if (user == null)
-                    throw new Exception("The user was not found");
+            var user = await UserManager.FindByNameAsync(email);
+            if (user == null)
+                throw new Exception("The user was not found");
 
-                if (user.EmailConfirmed)
-                    throw new Exception("The user has allready accepted the invitation");
-              
-                var callbackUrl = GenerateEmailConfirmationEmail(user);
-                ViewBag.Link = await callbackUrl;
+            if (await UserManager.IsEmailConfirmedAsync(user.Id))
+                return View("ConfirmEmail");
+            
+            var callbackUrl = GenerateEmailConfirmationEmail(user);
+            ViewBag.Link = await callbackUrl;
 
-                return View("DisplayEmail");
-            }
+            return View("DisplayEmail");
         }
 
         //
@@ -369,7 +365,7 @@ namespace FlightJournal.Web.Controllers
 
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                await UserManager.SendEmailAsync(user.Id, "Startlist.club - Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
                 ViewBag.Link = callbackUrl;
                 return View("ForgotPasswordConfirmation");
             }
@@ -533,11 +529,13 @@ namespace FlightJournal.Web.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInHelper.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        // We dont log the user in until there email has been validated.
+                        //await SignInHelper.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         
                         // Generete token email
                         var callbackUrl = GenerateEmailConfirmationEmail(user);
                         ViewBag.Link = callbackUrl;
+
                         return RedirectToAction("DisplayEmail");
                         //return RedirectToLocal(returnUrl);
                     }
