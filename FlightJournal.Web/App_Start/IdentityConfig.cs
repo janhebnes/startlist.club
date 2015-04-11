@@ -317,7 +317,6 @@ namespace FlightJournal.Web.Models
             }
             if (!user.EmailConfirmed)
             {
-                await SignInAsync(user, false, false);
                 return SignInStatus.UnConfirmed;
             }
             if (await UserManager.VerifyTwoFactorTokenAsync(user.Id, provider, code))
@@ -341,7 +340,6 @@ namespace FlightJournal.Web.Models
             }
             if (!user.EmailConfirmed)
             {
-                await SignInAsync(user, false, false);
                 return SignInStatus.UnConfirmed;
             }
             if (await UserManager.IsLockedOutAsync(user.Id))
@@ -385,7 +383,6 @@ namespace FlightJournal.Web.Models
             }
             if (!user.EmailConfirmed)
             {
-                await SignInAsync(user, false, false);
                 return SignInStatus.UnConfirmed;
             }
             if (await UserManager.IsLockedOutAsync(user.Id))

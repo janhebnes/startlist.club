@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Confirm Your Email Address";
 }
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 <p class="text-info">
     Please click the confirmation link which was sent to you via Email.
     You will not be able to access the site until your email has been verified.
@@ -13,9 +13,10 @@
         For DEVELOPMENT only: You can click this link to confirm the email: <a href="@ViewBag.Link">link</a>
     </p>
 }
-@if (string.IsNullOrWhiteSpace(ViewBag.Link))
+@if (string.IsNullOrWhiteSpace(ViewBag.Link) && !string.IsNullOrWhiteSpace(ViewBag.Email))
 {
-    @Html.ActionLink("Resend confirmation email to " + User.Profile().Email, "ReGenerateEmailConfirmationEmail", null, new {@class = "btn btn-primary"})
+    string email = ViewBag.Email;
+    @Html.ActionLink("Resend confirmation email to " + email, "ReGenerateEmailConfirmationEmail", new { @email = email }, new { @class = "btn btn-primary" })
 }
 else
 {

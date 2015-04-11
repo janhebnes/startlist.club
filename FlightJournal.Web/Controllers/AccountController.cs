@@ -98,7 +98,7 @@ namespace FlightJournal.Web.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.UnConfirmed:
-                    return RedirectToAction("EmailNotConfirmed");
+                    return RedirectToAction("EmailNotConfirmed", new { email = model.Email });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresTwoFactorAuthentication:
@@ -298,16 +298,31 @@ namespace FlightJournal.Web.Controllers
             return callbackUrl;
         }
 
-        public async Task<ActionResult> EmailNotConfirmed()
+        [AllowAnonymous]
+        public async Task<ActionResult> EmailNotConfirmed(string email)
         {
+            @ViewBag.Email = email;
             return View("DisplayEmail");
         }
 
-        public async Task<ActionResult> ReGenerateEmailConfirmationEmail()
+        [AllowAnonymous]
+        public async Task<ActionResult> ReGenerateEmailConfirmationEmail(string email)
         {
-            var callbackUrl = GenerateEmailConfirmationEmail(User.Profile());
-            ViewBag.Link = await callbackUrl;
-            return View("DisplayEmail");
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var user = db.Users.FirstOrDefault(u=>u.Email == email && u.UserName == email);
+                
+                if (user == null)
+                    throw new Exception("The user was not found");
+
+                if (user.EmailConfirmed)
+                    throw new Exception("The user has allready accepted the invitation");
+              
+                var callbackUrl = GenerateEmailConfirmationEmail(user);
+                ViewBag.Link = await callbackUrl;
+
+                return View("DisplayEmail");
+            }
         }
 
         //
@@ -477,7 +492,7 @@ namespace FlightJournal.Web.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.UnConfirmed:
-                    return RedirectToAction("EmailNotConfirmed");
+                    return RedirectToAction("EmailNotConfirmed", new { email = loginInfo.Email });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresTwoFactorAuthentication:
