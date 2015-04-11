@@ -6,3 +6,8 @@
     <h2>@ViewBag.Title.</h2>
     <h3 class="text-error">Unsuccessful login with service.</h3>
 </hgroup>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-danger"><span class="glyphicon glyphicon-alert"></span> @ViewBag.Message</div> 
+}

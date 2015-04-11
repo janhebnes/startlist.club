@@ -80,6 +80,15 @@ namespace FlightJournal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            if (!EmailValidator.IsValid(model.Email))
+            {
+                ModelState.AddModelError("Email", "Email kunne ikke valideres som værende korrekt email format.");
+            }
+            else
+            {
+                model.Email = EmailValidator.ParseEmail(model.Email);
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.ReturnUrl = returnUrl;
@@ -273,6 +282,15 @@ namespace FlightJournal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (!EmailValidator.IsValid(model.Email))
+            {
+                ModelState.AddModelError("Email", "Email kunne ikke valideres som værende korrekt email format.");
+            }
+            else
+            {
+                model.Email = EmailValidator.ParseEmail(model.Email);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -354,6 +372,15 @@ namespace FlightJournal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            if (!EmailValidator.IsValid(model.Email))
+            {
+                ModelState.AddModelError("Email", "Email kunne ikke valideres som værende korrekt email format.");
+            }
+            else
+            {
+                model.Email = EmailValidator.ParseEmail(model.Email);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
@@ -397,6 +424,15 @@ namespace FlightJournal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            if (!EmailValidator.IsValid(model.Email))
+            {
+                ModelState.AddModelError("Email", "Email kunne ikke valideres som værende korrekt email format.");
+            }
+            else
+            {
+                model.Email = EmailValidator.ParseEmail(model.Email);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -521,6 +557,15 @@ namespace FlightJournal.Web.Controllers
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
+                }
+                if (!EmailValidator.IsValid(model.Email))
+                {
+                    ViewBag.Message = string.Format("Unable to validate email '{0}' as email.", model.Email);
+                    return View("ExternalLoginFailure");
+                }
+                else
+                {
+                    model.Email = EmailValidator.ParseEmail(model.Email);
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);

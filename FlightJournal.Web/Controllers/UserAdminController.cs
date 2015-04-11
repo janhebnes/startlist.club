@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using FlightJournal.Web.Validators;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -88,6 +89,15 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(RegisterViewModel userViewModel, params string[] selectedRoles)
         {
+            if (!EmailValidator.IsValid(userViewModel.Email))
+            {
+                ModelState.AddModelError("Email", "Email kunne ikke valideres som værende korrekt email format.");
+            }
+            else
+            {
+                userViewModel.Email = EmailValidator.ParseEmail(userViewModel.Email);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email };
