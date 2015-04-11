@@ -222,6 +222,7 @@
     <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="Constraints\ClubRouteConstraint.cs" />
     <Compile Include="Models\PilotViewModels.cs" />
+    <Compile Include="Validators\EmailValidator.cs" />
     <Compile Include="Validators\MobilNumberValidator.cs" />
     <Compile Include="Validators\ClubValidator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
