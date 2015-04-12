@@ -292,7 +292,7 @@ namespace FlightJournal.Web.Controllers
                 // Help handle clearing the cache on the availableDates of the Report Index page used on frontpage. 
                 if (HttpContext.Application["FlightCreated"] == null || (DateTime)HttpContext.Application["FlightCreated"] != DateTime.Now.Date)
                 {
-                    HttpContext.Application["FlightCreated"] = DateTime.Now.Date;
+                    HttpContext.Application["FlightCreated" + ClubController.CurrentClub.ShortName] = DateTime.Now.Date;
                     HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = null;
                 }
 
