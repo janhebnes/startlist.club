@@ -24,7 +24,13 @@ namespace FlightJournal.Web.Controllers
             if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
 
             var pilots = db.Pilots.Include(p => p.Club);
-            return View(pilots.ToList().Where(d=>d.Club.IsCurrent()).OrderBy(p=>p.Name));
+            if (Request.IsClub())
+            {
+                var clubid = Request.Club().ClubId;
+                return View(pilots.ToList().Where(d => d.ClubId == clubid).OrderBy(p => p.Name));
+            }
+
+            return View(pilots.ToList().OrderBy(p => p.Name));
         }
 
         //

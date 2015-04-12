@@ -410,13 +410,30 @@ namespace FlightJournal.Web.Controllers
         /// <param name="flight">The flight that is context to the dropdown lists</param>
         private void PopulateViewBag(Flight flight)
         {
-            this.ViewBag.PlaneId = new SelectList(this.db.Planes.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).OrderBy(p => p.CompetitionId), "PlaneId", "RenderName", (flight == null) ? (object)null : flight.PlaneId);
-            this.ViewBag.BetalerId = new SelectList(this.db.Pilots.ToList().Where(p=> p.Club.IsCurrent()).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
-            this.ViewBag.PilotId = new SelectList(this.db.Pilots.ToList().Where(p => p.Club.IsCurrent()).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
-            this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.ToList().Where(p => p.Club.IsCurrent()).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
-            this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.Club.IsCurrent()).OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
-            this.ViewBag.StartedFromId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.StartedFromId);
-            this.ViewBag.LandedOnId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.LandedOnId);
+            if (Request.IsClub())
+            {
+                var clubid = Request.Club().ClubId;
+                this.ViewBag.PlaneId = new SelectList(this.db.Planes.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).OrderBy(p => p.CompetitionId), "PlaneId", "RenderName", (flight == null) ? (object)null : flight.PlaneId);
+                this.ViewBag.BetalerId = new SelectList(this.db.Pilots.ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
+                this.ViewBag.PilotId = new SelectList(this.db.Pilots.ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
+                this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
+                this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.ClubId == clubid).OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
+                this.ViewBag.StartedFromId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.StartedFromId);
+                this.ViewBag.LandedOnId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.LandedOnId);    
+            }
+            else
+            {
+                this.ViewBag.PlaneId = new SelectList(this.db.Planes.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).OrderBy(p => p.CompetitionId), "PlaneId", "RenderName", (flight == null) ? (object)null : flight.PlaneId);
+                this.ViewBag.BetalerId = new SelectList(this.db.Pilots.ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
+                this.ViewBag.PilotId = new SelectList(this.db.Pilots.ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
+                this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
+                this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null).OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
+                this.ViewBag.StartedFromId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.StartedFromId);
+                this.ViewBag.LandedOnId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.LandedOnId);    
+            }
+
+            // TODO: Add any pilotid or starttypeid that is actually present in the flight but not present in the selectlist !
+            //if flight.BetalerId
         }
     }
 }
