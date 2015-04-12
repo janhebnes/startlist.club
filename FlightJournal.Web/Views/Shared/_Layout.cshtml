@@ -39,13 +39,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.MenuLink("Dagsrapporter", "Index", "Report")</li>
-                    @if (Request.IsAuthenticated && Request.IsClub())
-                    {
-                        <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
-                    }
                     @if (Request.IsPilot())
                     {
                         <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
+                    }
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (Request.IsClub())
+                        {
+                            <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
+                        }
+                        else if (Request.IsPilot())
+                        {
+                            <li>@Html.ActionLink("Startlist (" + Request.Pilot().Club.ShortName + ")", "Grid", "Flight", new { club = Request.Pilot().Club.ShortName}, null)</li>
+                        }
                     }
                     @if (!Request.IsAuthenticated)
                     {
