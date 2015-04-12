@@ -1,2 +1,4 @@
 ﻿@model DateTime
-@Html.TextBox("", Model.ToString("yyyy-MM-dd"), new { @class = "dateISO" })
+@Html.TextBox("", Model.ToString("yyyy-MM-dd"), new {@class = "dateISO", data_val = "false"})
+
+@*iPad 5.1 has problems with the jquery date validatation in a dateISO setup - data_val = "false" disables the problem and there is allready enough validation *@
