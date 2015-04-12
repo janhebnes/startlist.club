@@ -33,7 +33,7 @@
                 }
                 else
                 {
-                    @Html.ActionLink("Startlist", "Index", "Home", null, new { @class = "navbar-brand" })
+                    @Html.ActionLink("Startlist.club", "Index", "Home", null, new { @class = "navbar-brand" })
                 }
             </div>
             <div class="navbar-collapse collapse">
@@ -47,11 +47,11 @@
                     {
                         if (Request.IsClub())
                         {
-                            <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
+                            <li>@Html.MenuLink("Startliste", "Grid", "Flight")</li>
                         }
                         else if (Request.IsPilot())
                         {
-                            <li>@Html.ActionLink("Startlist (" + Request.Pilot().Club.ShortName + ")", "Grid", "Flight", new { club = Request.Pilot().Club.ShortName}, null)</li>
+                            <li>@Html.ActionLink(Request.Pilot().Club.ShortName + " Startliste", "Grid", "Flight", new { club = Request.Pilot().Club.ShortName }, null)</li>
                         }
                     }
                     @if (!Request.IsAuthenticated)
