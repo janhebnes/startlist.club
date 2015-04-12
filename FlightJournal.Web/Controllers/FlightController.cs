@@ -293,7 +293,7 @@ namespace FlightJournal.Web.Controllers
                 if (HttpContext.Application["FlightCreated"] == null || (DateTime)HttpContext.Application["FlightCreated"] != DateTime.Now.Date)
                 {
                     HttpContext.Application["FlightCreated"] = DateTime.Now.Date;
-                    HttpContext.Application["AvailableDates"] = null;
+                    HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = null;
                 }
 
                 return RedirectToAction("Grid");

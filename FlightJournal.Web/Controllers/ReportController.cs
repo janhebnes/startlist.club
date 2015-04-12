@@ -146,9 +146,9 @@ namespace FlightJournal.Web.Controllers
         public Dictionary<DateTime, int> AvailableDates()
         {
             // Cleared by the Flight Controller Create action if a creation is done on another day than the last creation
-            if (HttpContext.Application["AvailableDates"] != null)
+            if (HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] != null)
             {
-                return HttpContext.Application["AvailableDates"] as Dictionary<DateTime, int>;
+                return HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
             }
 
             // Original implementation
@@ -172,8 +172,8 @@ namespace FlightJournal.Web.Controllers
                     .GroupBy(p => p.Date);
             if (availableDates.Any())
             {
-                HttpContext.Application["AvailableDates"] = availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() } ).ToDictionary(x=>x.Date, x=>x.FlightCount);
-                return HttpContext.Application["AvailableDates"] as Dictionary<DateTime, int>;
+                HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() }).ToDictionary(x => x.Date, x => x.FlightCount);
+                return HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
             }
 
             return null;
