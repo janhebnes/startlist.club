@@ -18,7 +18,7 @@ namespace FlightJournal.Web.Validators
             int num = 0;
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
+                var addr = new System.Net.Mail.MailAddress(cleanEmail);
                 if (addr.Address == cleanEmail)
                 {
                     valid = true;
