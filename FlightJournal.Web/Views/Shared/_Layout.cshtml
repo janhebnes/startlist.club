@@ -39,7 +39,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.MenuLink("Dagsrapporter", "Index", "Report")</li>
-                    @if (Request.IsAuthenticated)
+                    @if (Request.IsAuthenticated && Request.IsClub())
                     {
                         <li>@Html.MenuLink("Startlist", "Grid", "Flight")</li>
                     }
