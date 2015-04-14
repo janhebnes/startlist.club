@@ -189,7 +189,7 @@ namespace FlightJournal.Web.Controllers
             // Create base flight information fields
             flight.FlightId = Guid.NewGuid();
             flight.LastUpdated = DateTime.Now;
-            flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
+            flight.LastUpdatedBy = User.Pilot().ToString();
             this.db.Flights.Add(flight);
             this.db.SaveChanges();
             return RedirectToAction("Grid");
@@ -285,7 +285,7 @@ namespace FlightJournal.Web.Controllers
                 // Create base flight information fields
                 flight.FlightId = Guid.NewGuid();
                 flight.LastUpdated = DateTime.Now;
-                flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
+                flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.Flights.Add(flight);
                 this.db.SaveChanges();
 
@@ -351,7 +351,7 @@ namespace FlightJournal.Web.Controllers
             {
                 this.db.Entry(flight).State = EntityState.Modified;
                 flight.LastUpdated = DateTime.Now;
-                flight.LastUpdatedBy = Request.RequestContext.HttpContext.User.Identity.Name;
+                flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
                 return RedirectToAction("Grid");
             }
