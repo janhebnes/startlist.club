@@ -47,6 +47,9 @@ namespace FlightJournal.Web.Controllers
                                 || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                             .OrderBy(o => o.Departure)
                             .AsQueryable();
+
+                        rptYear.DistinctLocations = rptYear.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
+
                         return this.View("year", rptYear);
                     }
                 }
@@ -77,6 +80,8 @@ namespace FlightJournal.Web.Controllers
                         || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                     .OrderBy(o => o.Departure)
                     .AsQueryable();
+
+                rptMonth.DistinctLocations = rptMonth.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
 
                 return this.View("month", rptMonth);
             }
@@ -110,6 +115,8 @@ namespace FlightJournal.Web.Controllers
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                 .OrderBy(o => o.Departure)
                 .AsQueryable();
+
+            rpt.DistinctLocations = rpt.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d=>d.Name);
 
             return this.View(rpt);
         }

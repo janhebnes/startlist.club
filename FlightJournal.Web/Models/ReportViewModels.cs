@@ -9,6 +9,7 @@ namespace FlightJournal.Web.Models
         public DateTime Date { get; set; }
         public Dictionary<DateTime, int> AvailableDates { get; set; }
         public IQueryable<Models.Flight> Flights { get; set; }
+        public IQueryable<Models.Location> DistinctLocations { get; set; }
     }
 
     public class PilotReportViewModel

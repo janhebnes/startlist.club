@@ -191,7 +191,7 @@ namespace FlightJournal.Web.Models
                     this.Betaler != null ? this.Betaler.UnionId : string.Empty,
                     this.Departure.HasValue ? this.Departure.Value.ToString("HH:mm") : string.Empty,
                     this.Landing.HasValue ? this.Landing.Value.ToString("HH:mm") : string.Empty,
-                    new DateTime(this.FlightTime().Ticks).ToString("HH:mm"),
+                    new DateTime(this.FlightTime().Ticks).ToString("H:mm"),
                     this.TachoDeparture,
                     this.TachoLanding,
                     this.TachoCount(),
