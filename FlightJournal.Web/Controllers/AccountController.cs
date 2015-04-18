@@ -51,7 +51,19 @@ namespace FlightJournal.Web.Controllers
             ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
             ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
             ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
-            return View(new LoginViewModel(){ LoginState = ViewBag.EnableDemo ? LoginViewModel.State.Demo : LoginViewModel.State.Login});
+
+            var initialModel = new LoginViewModel()
+            {
+                LoginState = ViewBag.EnableDemo ? LoginViewModel.State.Demo : LoginViewModel.State.Login
+            };
+
+            var lastEmailLogin = Request.Cookies["LastEmailLogin"];
+            if (lastEmailLogin != null && EmailValidator.IsValid(lastEmailLogin.Value))
+            {
+                initialModel.Email = lastEmailLogin.Value;
+            }
+
+            return View(initialModel);
         }
 
         [AllowAnonymous]
@@ -106,6 +118,11 @@ namespace FlightJournal.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    
+                    var cookie = new HttpCookie("LastEmailLogin", model.Email);
+                    cookie.Expires = DateTime.Now.AddMonths(1);
+                    Response.AppendCookie(cookie);
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.UnConfirmed:
                     return RedirectToAction("EmailNotConfirmed", new { email = model.Email });
