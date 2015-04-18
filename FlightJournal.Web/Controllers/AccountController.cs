@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Linq;
+using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -384,10 +385,53 @@ namespace FlightJournal.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    //return View("ForgotPasswordConfirmation");
+
+                    if (!EmailValidator.IsValid(model.Email))
+                        return View("ForgotPasswordMissingAccount");
+
+                    var pilots = EmailValidator.FindPilotsByEmail(model.Email);
+                    if (!pilots.Any())
+                        return View("ForgotPasswordMissingAccount");
+
+                    // HACK: We only attach to the first pilot profil in this setup.
+                    var pilot = pilots.First();
+
+                    var email = EmailValidator.ParseEmail(model.Email);
+                    // Create mobilPhone Application User, Email is required and + is removed 
+                    user = new ApplicationUser()
+                    {
+                        UserName = email,
+                        Email = email,
+                        EmailConfirmed = true,
+                        BoundToPilotId = pilot.PilotId.ToString(),
+                        PhoneNumberConfirmed = false,
+                        PhoneNumber = string.Empty,
+                        TwoFactorEnabled = false
+                    };
+                    var result = UserManager.Create(user);
+                    if (!result.Succeeded)
+                    {
+                        throw new SecurityException(string.Format("Failed to generate user {0} for {1}", email, result.Errors.FirstOrDefault()));
+                    }
+                    result = UserManager.SetLockoutEnabled(user.Id, false);
+
+                    var welcomecode = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                    var callbackWelcomeUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = welcomecode }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Startlist.club - Set Password", "Please set your password by clicking here: <a href=\"" + callbackWelcomeUrl + "\">link</a>");
+                    ViewBag.Link = callbackWelcomeUrl;
+                    ViewBag.Pilot = pilot.Name;
+                    ViewBag.Email = email;
+                    return View("ForgotPasswordGeneratedAccount");
+                }
+
+                if (!(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    ViewBag.Email = user.Email;
+                    return View("DisplayEmail");
                 }
 
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);

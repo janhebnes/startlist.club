@@ -1,3 +1,4 @@
+@using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
@@ -35,6 +36,32 @@
         </div>
     </div>
 }
+
+<div>
+    Bemærk at din klub skal oprette en pilotprofil som matcher din email og/eller dit mobilnummer.
+    <br />
+    <br />
+    <em>Du skal kontakte den ansvarlige i din klub for at få oprettet en pilotprofil.</em>
+
+    @if (Request.IsClub())
+    {
+        <br />
+        <em>
+            Kontakt oplysninger til den ansvarlige i <strong>@Request.Club().Name</strong> er
+            @if (!string.IsNullOrWhiteSpace(Request.Club().ContactInformation))
+            {
+                @Request.Club().ContactInformation
+            }
+            else
+            {
+                @: ikke oplyst.
+                    }
+        </em>
+    }
+    <br />
+    <h2>Er din klub ikke i system ?</h2>
+    Du kan fortsat oprette en konto, men den vil ikke blive bundet til en pilot og du vil derfor ikke kunne oprette eller redigere flyvninger i systemet før du f.eks. får oprettet klubben ved at tag fat i os. <br />
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -484,6 +484,8 @@
     <Content Include="Views\Plane\DeleteLocked.cshtml" />
     <Content Include="Views\Home\GoogleAnalyticsPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ExitDate.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordMissingAccount.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
