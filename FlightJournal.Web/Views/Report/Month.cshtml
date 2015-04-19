@@ -1,19 +1,26 @@
-﻿@model FlightJournal.Web.Models.ReportViewModel
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.ReportViewModel
 @{
     ViewBag.Title = "Månedsrapport";
+    var root = "/";
+    if (Request.IsClub())
+    {
+        // When root Action has problems identifying that the date is allready part of the path
+        root = Url.Action("Index", "Report");
+    }
 }
 <p>
     <div class="btn-group">
-        <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy"))" class="btn btn-default">@Model.Date.ToString("yyyy")</a>
-        <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.AddMonths(-1).ToString("yyyy-MM"))" class="btn btn-default">@Model.Date.AddMonths(-1).ToString("MMMM")</a>
-        <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.ToString("yyyy-MM"))" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Date.ToString("MMMM")</strong></a>
+        <a href="@Path.Combine(root, Model.Date.ToString("yyyy"))" class="btn btn-default">@Model.Date.ToString("yyyy")</a>
+        <a href="@Path.Combine(root, Model.Date.AddMonths(-1).ToString("yyyy-MM"))" class="btn btn-default">@Model.Date.AddMonths(-1).ToString("MMMM")</a>
+        <a href="@Path.Combine(root, Model.Date.ToString("yyyy-MM"))" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Date.ToString("MMMM")</strong></a>
         @if (DateTime.Today > Model.Date.AddMonths(1))
         {
-            <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.AddMonths(1).ToString("yyyy-MM"))" class="btn btn-default">@Model.Date.AddMonths(1).ToString("MMMM")</a>
+            <a href="@Path.Combine(root, Model.Date.AddMonths(1).ToString("yyyy-MM"))" class="btn btn-default">@Model.Date.AddMonths(1).ToString("MMMM")</a>
         }
         @if (DateTime.Today.Year >= Model.Date.AddYears(1).Year)
         {
-            <a href="@Path.Combine(Url.Action("Index", "Report"),Model.Date.AddYears(1).ToString("yyyy"))" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
+            <a href="@Path.Combine(root, Model.Date.AddYears(1).ToString("yyyy"))" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
         }
     </div>
     <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
