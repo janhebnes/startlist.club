@@ -99,143 +99,158 @@
     <div id="datepickermobil" class="visible-xs">
     </div>
 </div>
-<br class="clearfix" />
-<h2>
-    Startliste @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
-</h2>
-<table class="tablesorter table table-responsive table-striped table-hover table-condensed">
-    <thead>
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                Fly
-            </th>
-            <th>
-                Pilote(r)
-            </th>
-            <th class="hidden-xs">
-                Start
-            </th>
-            <th class="hidden-xs">
-                Landing
-            </th>
-            <th>
-                Flyvetid
-            </th>
-            <th>
-                Flyveplads
-            </th>
-            <th class="hidden-xs hidden-sm">
-                Tacho
-            </th>
-            <th class="hidden-xs">
-                Note
-            </th>
-            <th class="hidden-print">
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @{ int startNr = 0; }
-        @foreach (var item in Model.Flights)
+<br class="clearfix"/>
+
+@if (Model.DistinctLocations.Count() > 1)
+{
+    <div class="btn-group">
+        @foreach (var item in Model.DistinctLocations)
         {
-            <tr>
-                <td>
-                    @(++startNr)
-                    @if (item.LandingCount > 1)
-                    {
-                        startNr = startNr + item.LandingCount;
-                        <text> - </text> @(startNr)
-                    }
-                </td>
-                <td>
-                    @item.Plane
-                </td>
-                <td>
-                    @item.Pilot.Name
-                    @if (item.PilotBackseat != null)
-                    {
-                        <text>/ </text>@item.PilotBackseat.Name
-                    }
-                    @if ((item.Betaler != null) && (item.BetalerId != item.PilotId))
-                    {
-                        <text> (Anden betaler)</text>
-                    }
-                    @if ((item.Betaler == null) && (item.Pilot != null))
-                    {
-                        <text> (mangler betaler) </text>
-                    }
-                </td>
-                <td class="hidden-xs">
-                    @if (item.Departure.HasValue)
-                    {
-                        @item.Departure.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td class="hidden-xs">
-                    @if (item.Landing.HasValue)
-                    {
-                        @item.Landing.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @if (item.Departure.HasValue && item.Landing.HasValue)
-                    {
-                        if (item.Landing.Value >= item.Departure.Value)
-                        {
-                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
-                        }
-                        else
-                        {
-                            <text><span class="error">Fejl: landing før start</span></text>
-                        }
-                    }
-                </td>
-                <td>
-                    @item.StartedFrom.Name
-                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                    {
-                        <text>/ </text>
-                        @item.LandedOn.Name
-                    }
-                </td>
-                <td class="hidden-xs hidden-sm">
-                    @Html.Partial("DisplayTemplates/_TachoPartial", item)
-                </td>
-                <td class="hidden-xs">
-                    @Html.DisplayFor(modelItem => item.Description, "Description")
-                </td>
-                <td class="hidden-print">
-                    @if (Request.IsPilot())
-                    {
-                        bool isEditable = User.IsEditor();
-                        if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
-                        if (isEditable)
-                        {
-                            @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
-                        }
-                    }
-                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
-                </td>
-            </tr>
+            <a href="#@item.Name" class="btn btn-default">@item.Name</a>
         }
-    </tbody>
-</table>
+    </div>
+}
 
+@foreach (var location in Model.DistinctLocations)
+{
+    <a name="@location.Name"></a>
+    <h2>
+        @location.Name @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
+    </h2>
+    <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Fly
+                </th>
+                <th>
+                    Pilote(r)
+                </th>
+                <th>
+                    Start
+                </th>
+                <th class="hidden-xs">
+                    Landing
+                </th>
+                <th>
+                    Flyvetid
+                </th>
+                <th class="hidden-xs hidden-sm">
+                    Flyveplads
+                </th>
+                <th class="hidden-xs hidden-sm">
+                    Tacho
+                </th>
+                <th class="hidden-xs">
+                    Note
+                </th>
+                <th class="hidden-print">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int startNr = 0; }
+            @foreach (var item in Model.Flights.Where(d => d.StartedFromId == location.LocationId))
+            {
+                <tr>
+                    <td>
+                        @(++startNr)
+                        @if (item.LandingCount > 1)
+                        {
+                            startNr = startNr + item.LandingCount;
+                            <text> - </text> @(startNr)
+                        }
+                    </td>
+                    <td>
+                        <span class="hidden-xs">@item.Plane</span>
+                        <span class="visible-xs">@item.Plane.CompetitionId</span>
+                    </td>
+                    <td>
+                        @item.Pilot.Name
+                        @if (item.PilotBackseat != null)
+                        {
+                            <text>/ </text>@item.PilotBackseat.Name
+                        }
+                        @if ((item.Betaler != null) && (item.BetalerId != item.PilotId))
+                        {
+                            <text> (Anden betaler)</text>
+                        }
+                        @if ((item.Betaler == null) && (item.Pilot != null))
+                        {
+                            <text> (mangler betaler) </text>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Departure.HasValue)
+                        {
+                            @item.Departure.Value.ToString("HH:mm");
+                        }
+                    </td>
+                    <td class="hidden-xs">
+                        @if (item.Landing.HasValue)
+                        {
+                            @item.Landing.Value.ToString("HH:mm");
+                        }
+                    </td>
+                    <td>
+                        @if (item.Departure.HasValue && item.Landing.HasValue)
+                        {
+                            if (item.Landing.Value >= item.Departure.Value)
+                            {
+                                @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                            }
+                            else
+                            {
+                                <text><span class="error">Fejl: landing før start</span></text>
+                            }
+                        }
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+                        @item.StartedFrom.Name
+                        @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                        {
+                            <text>/ </text>
+                            @item.LandedOn.Name
+                        }
+                    </td>
+                    <td class="hidden-xs hidden-sm">
+                        @Html.Partial("DisplayTemplates/_TachoPartial", item)
+                    </td>
+                    <td class="hidden-xs">
+                        @Html.DisplayFor(modelItem => item.Description, "Description")
+                    </td>
+                    <td class="hidden-print">
+                        @if (Request.IsPilot())
+                        {
+                            bool isEditable = User.IsEditor();
+                            if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
+                            if (isEditable)
+                            {
+                                @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
+                            }
+                        }
+                        @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p style="color: silver" class="noprint">
+        <em>Rettelser kan udføres op til 48 timer efter flyvningen fandt sted.</em>
+    </p>
+}
 
+<br style="page-break-after: always;"/>
 
-<p style="color: silver" class="noprint">
-    <em>Rettelser kan udføres op til 48 timer efter flyvningen fandt sted.</em>
-</p>
-<br style="page-break-after: always;" />
 <h2>
     Logbøger / Fly @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
 </h2>
 <div class="row">
     <div class="col-md-6">
-        <table class="table table-striped table-condensed">
+        <table class="tablesorter table table-striped table-condensed">
             <thead>
                 <tr>
                     <th>
@@ -259,7 +274,8 @@
                 {
                     <tr>
                         <td>
-                            @item.Plane
+                            <span class="hidden-xs">@item.Plane</span>
+                            <span class="visible-xs">@item.Plane.CompetitionId</span>
                         </td>
                         <td>
                             @item.Pilot.Name
@@ -278,7 +294,7 @@
         </table>
     </div>
     <div class="col-md-6">
-        <table class="table table-striped table-condensed">
+        <table class="tablesorter table table-striped table-condensed">
             <thead>
                 <tr>
                     <th>
@@ -303,7 +319,8 @@
                 {
                     <tr>
                         <td>
-                            @item.Plane
+                            <span class="hidden-xs">@item.Plane</span>
+                            <span class="visible-xs">@item.Plane.CompetitionId</span>
                         </td>
                         <td>
                             @item.PilotBackseat.Name
@@ -327,7 +344,7 @@
 </h2>
 <div class="row">
     <div class="col-md-6">
-        <table class="table table-striped table-condensed">
+        <table class="tablesorter table table-striped table-condensed">
             <thead>
                 <tr>
                     <th>
@@ -354,7 +371,8 @@
                             @item.Pilot.Name
                         </td>
                         <td>
-                            @item.Plane
+                            <span class="hidden-xs">@item.Plane</span>
+                            <span class="visible-xs">@item.Plane.CompetitionId</span>
                         </td>
                         <td align="right">
                             @item.Count
@@ -370,7 +388,7 @@
         </table>
 </div>
     <div class="col-md-6">
-        <table class="table table-striped table-condensed">
+        <table class="tablesorter table table-striped table-condensed">
             <thead>
                 <tr>
                     <th>
@@ -398,7 +416,8 @@
                             @item.PilotBackseat.Name
                         </td>
                         <td>
-                            @item.Plane
+                            <span class="hidden-xs">@item.Plane</span>
+                            <span class="visible-xs">@item.Plane.CompetitionId</span>
                         </td>
                         <td align="right">
                             @item.Count
