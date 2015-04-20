@@ -31,7 +31,7 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td @((!item.EmailConfirmed)?"style=\"background-color:red;\"":"")>
+            <td>
                 @Html.DisplayFor(modelItem => item.UserName)
                 @if (!item.EmailConfirmed)
                 {
