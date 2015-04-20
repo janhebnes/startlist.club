@@ -218,103 +218,120 @@
         <div class="text-center hidden-print">
             <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
         </div>
-        <br style="page-break-after: always;" />
-        <h2>
-            Startlister for @Model.Date.ToString("MMMM yyyy")
-        </h2>
-        <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th>
-                        Dato
-                    </th>
-                    <th>
-                        Fly
-                    </th>
-                    <th>
-                        Pilote(r)
-                    </th>
-                    <th>
-                        Start
-                    </th>
-                    <th>
-                        Landing
-                    </th>
-                    <th>
-                        Flyvetid
-                    </th>
-                    <th class="hidden-sm">
-                        Flyveplads
-                    </th>
-                    <th class="hidden-sm">
-                        Tacho
-                    </th>
-                    <th class="hidden-xs">
-                        Note
-                    </th>
-                    <th>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Flights)
-                {
-                    <tr>
-                        <td>
-                            @item.Date.ToShortDateString()
-                        </td>
-                        <td>
-                            @item.Plane
-                        </td>
-                        <td>
-                            @item.Pilot.Name
-                            @if (item.PilotBackseat != null)
-                            {
-                                <text> / </text>@item.PilotBackseat.Name
-                            }
-                            @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                            {
-                                <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                            }
-                        </td>
-                        <td>
-                            @if (item.Departure.HasValue)
-                            {
-                                @item.Departure.Value.ToString("HH:mm");
-                            }
-                        </td>
-                        <td>
-                            @if (item.Landing.HasValue)
-                            {
-                                @item.Landing.Value.ToString("HH:mm");
-                            }
-                        </td>
-                        <td>
-                            @item.FlightTime().TotalHoursWithMinutesAsDecimal()
-                        </td>
-                        <td class="hidden-sm">
-                            @item.StartedFrom.Name
-                            @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                            {
-                                <text>, </text>
-                                @item.LandedOn.Name
-                            }
-                        </td>
-                        <td class="hidden-sm">
-                            @Html.Partial("DisplayTemplates/_TachoPartial", item)
-                        </td>
-                        <td class="hidden-xs">
-                            @Html.DisplayFor(modelItem => item.Description, "Description")
-                        </td>
-                        <td>
-                            @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
-                            @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<br style="page-break-after: always;"/>
 
+@if (Model.DistinctLocations.Count() > 1)
+{
+    <div class="btn-group">
+        @foreach (var item in Model.DistinctLocations)
+        {
+            <a href="#@item.Name" class="btn btn-default">@item.Name</a>
+        }
+    </div>
+}
+@foreach (var location in Model.DistinctLocations)
+{
+    <a name="@location.Name"></a>
+    <h2>
+        @location.Name @Model.Date.ToString("MMMM yyyy")
+    </h2>
+    <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>
+                Dato
+            </th>
+            <th>
+                Fly
+            </th>
+            <th>
+                Pilote(r)
+            </th>
+            <th>
+                Start
+            </th>
+            <th class="hidden-xs">
+                Landing
+            </th>
+            <th>
+                Flyvetid
+            </th>
+            <th class="hidden-xs hidden-sm">
+                Flyveplads
+            </th>
+            <th class="hidden-xs hidden-sm">
+                Tacho
+            </th>
+            <th class="hidden-xs">
+                Note
+            </th>
+            <th class="hidden-print">
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Flights.Where(d => d.StartedFromId == location.LocationId))
+        {
+            <tr>
+                <td>
+                    @item.Date.ToShortDateString()
+                </td>
+                <td>
+                    @item.Plane
+                </td>
+                <td>
+                    @item.Pilot.Name
+                    @if (item.PilotBackseat != null)
+                    {
+                        <text> / </text>
+                        @item.PilotBackseat.Name
+                    }
+                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                    {
+                        <text> (</text>
+                        @item.Betaler.Name<text> betaler)</text>
+                    }
+                </td>
+                <td>
+                    @if (item.Departure.HasValue)
+                    {
+                        @item.Departure.Value.ToString("HH:mm")
+                        ;
+                    }
+                </td>
+                <td class="hidden-xs">
+                    @if (item.Landing.HasValue)
+                    {
+                        @item.Landing.Value.ToString("HH:mm")
+                        ;
+                    }
+                </td>
+                <td>
+                    @item.FlightTime().TotalHoursWithMinutesAsDecimal()
+                </td>
+                <td class="hidden-xs hidden-sm">
+                    @item.StartedFrom.Name
+                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                    {
+                        <text>, </text>
+                        @item.LandedOn.Name
+                    }
+                </td>
+                <td class="hidden-xs hidden-sm">
+                    @Html.Partial("DisplayTemplates/_TachoPartial", item)
+                </td>
+                <td class="hidden-xs">
+                    @Html.DisplayFor(modelItem => item.Description, "Description")
+                </td>
+                <td class="hidden-print">
+                    @Html.ActionLink("Detaljer", "Details", "Flight", new {id = item.FlightId}, new {@class = "btn btn-info"})
+                    @*@Html.ActionLink("Historik", "ChangeHistory", "Flight", new { id = item.FlightId }, new { @class = "awesomeBtn" })*@
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
         @section scripts
 {
             <script type="text/javascript">
