@@ -252,7 +252,8 @@
                     @item.Date.ToShortDateString()
                 </td>
                 <td>
-                    @item.Plane
+                    <span class="hidden-xs">@item.Plane</span>
+                    <span class="visible-xs">@item.Plane.CompetitionId</span>
                 </td>
                 <td>
                     @item.Pilot.Name
