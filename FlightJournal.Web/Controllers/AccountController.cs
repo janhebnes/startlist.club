@@ -118,7 +118,7 @@ namespace FlightJournal.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    
+
                     var cookie = new HttpCookie("LastEmailLogin", model.Email);
                     cookie.Expires = DateTime.Now.AddMonths(1);
                     Response.AppendCookie(cookie);
