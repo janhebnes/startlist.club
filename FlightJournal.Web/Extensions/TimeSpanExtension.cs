@@ -19,7 +19,7 @@ namespace FlightJournal.Web.Extensions
             if (timeSpan.TotalMinutes > 0)
             {
                 return string.Format("{0}:{1}"
-                    , timeSpan.TotalHours.ToString("#00.0").Substring(0, timeSpan.TotalHours.ToString("#00.0", CultureInfo.InvariantCulture).IndexOf(".", StringComparison.InvariantCulture))
+                    , timeSpan.TotalHours.ToString("#0.000", CultureInfo.InvariantCulture).Substring(0, timeSpan.TotalHours.ToString("#0.000", CultureInfo.InvariantCulture).IndexOf(".", StringComparison.InvariantCulture))
                     , timeSpan.Minutes.ToString("#00"));
             }
 
