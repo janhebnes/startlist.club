@@ -4,7 +4,12 @@
 @model FlightJournal.Web.Models.ReportViewModel
 @{
     ViewBag.Title = "Dagsrapporter";
-
+    var root = "/";
+    if (Request.IsClub())
+    {
+        // When root Action has problems identifying that the date is allready part of the path
+        root = Url.Action("Index", "Report");
+    }
 }
 
 @section head
@@ -417,7 +422,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks)).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -427,6 +432,6 @@
 </div>
 <br />
 <p>
-    <a href="@Path.Combine(Url.Action("index","Report"), Model.Date.ToString("yyyy"))" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
-    <a href="@Path.Combine(Url.Action("index","Report"), Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
+    <a href="@Path.Combine(root, Model.Date.ToString("yyyy"))" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
+    <a href="@Path.Combine(root, Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
 </p>

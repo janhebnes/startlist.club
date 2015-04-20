@@ -65,9 +65,6 @@
             group c by new { c.Pilot } into g
             select new { Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
         {
-            var totalTime = new TimeSpan(item.ItemFlights
-                         .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                         .Sum(f => f.myTime));
             <tr>
                 <td>
                     @item.Pilot.Name
@@ -76,19 +73,16 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(totalTime.TotalHoursWithMinutesAsDecimal())
+                    @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
                     var count = item.ItemFlights.Count(f => f.Date.Month == i);
-                    var time = (new TimeSpan(item.ItemFlights.Where(f => f.Date.Month == i)
-                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                        .Sum(f => f.myTime)));
                     <td align="right">
-                        @(count != 0 ? count.ToString() : "")
+                        @((count>0)?count.ToString():"")
                     </td>
                     <td align="right">
-                        @(time.TotalHoursWithMinutesAsDecimal())
+                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                     </td>
                 }
             </tr>
@@ -97,9 +91,6 @@
                              group c by new { c.PilotBackseat } into g
                              select new { Pilot = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
         {
-            var totalTime = new TimeSpan(item.ItemFlights
-                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                        .Sum(f => f.myTime));
             <tr>
                 <td>
                     @item.Pilot.Name (bagsæde)
@@ -108,20 +99,16 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(totalTime.TotalHoursWithMinutesAsDecimal())
+                    @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
                     var count = item.ItemFlights.Count(f => f.Date.Month == i);
-                    var time = (new TimeSpan(item.ItemFlights.Where(f => f.Date.Month == i)
-                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                        .Sum(f => f.myTime)));
-                    
                     <td align="right">
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @(time.TotalHoursWithMinutesAsDecimal())
+                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                     </td>
                 }
             </tr>
@@ -157,10 +144,6 @@
                                      group c by new { c.Pilot, c.Plane } into g
                                      select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                 {
-                    var time = new TimeSpan(item.ItemFlights
-                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                        .Sum(f => f.myTime));
-
                     <tr>
                         <td>
                             @item.Plane
@@ -172,7 +155,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(time.TotalHoursWithMinutesAsDecimal())
+                            @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -203,10 +186,6 @@
                                      group c by new { c.PilotBackseat, c.Plane } into g
                                      select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                 {
-                    var time = new TimeSpan(item.ItemFlights
-                        .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                        .Sum(f => f.myTime));
-
                     <tr>
                         <td>
                             @item.Plane
@@ -218,7 +197,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(time.TotalHoursWithMinutesAsDecimal())
+                            @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -299,10 +278,7 @@
                     }
                 </td>
                 <td>
-                    @if (item.Departure != null && item.Landing != null && item.Landing.Value > item.Departure.Value)
-                    {
-                        @((new TimeSpan((item.Landing.Value - item.Departure.Value).Ticks)).TotalHoursWithMinutesAsDecimal());
-                    }
+                    @item.FlightTime().TotalHoursWithMinutesAsDecimal()
                 </td>
                 <td class="hidden-sm">
                     @item.StartedFrom.Name
