@@ -150,6 +150,7 @@ namespace FlightJournal.Web.Controllers
             {
                 Id = user.Id,
                 Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
                 RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
@@ -163,7 +164,7 @@ namespace FlightJournal.Web.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "EmailConfirmed,Email,Id")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -175,6 +176,7 @@ namespace FlightJournal.Web.Controllers
 
                 user.UserName = editUser.Email;
                 user.Email = editUser.Email;
+                user.EmailConfirmed = editUser.EmailConfirmed;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 

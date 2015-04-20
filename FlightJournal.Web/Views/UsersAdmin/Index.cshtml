@@ -31,8 +31,12 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td @((!item.EmailConfirmed)?"style=\"background-color:red;\"":"")>
                 @Html.DisplayFor(modelItem => item.UserName)
+                @if (!item.EmailConfirmed)
+                {
+                    @: <strong>[unconfirmed]</strong>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)

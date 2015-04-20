@@ -21,6 +21,9 @@ namespace FlightJournal.Web.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        [Display(Name = "EmailConfirmed")]
+        public bool EmailConfirmed { get; set; }
+
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }
