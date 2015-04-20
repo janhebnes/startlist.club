@@ -201,6 +201,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
+    <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
       <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
