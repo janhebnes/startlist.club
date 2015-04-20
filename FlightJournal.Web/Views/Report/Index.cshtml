@@ -200,7 +200,7 @@
                         {
                             if (item.Landing.Value >= item.Departure.Value)
                             {
-                                @((new TimeSpan((item.Landing.Value - item.Departure.Value).Ticks)).TotalHoursWithMinutesAsDecimal());
+                                @(item.FlightTime().TotalHoursWithMinutesAsDecimal());
                             }
                             else
                             {
@@ -284,9 +284,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(new TimeSpan(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
+                            @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -329,9 +327,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(new TimeSpan(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
+                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -378,9 +374,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(new TimeSpan(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
+                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -423,9 +417,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(new TimeSpan(item.ItemFlights
-                                .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
+                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks)).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }

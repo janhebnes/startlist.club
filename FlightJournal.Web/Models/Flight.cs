@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using FlightJournal.Web.Controllers;
+using FlightJournal.Web.Extensions;
 
 namespace FlightJournal.Web.Models
 {
@@ -191,7 +192,7 @@ namespace FlightJournal.Web.Models
                     this.Betaler != null ? this.Betaler.UnionId : string.Empty,
                     this.Departure.HasValue ? this.Departure.Value.ToString("HH:mm") : string.Empty,
                     this.Landing.HasValue ? this.Landing.Value.ToString("HH:mm") : string.Empty,
-                    new DateTime(this.FlightTime().Ticks).ToString("H:mm"),
+                    this.FlightTime().TotalHoursWithMinutesAsDecimal(),
                     this.TachoDeparture,
                     this.TachoLanding,
                     this.TachoCount(),
