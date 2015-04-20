@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Web;
 using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Validators;
+using Microsoft.Ajax.Utilities;
 using SendGrid;
 using Twilio;
 
@@ -351,6 +352,8 @@ namespace FlightJournal.Web.Models
 
         private async Task<SignInStatus> SignInOrTwoFactor(ApplicationUser user, bool isPersistent)
         {
+            UpdateLastLogonTimeStamp(user);
+
             // Validate that the user has valid TwoFactorProvider possible - otherwise the users access to the site is blocked 
             var validTwoFactorProviders = await UserManager.GetValidTwoFactorProvidersAsync(user.Id);
 
@@ -366,6 +369,23 @@ namespace FlightJournal.Web.Models
             await SignInAsync(user, isPersistent, false);
             return SignInStatus.Success;
 
+        }
+
+        /// <summary>
+        /// Update LastLogonTimeStamp field on user 
+        /// </summary>
+        /// <param name="user"></param>
+        private static void UpdateLastLogonTimeStamp(ApplicationUser user)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var applicationUser = context.Users.Find(user.Id);
+                if (applicationUser != null)
+                {
+                    applicationUser.LastLogonTimeStamp = DateTime.Now;
+                }
+                context.SaveChanges();
+            }
         }
 
         public async Task<SignInStatus> PasswordSignIn(string userName, string password, bool isPersistent, bool shouldLockout)
