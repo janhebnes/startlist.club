@@ -207,6 +207,10 @@
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
       <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ApplicationDbContext\201504202209432_LastLogonTimeStamp.cs" />
+    <Compile Include="Migrations\ApplicationDbContext\201504202209432_LastLogonTimeStamp.Designer.cs">
+      <DependentUpon>201504202209432_LastLogonTimeStamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
     <Compile Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.Designer.cs">
@@ -499,6 +503,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.resx">
       <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ApplicationDbContext\201504202209432_LastLogonTimeStamp.resx">
+      <DependentUpon>201504202209432_LastLogonTimeStamp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.resx">
       <DependentUpon>201408171339304_InitialDatabaseCreation.cs</DependentUpon>

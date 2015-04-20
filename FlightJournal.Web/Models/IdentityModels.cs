@@ -26,6 +26,8 @@ namespace FlightJournal.Web.Models
         }
 
         public string BoundToPilotId { get; set; }
+        public DateTime LastLogonTimeStamp { get; set; }
+
         [NotMapped]
         public Pilot Pilot
         {
