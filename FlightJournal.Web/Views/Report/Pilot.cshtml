@@ -1,4 +1,5 @@
-﻿@model FlightJournal.Web.Models.PilotReportViewModel
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.PilotReportViewModel
 @{
     ViewBag.Title = "Pilot logbog";
 }
@@ -75,7 +76,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(totalTime.TotalMinutes > 0 ? string.Format("{0}:{1}", totalTime.TotalHours.ToString("#00.0").Substring(0, totalTime.TotalHours.ToString("#00.0").IndexOf(",")), totalTime.Minutes.ToString("#00")) : "")
+                    @(totalTime.TotalHoursWithMinutesAsDecimal())
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -87,7 +88,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                        @(time.TotalHoursWithMinutesAsDecimal())
                     </td>
                 }
             </tr>
@@ -107,7 +108,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(totalTime.TotalMinutes > 0 ? string.Format("{0}:{1}", totalTime.TotalHours.ToString("#00.0").Substring(0, totalTime.TotalHours.ToString("#00.0").IndexOf(",")), totalTime.Minutes.ToString("#00")) : "")
+                    @(totalTime.TotalHoursWithMinutesAsDecimal())
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -120,7 +121,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                        @(time.TotalHoursWithMinutesAsDecimal())
                     </td>
                 }
             </tr>
@@ -171,7 +172,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                            @(time.TotalHoursWithMinutesAsDecimal())
                         </td>
                     </tr>
                 }
@@ -217,7 +218,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                            @(time.TotalHoursWithMinutesAsDecimal())
                         </td>
                     </tr>
                 }
@@ -300,7 +301,7 @@
                 <td>
                     @if (item.Departure != null && item.Landing != null && item.Landing.Value > item.Departure.Value)
                     {
-                        @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                        @((new TimeSpan((item.Landing.Value - item.Departure.Value).Ticks)).TotalHoursWithMinutesAsDecimal());
                     }
                 </td>
                 <td class="hidden-sm">

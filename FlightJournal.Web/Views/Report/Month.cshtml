@@ -81,7 +81,7 @@
             Flyvetid
         </td>
         <td align="right">
-            @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")) , time.Minutes.ToString("#00")) : "")
+            @(time.TotalHoursWithMinutesAsDecimal())
         </td>
         @foreach (var date in dates)
         {
@@ -89,7 +89,7 @@
                 .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
                 .Sum(f => f.myTime));
             <td align="right">
-                @(separateTime.TotalMinutes > 0 ? string.Format("{0}:{1}", separateTime.TotalHours.ToString("#00.0").Substring(0, separateTime.TotalHours.ToString("#00.0").IndexOf(",")), separateTime.Minutes.ToString("#00")) : "")
+                @(separateTime.TotalHoursWithMinutesAsDecimal())
             </td>
         }
     </tr>
@@ -172,9 +172,9 @@
                                 @item.Count
                             </td>
                             <td align="right">
-                                @(new DateTime(item.ItemFlights
+                                @(new TimeSpan(item.ItemFlights
                                 .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
                             </td>
                         </tr>
                     }
@@ -216,9 +216,9 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @(new DateTime(item.ItemFlights
+                            @(new TimeSpan(item.ItemFlights
                                 .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
                         </td>
                     </tr>
                 }
@@ -304,7 +304,7 @@
                         <td>
                             @if (item.Departure != null && item.Landing != null && item.Landing.Value > item.Departure.Value)
                             {
-                                @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
+                                @((new TimeSpan((item.Landing.Value - item.Departure.Value).Ticks)).TotalHoursWithMinutesAsDecimal());
                             }
                         </td>
                         <td class="hidden-sm">

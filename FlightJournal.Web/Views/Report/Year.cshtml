@@ -111,13 +111,13 @@
                 @{
                     var totaltime = new TimeSpan(Model.Flights.ToList().Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 }).Sum(f => f.myTime));
                 }
-                @(totaltime.TotalMinutes > 0 ? string.Format("{0}:{1}", totaltime.TotalHours.ToString("#00.0").Substring(0, totaltime.TotalHours.ToString("#00.0").IndexOf(",")), totaltime.Minutes.ToString("#00")) : "")
+                @(totaltime.TotalHoursWithMinutesAsDecimal())
             </td>
             @for (int i = 1; i <= 12; i++)
             {
                 var time = new TimeSpan(Model.Flights.Where(f => f.Date.Month == i).ToList().Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 }).Sum(f => f.myTime));
                 <td align="right">
-                    @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                    @(time.TotalHoursWithMinutesAsDecimal())
                 </td>
             }
         </tr>
@@ -207,7 +207,7 @@
                     @{
                         var pilottotaltime = new TimeSpan(item.ItemFlights.ToList().Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 }).Sum(f => f.myTime));
                     }
-                    @(pilottotaltime.TotalMinutes > 0 ? string.Format("{0}:{1}", pilottotaltime.TotalHours.ToString("#00.0").Substring(0, pilottotaltime.TotalHours.ToString("#00.0").IndexOf(",")), pilottotaltime.Minutes.ToString("#00")) : "")
+                    @(pilottotaltime.TotalHoursWithMinutesAsDecimal())
                     @*@(new DateTime(item.ItemFlights
                           .Select(f => new {myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long) 0})
                           .Sum(f => f.myTime)).ToString("HH:mm"))*@
@@ -223,7 +223,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                        @(time.TotalHoursWithMinutesAsDecimal())
                     </td>
                 }
             </tr>
@@ -240,9 +240,9 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @(new DateTime(item.ItemFlights
+                    @(new TimeSpan(item.ItemFlights
                                 .Select(f => new { myTime = f.Landing.HasValue && f.Departure.HasValue && f.Landing.Value > f.Departure.Value ? f.Landing.Value.Subtract(f.Departure.Value).Ticks : (long)0 })
-                                .Sum(f => f.myTime)).ToString("HH:mm"))
+                                .Sum(f => f.myTime)).TotalHoursWithMinutesAsDecimal())
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -254,7 +254,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                        @(time.TotalHoursWithMinutesAsDecimal())
                     </td>
                 }
             </tr>
@@ -304,7 +304,7 @@
                                 @item.Count
                             </td>
                             <td align="right">
-                                @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                                @(time.TotalHoursWithMinutesAsDecimal())
                             </td>
                         </tr>
                     }
@@ -351,7 +351,7 @@
                                 @item.Count
                             </td>
                             <td align="right">
-                                @(time.TotalMinutes > 0 ? string.Format("{0}:{1}", time.TotalHours.ToString("#00.0").Substring(0, time.TotalHours.ToString("#00.0").IndexOf(",")), time.Minutes.ToString("#00")) : "")
+                                @(time.TotalHoursWithMinutesAsDecimal())
                             </td>
                         </tr>
                     }
@@ -368,10 +368,7 @@
 {
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#myPilotTable").tablesorter();
-        $("#myPilotStatTable").tablesorter();
-        $("#myPilotStatTable2").tablesorter();
-
+        $(".tablesorter").tablesorter();
     }
     );
 </script>    
