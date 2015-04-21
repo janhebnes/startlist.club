@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -27,6 +28,7 @@ namespace FlightJournal.Web.Models
         }
 
         public string BoundToPilotId { get; set; }
+        [DisplayName("LastLogon")]
         public DateTime? LastLogonTimeStamp { get; set; }
 
         [NotMapped]
