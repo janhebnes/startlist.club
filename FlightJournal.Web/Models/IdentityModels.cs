@@ -8,6 +8,7 @@ using FlightJournal.Web.Migrations.ApplicationDbContext;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
+using System.Data.SqlTypes;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
@@ -26,7 +27,7 @@ namespace FlightJournal.Web.Models
         }
 
         public string BoundToPilotId { get; set; }
-        public DateTime LastLogonTimeStamp { get; set; }
+        public DateTime? LastLogonTimeStamp { get; set; }
 
         [NotMapped]
         public Pilot Pilot

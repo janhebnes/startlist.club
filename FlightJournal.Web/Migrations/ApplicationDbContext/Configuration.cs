@@ -95,8 +95,7 @@ namespace FlightJournal.Web.Migrations.ApplicationDbContext
                     Email = name,
                     EmailConfirmed = true,
                     PhoneNumber = phoneNumber,
-                    PhoneNumberConfirmed = true,
-                    LastLogonTimeStamp = DateTime.MinValue
+                    PhoneNumberConfirmed = true
                 };
                 var result = userManager.Create(user, password);
                 if (!result.Succeeded)

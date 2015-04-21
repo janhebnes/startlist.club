@@ -455,8 +455,7 @@ namespace FlightJournal.Web.Models
                     BoundToPilotId = pilot.PilotId.ToString(),
                     PhoneNumberConfirmed = true,
                     PhoneNumber = MobilNumberValidator.ParseMobilNumber(userName),
-                    TwoFactorEnabled = true,
-                    LastLogonTimeStamp = DateTime.MinValue
+                    TwoFactorEnabled = true
                 };
                 var result = UserManager.Create(user);
                 if (!result.Succeeded)

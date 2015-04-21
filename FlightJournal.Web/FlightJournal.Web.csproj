@@ -211,6 +211,10 @@
     <Compile Include="Migrations\ApplicationDbContext\201504202209432_LastLogonTimeStamp.Designer.cs">
       <DependentUpon>201504202209432_LastLogonTimeStamp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\ApplicationDbContext\201504210742483_LastLogonTimeStamp Nullable.cs" />
+    <Compile Include="Migrations\ApplicationDbContext\201504210742483_LastLogonTimeStamp Nullable.Designer.cs">
+      <DependentUpon>201504210742483_LastLogonTimeStamp Nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
     <Compile Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.Designer.cs">
@@ -337,6 +341,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Migrations\ApplicationDbContext\201504202209432_LastLogonTimeStamp.sql" />
+    <Content Include="Migrations\ApplicationDbContext\201504210742483_LastLogonTimeStamp Nullable.sql" />
     <Content Include="Migrations\FlightContext\20140625_FULL_DATABASE_MIGRATION.sql" />
     <Content Include="Migrations\FlightContext\201408171402469_Renamed Plane Description to Note.sql" />
     <Content Include="Migrations\FlightContext\201503011247488_ClubContactInformationAdded.sql" />
@@ -507,6 +512,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\ApplicationDbContext\201504202209432_LastLogonTimeStamp.resx">
       <DependentUpon>201504202209432_LastLogonTimeStamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\ApplicationDbContext\201504210742483_LastLogonTimeStamp Nullable.resx">
+      <DependentUpon>201504210742483_LastLogonTimeStamp Nullable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201408171339304_InitialDatabaseCreation.resx">
       <DependentUpon>201408171339304_InitialDatabaseCreation.cs</DependentUpon>
