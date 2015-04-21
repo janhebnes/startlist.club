@@ -311,7 +311,7 @@ namespace FlightJournal.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LastLogonTimeStamp = DateTime.MinValue };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -427,7 +427,8 @@ namespace FlightJournal.Web.Controllers
                         BoundToPilotId = pilot.PilotId.ToString(),
                         PhoneNumberConfirmed = false,
                         PhoneNumber = string.Empty,
-                        TwoFactorEnabled = false
+                        TwoFactorEnabled = false,
+                        LastLogonTimeStamp = DateTime.MinValue
                     };
                     var result = UserManager.Create(user);
                     if (!result.Succeeded)
@@ -628,7 +629,7 @@ namespace FlightJournal.Web.Controllers
                 {
                     model.Email = EmailValidator.ParseEmail(model.Email);
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LastLogonTimeStamp = DateTime.MinValue };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
