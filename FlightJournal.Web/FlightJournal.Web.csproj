@@ -228,6 +228,10 @@
     <Compile Include="Migrations\FlightContext\201503011247488_ClubContactInformationAdded.Designer.cs">
       <DependentUpon>201503011247488_ClubContactInformationAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs" />
+    <Compile Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.Designer.cs">
+      <DependentUpon>201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\FlightContext\Configuration.cs" />
     <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="Constraints\ClubRouteConstraint.cs" />
@@ -524,6 +528,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201503011247488_ClubContactInformationAdded.resx">
       <DependentUpon>201503011247488_ClubContactInformationAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.resx">
+      <DependentUpon>201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
