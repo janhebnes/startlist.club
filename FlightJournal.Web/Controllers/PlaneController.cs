@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -41,6 +42,10 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public ActionResult Create(Plane plane)
         {
+            plane.CreatedTimestamp = DateTime.Now;
+            plane.CreatedBy = User.Pilot().ToString();
+            plane.LastUpdatedTimestamp = DateTime.Now;
+            plane.LastUpdatedBy = User.Pilot().ToString();
             if (ModelState.IsValid)
             {
                 db.Planes.Add(plane);
@@ -64,10 +69,12 @@ namespace FlightJournal.Web.Controllers
 
         //
         // POST: /Plane/Edit/5
-
         [HttpPost]
         public ActionResult Edit(Plane plane)
         {
+            // Created might be lost ?
+            plane.LastUpdatedTimestamp = DateTime.Now;
+            plane.LastUpdatedBy = User.Pilot().ToString();
             if (ModelState.IsValid)
             {
                 db.Entry(plane).State = EntityState.Modified;

@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -42,6 +43,10 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public ActionResult Create(Location location)
         {
+            location.CreatedTimestamp = DateTime.Now;
+            location.CreatedBy = User.Pilot().ToString();
+            location.LastUpdatedTimestamp = DateTime.Now;
+            location.LastUpdatedBy = User.Pilot().ToString();
             if (ModelState.IsValid)
             {
                 db.Locations.Add(location);
@@ -69,6 +74,8 @@ namespace FlightJournal.Web.Controllers
         [HttpPost]
         public ActionResult Edit(Location location)
         {
+            location.LastUpdatedTimestamp = DateTime.Now;
+            location.LastUpdatedBy = User.Pilot().ToString();
             if (ModelState.IsValid)
             {
                 db.Entry(location).State = EntityState.Modified;

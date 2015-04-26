@@ -14,6 +14,8 @@
         <legend>Rediger landingssted</legend>
 
         @Html.HiddenFor(model => model.LocationId)
+        @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.CreatedTimestamp)
 
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
