@@ -8,6 +8,11 @@ namespace FlightJournal.Web.Models
 {
     public class Plane
     {
+        public Plane()
+        {
+            CreatedTimestamp = DateTime.Now;
+            LastUpdatedTimestamp = DateTime.Now;
+        }
         public int PlaneId { get; set; }
         [Required]
         public string Registration { get; set; }

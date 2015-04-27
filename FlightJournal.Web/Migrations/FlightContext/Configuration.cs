@@ -60,6 +60,9 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Locations.Add(location3);
             var location4 = new Location { Name = "Tølløse" };
             context.Locations.Add(location4);
+            var location5 = new Location { Name = "Martin", Country = "SK", ICAO = "LZMA" };
+            context.Locations.Add(location5);
+            
             context.Locations.Add(new Location() { Name = "Arnborg", Country = "DK", ICAO = "EK51" });
             context.SaveChanges();
 
@@ -143,6 +146,9 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 .ForEach(b => context.Flights.Add(b));
 
             GenerateFlights(pl1, pl2, location3, pilot3B, start)
+                .ForEach(b => context.Flights.Add(b));
+            
+            GenerateFlights(pl1, pl2, location5, pilot3B, start)
                 .ForEach(b => context.Flights.Add(b));
 
             context.SaveChanges();

@@ -227,15 +227,15 @@
     <div class="btn-group">
         @foreach (var item in Model.DistinctLocations)
         {
-            <a href="#@item.Name" class="btn btn-default">@item.Name</a>
+            <a href="#@item.LocationId" class="btn btn-default">@item.ToString(Request.Club().Country)</a>
         }
     </div>
 }
 @foreach (var location in Model.DistinctLocations)
 {
-    <a name="@location.Name"></a>
+    <a name="@location.LocationId"></a>
     <h2>
-        @location.Name @Model.Date.ToString("MMMM yyyy")
+        @location.ToString(Request.Club().Country) @Model.Date.ToString("MMMM yyyy")
     </h2>
     <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
         <thead>

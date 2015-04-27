@@ -5,6 +5,11 @@ namespace FlightJournal.Web.Models
 {
     public class Location
     {
+        public Location()
+        {
+            CreatedTimestamp = DateTime.Now;
+            LastUpdatedTimestamp = DateTime.Now;
+        }
         public int LocationId { get; set; }
         public string Name { get; set; }
         public string ICAO { get; set; }
@@ -25,12 +30,12 @@ namespace FlightJournal.Web.Models
         public string ToString(string country)
         {
             // Shorten the string if current country
-            if (country == Country && !ICAO.IsNullOrWhiteSpace())
-                return this.Name + " (" + ICAO + ")";
+            if (!country.IsNullOrWhiteSpace() && country == Country && !ICAO.IsNullOrWhiteSpace())
+                return this.Name + " " + ICAO + "";
 
             // Matching the format used by the OLC http://www.onlinecontest.org/ with ICAO instead of region
             if (!ICAO.IsNullOrWhiteSpace() && !Country.IsNullOrWhiteSpace())
-                return this.Name + " (" + Country + " / " + ICAO + ")";
+                return this.Name + " " + ICAO + " (" + Country + ")";
 
             if (!Country.IsNullOrWhiteSpace())
                 return this.Name + " (" + Country + ")";
