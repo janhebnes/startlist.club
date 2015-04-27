@@ -15,9 +15,25 @@ namespace FlightJournal.Web.Models
         public string LastUpdatedBy { get; set; }
         public override string ToString()
         {
+            return ToString(string.Empty);
+        }
+        /// <summary>
+        /// Current country is used to change the formatting so local country is not shown .
+        /// </summary>
+        /// <param name="country"></param>
+        /// <returns></returns>
+        public string ToString(string country)
+        {
+            // Shorten the string if current country
+            if (country == Country && !ICAO.IsNullOrWhiteSpace())
+                return this.Name + " (" + ICAO + ")";
+
             // Matching the format used by the OLC http://www.onlinecontest.org/ with ICAO instead of region
             if (!ICAO.IsNullOrWhiteSpace() && !Country.IsNullOrWhiteSpace())
                 return this.Name + " (" + Country + " / " + ICAO + ")";
+
+            if (!Country.IsNullOrWhiteSpace())
+                return this.Name + " (" + Country + ")";
 
             return Name;
         }
