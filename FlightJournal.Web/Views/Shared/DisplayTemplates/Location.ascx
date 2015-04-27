@@ -3,6 +3,6 @@
 <%
 if ((Model!=null) && (Model is Location))
 {
-    Response.Write(((Location)Model).Name);
+    Response.Write(((Location)Model).ToString());
 }
 %>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -50,6 +51,7 @@ namespace FlightJournal.Web.Controllers
             location.CreatedBy = User.Pilot().ToString();
             location.LastUpdatedTimestamp = DateTime.Now;
             location.LastUpdatedBy = User.Pilot().ToString();
+            if (!location.ICAO.IsNullOrWhiteSpace()) location.ICAO = location.ICAO.ToUpperInvariant();
             if (ModelState.IsValid)
             {
                 db.Locations.Add(location);
@@ -80,6 +82,7 @@ namespace FlightJournal.Web.Controllers
         {
             location.LastUpdatedTimestamp = DateTime.Now;
             location.LastUpdatedBy = User.Pilot().ToString();
+            if (!location.ICAO.IsNullOrWhiteSpace()) location.ICAO = location.ICAO.ToUpperInvariant();
             if (ModelState.IsValid)
             {
                 db.Entry(location).State = EntityState.Modified;

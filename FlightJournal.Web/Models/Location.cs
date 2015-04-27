@@ -20,7 +20,7 @@ namespace FlightJournal.Web.Models
         /// <summary>
         /// Current country is used to change the formatting so local country is not shown .
         /// </summary>
-        /// <param name="country"></param>
+        /// <param name="country">remember to convert to .ToUpperInvariant()</param>
         /// <returns></returns>
         public string ToString(string country)
         {

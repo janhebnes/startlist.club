@@ -52,15 +52,15 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.SaveChanges();
 
             // Locations
-            var location = new Location { Name = "Kongsted" };
+            var location = new Location { Name = "Kongsted", Country = "DK", ICAO = "EKKL" };
             context.Locations.Add(location);
-            var location2 = new Location { Name = "True" };
+            var location2 = new Location { Name = "True", Country = "DK"};
             context.Locations.Add(location2);
-            var location3 = new Location { Name = "Slaglille" };
+            var location3 = new Location { Name = "Slaglille", Country = "DK", ICAO = "EKSL" };
             context.Locations.Add(location3);
             var location4 = new Location { Name = "Tølløse" };
             context.Locations.Add(location4);
-            context.Locations.Add(new Location() { Name = "Arnborg" });
+            context.Locations.Add(new Location() { Name = "Arnborg", Country = "DK", ICAO = "EK51" });
             context.SaveChanges();
 
             // Clubs
