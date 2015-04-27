@@ -8,6 +8,15 @@
     if (Request.Pilot().Name != null)
     {
         accountName = Request.Pilot().ToString(false);
+        // Handling long pilot names (but the real problem is the menu system in two rows does not move the underlying base content top padding as it should thereby the user is unable to click on create flight in flight Grid view)
+        if (accountName.Length > 30)
+        {
+            accountName = accountName.Substring(0, accountName.IndexOf(" ", StringComparison.InvariantCulture));
+            if (!string.IsNullOrWhiteSpace(Request.Pilot().MemberId))
+            {
+                accountName = accountName + string.Format(" ({0})", Request.Pilot().MemberId);
+            }
+        }
     }
     if (User.IsAdministrator())
     {
