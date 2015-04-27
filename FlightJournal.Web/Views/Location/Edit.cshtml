@@ -17,11 +17,29 @@
         @Html.HiddenFor(model => model.CreatedBy)
         @Html.HiddenFor(model => model.CreatedTimestamp)
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ICAO)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ICAO)
+            @Html.ValidationMessageFor(model => model.ICAO)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Country)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Country", String.Empty)
+            @Html.ValidationMessageFor(model => model.Country)
+        </div>
 
         <p style="margin-top: 30px">
             <div class="btn-group">

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
@@ -34,6 +36,7 @@ namespace FlightJournal.Web.Controllers
 
         public ActionResult Create()
         {
+            PopulateViewBag(null);
             return View();
         } 
 
@@ -62,9 +65,10 @@ namespace FlightJournal.Web.Controllers
  
         public ActionResult Edit(int id)
         {
+            
             Location location = db.Locations.Find(id);
             ViewBag.UsedCount = db.Flights.Count(f => f.StartedFromId == id || f.LandedOnId == id);
-
+            PopulateViewBag(location);
             return View(location);
         }
 
@@ -91,7 +95,6 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Delete(int id)
         {
             Location location = db.Locations.Find(id);
-
             if (db.Flights.Any(f => f.StartedFromId == id || f.LandedOnId == id))
             {
                 return View("DeleteLocked",location);
@@ -116,6 +119,27 @@ namespace FlightJournal.Web.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        private void PopulateViewBag(Location location)
+        {
+            this.ViewBag.Country = new SelectList(GetCountriesByIso3166(), "TwoLetterISORegionName", "EnglishName", (location == null) ? (object)null : location.Country);    
+        }
+
+        /// <summary>
+        /// Gets the list of countries based on ISO 3166-1
+        /// </summary>
+        /// <returns>Returns the list of countries based on ISO 3166-1</returns>
+        public static List<RegionInfo> GetCountriesByIso3166()
+        {
+            List<RegionInfo> countries = new List<RegionInfo>();
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+            {
+                RegionInfo country = new RegionInfo(culture.LCID);
+                if (countries.Count(p => p.Name == country.Name) == 0)
+                    countries.Add(country);
+            }
+            return countries.OrderBy(p => p.EnglishName).ToList();
         }
     }
 }
