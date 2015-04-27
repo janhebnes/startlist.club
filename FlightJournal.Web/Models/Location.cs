@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Models
 {
@@ -14,7 +15,11 @@ namespace FlightJournal.Web.Models
         public string LastUpdatedBy { get; set; }
         public override string ToString()
         {
-            return this.Name;
+            // Matching the format used by the OLC http://www.onlinecontest.org/ with ICAO instead of region
+            if (!ICAO.IsNullOrWhiteSpace() && !Country.IsNullOrWhiteSpace())
+                return this.Name + " (" + Country + " / " + ICAO + ")";
+
+            return Name;
         }
     }
 }
