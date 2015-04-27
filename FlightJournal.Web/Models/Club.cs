@@ -41,5 +41,16 @@ namespace FlightJournal.Web.Models
         {
             return (ClubController.CurrentClub.ShortName == null || ClubController.CurrentClub.ShortName == this.ShortName);
         }
+
+        /// <summary>
+        /// Returns the country based on the associated location
+        /// </summary>
+        public string Country
+        {
+            get
+            {
+                return Location != null ? Location.Country : null;
+            }
+        }
     }
 }
