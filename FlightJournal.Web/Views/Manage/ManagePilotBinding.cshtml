@@ -17,7 +17,7 @@
 @if (Model.CurrentPilotBinding != null)
 {
     <div>
-        <h4>@Model.CurrentPilotBinding.ToString() @Model.CurrentPilotBinding.Club.Name</h4>
+        <h4>@Model.CurrentPilotBinding.ToString(false) @Model.CurrentPilotBinding.Club.Name</h4>
         <p>
             @Model.CurrentPilotBinding.Email<br/>
             @Model.CurrentPilotBinding.MobilNumber
@@ -47,7 +47,7 @@
                     {
                         <button type="submit" class="btn btn-primary" id="@p.PilotId.ToString(CultureInfo.InvariantCulture)" name="pilot" value="@p.PilotId.ToString(CultureInfo.InvariantCulture)" title="Opret relation til piloten @p.Name fra @p.Club.ShortName">
                             <span class="glyphicon glyphicon-ok"></span>
-                            Skift til @p.ToString() fra @p.Club.Name ?
+                            Skift til @p.ToString(false) fra @p.Club.Name ?
                         </button>
                     }
                 </p>

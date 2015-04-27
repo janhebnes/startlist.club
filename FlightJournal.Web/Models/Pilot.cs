@@ -40,17 +40,28 @@ namespace FlightJournal.Web.Models
 
         public override string ToString()
         {
+            return ToString(true);
+        }
+        
+        public string ToString(bool includeClub)
+        {
+            var clubName = string.Empty;
+            if (includeClub && this.Club != null)
+            {
+                clubName = " " + this.Club.ShortName;
+            }
+
             if (!string.IsNullOrWhiteSpace(this.MemberId))
             {
-                return string.Format("{0} ({1})", this.Name, this.MemberId);
+                return string.Format("{0} ({1}){2}", this.Name, this.MemberId, clubName);
             }
             else if (!string.IsNullOrWhiteSpace(this.UnionId))
             {
-                return string.Format("{0} ({1})", this.Name, this.UnionId);
+                return string.Format("{0} ({1}){2}", this.Name, this.UnionId, clubName);
             }
             else
             {
-                return this.Name;
+                return this.Name + clubName;
             }
         }
 
