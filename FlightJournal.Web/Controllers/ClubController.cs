@@ -68,6 +68,7 @@ namespace FlightJournal.Web.Controllers
                     {
                         ghost = new Club();
                         ghost.LocationId = club.LocationId;
+                        ghost.Location = club.Location; // for allowing country
                         ghost.ContactInformation = club.ContactInformation;
                         ghost.ShortName = club.ShortName;
                         ghost.Name = club.Name;
