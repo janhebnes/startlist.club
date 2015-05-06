@@ -297,14 +297,57 @@
         </table>
     </div>
     <div class="col-md-6">
+        @if (Model.Flights.Any(f=>f.PilotBackseat != null))
+        {
+            <table class="tablesorter table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            Fly
+                        </th>
+                        <th>
+                            Bagsæde
+                        </th>
+                        <th>
+                            Antal
+                        </th>
+                        <th>
+                            Flyvetid
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in from c in Model.Flights
+                where c.PilotBackseat != null
+                group c by new {c.Plane, c.PilotBackseat}
+                into g
+                select new {Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g})
+            {
+                        <tr>
+                            <td>
+                                <span class="hidden-xs">@item.Plane</span>
+                                <span class="visible-xs">@item.Plane.CompetitionId</span>
+                            </td>
+                            <td>
+                                @item.PilotBackseat.Name
+                            </td>
+                            <td align="right">
+                                @item.Count
+                            </td>
+                            <td align="right">
+                                @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            </td>
+                        </tr>
+            }
+                </tbody>
+            </table>
+        }
+        
         <table class="tablesorter table table-striped table-condensed">
             <thead>
                 <tr>
                     <th>
-                        Fly
-                    </th>
-                    <th>
-                        Bagsæde
+                        Fly (total)
                     </th>
                     <th>
                         Antal
@@ -316,17 +359,13 @@
             </thead>
             <tbody>
                 @foreach (var item in from c in Model.Flights
-                                     where c.PilotBackseat != null
-                                     group c by new { c.Plane, c.PilotBackseat } into g
-                                     select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
-                {
+                                    group c by new { c.Plane } into g
+                                    select new { Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+            {
                     <tr>
                         <td>
                             <span class="hidden-xs">@item.Plane</span>
                             <span class="visible-xs">@item.Plane.CompetitionId</span>
-                        </td>
-                        <td>
-                            @item.PilotBackseat.Name
                         </td>
                         <td align="right">
                             @item.Count
@@ -335,7 +374,7 @@
                             @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
-                }
+            }
             </tbody>
         </table>
     </div>
