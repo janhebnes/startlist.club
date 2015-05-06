@@ -27,6 +27,7 @@ namespace FlightJournal.Web.Models
 
             this.FlightId = f.FlightId;
             this.Created = DateTime.Now;
+            this.Deleted = f.Deleted;
             this.LastUpdated = f.LastUpdated;
             this.LastUpdatedBy = f.LastUpdatedBy;
             this.Description = f.Description;
@@ -82,6 +83,8 @@ namespace FlightJournal.Web.Models
         public double? TachoLanding { get; set; }
 
         public string Description { get; set; }
+
+        public DateTime? Deleted { get; set; }
 
         [Required]
         public DateTime LastUpdated { get; set; }
