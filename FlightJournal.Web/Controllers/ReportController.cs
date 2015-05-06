@@ -37,7 +37,7 @@ namespace FlightJournal.Web.Controllers
 
                         // Custom inline Club filtering for allowing maximum performance
                         // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year)
+                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year && f.Deleted == null)
                             .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                             .Where(f => ClubController.CurrentClub.ShortName == null
                                 || f.StartedFromId == ClubController.CurrentClub.LocationId
@@ -70,7 +70,7 @@ namespace FlightJournal.Web.Controllers
 
                 // Custom inline Club filtering for allowing maximum performance
                 // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year)
+                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year && f.Deleted == null)
                     .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                     .Where(f => ClubController.CurrentClub.ShortName == null
                         || f.StartedFromId == ClubController.CurrentClub.LocationId
@@ -115,7 +115,7 @@ namespace FlightJournal.Web.Controllers
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                 .OrderBy(o => o.Departure)
                 .AsQueryable();
-
+            // Allow f.Deleted != null
             rpt.DistinctLocations = rpt.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d=>d.Name);
 
             return this.View(rpt);
@@ -125,13 +125,13 @@ namespace FlightJournal.Web.Controllers
         {
             if (month.HasValue)
             {
-                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
+                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + "-" + month + ".csv");
             }
             else
             {
-                var flights = this.db.Flights.Where(f => f.Date.Year == year).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
+                var flights = this.db.Flights.Where(f => f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + ".csv");
             }
@@ -168,7 +168,7 @@ namespace FlightJournal.Web.Controllers
 
             // Custom inline Club filtering for allowing maximum performance (SQL Profiler is your friend LINQpad4 did not work with this entity version)
             // A copy of the logic in Flight.IsCurrent(Flight arg) 
-            var availableDates = this.db.Flights
+            var availableDates = this.db.Flights.Where(f=>f.Deleted == null)
                 .Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => ClubController.CurrentClub.ShortName == null 
                     || f.StartedFromId == ClubController.CurrentClub.LocationId
@@ -205,7 +205,7 @@ namespace FlightJournal.Web.Controllers
             }
 
             // Custom inline Pilot filtering for allowing maximum performance
-            model.Flights = this.db.Flights.Where(f => f.Date.Year >= model.Year-1)
+            model.Flights = this.db.Flights.Where(f => f.Date.Year >= model.Year-1 && f.Deleted == null)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => (f.Pilot != null && f.Pilot.PilotId == model.Pilot.PilotId)
                     || (f.PilotBackseat != null && f.PilotBackseat.PilotId == model.Pilot.PilotId)

@@ -162,11 +162,19 @@
             {
                 <tr>
                     <td>
-                        @(++startNr)
-                        @if (item.LandingCount > 1)
+                        @if (item.Deleted == null)
                         {
-                            startNr = startNr + item.LandingCount;
-                            <text> - </text> @(startNr)
+                            @(++startNr)
+                            if (item.LandingCount > 1)
+                            {
+                                startNr = startNr + item.LandingCount;
+                                <text> - </text>
+                                @(startNr)
+                            }
+                        }
+                        else
+                        {
+                            <strong>SLETTET</strong>
                         }
                     </td>
                     <td>
@@ -274,6 +282,7 @@
             </thead>
             <tbody>
                 @foreach (var item in from c in Model.Flights
+                                     where c.Deleted == null
                                      group c by new { c.Plane, c.Pilot } into g
                                      select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
                 {
@@ -318,7 +327,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in from c in Model.Flights
-                where c.PilotBackseat != null
+                where c.PilotBackseat != null && c.Deleted == null
                 group c by new {c.Plane, c.PilotBackseat}
                 into g
                 select new {Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g})
@@ -359,6 +368,7 @@
             </thead>
             <tbody>
                 @foreach (var item in from c in Model.Flights
+                                    where c.Deleted == null
                                     group c by new { c.Plane } into g
                                     select new { Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
             {
@@ -403,6 +413,7 @@
             </thead>
             <tbody>
                 @foreach (var item in from c in Model.Flights
+                                     where c.Deleted == null
                                      group c by new { c.Pilot, c.Plane } into g
                                      select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                 {
@@ -445,7 +456,7 @@
             </thead>
             <tbody>
                 @foreach (var item in from c in Model.Flights
-                                     where c.PilotBackseat != null
+                                     where c.PilotBackseat != null && c.Deleted == null
                                      group c by new { c.PilotBackseat, c.Plane } into g
                                      select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
                 {
