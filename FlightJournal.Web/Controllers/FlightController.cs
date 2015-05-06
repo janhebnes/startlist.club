@@ -361,7 +361,47 @@ namespace FlightJournal.Web.Controllers
             return View(flight);
         }
 
+        // GET: /Flight/Delete/5
+        [Authorize]
+        public ActionResult Disable(Guid id)
+        {
+            if (!User.IsPilot())
+            {
+                return null;
+            }
+
+            Flight flight = this.db.Flights.Find(id);
+            if (flight != null)
+                ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+
+            return View(flight);
+        }
+
         //
+        // POST: /Flight/Delete/5
+        [HttpPost]
+        [ActionName("Disable")]
+        [Authorize]
+        public ActionResult DisableConfirmed(Guid id)
+        {
+            if (!User.IsPilot())
+            {
+                return null;
+            }
+
+            Flight flight = this.db.Flights.Find(id);
+            if (flight != null)
+            {
+                this.db.Entry(flight).State = EntityState.Modified;
+                flight.Deleted = DateTime.Now;
+                flight.LastUpdated = DateTime.Now;
+                flight.LastUpdatedBy = User.Pilot().ToString();
+                this.db.SaveChanges();
+            }
+            return RedirectToAction("Grid");
+        }
+
+        
         // GET: /Flight/Delete/5
         [Authorize]
         public ActionResult Delete(Guid id)

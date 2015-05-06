@@ -354,6 +354,7 @@
     <Content Include="Migrations\FlightContext\201408171402469_Renamed Plane Description to Note.sql" />
     <Content Include="Migrations\FlightContext\201503011247488_ClubContactInformationAdded.sql" />
     <Content Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.sql" />
+    <Content Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -507,6 +508,7 @@
     <Content Include="Views\Shared\EditorTemplates\ExitDate.cshtml" />
     <Content Include="Views\Account\ForgotPasswordMissingAccount.cshtml" />
     <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
+    <Content Include="Views\Flight\Disable.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

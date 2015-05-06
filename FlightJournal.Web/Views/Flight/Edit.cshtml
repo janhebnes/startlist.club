@@ -136,10 +136,14 @@
         <div class="row" style="margin-top: 30px">
             <div class="col-md-6">
                 <div class="btn-group btn-group-lg">
-                    <input type="submit" value="Gem" class="btn btn-primary" />
+                    <input type="submit" value="Gem" class="btn btn-primary"/>
+                    @if (User.IsPilot())
+                    {
+                        @Html.ActionLink("Slet", "Disable", new { id = Model.FlightId }, new { @class = "btn btn-default" })
+                    }
                     @if (User.IsEditor())
                     {
-                        @Html.ActionLink("Slet", "Delete", new { id = Model.FlightId }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Slet (Permanent)", "Delete", new { id = Model.FlightId }, new { @class = "btn btn-default" })
                     }
                     <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
                 </div>
