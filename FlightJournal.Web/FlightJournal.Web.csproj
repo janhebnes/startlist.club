@@ -232,6 +232,10 @@
     <Compile Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.Designer.cs">
       <DependentUpon>201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.cs" />
+    <Compile Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.Designer.cs">
+      <DependentUpon>201505062032477_Flight-Deleted-Date.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\FlightContext\Configuration.cs" />
     <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="Constraints\ClubRouteConstraint.cs" />
@@ -532,6 +536,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.resx">
       <DependentUpon>201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.resx">
+      <DependentUpon>201505062032477_Flight-Deleted-Date.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

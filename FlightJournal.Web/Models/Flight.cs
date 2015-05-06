@@ -159,6 +159,8 @@ namespace FlightJournal.Web.Models
         public double FlightCost { get; set; }
         public double TachoCost { get; set; }
 
+        public DateTime? Deleted { get; set; }
+
         [Required]
         public DateTime LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
