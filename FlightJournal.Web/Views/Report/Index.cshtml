@@ -144,9 +144,6 @@
                     Flyvetid
                 </th>
                 <th class="hidden-xs hidden-sm">
-                    Flyveplads
-                </th>
-                <th class="hidden-xs hidden-sm">
                     Tacho
                 </th>
                 <th class="hidden-xs">
@@ -213,6 +210,11 @@
                         {
                             @item.Landing.Value.ToString("HH:mm");
                         }
+                        @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                        {
+                            <text> </text>
+                            @item.LandedOn.Name
+                        }
                     </td>
                     <td @style>
                         @if (item.Departure.HasValue && item.Landing.HasValue)
@@ -225,14 +227,6 @@
                             {
                                 <text><span class="error">Fejl: landing før start</span></text>
                             }
-                        }
-                    </td>
-                    <td @style class="hidden-xs hidden-sm">
-                        @item.StartedFrom.Name
-                        @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                        {
-                            <text>/ </text>
-                            @item.LandedOn.Name
                         }
                     </td>
                     <td @style class="hidden-xs hidden-sm">
