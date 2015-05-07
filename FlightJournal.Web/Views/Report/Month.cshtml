@@ -259,9 +259,6 @@
                 Flyvetid
             </th>
             <th class="hidden-xs hidden-sm">
-                Flyveplads
-            </th>
-            <th class="hidden-xs hidden-sm">
                 Tacho
             </th>
             <th class="hidden-xs">
@@ -299,26 +296,21 @@
                     @if (item.Departure.HasValue)
                     {
                         @item.Departure.Value.ToString("HH:mm")
-                        ;
                     }
                 </td>
                 <td class="hidden-xs">
                     @if (item.Landing.HasValue)
                     {
                         @item.Landing.Value.ToString("HH:mm")
-                        ;
+                    }
+                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
+                    {
+                        <text> </text>
+                        @item.LandedOn.Name
                     }
                 </td>
                 <td>
                     @item.FlightTime().TotalHoursWithMinutesAsDecimal()
-                </td>
-                <td class="hidden-xs hidden-sm">
-                    @item.StartedFrom.Name
-                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                    {
-                        <text>, </text>
-                        @item.LandedOn.Name
-                    }
                 </td>
                 <td class="hidden-xs hidden-sm">
                     @Html.Partial("DisplayTemplates/_TachoPartial", item)
