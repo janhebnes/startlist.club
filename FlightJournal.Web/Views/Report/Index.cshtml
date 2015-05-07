@@ -160,9 +160,14 @@
             @{ int startNr = 0; }
             @foreach (var item in Model.Flights.Where(d => d.StartedFromId == location.LocationId))
             {
+                var style = new HtmlString(string.Empty);
+                if (item.Deleted.HasValue)
+                {
+                    style = new HtmlString("style=\"text-decoration: line-through;\"");
+                }
                 <tr>
                     <td>
-                        @if (item.Deleted == null)
+                        @if (!item.Deleted.HasValue)
                         {
                             @(++startNr)
                             if (item.LandingCount > 1)
@@ -177,15 +182,16 @@
                             <strong>SLETTET</strong>
                         }
                     </td>
-                    <td>
+                    <td @style>
                         <span class="hidden-xs">@item.Plane</span>
                         <span class="visible-xs">@item.Plane.CompetitionId</span>
                     </td>
-                    <td>
+                    <td @style>
                         @item.Pilot.Name
                         @if (item.PilotBackseat != null)
                         {
                             <text>/ </text>@item.PilotBackseat.Name
+
                         }
                         @if ((item.Betaler != null) && (item.BetalerId != item.PilotId))
                         {
@@ -196,19 +202,19 @@
                             <text> (mangler betaler) </text>
                         }
                     </td>
-                    <td>
+                    <td @style>
                         @if (item.Departure.HasValue)
                         {
                             @item.Departure.Value.ToString("HH:mm");
                         }
                     </td>
-                    <td class="hidden-xs">
+                    <td @style class="hidden-xs">
                         @if (item.Landing.HasValue)
                         {
                             @item.Landing.Value.ToString("HH:mm");
                         }
                     </td>
-                    <td>
+                    <td @style>
                         @if (item.Departure.HasValue && item.Landing.HasValue)
                         {
                             if (item.Landing.Value >= item.Departure.Value)
@@ -221,7 +227,7 @@
                             }
                         }
                     </td>
-                    <td class="hidden-xs hidden-sm">
+                    <td @style class="hidden-xs hidden-sm">
                         @item.StartedFrom.Name
                         @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
                         {
@@ -229,10 +235,10 @@
                             @item.LandedOn.Name
                         }
                     </td>
-                    <td class="hidden-xs hidden-sm">
+                    <td @style class="hidden-xs hidden-sm">
                         @Html.Partial("DisplayTemplates/_TachoPartial", item)
                     </td>
-                    <td class="hidden-xs">
+                    <td @style class="hidden-xs">
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </td>
                     <td class="hidden-print">
