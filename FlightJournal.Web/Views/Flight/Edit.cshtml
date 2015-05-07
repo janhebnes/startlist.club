@@ -97,7 +97,7 @@
             <div class="clearfix visible-sm visible-xs"></div>
             <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                 <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="Gem" class="btn btn-primary" />
+                    <input type="submit" value="Gem" class="btn btn-primary"/>
                 </div>
             </div>
 
@@ -131,25 +131,42 @@
                     @Html.EditorFor(model => model.TaskDistance)
                     @Html.ValidationMessageFor(model => model.TaskDistance)
                 </div>
+
+                @if (Model.Deleted.HasValue)
+                {
+                    <br/><br/>
+                    <div class="alert alert-danger ">
+                        <h4>Markeret som slettet @Model.Deleted.ToString() af @Model.LastUpdatedBy</h4>
+                    </div>
+                }
+
+
             </div>
+
         </div>
+        
         <div class="row" style="margin-top: 30px">
             <div class="col-md-6">
                 <div class="btn-group btn-group-lg">
                     <input type="submit" value="Gem" class="btn btn-primary"/>
-                    @if (User.IsPilot())
+                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                </div>
+                <div class="btn-group btn-group-lg">
+                    @if (!Model.Deleted.HasValue)
                     {
-                        @Html.ActionLink("Slet", "Disable", new { id = Model.FlightId }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Slet", "Disable", new {id = Model.FlightId}, new {@class = "btn btn-default"})
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Fortyd slet", "Enable", new {id = Model.FlightId}, new {@class = "btn btn-default btn-danger"})
                     }
                     @if (User.IsEditor())
                     {
-                        @Html.ActionLink("Slet (Permanent)", "Delete", new { id = Model.FlightId }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Slet (Permanent)", "Delete", new {id = Model.FlightId}, new {@class = "btn btn-default"})
                     }
-                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
                 </div>
             </div>
         </div>
-
     </fieldset>
 }
 @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)

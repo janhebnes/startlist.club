@@ -131,6 +131,13 @@
                 <div class="display-field">
                     @Html.DisplayFor(model => model.TaskDistance)
                 </div>
+                @if (Model.Deleted.HasValue)
+                {
+                    <br /><br />
+                    <div class="alert alert-danger ">
+                        <h4>Markeret som slettet @Model.Deleted.ToString() af @Model.LastUpdatedBy</h4>
+                    </div>
+                }
             </div>
         </div>
     </fieldset>

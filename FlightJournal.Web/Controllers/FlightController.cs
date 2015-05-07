@@ -398,9 +398,30 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
             }
-            return RedirectToAction("Grid");
+            return RedirectToAction("Edit", new { id = id });
         }
 
+        //
+        // POST: /Flight/Delete/5
+        [Authorize]
+        public ActionResult Enable(Guid id)
+        {
+            if (!User.IsPilot())
+            {
+                return null;
+            }
+
+            Flight flight = this.db.Flights.Find(id);
+            if (flight != null)
+            {
+                this.db.Entry(flight).State = EntityState.Modified;
+                flight.Deleted = null;
+                flight.LastUpdated = DateTime.Now;
+                flight.LastUpdatedBy = User.Pilot().ToString();
+                this.db.SaveChanges();
+            }
+            return RedirectToAction("Edit", new { id = id});
+        }
         
         // GET: /Flight/Delete/5
         [Authorize]
