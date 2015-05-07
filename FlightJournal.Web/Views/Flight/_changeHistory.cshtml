@@ -134,7 +134,6 @@
         @if (User.IsEditor())
         {
             @Html.ActionLink("Rediger", "Edit", new { id = ViewBag.FlightId }, new { @class = "btn btn-default" })
-            @Html.ActionLink("Slet", "Delete", new { id = ViewBag.FlightId }, new { @class = "btn btn-default" })
         }
         <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
     </div>
