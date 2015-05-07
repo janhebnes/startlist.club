@@ -15,7 +15,13 @@
 <table class="table table-striped table-hover table-condensed">
     <tr>
         <th>
+            Land
+        </th>
+        <th>
             Stednavn
+        </th>
+        <th>
+            ICAO
         </th>
         <th></th>
     </tr>
@@ -24,7 +30,13 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ICAO)
             </td>
             <td>
                 <div class="btn-group btn-group-sm">
