@@ -1,6 +1,6 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 40px;
+    padding-bottom: 10px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -14,6 +14,30 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+/* Matching the excellent layout from skylines.aero for a cleaner look 50>40px height and gradiant background*/
+.navbar {min-height: 40px;}
+.navbar-brand {height: 40px;}
+.navbar-brand{font-size:16px;font-weight:100;line-height:18px;padding: 10px 15px;}
+.navbar-inverse .navbar-brand {color: #fff;}
+@media(max-width:767px) {
+	.navbar-brand{padding:15px}
+	.dropdown-menu .divider{background-color:#666}
+}
+.navbar-nav > li > a {
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+}
+.navbar-inverse .navbar-brand,.navbar-inverse .navbar-nav>li>a {text-shadow:0 -1px 0 rgba(0,0,0,0.25)}
+.navbar-inverse {
+	background-image: -webkit-gradient(linear,left 0,left 100%,from(#3c3c3c),to(#222));
+	background-image: -webkit-linear-gradient(top,#3c3c3c 0,#222 100%);
+	background-image: -moz-linear-gradient(top,#3c3c3c 0,#222 100%);
+	background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3c3c3c',endColorstr='#ff222222',GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 /* styles for validation helpers */
@@ -88,12 +112,6 @@ table.tablesorter thead tr .headerSortDown {
     zoom: 1;
 }
 
-/* Override jquery-ui- default theme and bootstrap theme */
-body, .ui-widget {
-font-family:"Segoe UI", Verdana, Arial, sans-serif;
-}
-
-
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
 	input[type="date"],
 	input[type="time"],
@@ -106,3 +124,14 @@ font-family:"Segoe UI", Verdana, Arial, sans-serif;
 .ui-widget {
 	font-size: inherit;
 }
+
+
+/* Override jquery-ui- default theme and bootstrap theme default fonts */
+body, .ui-widget, .tooltip, .popover {
+	font-family:"Segoe UI", Verdana, Arial, sans-serif;
+}
+/* Override bootstrap default font size */
+body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover, .popover-title {
+	font-size: 13px;
+}
+
