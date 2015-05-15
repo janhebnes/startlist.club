@@ -32,21 +32,24 @@
     }
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="glyphicon @(User.IsEditor()?"glyphicon-education":"glyphicon-user")"></span> @accountName
+            <span class="@(User.IsEditor() ? "glyphicon glyphicon-education" : "fa fa-user")"></span> @accountName
             <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-            @if (!User.IsMobilProfile())
-            {
-                <li>@Html.ActionLink("Profil", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage profile" })</li>
-            }
             <li>@Html.MenuLink("Historik over rettelser", "History", "Flight")</li>
             <li class="divider"></li>
             <li>@Html.MenuLink("UHB530 (Journalføring)", "UHB530", "Home")</li>
             <li>@Html.MenuLink("Om startlist.club", "Index", "Home")</li>
+            @if (!User.IsMobilProfile())
+            {
+                <li class="divider"></li>
+                <li>
+                    <a href="@Url.Action("Index","Manage")" title="Manage profile"><span class="fa fa-cog"></span> Settings</a>
+                </li>
+            }
             <li class="divider"></li>
             <li>
-                <a href="javascript:document.getElementById('logoutForm').submit()">Log af</a>
+                <a href="javascript:document.getElementById('logoutForm').submit()"><span class="fa fa-sign-out"></span> Logout</a>
                 @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", Style = "display:none;" }))
                 {
                     @Html.AntiForgeryToken()
@@ -58,5 +61,5 @@
 }
 else
 {
-    <li><a href="@Url.Action("Login", "Account")" id="loginLink"><i class="fa fa-sign-in"></i> Login </a></li>
+    <li><a href="@Url.Action("Login", "Account")" id="loginLink"><span class="fa fa-sign-in"></span> Login</a></li>
 }

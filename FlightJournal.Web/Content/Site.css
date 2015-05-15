@@ -19,7 +19,7 @@ textarea {
 /* Matching the excellent layout from skylines.aero for a cleaner look 50>40px height and gradiant background*/
 .navbar {min-height: 40px;}
 .navbar-brand {height: 40px;}
-.navbar-brand{font-size:16px;font-weight:100;line-height:18px;padding: 10px 15px;}
+.navbar-brand{font-size:16px;font-weight:100;line-height:18px;padding: 6px 15px;}
 .navbar-inverse .navbar-brand {color: #fff;}
 @media(max-width:767px) {
 	.navbar-brand{padding:15px}

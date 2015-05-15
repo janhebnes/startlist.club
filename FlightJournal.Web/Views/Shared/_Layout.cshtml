@@ -23,19 +23,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @if (Request.IsClub() && !String.IsNullOrWhiteSpace(Request.Club().Website))
-                {
-                    @Html.ActionLink(Request.Club().Name, "Index", "Home", null, new { @class = "navbar-brand hidden-sm" })
-                    @Html.ActionLink(Request.Club().ShortName, "Index", "Home", null, new { @class = "navbar-brand hidden-xs hidden-md hidden-lg" })
-                }
-                else if (Request.IsClub() && !String.IsNullOrWhiteSpace(Request.Club().Name))
-                {
-                    @Html.ActionLink(Request.Club().Name, "Index", "Home", null, new { @class = "navbar-brand" })
-                }
-                else
-                {
-                    @Html.ActionLink("Startlist.club", "Index", "Home", null, new { @class = "navbar-brand" })
-                }
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <span class="fa-stack">
+                        <i class="fa fa-square-o fa-stack-2x" style="color:#008eda"></i>
+                        <i class="fa fa-plane fa-stack-1x"></i>
+                    </span>
+                    @if (Request.IsClub())
+                    {
+                        <span class="hidden-sm">@Request.Club().Name</span>
+                        <span class="hidden-xs hidden-md hidden-lg">@Request.Club().ShortName</span>
+                    }
+                    else
+                    {
+                        @:Startlist.club
+                    }
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -101,7 +103,7 @@
                     @if (User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
                     {
                         <li>
-                            <a href="javascript:document.getElementById('goHomeForm').submit()"><span class="glyphicon glyphicon-home"></span> @User.Pilot().Club.ShortName</a>
+                            <a href="javascript:document.getElementById('goHomeForm').submit()"><i class="fa fa-users"></i> @User.Pilot().Club.ShortName</a>
                             @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post, new { id = "goHomeForm", Style = "display:none;" }))
                             {
                                 <input type="hidden" name="shortName" value="@User.Pilot().Club.ShortName" />
