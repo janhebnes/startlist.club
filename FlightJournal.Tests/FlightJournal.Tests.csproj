@@ -152,7 +152,7 @@
     <Compile Include="Extensions\TimeSpanExtensionTest.cs" />
     <Compile Include="Extensions\LongExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="Controllers\AboutControllerTest.cs" />
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\TwilioTest.cs" />
     <Compile Include="ServiceProviders\SendGridTest.cs" />

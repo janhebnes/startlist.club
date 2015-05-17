@@ -10,6 +10,13 @@ namespace FlightJournal.Web{
         public static void RegisterRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //// Custom club Urls
+            //routes.MapRoute(
+            //    name: "Root", // Route name
+            //    url: "", // URL with parameters
+            //    defaults: new { controller = "Home", action = "Index" }
+            //);
+
             // Custom club Urls
             routes.MapRoute(
                 "RootClub", // Route name

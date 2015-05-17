@@ -3,7 +3,7 @@
 namespace FlightJournal.Web.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class AboutController : Controller
     {
         [AllowAnonymous]
         public ActionResult Index()
@@ -12,6 +12,11 @@ namespace FlightJournal.Web.Controllers
         }
 
         public ActionResult Administration()
+        {
+            return View();
+        }
+        
+        public ActionResult License()
         {
             return View();
         }

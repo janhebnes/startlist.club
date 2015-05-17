@@ -5,13 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FlightJournal.Tests.Controllers
 {
     [TestClass]
-    public class HomeControllerTest
+    public class AboutControllerTest
     {
         [TestMethod]
         public void Administration()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            AboutController controller = new AboutController();
 
             // Act
             ViewResult result = controller.Administration() as ViewResult;
@@ -24,7 +24,7 @@ namespace FlightJournal.Tests.Controllers
         public void Contact()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            AboutController controller = new AboutController();
 
             // Act
             ViewResult result = controller.UHB530() as ViewResult;

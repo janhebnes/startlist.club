@@ -274,7 +274,7 @@ namespace FlightJournal.Tests
             ////var controller = routeData.Values["controller"];
             ////var action = routeData.Values["action"];
             //// ## Arrange for this to be done dynamically, but found good argument for not to continue down this path
-            ////HomeController controller = new HomeController();
+            ////AboutController controller = new AboutController();
             ////ViewResult result = controller.Administration() as ViewResult;
             ////Assert.IsNotNull(result);
             #endregion

@@ -1,5 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Caching;
+using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using FlightJournal.Web.Controllers;
 
 namespace FlightJournal.Web.Extensions
 {
@@ -19,6 +22,32 @@ namespace FlightJournal.Web.Extensions
                 builder.AddCssClass("active");
 
             return new MvcHtmlString(builder.ToString());
+        }
+
+        /// <summary>
+        /// Help selecting the active language translation
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="en"></param>
+        /// <param name="da"></param>
+        /// <returns></returns>
+        public static string DisplayUserLanguage(this HtmlHelper htmlHelper, string en, string da = "")
+        {
+            if (LanguageController.UserLanguages.DefaultLanguage() == "da")
+            {
+                return da;
+            }
+            return en;
+        }
+
+        /// <summary>
+        /// Help return the current language selected in the browser
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <returns></returns>
+        public static string DefaultUserLanguage(this HtmlHelper htmlHelper)
+        {
+            return LanguageController.UserLanguages.DefaultLanguage();
         }
     }
 }

@@ -200,6 +200,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Configuration\Demo.cs" />
+    <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
@@ -251,7 +252,7 @@
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FlightController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -417,7 +418,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -494,8 +495,8 @@
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Home\Administration.cshtml" />
-    <Content Include="Views\Home\UHB530.cshtml" />
+    <Content Include="Views\About\Administration.cshtml" />
+    <Content Include="Views\About\UHB530.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\_TachoPartial.cshtml" />
     <Content Include="Views\Club\NotFound.cshtml" />
@@ -509,16 +510,19 @@
     <Content Include="Views\Error\Restricted.cshtml" />
     <Content Include="Views\Location\DeleteLocked.cshtml" />
     <Content Include="Views\Plane\DeleteLocked.cshtml" />
-    <Content Include="Views\Home\GoogleAnalyticsPartial.cshtml" />
+    <Content Include="Views\About\GoogleAnalyticsPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ExitDate.cshtml" />
     <Content Include="Views\Account\ForgotPasswordMissingAccount.cshtml" />
     <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
     <Content Include="Views\Flight\Disable.cshtml" />
+    <Content Include="Views\About\License.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Language\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
