@@ -2,6 +2,7 @@
 using System.Web.Caching;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Util;
 using FlightJournal.Web.Controllers;
 
 namespace FlightJournal.Web.Extensions
@@ -38,16 +39,6 @@ namespace FlightJournal.Web.Extensions
                 return da;
             }
             return en;
-        }
-
-        /// <summary>
-        /// Help return the current language selected in the browser
-        /// </summary>
-        /// <param name="htmlHelper"></param>
-        /// <returns></returns>
-        public static string DefaultUserLanguage(this HtmlHelper htmlHelper)
-        {
-            return LanguageController.UserLanguages.DefaultLanguage();
         }
     }
 }

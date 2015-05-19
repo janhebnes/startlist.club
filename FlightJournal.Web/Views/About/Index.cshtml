@@ -6,21 +6,18 @@
     {
         ViewBag.Count = db.Flights.Count().ToString();
     }
-    string[] languages = HttpContext.Current.Request.UserLanguages;
-    string defaultLanguage = languages[0];
-    
 }
 <div class="jumbotron">
-        @if (defaultLanguage == "da")
+        @if (Request.DefaultUserLanguage() == "da")
         {
             <p>
-                <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/startlist.club">open source</a> projekt skabt for at understøtte alle nordiske flyveklubbers elektroniske startlister.
+                <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/startlist.club">open source</a> projekt skabt for at håndtere flyveklubbers behov omkring startlister og logbøger for piloter og fly.
             </p>
         }
         else // en
         {
             <p>
-                <strong>Startlist.club</strong> is an <a href="https://github.com/janhebnes/startlist.club">open source</a> project created for supporting all nordic flightclubs (possibly more) electronic startlists.
+                <strong>Startlist.club</strong> is an <a href="https://github.com/janhebnes/startlist.club">open source</a> project created for handling flightclub startlists and logbooks for pilots and plane.
             </p>
         }
 </div>
@@ -38,7 +35,7 @@
 <hr/>
 <div class="row">
     
-    @if (defaultLanguage == "da")
+    @if (Request.DefaultUserLanguage() == "da")
     {
         <div class="col-md-6">
             <h2>Projekt fælles startliste</h2>

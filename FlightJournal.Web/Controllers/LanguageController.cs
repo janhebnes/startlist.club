@@ -9,33 +9,66 @@ namespace FlightJournal.Web.Controllers
 {
     public class LanguageController : Controller
     {
-        //// GET: Language
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        public ActionResult Set(string languageIsoCode, string returnUrl)
+        {
+            if (!UserLanguages.SupportedLanguageIsoCodes.Contains(languageIsoCode))
+            {
+                ViewBag.LanguageIsoCode = languageIsoCode;
+                return View("LanguageNotSupported");
+            }
+            
+            UserLanguages.SetPreferedLanguage(languageIsoCode);
+            return Redirect(returnUrl);
+        }
+
+        public ActionResult Translate()
+        {
+            return View();
+        }
 
         public class UserLanguages
         {
             public static readonly string[] SupportedLanguageIsoCodes = new string[] { "da", "en" };
+
+            public static void SetPreferedLanguage(string languageIsoCode)
+            {
+                if (UserLanguages.SupportedLanguageIsoCodes.Contains(languageIsoCode))
+                {
+                    HttpCookie cookie = new HttpCookie("DefaultLanguage");
+                    cookie.Value = languageIsoCode.ToLower();
+                    cookie.Expires = DateTime.Now.AddMonths(36);
+                    System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
+                }
+            }
 
             public static string DefaultLanguage()
             {
                 if (System.Web.HttpContext.Current.Items["DefaultLanguage"] != null)
                     return System.Web.HttpContext.Current.Items["DefaultLanguage"] as string;
 
+                // Fetch a cookie value if set
+                if (System.Web.HttpContext.Current.Request.Cookies["DefaultLanguage"] != null)
+                {
+                    if (UserLanguages.SupportedLanguageIsoCodes.Contains(System.Web.HttpContext.Current.Request.Cookies["DefaultLanguage"].Value))
+                    {
+                        System.Web.HttpContext.Current.Items["DefaultLanguage"] = System.Web.HttpContext.Current.Request.Cookies["DefaultLanguage"].Value.ToLower();
+                        return System.Web.HttpContext.Current.Items["DefaultLanguage"] as string;
+                    }
+                }
+
+                // Use browser user languages 
                 foreach (var lang in GetRequestUserLanguages())
                 {
                     if (SupportedLanguageIsoCodes.Contains(lang.IsoCode))
                     {
-                        System.Web.HttpContext.Current.Items["DefaultLanguage"] = lang.IsoCode;
+                        System.Web.HttpContext.Current.Items["DefaultLanguage"] = lang.IsoCode.ToLower();
                         return lang.IsoCode;
                     }
                     foreach (var iso in SupportedLanguageIsoCodes)
                     {
                         if (lang.IsoCode.StartsWith(iso))
                         {
-                            System.Web.HttpContext.Current.Items["DefaultLanguage"] = iso;
+                            System.Web.HttpContext.Current.Items["DefaultLanguage"] = iso.ToLower();
                             return iso;
                         }
                     }

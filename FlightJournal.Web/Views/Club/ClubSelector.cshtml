@@ -5,7 +5,7 @@
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
     <select name="shortName" onchange="submit()" class="btn btn-default btn-xs">
-        <option value="">Vælg Flyveklub (viser lige nu fælleslisten)</option>
+        <option value="">@Html.DisplayUserLanguage("Select a flightclub (unfiltered)", da: "Vælg Flyveklub (viser lige nu fælleslisten)")</option>
         @foreach (var item in Model)
         {
             <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{

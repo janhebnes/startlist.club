@@ -295,6 +295,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\flags.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -516,13 +517,14 @@
     <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
     <Content Include="Views\Flight\Disable.cshtml" />
     <Content Include="Views\About\License.cshtml" />
+    <Content Include="Views\Language\Translate.cshtml" />
+    <Content Include="Views\Language\LanguageNotSupported.cshtml" />
+    <Content Include="Views\Shared\_LanguagePartial.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Language\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

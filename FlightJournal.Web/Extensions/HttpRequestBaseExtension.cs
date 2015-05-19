@@ -64,5 +64,14 @@ namespace FlightJournal.Web.Extensions
             return ClubController.CurrentClub;
         }
 
+        /// <summary>
+        /// Help return the current language selected in the browser
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string DefaultUserLanguage(this HttpRequestBase request)
+        {
+            return LanguageController.UserLanguages.DefaultLanguage();
+        }
     }
 }

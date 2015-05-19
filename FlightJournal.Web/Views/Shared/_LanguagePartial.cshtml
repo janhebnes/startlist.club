@@ -1,0 +1,20 @@
+@using FlightJournal.Web.Extensions
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        @if (Request.DefaultUserLanguage() == "da")
+        {
+            <span class="flag-dk" title="Danmark" rel="tooltip"></span>
+            <span class="visible-xs">Dansk</span>
+        }
+        @if (Request.DefaultUserLanguage() == "en")
+        {
+            <span class="flag-gb" title="United Kingdom" rel="tooltip"></span>
+            <span class="visible-xs">English</span>
+        }
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="@Url.Action("Set","Language", new { languageIsoCode = "en", returnUrl = Request.Url})" title="English"><span class="flag-gb" title="United Kingdom" rel="tooltip"></span> English</a></li>
+        <li><a href="@Url.Action("Set", "Language", new { languageIsoCode = "da", returnUrl = Request.Url})" title="Dansk"><span class="flag-dk" title="Dansk" rel="tooltip"></span> Dansk</a></li>
+    </ul>
+</li>
