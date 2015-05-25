@@ -461,7 +461,7 @@ namespace FlightJournal.Web.Models
                 if (!result.Succeeded)
                 {
                     throw new SecurityException(string.Format("Failed to generate user {0} for {1}", userName, result.Errors.FirstOrDefault()));
-                    return SignInStatus.Failure;
+                    //return SignInStatus.Failure;
                 }
                 result = UserManager.SetLockoutEnabled(user.Id, false);
                 return await SignInOrTwoFactor(user, isPersistent);

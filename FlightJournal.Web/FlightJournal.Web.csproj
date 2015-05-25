@@ -245,6 +245,8 @@
     <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="Constraints\ClubRouteConstraint.cs" />
     <Compile Include="Models\PilotViewModels.cs" />
+    <Compile Include="Translations\Messages.cs" />
+    <Compile Include="Translations\UserLanguages.cs" />
     <Compile Include="Validators\EmailValidator.cs" />
     <Compile Include="Validators\MobilNumberValidator.cs" />
     <Compile Include="Validators\ClubValidator.cs" />
@@ -517,14 +519,16 @@
     <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
     <Content Include="Views\Flight\Disable.cshtml" />
     <Content Include="Views\About\License.cshtml" />
-    <Content Include="Views\Language\Translate.cshtml" />
     <Content Include="Views\Language\LanguageNotSupported.cshtml" />
     <Content Include="Views\Shared\_LanguagePartial.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Translations\da\" />
+    <Folder Include="Translations\en\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

@@ -156,6 +156,7 @@
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\TwilioTest.cs" />
     <Compile Include="ServiceProviders\SendGridTest.cs" />
+    <Compile Include="Translations\MessageTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

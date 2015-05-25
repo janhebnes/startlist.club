@@ -335,7 +335,7 @@ namespace FlightJournal.Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> EmailNotConfirmed(string email)
+        public ActionResult EmailNotConfirmed(string email)
         {
             @ViewBag.Email = email;
             return View("DisplayEmail");
@@ -660,7 +660,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "About");
         }
 
         //
@@ -707,7 +707,7 @@ namespace FlightJournal.Web.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "About");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

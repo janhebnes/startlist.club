@@ -15,7 +15,6 @@ namespace FlightJournal.Web.Validators
         {
             var cleanEmail = ParseEmail(email);
             var valid = false;
-            int num = 0;
             try
             {
                 var addr = new System.Net.Mail.MailAddress(cleanEmail);

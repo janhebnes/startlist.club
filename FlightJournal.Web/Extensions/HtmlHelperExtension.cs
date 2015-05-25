@@ -29,16 +29,16 @@ namespace FlightJournal.Web.Extensions
         /// Help selecting the active language translation
         /// </summary>
         /// <param name="htmlHelper"></param>
-        /// <param name="en"></param>
+        /// <param name="en">Default text identifier</param>
         /// <param name="da"></param>
         /// <returns></returns>
         public static string DisplayUserLanguage(this HtmlHelper htmlHelper, string en, string da = "")
         {
-            if (LanguageController.UserLanguages.DefaultLanguage() == "da")
+            if (Translations.UserLanguages.DefaultLanguage() == "da")
             {
                 return da;
             }
-            return en;
+            return Translations.Messages.Instance.GetText(en);
         }
     }
 }
