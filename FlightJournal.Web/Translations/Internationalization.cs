@@ -1,9 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 
 namespace FlightJournal.Web.Translations
 {
+    /// <summary>
+    /// Code base from http://www.fairtutor.com/fairlylocal/ project
+    /// Inspired to use GETTEXT by the Python Babel on https://github.com/skylines-project/skylines/blob/master/skylines/frontend/translations/messages.pot 
+    /// </summary>
+    /// <remarks>
+    /// Inspired by the model used on https://github.com/skylines-project/skylines/blob/master/skylines/frontend/translations/messages.pot 
+    /// I researched more on how to get pot files in use on this project. By using the NuGet package from https://github.com/vslavik/gettext-tools-windows/releases 
+    /// installed and the sample postbuild from http://www.fairtutor.com/fairlylocal/ to create my own translation.cmd in solution root. 
+    /// We can not generate pot file and merge po files.
+    /// Other inspiring sources:
+    /// http://www.expatsoftware.com/articles/2010/03/why-internationalization-is-hopelessly.html
+    /// https://github.com/fsateler/gettext-cs-utils and 
+    /// http://manas.com.ar/blog/2009/10/01/using-gnu-gettext-for-i18n-in-c-and-asp-net.html
+    /// </remarks>
     public static class Internationalization
     {
         public static class Settings
@@ -22,7 +38,7 @@ namespace FlightJournal.Web.Translations
             /// <summary>
             /// The session key that will be used to store a user's language preference
             /// </summary>
-            public static string LanguageCodeSessionKey = "LanguageCode";
+            public static string LanguageCodeCookieKey = "LanguageCode";
 
             /// <summary>
             /// FOR TESTING ONLY!  If true, all calls to GetText will return an empty string.
@@ -123,6 +139,46 @@ namespace FlightJournal.Web.Translations
             }
 
             return fallback;
+        }
+
+        /// <summary>
+        /// Get the current user's language preference.
+        /// First looks for stored preference in the Session.
+        /// Falls back on the best match from the browser's language collection.
+        /// </summary>
+        public static string LanguageCode
+        {
+            get
+            {
+                if (System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] != null)
+                    return System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] as string;
+
+                // Fetch from cookie value if set
+                if (System.Web.HttpContext.Current.Request.Cookies[Internationalization.Settings.LanguageCodeCookieKey] != null)
+                {
+                    if (Localizations.ContainsKey(System.Web.HttpContext.Current.Request.Cookies[Internationalization.Settings.LanguageCodeCookieKey].Value))
+                    {
+                        System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] = System.Web.HttpContext.Current.Request.Cookies[Internationalization.Settings.LanguageCodeCookieKey].Value.ToLower();
+                        return System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] as string;
+                    }
+                }
+
+                // Select from browser
+                System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] = Internationalization.GetBestLanguage(HttpContext.Current.Request, Internationalization.Settings.WorkingLanguage);
+
+                return System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] as string;
+            }
+            set
+            {
+                if (Localizations.ContainsKey(value.ToLower()))
+                {
+                    HttpCookie cookie = new HttpCookie(Internationalization.Settings.LanguageCodeCookieKey);
+                    cookie.Value = value.ToLower();
+                    cookie.Expires = DateTime.Now.AddMonths(36);
+                    System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
+                }
+                System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] = value.ToLower();
+            }
         }
 
         #endregion

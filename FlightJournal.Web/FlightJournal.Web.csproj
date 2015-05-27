@@ -245,6 +245,9 @@
     <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="Constraints\ClubRouteConstraint.cs" />
     <Compile Include="Models\PilotViewModels.cs" />
+    <Compile Include="Translations\Internationalization.cs" />
+    <Compile Include="Translations\Localization.cs" />
+    <Compile Include="Translations\Message.cs" />
     <Compile Include="Translations\Messages.cs" />
     <Compile Include="Translations\UserLanguages.cs" />
     <Compile Include="Validators\EmailValidator.cs" />

@@ -12,19 +12,14 @@ namespace FlightJournal.Web.Controllers
     {
         public ActionResult Set(string languageIsoCode, string returnUrl)
         {
-            if (!UserLanguages.SupportedLanguageIsoCodes.Contains(languageIsoCode))
+            if (!Internationalization.Localizations.ContainsKey(languageIsoCode.ToLower()))
             {
                 ViewBag.LanguageIsoCode = languageIsoCode;
                 return View("LanguageNotSupported");
             }
             
-            UserLanguages.SetPreferedLanguage(languageIsoCode);
+            Internationalization.LanguageCode = languageIsoCode;
             return Redirect(returnUrl);
-        }
-
-        public ActionResult Translate()
-        {
-            return View();
         }
     }
 }
