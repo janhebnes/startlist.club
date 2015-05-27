@@ -35,7 +35,7 @@ namespace FlightJournal.Web.Extensions
         /// <returns></returns>
         public static string DisplayUserLanguage(this HtmlHelper htmlHelper, string en, string da = "")
         {
-            if (Translations.UserLanguages.DefaultLanguage() == "da")
+            if (Internationalization.LanguageCode == "da")
             {
                 return da;
             }

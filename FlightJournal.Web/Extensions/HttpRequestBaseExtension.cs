@@ -71,7 +71,7 @@ namespace FlightJournal.Web.Extensions
         /// <returns></returns>
         public static string DefaultUserLanguage(this HttpRequestBase request)
         {
-            return Translations.UserLanguages.DefaultLanguage();
+            return Translations.Internationalization.LanguageCode;
         }
     }
 }
