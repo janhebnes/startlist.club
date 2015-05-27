@@ -34,20 +34,5 @@ namespace FlightJournal.Tests.Translations
             Assert.IsNotNull(iso);
             Assert.IsTrue(iso.Count() == 2);
         }
-
-        [TestMethod]
-        public void SaveStore()
-        {
-            //var file = new Messages.TranslationFile() { Messages = new Messages.Translation[] { new Messages.Translation() { MsgId = "Overview", MsgStr = "Overblik"} } };
-            //var langFullPath = Path.Combine(Messages.Instance.TranslationDirectoryFullPath, "da", "messages.xml");
-            //var serializer = new XmlSerializer(typeof(Messages.TranslationFile));
-            //using (StreamWriter writer = new StreamWriter(langFullPath))
-            //{
-            //    serializer.Serialize(writer,file);
-            //}
-            //Assert.IsNotNull(null);
-        }
-        
-        
     }
 }
