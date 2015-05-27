@@ -37,3 +37,4 @@ _ReSharper*/
 /FlightLog.Web/FlightLog.Web.Publish.xml
 FlightJournal.Web/App_Data/ServiceCredentials.Demo.config
 FlightJournal.Web/App_Data/ServiceCredentials.Release.config
+Translation-inputfiles.txt

@@ -1,0 +1,9 @@
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:47
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:50
+msgid "Day Report"
+msgstr "Dagsrapport"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:47
+msgid "About"
+msgstr "Om"
