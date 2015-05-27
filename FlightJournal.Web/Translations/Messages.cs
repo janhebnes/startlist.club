@@ -17,6 +17,16 @@ namespace FlightJournal.Web.Translations
     /// Inspired by Babel from https://github.com/skylines-project/skylines/blob/master/skylines/frontend/translations/messages.pot 
     /// Considered https://github.com/fsateler/gettext-cs-utils but have done this instead as a first implementation
     /// </summary>
+    /// <remarks>
+    /// Inspired by the model used on https://github.com/skylines-project/skylines/blob/master/skylines/frontend/translations/messages.pot 
+    /// I researched more on how to get pot files in use on this project.
+    /// NuGet package from https://github.com/vslavik/gettext-tools-windows/releases installed 
+    /// Scripting from http://www.fairtutor.com/fairlylocal/ sample 
+    /// http://www.expatsoftware.com/articles/2010/03/why-internationalization-is-hopelessly.html
+    /// http://www.fairtutor.com/fairlylocal/
+    /// Also inspired by https://github.com/fsateler/gettext-cs-utils and 
+    /// http://manas.com.ar/blog/2009/10/01/using-gnu-gettext-for-i18n-in-c-and-asp-net.html
+    /// </remarks>
     public sealed class Messages
     {
         // Singleton 
