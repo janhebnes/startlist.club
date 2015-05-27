@@ -44,7 +44,7 @@
             }
             @if (Request.IsClub())
             {
-                <li>@Html.MenuLink(@Html.DisplayUserLanguage(da: "Om", en: "About") + " startlist.club", "Index", "About")</li>
+                <li>@Html.MenuLink(@Html._("About") + " startlist.club", "Index", "About")</li>
             }
             @if (!User.IsMobilProfile())
             {

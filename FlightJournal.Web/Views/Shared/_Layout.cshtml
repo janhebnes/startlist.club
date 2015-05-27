@@ -44,10 +44,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     
-                    <li>@Html.MenuLink(Html.DisplayUserLanguage(da:"Dagsrapporter", en: "Day Report"), "Index", "Report")</li>
+                    <li>@Html.MenuLink(Html._("Day Report"), "Index", "Report")</li>
                     @if (!Request.IsClub() && Request.IsPilot())
                     {
-                        <li>@Html.ActionLink(Html.DisplayUserLanguage(da:"Dagsrapporter", en: "Day Report")+" (" + Request.Pilot().Club.ShortName + ")", "Index", "Report", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                        <li>@Html.ActionLink(Html._("Day Report")+" (" + Request.Pilot().Club.ShortName + ")", "Index", "Report", new { club = Request.Pilot().Club.ShortName }, null)</li>
                     }
                     @if (Request.IsAuthenticated)
                     {
@@ -129,7 +129,7 @@
     <div class="container footer-content">
         <footer>
             <p class="pull-right btn-xs">
-                &copy; <a href="@Url.Action("Index","About")">@Html.DisplayUserLanguage(da: "Om", en: "About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
+                &copy; <a href="@Url.Action("Index","About")">@Html._("About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
             </p>
             @Html.Action("ClubSelector", "Club")
         </footer>

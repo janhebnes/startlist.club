@@ -40,5 +40,10 @@ namespace FlightJournal.Web.Extensions
             }
             return Translations.Messages.Instance.GetText(en);
         }
+
+        public static string _(this HtmlHelper htmlHelper, string en)
+        {
+            return Translations.Messages.Instance.GetText(en);
+        }
     }
 }
