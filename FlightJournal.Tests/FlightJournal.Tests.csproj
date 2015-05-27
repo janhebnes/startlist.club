@@ -167,7 +167,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FlightJournal.Web\FlightJournal.Web.csproj">
       <Project>{4F89A36C-DC4B-429C-9E99-8D97464BD2FD}</Project>
-      <Name>FlightJournal</Name>
+      <Name>FlightJournal.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
