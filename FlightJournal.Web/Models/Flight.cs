@@ -110,12 +110,13 @@ namespace FlightJournal.Web.Models
         [Required]
         public int PlaneId { get; set; }
         public virtual Plane Plane { get; set; }
+
         [DisplayName("Pilot")]
         [Required]
         public int PilotId { get; set; }
         public virtual Pilot Pilot { get; set; }
         
-        //Pilot function time
+        //Pilot function time (copilot/instructor or passenger)
 
         [DisplayName("Bagsæde")]
         public int? PilotBackseatId { get; set; }
