@@ -298,7 +298,6 @@ namespace FlightJournal.Web.Controllers
 
                 return RedirectToAction("Grid");
             }
-
             this.PopulateViewBag(flight);
             return View(flight);
         }
@@ -322,9 +321,9 @@ namespace FlightJournal.Web.Controllers
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
 
-            this.PopulateViewBag(flight);
             ViewBag.FlightId = id;
             ViewBag.ChangeHistory = this.GetChangeHistory(id);
+            this.PopulateViewBag(flight);
             return View(flight);
         }
 
@@ -353,7 +352,10 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
-                return RedirectToAction("Grid");
+                
+                ViewBag.UrlReferrer = ResolveUrlReferrer();
+                return RedirectPermanent(ViewBag.UrlReferrer);
+                //return RedirectToAction("Grid");
             }
             ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
             ViewBag.FlightId = flight.FlightId;
@@ -374,7 +376,24 @@ namespace FlightJournal.Web.Controllers
             if (flight != null)
                 ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
 
+            ViewBag.UrlReferrer = ResolveUrlReferrer();
+
             return View(flight);
+        }
+
+        private string ResolveUrlReferrer()
+        {
+            var key = "UrlReferrer";
+            if (Request.Form[key] != null)
+                return Request.Form[key];
+
+            if (Request.QueryString[key] != null)
+                return Request.QueryString[key];
+
+            if (Request.UrlReferrer != null)
+                return Request.UrlReferrer.ToString();
+
+            return "javascript:window.history.back();";
         }
 
         //
@@ -398,7 +417,9 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
             }
-            return RedirectToAction("Edit", new { id = id });
+            ViewBag.UrlReferrer = ResolveUrlReferrer();
+            return RedirectPermanent(ViewBag.UrlReferrer);
+            //return RedirectToAction("Edit", new { id = id });
         }
 
         //
@@ -420,7 +441,9 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
             }
-            return RedirectToAction("Edit", new { id = id});
+            ViewBag.UrlReferrer = ResolveUrlReferrer();
+            return RedirectPermanent(ViewBag.UrlReferrer);
+            //return RedirectToAction("Edit", new { id = id});
         }
         
         // GET: /Flight/Delete/5
@@ -493,6 +516,9 @@ namespace FlightJournal.Web.Controllers
 
             // TODO: Add any pilotid or starttypeid that is actually present in the flight but not present in the selectlist !
             //if (this.ViewBag.BetalerId.() flight.BetalerId 
+
+            // Add request context for keeping the back button alive
+            ViewBag.UrlReferrer = ResolveUrlReferrer();
         }
     }
 }
