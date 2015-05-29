@@ -52,19 +52,32 @@
     <tbody>
         @foreach (var item in Model)
         {
+            var style = new HtmlString(string.Empty);
+            if (item.Deleted.HasValue)
+            {
+                style = new HtmlString("style=\"text-decoration: line-through;\"");
+            }
             <tr>
                 <td>
-                    @(startNr--)
-                    @if (item.LandingCount > 1)
+                    @if (!item.Deleted.HasValue)
                     {
-                        startNr = startNr + item.LandingCount;
-                        <text> - </text> @(startNr)
+                        @(startNr--)
+                        if (item.LandingCount > 1)
+                        {
+                            startNr = startNr - item.LandingCount;
+                            <text> - </text>
+                            @(startNr)
+                        }
+                    }
+                    else
+                    {
+                        <strong>SLETTET</strong>
                     }
                 </td>
-                <td>
+                <td @style>
                     @item.Plane
                 </td>
-                <td>
+                <td @style>
                     @item.Pilot.Name
                     @if (item.PilotBackseat != null)
                     {
@@ -79,7 +92,7 @@
                         <text> (mangler betaler) </text>
                     }
                 </td>
-                <td>
+                <td @style>
                     @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
                     {
                         <div class="btn-group" style="white-space: nowrap;display: flex;">
@@ -93,7 +106,7 @@
                         @item.Departure.Value.ToString("HH:mm");
                     }
                 </td>
-                <td>
+                <td @style>
                     @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
                     {
                         <div class="btn-group" style="white-space: nowrap;display: flex;">
@@ -101,14 +114,14 @@
                             @Html.ActionLink("-05", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                             @Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
                         </div>
-                        
+
                     }
                     else if (item.Landing.HasValue)
                     {
                         @item.Landing.Value.ToString("HH:mm");
                     }
                 </td>
-                <td>
+                <td @style>
                     @if (item.Departure.HasValue && item.Landing.HasValue)
                     {
                         if (item.Landing.Value >= item.Departure.Value)
@@ -121,7 +134,7 @@
                         }
                     }
                 </td>
-                <td class="hidden-sm">
+                <td @style class="hidden-sm">
                     @item.StartedFrom.Name
                     @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
                     {
@@ -129,10 +142,10 @@
                         @item.LandedOn.Name
                     }
                 </td>
-                <td class="hidden-sm">
+                <td @style class="hidden-sm">
                     @Html.Partial("DisplayTemplates/_TachoPartial", item)
                 </td>
-                <td class="hidden-xs">
+                <td @style class="hidden-xs">
                     <span>
                         @if (Request.IsPilot())
                         {
