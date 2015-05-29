@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2015-05-29 13:21+0200\n"
+"POT-Creation-Date: 2015-05-29 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,12 +41,44 @@ msgstr ""
 msgid "Select a flightclub (unfiltered)"
 msgstr ""
 
-#: FlightJournal.Web\Views\Location\Edit.cshtml:15
-msgid "Edit Location"
+#: FlightJournal.Web\Views\Flight\Disable.cshtml:7
+msgid "Confirm deletion"
 msgstr ""
 
+#: FlightJournal.Web\Views\Flight\Disable.cshtml:17
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:20
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\Views\Location\Edit.cshtml:48
 msgid "Back"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:19
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:170
+msgid "Undo Delete"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+msgid "Delete"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:173
+msgid "Delete permanently"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:176
+msgid "Edit"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:179
+msgid "Clone"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:180
+msgid "Copy"
+msgstr ""
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:15
+msgid "Edit Location"
 msgstr ""
 
 #: FlightJournal.Web\Views\Location\Edit.cshtml:56

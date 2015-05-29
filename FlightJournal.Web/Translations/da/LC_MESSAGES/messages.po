@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2015-05-29 13:19+0200\n"
+"POT-Creation-Date: 2015-05-29 17:14+0200\n"
 "PO-Revision-Date: 2015-05-29 13:15+0200\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
@@ -41,13 +41,45 @@ msgstr "Bemærk dette ikke er din flyveklub"
 msgid "Select a flightclub (unfiltered)"
 msgstr "Vælg Flyveklub (viser lige nu flleslisten)"
 
-#: FlightJournal.Web\Views\Location\Edit.cshtml:15
-msgid "Edit Location"
-msgstr "Rediger Landingssted"
+#: FlightJournal.Web\Views\Flight\Disable.cshtml:7
+msgid "Confirm deletion"
+msgstr "Bekræft sletning"
 
+#: FlightJournal.Web\Views\Flight\Disable.cshtml:17
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:20
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\Views\Location\Edit.cshtml:48
 msgid "Back"
 msgstr "Tilbage"
+
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:19
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:170
+msgid "Undo Delete"
+msgstr "Fortryd slet"
+
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+msgid "Delete"
+msgstr "Slet"
+
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:173
+msgid "Delete permanently"
+msgstr "Slet permanent"
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:176
+msgid "Edit"
+msgstr "Rediger"
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:179
+msgid "Clone"
+msgstr "Klon"
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:180
+msgid "Copy"
+msgstr "Kopi"
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:15
+msgid "Edit Location"
+msgstr "Rediger Landingssted"
 
 #: FlightJournal.Web\Views\Location\Edit.cshtml:56
 #, csharp-format
