@@ -9,6 +9,20 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Rediger flyvning</legend>
+        @if (Model.Deleted.HasValue)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="alert alert-danger">
+                        <h4>Deleted @Model.Deleted.ToString() by @Model.LastUpdatedBy</h4>
+                        <div class="btn-group">
+                            @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger" })
+                            <a href="@ViewBag.UrlReferrer" class="btn btn-default">@_("Back")</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
         @Html.HiddenFor(model => model.FlightId)
         @Html.Hidden("UrlReferrer", (string)ViewBag.UrlReferrer)
         <div class="row">
@@ -133,25 +147,19 @@
                     @Html.ValidationMessageFor(model => model.TaskDistance)
                 </div>
 
-                @if (Model.Deleted.HasValue)
-                {
-                    <br/><br/>
-                    <div class="alert alert-danger ">
-                        <h4>Markeret som slettet @Model.Deleted.ToString() af @Model.LastUpdatedBy</h4>
-                    </div>
-                }
-
-
+                
             </div>
 
         </div>
         
         <div class="row" style="margin-top: 30px">
-            <div class="col-md-6">
+            <div class="col-md-2">
                 <div class="btn-group btn-group-lg">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary" />
+                    <input type="submit" value="@_("Save")" class="btn btn-primary"/>
                     <a href="@ViewBag.UrlReferrer" class="btn btn-default">@_("Back")</a>
                 </div>
+            </div>
+            <div class="col-md-10">
                 <div class="btn-group btn-group-lg">
                     @if (!Model.Deleted.HasValue)
                     {
@@ -159,7 +167,7 @@
                     }
                     else
                     {
-                        @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer  }, new { @class = "btn btn-default btn-danger" })
+                        @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger" })
                         if (User.IsEditor())
                         {
                             @Html.ActionLink(_("Delete permanently"), "Delete", new { id = Model.FlightId }, new { @class = "btn btn-default" })
@@ -167,6 +175,7 @@
                     }
                 </div>
             </div>
+
         </div>
     </fieldset>
 }

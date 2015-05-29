@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Routing;
 using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Extensions
@@ -21,6 +23,12 @@ namespace FlightJournal.Web.Extensions
                 builder.AddCssClass("active");
 
             return new MvcHtmlString(builder.ToString());
+        }
+
+        public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes, string iconAttributes)
+        {
+            var actionLink = htmlHelper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
+            return MvcHtmlString.Create(actionLink.ToString().Replace(">" + linkText + "<", "><span class=\"" + iconAttributes + "\"></span> " + linkText + "<"));
         }
 
         /// <summary>

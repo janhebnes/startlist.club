@@ -149,7 +149,7 @@
                     <span>
                         @if (Request.IsPilot())
                         {
-                            <a href="#" class="editComment btn btn-default hidden-print">Note</a>
+                            <a href="#" class="editComment btn btn-default hidden-print"><span class="fa fa-comment fa-fw"></span></a>
                         }
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </span>
@@ -173,11 +173,11 @@
                             if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
                             if (isEditable)
                             {
-                                @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" }, "fa fa-pencil-square-o fa-fw")
                             }
-                            
-                            @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
-                            @Html.ActionLink("Gentag", "Duplicate", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+
+                            @Html.ActionLink(" ", "Clone", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Clone") }, "fa fa-clipboard fa-fw")
+                            @Html.ActionLink(" ", "Duplicate", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Copy") }, "fa fa-files-o fa-fw")
                         }
                         else
                         {
