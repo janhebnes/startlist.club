@@ -156,7 +156,6 @@
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\TwilioTest.cs" />
     <Compile Include="ServiceProviders\SendGridTest.cs" />
-    <Compile Include="Translations\MessageTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -169,6 +168,9 @@
       <Project>{4F89A36C-DC4B-429C-9E99-8D97464BD2FD}</Project>
       <Name>FlightJournal.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Translations\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3246F77-2693-464E-A405-6B0C4F8E884F}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.md = Readme.md
+		Translation.cmd = Translation.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A7DA5AEF-484D-48EF-AAA4-861A37185E0B}"

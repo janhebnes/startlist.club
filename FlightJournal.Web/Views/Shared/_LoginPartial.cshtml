@@ -36,30 +36,29 @@
             <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-            <li>@Html.MenuLink("Historik over rettelser", "History", "Flight")</li>
+            <li>@Html.MenuLink(_("Flight change history"), "History", "Flight")</li>
             <li class="divider"></li>
             @if (Request.DefaultUserLanguage() == "da")
             {
-                <li>@Html.MenuLink("UHB530 og (Journalføring)", "UHB530", "About")</li>
+                <li>@Html.MenuLink("UHB 530 og 531 (Journalføring)", "UHB530", "About")</li>
             }
             @if (Request.IsClub())
             {
-                <li>@Html.MenuLink(@Html._("About") + " startlist.club", "Index", "About")</li>
+                <li>@Html.MenuLink(_("About startlist.club"), "Index", "About")</li>
             }
             @if (!User.IsMobilProfile())
             {
                 <li class="divider"></li>
                 <li>
-                    <a href="@Url.Action("Index","Manage")" title="Manage profile"><span class="fa fa-cog"></span> Settings</a>
+                    <a href="@Url.Action("Index","Manage")" title="@_("Manage profile")"><span class="fa fa-cog"></span> @_("Settings")</a>
                 </li>
             }
             <li class="divider"></li>
             <li>
-                <a href="javascript:document.getElementById('logoutForm').submit()"><span class="fa fa-sign-out"></span> Logout</a>
+                <a href="javascript:document.getElementById('logoutForm').submit()"><span class="fa fa-sign-out"></span> @_("Logout")</a>
                 @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", Style = "display:none;" }))
                 {
                     @Html.AntiForgeryToken()
-
                 }
             </li>
         </ul>
@@ -67,5 +66,5 @@
 }
 else
 {
-    <li><a href="@Url.Action("Login", "Account")" id="loginLink"><span class="fa fa-sign-in"></span> Login</a></li>
+    <li><a href="@Url.Action("Login", "Account")" id="loginLink"><span class="fa fa-sign-in"></span> @_("Login")</a></li>
 }

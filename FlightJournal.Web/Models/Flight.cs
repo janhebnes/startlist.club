@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using FlightJournal.Web.Controllers;
 using FlightJournal.Web.Extensions;
+using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Models
 {

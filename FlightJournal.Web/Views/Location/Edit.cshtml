@@ -1,4 +1,5 @@
-﻿@model FlightJournal.Web.Models.Location
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Location
 
 @{
     ViewBag.Title = "Edit";
@@ -11,7 +12,7 @@
 {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Rediger landingssted</legend>
+        <legend>@_("Edit Location")</legend>
 
         @Html.HiddenFor(model => model.LocationId)
         @Html.HiddenFor(model => model.CreatedBy)
@@ -43,8 +44,8 @@
 
         <p style="margin-top: 30px">
             <div class="btn-group">
-                <input type="submit" value="Ændre stednavnet @Model.Name" class="btn btn-danger"/>
-                <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                <input type="submit" value="@_("Change locationname {0}", @Model.Name)" class="btn btn-danger" />
+                <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
             </div>
         </p>
 
@@ -52,7 +53,7 @@
         {
             <div class="col-md-6">
                 <div class="alert alert-danger" style="margin-top: 10px">
-                    <span class="glyphicon glyphicon-alert"></span> Benyttes på @ViewBag.UsedCount registreringer.
+                    <span class="glyphicon glyphicon-alert"></span> @_("In use on {0} records.", @ViewBag.UsedCount)
                 </div>
             </div>
         }

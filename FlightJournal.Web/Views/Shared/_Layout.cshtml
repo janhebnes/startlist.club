@@ -44,25 +44,25 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     
-                    <li>@Html.MenuLink(Html._("Day Report"), "Index", "Report")</li>
+                    <li>@Html.MenuLink(_("Day Report"), "Index", "Report")</li>
                     @if (!Request.IsClub() && Request.IsPilot())
                     {
-                        <li>@Html.ActionLink(Html._("Day Report")+" (" + Request.Pilot().Club.ShortName + ")", "Index", "Report", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                        <li>@Html.ActionLink(_("Day Report")+" (" + Request.Pilot().Club.ShortName + ")", "Index", "Report", new { club = Request.Pilot().Club.ShortName }, null)</li>
                     }
                     @if (Request.IsAuthenticated)
                     {
                         if (Request.IsClub())
                         {
-                            <li>@Html.MenuLink("Startliste", "Grid", "Flight")</li>
+                            <li>@Html.MenuLink(_("Startlist"), "Grid", "Flight")</li>
                         }
                         else if (Request.IsPilot())
                         {
-                            <li>@Html.ActionLink(" Startliste (" + Request.Pilot().Club.ShortName + ")", "Grid", "Flight", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                            <li>@Html.ActionLink(_("Startlist ({0})",Request.Pilot().Club.ShortName), "Grid", "Flight", new { club = Request.Pilot().Club.ShortName }, null)</li>
                         }
                     }
                     @if (User.IsPilot() && Request.Club().ClubId == User.Pilot().Club.ClubId)
                     {
-                        <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
+                        <li>@Html.MenuLink(_("Logbook"), "Pilot", "Report")</li>
                     }
                     @if (Request.IsClub() && !string.IsNullOrWhiteSpace(Request.Club().Website) && !User.IsEditor())
                     {
@@ -70,35 +70,35 @@
                     }
                     @if (!Request.IsAuthenticated)
                     {
-                        <li>@Html.MenuLink("Om startlist.club", "Index", "About")</li>
+                        <li>@Html.MenuLink(_("About startlist.club"), "Index", "About")</li>
                     }
 
                     @if (User.IsEditor())
                     {
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opsætning <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@_("Settings") <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li>@Html.MenuLink("Fly", "Index", "Plane")</li>
-                                <li>@Html.MenuLink("Landingssteder", "Index", "Location")</li>
+                                <li>@Html.MenuLink(@_("Planes"), "Index", "Plane")</li>
+                                <li>@Html.MenuLink(@_("Locations"), "Index", "Location")</li>
                                 @if (User.IsManager())
                                 {
-                                    <li>@Html.MenuLink("Piloter", "Index", "Pilot")</li>
+                                    <li>@Html.MenuLink(_("Pilots"), "Index", "Pilot")</li>
                                 }
                                 @if (User.IsAdministrator())
                                 {
                                     <li class="divider"></li>
-                                    <li>@Html.MenuLink("Roles", "Index", "RolesAdmin")</li>
-                                    <li>@Html.MenuLink("Users", "Index", "UsersAdmin")</li>
+                                    <li>@Html.MenuLink(_("Roles"), "Index", "RolesAdmin")</li>
+                                    <li>@Html.MenuLink(_("Users"), "Index", "UsersAdmin")</li>
                                     <li class="divider"></li>
-                                    <li>@Html.MenuLink("Startmetoder", "Index", "StartType")</li>
-                                    <li>@Html.MenuLink("Klubber", "Index", "Club")</li>
+                                    <li>@Html.MenuLink(_("Startmethods"), "Index", "StartType")</li>
+                                    <li>@Html.MenuLink(_("Clubs"), "Index", "Club")</li>
                                 }
                             </ul>
                         </li>
                     }
                     @if (!User.IsPilot() && Request.IsAuthenticated)
                     {
-                        <li>@Html.MenuLink("[Opret relation til pilotprofil]", "ManagePilotBinding", "Manage")</li>
+                        <li>@Html.MenuLink(_("[Create relation to pilotprofile]"), "ManagePilotBinding", "Manage")</li>
                     }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -114,7 +114,7 @@
                     }
                     @if (User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
                     {
-                        <li>@Html.MenuLink("Logbog", "Pilot", "Report")</li>
+                        <li>@Html.MenuLink(_("Logbook"), "Pilot", "Report")</li>
                     }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_LanguagePartial")
@@ -129,7 +129,7 @@
     <div class="container footer-content">
         <footer>
             <p class="pull-right btn-xs">
-                &copy; <a href="@Url.Action("Index","About")">@Html._("About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
+                &copy; <a href="@Url.Action("Index","About")">@_("About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
             </p>
             @Html.Action("ClubSelector", "Club")
         </footer>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Web.UI.WebControls;
+using FlightJournal.Web.Translations;
 using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Models
@@ -13,6 +15,7 @@ namespace FlightJournal.Web.Models
         public int LocationId { get; set; }
         public string Name { get; set; }
         public string ICAO { get; set; }
+        [LocalizedDisplayName("Country")]
         public string Country { get; set; } // ISO Alpha-2 code based on https://www.iso.org/obp/ui/#search
         public DateTime CreatedTimestamp { get; set; }
         public string CreatedBy { get; set; }

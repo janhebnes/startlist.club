@@ -1,9 +1,132 @@
+# STARTLIST.CLUB
+# Copyright (C) 2015 startlist.club
+# This file is distributed under the same license as startlist.club.
+# Jan Hebnes <jan.hebnes@gmail.com>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: startlist.club\n"
+"Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
+"POT-Creation-Date: 2015-05-29 13:19+0200\n"
+"PO-Revision-Date: 2015-05-29 13:15+0200\n"
+"Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
+"Language-Team: da <da@li.org>\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: FlightJournal.Web\Models\Location.cs:18
+msgid "Country"
+msgstr "Land"
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:9
+msgid "All flightclubs"
+msgstr "Alle Flyveklubber"
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:35
+msgid "Contact"
+msgstr "Kontakt"
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:41
+msgid "The club has no registered contact"
+msgstr "Klubben har ingen registreret kontakt"
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:48
+msgid "Notice that this is not your flightclub"
+msgstr "Bemærk dette ikke er din flyveklub"
+
+#: FlightJournal.Web\Views\Club\ClubSelector.cshtml:8
+msgid "Select a flightclub (unfiltered)"
+msgstr "Vælg Flyveklub (viser lige nu flleslisten)"
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:15
+msgid "Edit Location"
+msgstr "Rediger Landingssted"
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:48
+msgid "Back"
+msgstr "Tilbage"
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:56
+#, csharp-format
+msgid "In use on {0} records."
+msgstr "Benyttes på {0} registreringer"
+
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:47
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:50
 msgid "Day Report"
 msgstr "Dagsrapport"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:56
+msgid "Startlist"
+msgstr "Startliste"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:60
+#, csharp-format
+msgid "Startlist ({0})"
+msgstr "Startliste ({0})"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:65
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:117
+msgid "Logbook"
+msgstr "Logbog"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:73
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:47
+msgid "About startlist.club"
+msgstr "Om startlist.club"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:79
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:53
+msgid "Settings"
+msgstr "Opsætning"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:81
+msgid "Planes"
+msgstr "Fly"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:82
+msgid "Locations"
+msgstr "Steder"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:85
+msgid "Pilots"
+msgstr "Piloter"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:90
+msgid "Roles"
+msgstr "Roller"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:91
+msgid "Users"
+msgstr "Brugere"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:93
+msgid "Startmethods"
+msgstr "Startmetoder"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:94
+msgid "Clubs"
+msgstr "Klubber"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:101
+msgid "[Create relation to pilotprofile]"
+msgstr "[Opret relation til pilotprofil]"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
 msgid "About"
 msgstr "Om"
+
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:39
+msgid "Flight change history"
+msgstr "Historik over rettelser"
+
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:58
+msgid "Logout"
+msgstr "Log ud"
+
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
+msgid "Login"
+msgstr "Log ind"

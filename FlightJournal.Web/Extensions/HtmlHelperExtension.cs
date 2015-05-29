@@ -1,9 +1,6 @@
-﻿using System.Web;
-using System.Web.Caching;
+﻿using System;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using System.Web.Util;
-using FlightJournal.Web.Controllers;
 using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Extensions
@@ -39,11 +36,6 @@ namespace FlightJournal.Web.Extensions
             {
                 return da;
             }
-            return Internationalization.GetText(en, Internationalization.LanguageCode);
-        }
-
-        public static string _(this HtmlHelper htmlHelper, string en)
-        {
             return Internationalization.GetText(en, Internationalization.LanguageCode);
         }
     }

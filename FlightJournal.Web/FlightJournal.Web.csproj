@@ -204,6 +204,7 @@
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
+    <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
       <DependentUpon>201408171336169_InitialDatabaseCreation.cs</DependentUpon>
@@ -247,9 +248,8 @@
     <Compile Include="Models\PilotViewModels.cs" />
     <Compile Include="Translations\Internationalization.cs" />
     <Compile Include="Translations\Localization.cs" />
+    <Compile Include="Translations\LocalizedDisplayNameAttribute.cs" />
     <Compile Include="Translations\Message.cs" />
-    <Compile Include="Translations\Messages.cs" />
-    <Compile Include="Translations\UserLanguages.cs" />
     <Compile Include="Validators\EmailValidator.cs" />
     <Compile Include="Validators\MobilNumberValidator.cs" />
     <Compile Include="Validators\ClubValidator.cs" />
@@ -428,7 +428,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Club\ClubSelector.cshtml" />
     <Content Include="Views\Club\Create.cshtml" />
     <Content Include="Views\Club\Delete.cshtml" />
@@ -524,14 +526,14 @@
     <Content Include="Views\About\License.cshtml" />
     <Content Include="Views\Language\LanguageNotSupported.cshtml" />
     <Content Include="Views\Shared\_LanguagePartial.cshtml" />
+    <Content Include="Translations\da\LC_MESSAGES\messages.po" />
+    <Content Include="Translations\en\LC_MESSAGES\messages.po" />
+    <Content Include="Translations\messages.pot" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Translations\da\" />
-    <Folder Include="Translations\en\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

@@ -6,7 +6,7 @@
 @using (Html.BeginForm("SetCurrentClub", "Club", FormMethod.Post))
 {
     <select name="shortName" onchange="submit()" class="btn btn-default">
-        <option value="">@Html.DisplayUserLanguage("All flightclubs", da: "Alle flyveklubber") </option>
+        <option value="">@_("All flightclubs") </option>
         @foreach (var item in Model)
         {
             <option value="@Html.DisplayFor(modelItem => item.ShortName)" @{ if (Request.Club().ShortName == item.ShortName) { <text> selected</text> }}>
@@ -32,18 +32,18 @@ else
     if (Request.Club().ContactInformation != null)
     {
         <p>
-            <span>@Html.DisplayUserLanguage("Contact", da: "Kontakt"): @Request.Club().ContactInformation</span>
+            <span>@_("Contact"): @Request.Club().ContactInformation</span>
         </p>
     }
     else
     {
         <p>
-            <span>@Html.DisplayUserLanguage("The club has no registered contact", da: "Klubben har ingen registreret kontakt person").</span>
+            <span>@_("The club has no registered contact").</span> @*, da: "Klubben har ingen registreret kontakt person"*@
         </p>
     }
 }
 
 @if (Request.IsClub() && User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
 {
-    <div class="alert alert-danger"> <span class="glyphicon glyphicon-alert"></span> @Html.DisplayUserLanguage("Notice that this is not your flightclub", da: "Bemærk at dette ikke er din flyveklub")</div>
+    <div class="alert alert-danger"> <span class="glyphicon glyphicon-alert"></span> @_("Notice that this is not your flightclub")</div> @*, da: "Bemærk at dette ikke er din flyveklub"*@
 }

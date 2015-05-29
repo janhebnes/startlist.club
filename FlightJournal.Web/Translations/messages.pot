@@ -1,9 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: startlist.club\n"
+"Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
+"POT-Creation-Date: 2015-05-29 13:21+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: FlightJournal.Web\Models\Location.cs:18
+msgid "Country"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:9
+msgid "All flightclubs"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:35
+msgid "Contact"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:41
+msgid "The club has no registered contact"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:48
+msgid "Notice that this is not your flightclub"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\ClubSelector.cshtml:8
+msgid "Select a flightclub (unfiltered)"
+msgstr ""
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:15
+msgid "Edit Location"
+msgstr ""
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:48
+msgid "Back"
+msgstr ""
+
+#: FlightJournal.Web\Views\Location\Edit.cshtml:56
+#, csharp-format
+msgid "In use on {0} records."
+msgstr ""
+
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:47
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:50
 msgid "Day Report"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:56
+msgid "Startlist"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:60
+#, csharp-format
+msgid "Startlist ({0})"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:65
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:117
+msgid "Logbook"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:73
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:47
+msgid "About startlist.club"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:79
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:53
+msgid "Settings"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:81
+msgid "Planes"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:82
+msgid "Locations"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:85
+msgid "Pilots"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:90
+msgid "Roles"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:91
+msgid "Users"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:93
+msgid "Startmethods"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:94
+msgid "Clubs"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:101
+msgid "[Create relation to pilotprofile]"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
 msgid "About"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:39
+msgid "Flight change history"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:58
+msgid "Logout"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
+msgid "Login"
 msgstr ""
