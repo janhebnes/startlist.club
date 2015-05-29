@@ -6,16 +6,7 @@ namespace FlightJournal.Web.Translations
     /// <summary>
     /// Insert into Views\Web.config section system.web.webPages.razor override pages pageBaseType with FlightJournal.Web.Translations.LocalizedWebViewPage
     /// </summary>
-    /// <remarks>We need to override both with and without TModel for not breaking functionality</remarks>
-    public abstract class LocalizedWebViewPage : WebViewPage
-    {
-    }
-
-    /// <summary>
-    /// Insert into Views\Web.config section system.web.webPages.razor override pages pageBaseType with FlightJournal.Web.Translations.LocalizedWebViewPage
-    /// </summary>
-    /// <remarks>We need to override both with and without TModel for not breaking functionality</remarks>
-    public abstract class LocalizedWebViewPage<TModel> : WebViewPage<TModel> where TModel : class
+    public abstract class LocalizedWebViewPage<TModel> : WebViewPage<TModel>  
     {
         /// <summary>
         /// Localized Translation (i18n)
