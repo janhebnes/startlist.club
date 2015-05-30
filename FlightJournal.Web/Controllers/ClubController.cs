@@ -72,11 +72,11 @@ namespace FlightJournal.Web.Controllers
                         ghost.ContactInformation = club.ContactInformation;
                         ghost.ShortName = club.ShortName;
                         ghost.Name = club.Name;
-                        if (club.Website != null && club.Website.StartsWith("http://"))
+                        if (club.Website != null && (club.Website.StartsWith("http://") || club.Website.StartsWith("https://")))
                         {
                             ghost.Website = club.Website;
                         }
-                        else if (club.Website != null && !club.Website.StartsWith("http://"))
+                        else if (club.Website != null)
                         {
                             ghost.Website = "http://" + club.Website;
                         }
