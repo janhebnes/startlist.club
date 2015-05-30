@@ -66,5 +66,5 @@
 }
 else
 {
-    <li><a href="@Url.Action("Login", "Account")" id="loginLink"><span class="fa fa-sign-in"></span> @_("Login")</a></li>
+    <li><a href="@Url.Action("Login", "Account", new { returnUrl = Request.Url.AbsolutePath })" id="loginLink"><span class="fa fa-sign-in"></span> @_("Login")</a></li>
 }
