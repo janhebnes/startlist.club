@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 using FlightJournal.Web.Controllers;
+using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Models
 {
@@ -10,19 +11,19 @@ namespace FlightJournal.Web.Models
     {
         [Key]
         public int ClubId { get; set; }
-        [DisplayName("Forkortelse")]
+        [LocalizedDisplayName("Shortname")]
         public string ShortName { get; set; }
-        [DisplayName("Fulde klubnavn")]
+        [LocalizedDisplayName("Fullname")]
         public string Name { get; set; }
 
-        [DisplayName("Sted")]
+        [LocalizedDisplayName("Location")]
         public int LocationId { get; set; }
         public virtual Location Location { get; set; }
 
-        [DisplayName("Website")]
+        [LocalizedDisplayName("Website")]
         public string Website { get; set; }
 
-        [DisplayName("Kontaktoplysninger")]
+        [LocalizedDisplayName("Contact information")]
         public string ContactInformation { get; set; }
 
 
@@ -45,6 +46,7 @@ namespace FlightJournal.Web.Models
         /// <summary>
         /// Returns the country based on the associated location
         /// </summary>
+        [LocalizedDisplayName("Country")]
         public string Country
         {
             get

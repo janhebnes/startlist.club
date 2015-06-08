@@ -40,3 +40,5 @@ rem 	to 	FlightJournal.Web\Translations\LANG\LC_MESSAGES\messages.po
 rem 	and add line for msgmerge.exe that handles merging changes to pot into existing LANG messages.po
 
 rem Notice that omitting to set charset e.g. "Content-Type: text/plain; charset=iso-8859-1\n" in the target po file might erase special charaters when running msgmerge 
+
+pause

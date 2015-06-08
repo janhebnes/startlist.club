@@ -5,6 +5,7 @@ using System.Web;
 using System.Xml.Serialization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Models
 {
@@ -12,18 +13,27 @@ namespace FlightJournal.Web.Models
     {
         public int PilotId { get; set; }
         [Required]
+        [LocalizedDisplayName("Pilot name")]
         public string Name { get; set; }
+        [LocalizedDisplayName("Union id")]
         public string UnionId { get; set; }
+        [LocalizedDisplayName("Club id")]
         public string MemberId { get; set; }
+        [LocalizedDisplayName("Mobil number")]
         public string MobilNumber { get; set; }
+        [LocalizedDisplayName("Email")]
         public string Email { get; set; }
         
         public int ClubId { get; set; }
+        [LocalizedDisplayName("Club")]
         public virtual Club Club { get; set; }
-
+        
+        [LocalizedDisplayName("Note")]
         public string Note { get; set; }
+        [LocalizedDisplayName("Exit date")]
         public DateTime? ExitDate { get; set; }
 
+        [LocalizedDisplayName("Pilot status")]
         public PilotStatusType PilotStatus { get; set; }
 
         /// <summary>

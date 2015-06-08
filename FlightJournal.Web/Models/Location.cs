@@ -13,13 +13,19 @@ namespace FlightJournal.Web.Models
             LastUpdatedTimestamp = DateTime.Now;
         }
         public int LocationId { get; set; }
+        [LocalizedDisplayName("Location Name")]
         public string Name { get; set; }
+        [LocalizedDisplayName("ICAO")]
         public string ICAO { get; set; }
         [LocalizedDisplayName("Country")]
         public string Country { get; set; } // ISO Alpha-2 code based on https://www.iso.org/obp/ui/#search
+        [LocalizedDisplayName("Created")]
         public DateTime CreatedTimestamp { get; set; }
+        [LocalizedDisplayName("Created by")]
         public string CreatedBy { get; set; }
+        [LocalizedDisplayName("Last updated")]
         public DateTime LastUpdatedTimestamp { get; set; }
+        [LocalizedDisplayName("Last updated by")]
         public string LastUpdatedBy { get; set; }
         public override string ToString()
         {

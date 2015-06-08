@@ -25,7 +25,7 @@ namespace FlightJournal.Web.Models
         }
         [Key]
         public Guid FlightId { get; set; }
-        [DisplayName("Dato")]
+        [LocalizedDisplayName("Date")]
         [DataType(DataType.Date)]
         public DateTime Date
         {
@@ -46,7 +46,7 @@ namespace FlightJournal.Web.Models
                     throw new ArgumentOutOfRangeException("DateTime is not a UTC Date set at 00:00:00 must be submitted, date: " + m_Date.ToString() + " value:" + value.ToString() + " universaltime: " + value.ToUniversalTime().ToString());
             }
         }
-        [DisplayName("Startet")]
+        [LocalizedDisplayName("Departure")]
         [DataType(DataType.Time)]
         public DateTime? Departure
         {
@@ -60,7 +60,7 @@ namespace FlightJournal.Web.Models
                     this.m_Departure = new DateTime(this.Date.Year, this.Date.Month, this.Date.Day, m_Departure.Value.Hour, m_Departure.Value.Minute, m_Departure.Value.Second);
             }
         }
-        [DisplayName("Landet")]
+        [LocalizedDisplayName("Landing")]
         [DataType(DataType.Time)]
         public DateTime? Landing
         {
@@ -103,61 +103,62 @@ namespace FlightJournal.Web.Models
                 }
             }
         }
-        [DisplayName("Antal")]
+        [LocalizedDisplayName("Landing Count")]
         [Required]
         public int LandingCount { get; set; }
 
-        [DisplayName("Fly")]
+        [LocalizedDisplayName("Plane")]
         [Required]
         public int PlaneId { get; set; }
         public virtual Plane Plane { get; set; }
 
-        [DisplayName("Pilot")]
+        [LocalizedDisplayName("Pilot")]
         [Required]
         public int PilotId { get; set; }
         public virtual Pilot Pilot { get; set; }
         
         //Pilot function time (copilot/instructor or passenger)
 
-        [DisplayName("Bagsæde")]
+        [LocalizedDisplayName("Co-Pilot")]
         public int? PilotBackseatId { get; set; }
         public virtual Pilot PilotBackseat { get; set; }
 
-        //PilotBackseat function time
+        //PilotBackseat function Co-Pilot / Instructor / Passenger 
+        //PilotBackseat Name
 
-        [DisplayName("Start metode")]
+        [LocalizedDisplayName("Take-off method")]
         [Required]
         public int StartTypeId { get; set; }
         public virtual StartType StartType { get; set; }
 
-        [DisplayName("Startsted")]
+        [LocalizedDisplayName("Take-off")]
         public int StartedFromId { get; set; }
         [ForeignKey("StartedFromId")]
         public virtual Location StartedFrom { get; set; }
 
-        [DisplayName("Landingssted")]
+        [LocalizedDisplayName("Landing")]
         public int? LandedOnId { get; set; }
 
         [ForeignKey("LandedOnId")]
         public virtual Location LandedOn { get; set; }
 
-        [DisplayName("Tacho start")]
+        [LocalizedDisplayName("Tacho Departure")]
         public double? TachoDeparture { get; set; }
 
-        [DisplayName("Tacho slut")]
+        [LocalizedDisplayName("Tacho Landing")]
         public double? TachoLanding { get; set; }
-        
-        [DisplayName("Opgave km")]
+
+        [LocalizedDisplayName("Task Distance")]
         public double? TaskDistance { get; set; }
 
-        [DisplayName("Note")]
+        [LocalizedDisplayName("Description")]
         public string Description { get; set; }
         [XmlIgnore]
         public virtual ICollection<Note> Notes { get; set; }
         //[XmlIgnore]
         //public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
 
-        [DisplayName("Betaler")]
+        [LocalizedDisplayName("Billing account")]
         public int BetalerId { get; set; }
         public virtual Pilot Betaler { get; set; }
 
@@ -165,10 +166,13 @@ namespace FlightJournal.Web.Models
         public double FlightCost { get; set; }
         public double TachoCost { get; set; }
 
+        [LocalizedDisplayName("Deleted")]
         public DateTime? Deleted { get; set; }
 
         [Required]
+        [LocalizedDisplayName("Last updated")]
         public DateTime LastUpdated { get; set; }
+        [LocalizedDisplayName("Last updated by")]
         public string LastUpdatedBy { get; set; }
 
         public int RecordKey { get; set; }
@@ -214,11 +218,13 @@ namespace FlightJournal.Web.Models
             
         }
 
+        [LocalizedDisplayName("Billing Amount")]
         public double TotalCost()
         {
             return this.FlightCost + this.StartCost + this.TachoCost;
         }
 
+        [LocalizedDisplayName("Billing Tacho Amount")]
         public double TachoCount()
         {
             if (this.TachoLanding.HasValue && this.TachoDeparture.HasValue && this.TachoLanding.Value > this.TachoDeparture.Value)
@@ -234,6 +240,7 @@ namespace FlightJournal.Web.Models
         /// <returns>
         /// Timespan if not zero
         /// </returns>
+        [LocalizedDisplayName("Duration")]
         public TimeSpan FlightTime()
         {
             if (this.Departure.HasValue && this.Landing.HasValue && this.Landing > this.Departure)

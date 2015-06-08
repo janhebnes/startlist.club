@@ -13,6 +13,7 @@ using System.Data.SqlTypes;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
+using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Models
 {
@@ -26,12 +27,13 @@ namespace FlightJournal.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
-
+        [LocalizedDisplayName("Bound to PilotId")]
         public string BoundToPilotId { get; set; }
-        [DisplayName("LastLogon")]
+        [LocalizedDisplayName("Last logon")]
         public DateTime? LastLogonTimeStamp { get; set; }
 
         [NotMapped]
+        [LocalizedDisplayName("Pilot")]
         public Pilot Pilot
         {
             get
