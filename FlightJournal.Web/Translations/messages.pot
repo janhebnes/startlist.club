@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2015-06-08 23:08+0200\n"
+"POT-Creation-Date: 2015-06-08 23:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -307,6 +307,8 @@ msgstr ""
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:166
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:166
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
 msgid "Delete"
 msgstr ""
 
@@ -319,6 +321,9 @@ msgstr ""
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:176
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:176
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:176
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:58
 msgid "Edit"
 msgstr ""
 
@@ -469,5 +474,57 @@ msgid "Login"
 msgstr ""
 
 #: FlightJournal.Web\Views\StartType\Create.cshtml:48
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:41
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:51
 msgid "Back to List"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
+msgid "Create"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:11
+msgid "Create a new account."
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:34
+msgid "Select User Role"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:9
+msgid "Are you sure you want to delete this User?"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:59
+msgid "Details"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:10
+msgid "User"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:21
+msgid "List of roles for this user"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:25
+msgid "No roles found for this user."
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:12
+msgid "Edit User Form"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:4
+msgid "User administration"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:10
+msgid "Create New"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
+msgid "unconfirmed"
 msgstr ""

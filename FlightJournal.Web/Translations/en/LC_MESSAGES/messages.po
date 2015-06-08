@@ -1,9 +1,511 @@
+#: FlightJournal.Web\Models\Club.cs:14 FlightJournal.Web\Models\Plane.cs:28
+#: FlightJournal.Web\Models\StartType.cs:12
+msgid "Shortname"
+msgstr ""
+
+#: FlightJournal.Web\Models\Club.cs:16
+msgid "Fullname"
+msgstr ""
+
+#: FlightJournal.Web\Models\Club.cs:19
+msgid "Location"
+msgstr ""
+
+#: FlightJournal.Web\Models\Club.cs:23
+msgid "Website"
+msgstr ""
+
+#: FlightJournal.Web\Models\Club.cs:26
+msgid "Contact information"
+msgstr ""
+
+#: FlightJournal.Web\Models\Club.cs:49 FlightJournal.Web\Models\Location.cs:20
+msgid "Country"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:28
+msgid "Date"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:49
+msgid "Departure"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:63
+#: FlightJournal.Web\Models\Flight.cs:139
+msgid "Landing"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:106
+msgid "Landing Count"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:110
+msgid "Plane"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:115
+#: FlightJournal.Web\Models\IdentityModels.cs:36
+msgid "Pilot"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:122
+msgid "Co-Pilot"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:129
+msgid "Take-off method"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:134
+msgid "Take-off"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:145
+msgid "Tacho Departure"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:148
+msgid "Tacho Landing"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:151
+msgid "Task Distance"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:154
+#: FlightJournal.Web\Models\PilotLogEntry.cs:23
+#: FlightJournal.Web\Models\PilotStatusType.cs:12
+msgid "Description"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:161
+msgid "Billing account"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:169
+msgid "Deleted"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:173
+#: FlightJournal.Web\Models\Location.cs:26
+#: FlightJournal.Web\Models\Plane.cs:61
+msgid "Last updated"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:175
+#: FlightJournal.Web\Models\Location.cs:28
+#: FlightJournal.Web\Models\Plane.cs:63
+msgid "Last updated by"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:221
+msgid "Billing Amount"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:227
+msgid "Billing Tacho Amount"
+msgstr ""
+
+#: FlightJournal.Web\Models\Flight.cs:243
+msgid "Duration"
+msgstr ""
+
+#: FlightJournal.Web\Models\IdentityModels.cs:30
+msgid "Bound to PilotId"
+msgstr ""
+
+#: FlightJournal.Web\Models\IdentityModels.cs:32
+msgid "Last logon"
+msgstr ""
+
+#: FlightJournal.Web\Models\Location.cs:16
+msgid "Location Name"
+msgstr ""
+
+#: FlightJournal.Web\Models\Location.cs:18
+msgid "ICAO"
+msgstr ""
+
+#: FlightJournal.Web\Models\Location.cs:22
+#: FlightJournal.Web\Models\Plane.cs:57
+msgid "Created"
+msgstr ""
+
+#: FlightJournal.Web\Models\Location.cs:24
+#: FlightJournal.Web\Models\Plane.cs:59
+msgid "Created by"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:16
+msgid "Pilot name"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:18
+msgid "Union id"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:20
+msgid "Club id"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:22
+#: FlightJournal.Web\Models\PilotViewModels.cs:20
+msgid "Mobil number"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:24
+#: FlightJournal.Web\Models\PilotViewModels.cs:13
+msgid "Email"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:28
+#: FlightJournal.Web\Models\PilotStatusType.cs:16
+#: FlightJournal.Web\Models\StartType.cs:18
+msgid "Club"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:31 FlightJournal.Web\Models\Plane.cs:41
+msgid "Note"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:33 FlightJournal.Web\Models\Plane.cs:51
+msgid "Exit date"
+msgstr ""
+
+#: FlightJournal.Web\Models\Pilot.cs:36
+msgid "Pilot status"
+msgstr ""
+
+#: FlightJournal.Web\Models\PilotLogEntry.cs:21
+msgid "Lesson"
+msgstr ""
+
+#: FlightJournal.Web\Models\PilotStatusType.cs:10
+msgid "Pilotstatus Name"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:19
+msgid "Aircraft Registration"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:22
+msgid "Competition Number"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:32
+msgid "Aircraft Type"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:34
+msgid "Aircraft Model"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:36
+msgid "Aircraft Class"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:39
+msgid "Aircraft Owner"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:45
+msgid "Seats"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:48
+msgid "Engines"
+msgstr ""
+
+#: FlightJournal.Web\Models\Plane.cs:54
+msgid "Default Take-off method"
+msgstr ""
+
+#: FlightJournal.Web\Models\StartType.cs:14
+msgid "Name"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:9
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:9
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:9
+msgid "All flightclubs"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:35
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:35
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:35
+msgid "Contact"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:41
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:41
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:41
+msgid "The club has no registered contact"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:48
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Club\ClubPresentation.cshtml:48
+#: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:48
+msgid "Notice that this is not your flightclub"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Club\ClubSelector.cshtml:8
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Club\ClubSelector.cshtml:8
+#: FlightJournal.Web\Views\Club\ClubSelector.cshtml:8
+msgid "Select a flightclub (unfiltered)"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Disable.cshtml:7
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Disable.cshtml:7
+#: FlightJournal.Web\Views\Flight\Disable.cshtml:7
+msgid "Confirm deletion"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Disable.cshtml:17
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:20
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:159
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:48
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Disable.cshtml:17
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:20
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:159
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:48
+#: FlightJournal.Web\Views\Flight\Disable.cshtml:17
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:20
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:159
+#: FlightJournal.Web\Views\Location\Edit.cshtml:48
+msgid "Back"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:19
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:170
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:19
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:170
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:19
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:170
+msgid "Undo Delete"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
+msgid "Delete"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:173
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:173
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:173
+msgid "Delete permanently"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:176
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:176
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:176
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:58
+msgid "Edit"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:179
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:179
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:179
+msgid "Clone"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:180
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:180
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:180
+msgid "Copy"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:15
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:15
+#: FlightJournal.Web\Views\Location\Edit.cshtml:15
+msgid "Edit Location"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:56
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:56
+#: FlightJournal.Web\Views\Location\Edit.cshtml:56
+#, csharp-format
+msgid "In use on {0} records."
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:47
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:50
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:47
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:50
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:47
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:50
 msgid "Day Report"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:56
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:56
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:56
+msgid "Startlist"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:60
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:60
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:60
+#, csharp-format
+msgid "Startlist ({0})"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:65
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:117
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:65
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:117
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:65
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:117
+msgid "Logbook"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:73
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:47
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:73
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:47
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:73
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:47
+msgid "About startlist.club"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:79
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:53
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:79
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:53
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:79
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:53
+msgid "Settings"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:81
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:81
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:81
+msgid "Planes"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:82
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:82
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:82
+msgid "Locations"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:85
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:85
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:85
+msgid "Pilots"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:90
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:90
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:90
+msgid "Roles"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:91
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:91
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:91
+msgid "Users"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:93
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:93
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:93
+msgid "Startmethods"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:94
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:94
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:94
+msgid "Clubs"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:101
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:101
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:101
+msgid "[Create relation to pilotprofile]"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:132
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:132
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:132
 msgid "About"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:39
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:39
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:39
+msgid "Flight change history"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:58
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:58
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:58
+msgid "Logout"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:69
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:69
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
+msgid "Login"
+msgstr ""
+
+#: FlightJournal.Web\Views\StartType\Create.cshtml:48
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:41
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:51
+msgid "Back to List"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
+msgid "Create"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:11
+msgid "Create a new account."
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:34
+msgid "Select User Role"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:9
+msgid "Are you sure you want to delete this User?"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:59
+msgid "Details"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:10
+msgid "User"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:21
+msgid "List of roles for this user"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:25
+msgid "No roles found for this user."
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:12
+msgid "Edit User Form"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:4
+msgid "User administration"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:10
+msgid "Create New"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
+msgid "unconfirmed"
 msgstr ""

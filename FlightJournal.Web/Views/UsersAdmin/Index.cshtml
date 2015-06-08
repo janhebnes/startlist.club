@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.ApplicationUser>
 
 @{
-    ViewBag.Title = "User administration";
+    ViewBag.Title = _("User administration");
 }
 
-<h2>User administration</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default"})
+    @Html.ActionLink(_("Create New"), "Create", null, new { @class = "btn btn-default"})
 </p>
 <table class="tablesorter table table-striped table-hover table-condensed">
     <thead>
@@ -19,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th>
-                Klub
+                @Html.DisplayNameFor(model => model.Pilot.Club)
             </th>
             <th>
-                Pilot
+                @Html.DisplayNameFor(model => model.Pilot)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastLogonTimeStamp)
@@ -39,7 +39,7 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                     @if (!item.EmailConfirmed)
                     {
-                        @: <strong>[unconfirmed]</strong>
+                        @: <strong>[@_("unconfirmed")]</strong>
                 }
                 </td>
                 <td>
@@ -55,13 +55,12 @@
                     @Html.DisplayFor(modelItem => item.LastLogonTimeStamp)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.Id }) |
+                    @Html.ActionLink(_("Details"), "Details", new { id = item.Id }) |
+                    @Html.ActionLink(_("Delete"), "Delete", new { id = item.Id })
                 </td>
             </tr>
         }
-
 </table>
 @section scripts
 {

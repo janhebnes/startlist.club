@@ -1,13 +1,13 @@
 ﻿@model FlightJournal.Web.Models.ApplicationUser
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = _("Details");
 }
 
-<h2>Details.</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>User</h4>
+    <h4>@_("User")</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -18,11 +18,11 @@
         </dd>
     </dl>
 </div>
-<h4>List of roles for this user</h4>
+<h4>@_("List of roles for this user")</h4>
 @if (ViewBag.RoleNames.Count == 0)
 {
     <hr />
-    <p>No roles found for this user.</p>
+    <p>@_("No roles found for this user.")</p>
 }
 
 <table class="table">
@@ -37,8 +37,8 @@
     }
 </table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(_("Edit"), "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(_("Back to List"), "Index")
 </p>
 
 

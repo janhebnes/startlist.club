@@ -30,8 +30,14 @@ for /r . %%g in (*.cs,*.cshtml) do (
 )
 
 rem Create a new .pot from source, place it in the Language folder, and merge with the existing .po file
-packages\Gettext.Tools.0.19.4\tools\xgettext.exe -k -k_ -kLocalizedDisplayName --msgid-bugs-address=jan.hebnes@gmail.com --package-name=startlist.club --from-code=UTF-8 -L C# -o FlightJournal.Web\Translations\messages.pot -f translation-inputfiles.txt 
-packages\Gettext.Tools.0.19.4\tools\msgmerge.exe --backup=none -U FlightJournal.Web\Translations\en\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot rem EN must always match pot file
+echo Regenerating FlightJournal.Web\Translations\messages.pot po Template file
+
+packages\Gettext.Tools.0.19.4\tools\xgettext.exe -k -k_ -kLocalizedDisplayName --msgid-bugs-address=jan.hebnes@gmail.com --package-name=startlist.club --from-code=UTF-8 -L C# -o FlightJournal.Web\Translations\messages.pot -f translation-inputfiles.txt
+
+echo Updating Translations\en\LC_MESSAGES\messages.po with po template
+packages\Gettext.Tools.0.19.4\tools\msgmerge.exe --backup=none --lang=en -U FlightJournal.Web\Translations\en\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot 
+
+echo Updating Translations\da\LC_MESSAGES\messages.po with po template
 packages\Gettext.Tools.0.19.4\tools\msgmerge.exe --backup=none --lang=da -U FlightJournal.Web\Translations\da\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot  
 
 rem begin new language by copying 

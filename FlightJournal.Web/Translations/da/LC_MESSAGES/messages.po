@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2015-06-08 23:08+0200\n"
+"POT-Creation-Date: 2015-06-08 23:30+0200\n"
 "PO-Revision-Date: 2015-06-01 09:21+0100\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
@@ -308,6 +308,8 @@ msgstr "Fortryd slet"
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:166
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:166
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
 msgid "Delete"
 msgstr "Slet"
 
@@ -320,6 +322,9 @@ msgstr "Slet permanent"
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:176
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:176
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:176
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:58
 msgid "Edit"
 msgstr "Rediger"
 
@@ -470,5 +475,60 @@ msgid "Login"
 msgstr "Log ind"
 
 #: FlightJournal.Web\Views\StartType\Create.cshtml:48
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:41
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:51
 msgid "Back to List"
 msgstr "Tilbage til listen"
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
+#, fuzzy
+msgid "Create"
+msgstr "Opret"
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:11
+msgid "Create a new account."
+msgstr "Opret en ny konto."
+
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:34
+msgid "Select User Role"
+msgstr "Vælg en bruger rolle"
+
+#: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:9
+msgid "Are you sure you want to delete this User?"
+msgstr "Er du sikker på at du vil slette denne bruger?"
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:59
+msgid "Details"
+msgstr "Detaljer"
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:10
+#, fuzzy
+msgid "User"
+msgstr "Bruger"
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:21
+msgid "List of roles for this user"
+msgstr "Liste af roller for denne bruger"
+
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:25
+msgid "No roles found for this user."
+msgstr "Ingen roller fundet for denne bruger."
+
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:12
+msgid "Edit User Form"
+msgstr "Rediger bruger"
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:4
+msgid "User administration"
+msgstr "Bruger administration"
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:10
+#, fuzzy
+msgid "Create New"
+msgstr "Opret ny"
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
+msgid "unconfirmed"
+msgstr "ikke bekræftet"
