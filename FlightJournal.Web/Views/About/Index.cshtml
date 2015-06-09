@@ -94,65 +94,39 @@
     else // Default en
     {
         <div class="col-md-6">
-            <h2>Project common startlist</h2>
-            @*<p>
-                Source code is open source and you are welog du er velkommen til at kopiere, tilpasse og bruge koden.
-                Systemet er opbygget på baggrund af erfaringerne i <a href="http://www.flyveklubben.dk">Øst-Sjællands flyveklub</a>.<br/>
-            </p>
-            <a href="@Url.Action("License")"></a>
+            <h2>A unified startlist across flightclubs</h2>
+            <p>The source code is open source. In most soaring- and flightclubs the startlist is managed in various ways and often using pen and paper.</p>
+            <p>Startlist.club is a common digital platform for soaring clubs, primarily aimed at supporting clubs in northern Europe (Scandinavia) but potentially global.</p>
+            <p>This is an attempt to combine our efforts and create a system, which we all can contribute to, use and benefit from.</p>
+            <h2>How to get started</h2>
+            <p>For more information on how to get started on using the platform please contact Jan Hebnes at <a href="mailto:jan.hebnes@gmail.com">jan.hebnes@gmail.com</a>.</p>
+            <p>You can also visit the facebook page <a href="https://www.facebook.com/startlist.club">https://www.facebook.com/startlist.club</a>.</p>
+            <h3>What does the system do?</h3>
             <p>
-                Formålet med dette projekt er, at gøre startlisten let tilgængelig, dynamisk og nem at håndtere. I mange (svæve-) flyveklubber bruger man i dag pen og papir til startlisten og der er udviklet mange forskellige systemer i klubberne. Med denne Startliste er der lavet en samlet platform til klubberne i Danmark og muligvis Norden. Dette er et forsøg på, at få alle kræfterne samlet til at lave et fælles system, som alle kan bidrage til, have gavn og glæde af.
-            </p>
-            <h2>Kom i gang med din klub</h2>
-            <p>
-                Ønsker du at gøre brug af platformen bedes et medlem fra bestyrelsen kontakte Jan Hebnes på <a href="mailto:jan.hebnes@gmail.com">jan.hebnes@gmail.com</a>.<br />
-                Har du brug for hjælpe eller har spørgsmål er du meget velkommen til at benytte facebook siden <a href="https://www.facebook.com/startlist.club">https://www.facebook.com/startlist.club</a>.
-            </p>
-            <hr />
-            <h3>
-                Hvad kan systemet
-            </h3>
-            <p>
-                Det er nu muligt at registrere dine flyvninger, se rettelseshistorik, se statistik på dag/måned/år, lave udtræk til Excel (CSV) og logge på via Facebook og Google. <br />
-                Der er mulighed for at filtrere oplysninger på baggrund af klub og fastholde klubpiloter samt flyvepladser i alle visninger og statistikker.
+                It is now possible to register your flights, see corrections, see statistics on dd/mm/yy, export to Excel (CSV) and log in to the system via Facebook and Google.<br />
+                You can filter your search on club and maintain the same pilots and airstrips in all readings and statistics.
             </p>
             <p>
-                Der er tre niveauer af rettigheder i systemet, en klub Pilot og en Editor og en Manager.<br />
-                <b>En klub pilot </b> kan registrere flyvninger samt redigere i dem op til 48 efter den registerede dato. Der er rettelseshistorik på alle ændringer.<br />
-                <b>Editor</b> kan frit redigere flyvninger efter de 48 timer og kan registrere nye fly og landingssteder, samt slette flvyninger.<br />
-                <b>Manager</b> kan ændre i klubbens registrerede piloter samt det som editor har adgang til.
+                The system has three levels of users; a Club Pilot, an Editor and a Manager.<br/>
+                <strong>The Club Pilot</strong> can register flights and edit them for 48 hours. All changes are logged in the correction history.<br />
+                <strong>The Editor</strong> can edit all flights after 48 hours, register new aircrafts and runways, and delete flights.<br />
+                <strong>The Manager</strong> has the same rights as the Editor and in addition, the Manager can edit registered club pilots profiles.<br />
             </p>
             <p>
-                <strong>Login systemet</strong> er uafhængigt af pilotlisterne så hvis du vil oprettes som pilot skal du kontakte din klubs redaktør.
+                <strong>The Login System</strong> is independent of the pilot-lists. If you want to register please contact your club Editor.
             </p>
             <p>
-                <strong>Rettelses historikken</strong> fungerer efter de samme principper som en Wiki hvor man til enhver tid kan se hvem, der har rettet hvilke flyvninger. Dette kan gøres op til 48 timer efter flyvningen fandt sted.
+                <strong>The Revision History</strong> works like a Wiki and anyone can see who edited flights at any time. This is possible until 48 hours after editing.
             </p>
             <hr />
-            <h3>
-                Tilpas systemet (til .Net udviklere)
-            </h3>
+            <h3>Adjust the system (for .Net developers)</h3>
+            <p>The solution is based on ASP.Net MVC and Entity Framework with a Code First approach to the database. It is possible to contribute to the source code through Github. The contribution is included in the source code provided that it is of general value to all clubs, and does not comprise a specialisation which introduces inconveniences to other users.</p>
+            <p>The basic idea is that the cashier of the club gets the flight-statistics once a month and club members helps editing comments for the flights continually.</p>
             <p>
-                Løsningen er baseret på ASP.Net MVC og Entity Framework med en Code First tilgang til databasen. Det er muligt at bidrage til kildekoden via projektet på Github.
-                Forudsætningen for at kode bidraget tages med i kernen er at koden har generel værdi for alle klubber og ikke udgør en specialisering, der vil gøre systemet mere besværligt for andre at bruge.
-            </p>
-            <p>
-                Grundtanken er at man kan klare sig rigtig langt ved at kassereren henter flyvestatistikken en gang om måneden og medlemmerne hjælper med de rette kommentarer til flyvningerne undervejs.
-            <p>
-                <br />
-                <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/startlist.club">
-                    <span class="glyphicon glyphicon-cloud-upload"></span> Projektsiden på Github.com
-                </a>
-                <br />
-                <em>https://github.com/janhebnes/startlist.club</em>
-            </p>*@
-            <p>
-                Needs to be translated
                 <br/>
                 <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/startlist.club">
-                    <span class="glyphicon glyphicon-cloud-upload"></span> https://github.com/janhebnes/startlist.club
+                    <span class="fa fa-github fa-3"></span> startlist.club on Github.com
                 </a>
-                <br/>
                 <em>https://github.com/janhebnes/startlist.club</em>
             </p>
         </div>
@@ -161,31 +135,34 @@
     <div class="col-md-4">
         <p>
             <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/startlist.club">
-                <span class="glyphicon glyphicon-cloud-upload"></span> Projektsiden på Github.com
+                <span class="fa fa-github fa-3"></span> startlist.club on Github.com
             </a><em>https://github.com/janhebnes/startlist.club</em>
         </p>
 
         @if (!Request.IsAuthenticated)
         {
             <div class="alert alert-info">
-                <h4>Vælg flyveklub</h4>
+                <h4>@_("Choose Flightclub")</h4>
                 @Html.Action("ClubPresentation", "Club")
             </div>
         }
 
-        <div class="alert alert-info">
-            <h4>TODO 2015 (post-release)</h4>
-            #TODO: Pilot redigering udvides så man kan vælge kode og om der skal sendes bruger oplysninger til personen (verify email slår automatisk til).<br />
-            #TODO: FlightControl > PopulateViewBag > skal tilføje piloter når de er tilknyttet også selv om de er filtreret bort af klub valg.<br/>
-            #TODO: Trimme redigering af flyvningerne så pilot på tværs af klubberne<br/>
-            #TODO: Introducere at man kan navigere i startlisten via kalender dage udover tidligere.<br/>
-            #TODO: Fly administration mangler review<br/>
-            #TODO: Validere proces for administrator med administration af managere<br/>
-            #TODO: Validere proces for editor med administration af landingspladser og fly<br/>
-            #TODO: Introducere redigering af ExitDate på fly så de forsvinder fra listen, men ikke fra systemet<br/>
-            #TODO: Introducere ExitDate på medlemmer så de forsvinder fra listen, men ikke fra systemet<br/>
-            #TODO: Historik over rettelser skal starte med filter kun relateret til egne flyvninger eller rettelser og så udvides hvis man vil se mere.<br/>
-        </div>
+        @if (User.IsAdministrator())
+        {
+            <div class="alert alert-info">
+                <h4>IDEAS 2015 (post-release)</h4>
+                #TODO: Pilot redigering udvides så man kan vælge kode og om der skal sendes bruger oplysninger til personen (verify email slår automatisk til).<br />
+                #TODO: FlightControl > PopulateViewBag > skal tilføje piloter når de er tilknyttet også selv om de er filtreret bort af klub valg.<br />
+                #TODO: Trimme redigering af flyvningerne så pilot på tværs af klubberne<br />
+                #TODO: Introducere at man kan navigere i startlisten via kalender dage udover tidligere.<br />
+                #TODO: Fly administration mangler review<br />
+                #TODO: Validere proces for administrator med administration af managere<br />
+                #TODO: Validere proces for editor med administration af landingspladser og fly<br />
+                #TODO: Introducere redigering af ExitDate på fly så de forsvinder fra listen, men ikke fra systemet<br />
+                #TODO: Introducere ExitDate på medlemmer så de forsvinder fra listen, men ikke fra systemet<br />
+                #TODO: Historik over rettelser skal starte med filter kun relateret til egne flyvninger eller rettelser og så udvides hvis man vil se mere.<br />
+            </div>
+        }
 
         @switch (Request.Url.Host)
         {
