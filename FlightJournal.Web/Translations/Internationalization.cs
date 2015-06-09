@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 
 namespace FlightJournal.Web.Translations
@@ -150,34 +149,37 @@ namespace FlightJournal.Web.Translations
         {
             get
             {
-                if (System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] != null)
-                    return System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] as string;
+                if (HttpContext.Current == null)
+                    return string.Empty;
+
+                if (HttpContext.Current.Items[Settings.LanguageCodeCookieKey] != null)
+                    return HttpContext.Current.Items[Settings.LanguageCodeCookieKey] as string;
 
                 // Fetch from cookie value if set
-                if (System.Web.HttpContext.Current.Request.Cookies[Internationalization.Settings.LanguageCodeCookieKey] != null)
+                if (HttpContext.Current.Request.Cookies[Settings.LanguageCodeCookieKey] != null)
                 {
-                    if (Localizations.ContainsKey(System.Web.HttpContext.Current.Request.Cookies[Internationalization.Settings.LanguageCodeCookieKey].Value))
+                    if (Localizations.ContainsKey(HttpContext.Current.Request.Cookies[Settings.LanguageCodeCookieKey].Value))
                     {
-                        System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] = System.Web.HttpContext.Current.Request.Cookies[Internationalization.Settings.LanguageCodeCookieKey].Value.ToLower();
-                        return System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] as string;
+                        HttpContext.Current.Items[Settings.LanguageCodeCookieKey] = HttpContext.Current.Request.Cookies[Settings.LanguageCodeCookieKey].Value.ToLower();
+                        return HttpContext.Current.Items[Settings.LanguageCodeCookieKey] as string;
                     }
                 }
 
                 // Select from browser
-                System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] = Internationalization.GetBestLanguage(HttpContext.Current.Request, Internationalization.Settings.WorkingLanguage);
+                HttpContext.Current.Items[Settings.LanguageCodeCookieKey] = GetBestLanguage(HttpContext.Current.Request, Settings.WorkingLanguage);
 
-                return System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] as string;
+                return HttpContext.Current.Items[Settings.LanguageCodeCookieKey] as string;
             }
             set
             {
                 if (Localizations.ContainsKey(value.ToLower()))
                 {
-                    HttpCookie cookie = new HttpCookie(Internationalization.Settings.LanguageCodeCookieKey);
+                    HttpCookie cookie = new HttpCookie(Settings.LanguageCodeCookieKey);
                     cookie.Value = value.ToLower();
                     cookie.Expires = DateTime.Now.AddMonths(36);
-                    System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
+                    HttpContext.Current.Response.Cookies.Add(cookie);
                 }
-                System.Web.HttpContext.Current.Items[Internationalization.Settings.LanguageCodeCookieKey] = value.ToLower();
+                HttpContext.Current.Items[Settings.LanguageCodeCookieKey] = value.ToLower();
             }
         }
 

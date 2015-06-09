@@ -108,12 +108,12 @@
                 Flyvetid
             </td>
             <td align="right">
-                @Model.Flights.ToList().Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                @Model.Flights.ToList().Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
             </td>
             @for (int i = 1; i <= 12; i++)
             {
                 <td align="right">
-                    @Model.Flights.Where(f => f.Date.Month == i).ToList().Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                    @Model.Flights.Where(f => f.Date.Month == i).ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
             }
         </tr>
@@ -200,7 +200,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                    @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -209,7 +209,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                     </td>
                 }
             </tr>
@@ -226,7 +226,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                    @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -235,7 +235,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()    
+                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()    
                     </td>
                 }
             </tr>
@@ -282,7 +282,7 @@
                                 @item.Count
                             </td>
                             <td align="right">
-                                @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                                @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                             </td>
                         </tr>
                     }
@@ -326,7 +326,7 @@
                                 @item.Count
                             </td>
                             <td align="right">
-                                @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                                @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                             </td>
                         </tr>
                     }

@@ -23,7 +23,6 @@
         @if (Request.IsPilot())
         {
             @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "btn btn-info", type = "button" })
-            @*@Html.ActionLink("Importer eksisterende flyvedata", "Import")*@
         }
         @Html.ActionLink("Tidligere flyvninger", "Index", new { skip = ViewBag.Skip + 60 }, new { @class = "btn btn-default", type = "button" })
     </div>
@@ -70,75 +69,26 @@
                     @TruncateDate(item.Date)
                 </td>
                 <td>
-                    @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
-                    {
-                        <div class="btn-group" style="white-space: nowrap;display: flex;">
-                            @Html.ActionLink("-10 min", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            <text> </text>@Html.ActionLink("-5 min", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            <text> </text>@Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                        </div>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Departure)
-                    }
+                    @Html.DisplayFor(modelItem => item, "Departure")
                 </td>
                 <td>
-                    @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
-                    {
-                        <div class="btn-group"style="white-space: nowrap;display: flex;">
-                            @Html.ActionLink("-10 min", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            <text> </text>@Html.ActionLink("-5 min", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            <text> </text>@Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                        </div>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Landing)
-                    }
+                    @Html.DisplayFor(modelItem => item, "Landing")
                 </td>
                 <td>
-                    @if (item.Departure.HasValue && item.Landing.HasValue)
-                    {
-                        if (item.Landing.Value >= item.Departure.Value)
-                        {
-                            @((new DateTime((item.Landing.Value - item.Departure.Value).Ticks)).ToString("H:mm"));
-                        }
-                        else
-                        {
-                            <text><span class="error">Fejl: landing før start</span></text>
-                        }
-                    }
+                    @Html.DisplayFor(modelItem => item, "Duration")
                 </td>
                 <td>
-                    @item.Plane.CompetitionId
-                    @item.Plane.Registration
+                    @Html.DisplayFor(modelItem => item.Plane)
                 </td>
                 <td>
-                    @item.Pilot.Name
-                    @if (item.PilotBackseat != null)
-                    {
-                        <text>/ </text>@item.PilotBackseat.Name
-                    }
-                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                    {
-                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                    }
-                    @if ((item.Betaler == null) && (item.Pilot != null))
-                    {
-                        <text> (mangler betaler) </text>
-                    }
+                    @Html.DisplayFor(modelItem => item, "Pilots")
                 </td>
                 <td class="hidden-sm">
-                    @item.StartedFrom.Name
-                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                    {
-                        <text>/ </text>
-                        @item.LandedOn.Name
-                    }
+                    @Html.DisplayFor(modelItem => item, "StartedFrom")
+                    @Html.DisplayFor(modelItem => item, "LandedOn")
                 </td>
                 <td class="hidden-sm">
-                    @Html.Partial("DisplayTemplates/_TachoPartial", item)
+                    @Html.DisplayFor(modelItem => item, "Tacho")
                 </td>
                 <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
@@ -147,16 +97,12 @@
                     <div class="btn-group" style="display: flex;">
                         @if (User.IsPilot())
                         {
-                            bool isEditable = User.IsEditor();
-                            if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
-                            if (isEditable)
+                            if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
                             {
-                                @Html.ActionLink("Rediger", "Edit", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" }, "fa fa-pencil-square-o fa-fw")
                             }
-                            
-                            @Html.ActionLink("Kopier", "Clone", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                         }
-                        @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
+                        @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
                     </div>
                 </td>
             </tr>

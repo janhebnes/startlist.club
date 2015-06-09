@@ -3,13 +3,17 @@
 @using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.ReportViewModel
 @{
-    ViewBag.Title = "Dagsrapporter";
+    ViewBag.Title = _("Day reports");
+    
     var root = "/";
     if (Request.IsClub())
     {
         // When root Action has problems identifying that the date is allready part of the path
         root = Url.Action("Index", "Report");
     }
+
+    var weekName = _("Week");
+    
 }
 
 @section head
@@ -26,74 +30,77 @@
 {
     <script type="text/javascript">
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            function available(date) {
-                dmy = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-                @if (Model.AvailableDates != null)
-            {
-                foreach (var item in Model.AvailableDates.Keys)
+        function available(date) {
+            dmy = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            @if (Model.AvailableDates != null)
                 {
-                <text>if (dmy == "</text>@item.ToString("yyyy-M-d")<text>") return [true, "</text>@((Model.AvailableDates[item] > 20) ? "termik" : "")<text>", "</text>@Model.AvailableDates[item]<text> starter."];</text>
+                    foreach (var item in Model.AvailableDates.Keys)
+                    {
+                        @Html.Raw(string.Format("if (dmy == \"{0}\") return [true, \"{1}\", \"{2}\"];"
+                            , item.ToString("yyyy-M-d")
+                            , (Model.AvailableDates[item] > 20) ? "termik" : "" // Css class set on date field for illustrating high activity
+                            , string.Format(_("{0} starts."), Model.AvailableDates[item])));
+                    }
                 }
-            }
-                return [false, "", "ingen flyvning"];
-            }
+            return [false, "", "@_("no flying")"];
+        }
 
-            function selectDate(dmy) {
-                // Redirect page to date report
-                @if (!Request.IsClub() || string.IsNullOrWhiteSpace(Request.Club().ShortName))
+        function selectDate(dmy) {
+            // Redirect page to date report
+            @if (!Request.IsClub() || string.IsNullOrWhiteSpace(Request.Club().ShortName))
             {
                 <text>location = '/' + dmy;</text>
             }else{
                 <text>location = '/@Server.UrlPathEncode(Request.Club().ShortName)/' + dmy;</text>
             }
-            }
+        }
 
-            $("#datepicker").datepicker({
-                beforeShowDay: available,
-                maxDate: 0,
-                showWeek: true,
-                numberOfMonths: 4,
-                onSelect: selectDate,
-                firstDay: 1,
-                weekHeader: 'Uge',
-                dateFormat: "yy-mm-dd",
-                dayNamesMin: ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø']
-            });
-
-            $("#datepickertablet").datepicker({
-                beforeShowDay: available,
-                maxDate: 0,
-                showWeek: true,
-                numberOfMonths: 2,
-                onSelect: selectDate,
-                firstDay: 1,
-                weekHeader: 'Uge',
-                dateFormat: "yy-mm-dd",
-                dayNamesMin: ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø']
-            });
-
-            $("#datepickermobil").datepicker({
-                beforeShowDay: available,
-                maxDate: 0,
-                showWeek: true,
-                numberOfMonths: 1,
-                onSelect: selectDate,
-                firstDay: 1,
-                weekHeader: 'Uge',
-                dateFormat: "yy-mm-dd",
-                dayNamesMin: ['Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø']
-            });
-
-
-            $("#datepicker").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
-            $("#datepickertablet").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
-            $("#datepickermobil").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
-
-            $(".tablesorter").tablesorter();
+        $("#datepicker").datepicker({
+            beforeShowDay: available,
+            maxDate: 0,
+            showWeek: true,
+            numberOfMonths: 4,
+            onSelect: selectDate,
+            firstDay: 1,
+            weekHeader: '@weekName',
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: [@Html.Raw(_("'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'"))]
         });
-    </script>
+
+        $("#datepickertablet").datepicker({
+            beforeShowDay: available,
+            maxDate: 0,
+            showWeek: true,
+            numberOfMonths: 2,
+            onSelect: selectDate,
+            firstDay: 1,
+            weekHeader: '@weekName',
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: [@Html.Raw(_("'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'"))]
+        });
+
+        $("#datepickermobil").datepicker({
+            beforeShowDay: available,
+            maxDate: 0,
+            showWeek: true,
+            numberOfMonths: 1,
+            onSelect: selectDate,
+            firstDay: 1,
+            weekHeader: '@weekName',
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: [@Html.Raw(_("'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'"))]
+        });
+
+
+        $("#datepicker").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
+        $("#datepickertablet").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
+        $("#datepickermobil").datepicker("setDate", '@Model.Date.ToString("yyyy-MM-dd")');
+
+        $(".tablesorter").tablesorter();
+    });
+</script>
 }
 @*#HACK: for allowing the mobil view to function better we introduce this fix*@
 <div align="center" class="hidden-print" style="font-size: 0.82em">
@@ -118,6 +125,7 @@
 
 @foreach (var location in Model.DistinctLocations)
 {
+    var headerMetadata = Model.Flights.FirstOrDefault();
     <a name="@location.LocationId"></a>
     <h2>
         @location.ToString(Request.Club().Country) @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
@@ -129,25 +137,25 @@
                     #
                 </th>
                 <th>
-                    Fly
+                    @Html.DisplayNameFor(model => headerMetadata.Duration)
                 </th>
                 <th>
-                    Pilote(r)
+                    @Html.DisplayNameFor(model => headerMetadata.Plane)
                 </th>
                 <th>
-                    Start
+                    @_("Pilot(s)")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => headerMetadata.StartedFrom)
                 </th>
                 <th class="hidden-xs">
-                    Landing
-                </th>
-                <th>
-                    Flyvetid
+                    @Html.DisplayNameFor(model => headerMetadata.LandedOn)
                 </th>
                 <th class="hidden-xs hidden-sm">
-                    Tacho
+                    @Html.DisplayNameFor(model => headerMetadata.Tacho)
                 </th>
                 <th class="hidden-xs">
-                    Note
+                    @Html.DisplayNameFor(model => headerMetadata.Description)
                 </th>
                 <th class="hidden-print">
                 </th>
@@ -176,61 +184,27 @@
                         }
                         else
                         {
-                            <strong>SLETTET</strong>
+                            <span class="fa fa-trash-o"></span>
                         }
+                    </td>
+                    <td @style align="right">
+                        @Html.DisplayFor(modelItem => item, "Duration")
                     </td>
                     <td @style>
-                        <span class="hidden-xs">@item.Plane</span>
-                        <span class="visible-xs">@item.Plane.CompetitionId</span>
+                        @Html.DisplayFor(modelItem => item.Plane, "Plane")
                     </td>
                     <td @style>
-                        @item.Pilot.Name
-                        @if (item.PilotBackseat != null)
-                        {
-                            <text>/ </text>@item.PilotBackseat.Name
-
-                        }
-                        @if ((item.Betaler != null) && (item.BetalerId != item.PilotId))
-                        {
-                            <text> (Anden betaler)</text>
-                        }
-                        @if ((item.Betaler == null) && (item.Pilot != null))
-                        {
-                            <text> (mangler betaler) </text>
-                        }
+                        @Html.DisplayFor(modelItem => item, "Pilots")
                     </td>
-                    <td @style>
-                        @if (item.Departure.HasValue)
-                        {
-                            @item.Departure.Value.ToString("HH:mm");
-                        }
+                    <td @style align="right">
+                        @Html.DisplayFor(modelItem => item, "Departure")
                     </td>
-                    <td @style class="hidden-xs">
-                        @if (item.Landing.HasValue)
-                        {
-                            @item.Landing.Value.ToString("HH:mm");
-                        }
-                        @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                        {
-                            <text> </text>
-                            @item.LandedOn.Name
-                        }
-                    </td>
-                    <td @style>
-                        @if (item.Departure.HasValue && item.Landing.HasValue)
-                        {
-                            if (item.Landing.Value >= item.Departure.Value)
-                            {
-                                @(item.FlightTime().TotalHoursWithMinutesAsDecimal());
-                            }
-                            else
-                            {
-                                <text><span class="error">Fejl: landing før start</span></text>
-                            }
-                        }
+                    <td @style class="hidden-xs" align="right">
+                        @Html.DisplayFor(modelItem => item, "Landing")
+                        @Html.DisplayFor(modelItem => item, "LandedOn")
                     </td>
                     <td @style class="hidden-xs hidden-sm">
-                        @Html.Partial("DisplayTemplates/_TachoPartial", item)
+                        @Html.DisplayFor(modelItem => item, "Tacho")
                     </td>
                     <td @style class="hidden-xs">
                         @Html.DisplayFor(modelItem => item.Description, "Description")
@@ -238,28 +212,26 @@
                     <td class="hidden-print">
                         @if (Request.IsPilot())
                         {
-                            bool isEditable = User.IsEditor();
-                            if (item.Date != null && item.Date.AddDays(3) >= DateTime.Now) { isEditable = true; }
-                            if (isEditable)
+                            if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
                             {
-                                @Html.ActionLink("Rediger", "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
+                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
                             }
                         }
-                        @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
+                        @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <p style="color: silver" class="noprint">
-        <em>Rettelser kan udføres op til 48 timer efter flyvningen fandt sted.</em>
+        <em>@_("Editing is restricted after 48 hours.")</em>
     </p>
 }
 
 <br style="page-break-after: always;"/>
 
 <h2>
-    Logbøger / Fly @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
+    @_("Plane Logbooks") @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
 </h2>
 <div class="row">
     <div class="col-md-6">
@@ -267,16 +239,16 @@
             <thead>
                 <tr>
                     <th>
-                        Fly
+                        @_("Plane")
                     </th>
                     <th>
-                        Forsæde
+                        @_("Pilot")
                     </th>
                     <th>
-                        Antal
+                        @_("Count")
                     </th>
                     <th>
-                        Flyvetid
+                        @_("Duration")
                     </th>
                 </tr>
             </thead>
@@ -288,8 +260,7 @@
                 {
                     <tr>
                         <td>
-                            <span class="hidden-xs">@item.Plane</span>
-                            <span class="visible-xs">@item.Plane.CompetitionId</span>
+                            @Html.DisplayFor(modelItem => item.Plane)
                         </td>
                         <td>
                             @item.Pilot.Name
@@ -298,7 +269,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -312,16 +283,16 @@
                 <thead>
                     <tr>
                         <th>
-                            Fly
+                            @_("Plane")
                         </th>
                         <th>
-                            Bagsæde
+                            @_("Co-Pilot")
                         </th>
                         <th>
-                            Antal
+                            @_("Count")
                         </th>
                         <th>
-                            Flyvetid
+                            @_("Duration")
                         </th>
                     </tr>
                 </thead>
@@ -334,8 +305,7 @@
             {
                         <tr>
                             <td>
-                                <span class="hidden-xs">@item.Plane</span>
-                                <span class="visible-xs">@item.Plane.CompetitionId</span>
+                                @Html.DisplayFor(modelItem => item.Plane)
                             </td>
                             <td>
                                 @item.PilotBackseat.Name
@@ -344,7 +314,7 @@
                                 @item.Count
                             </td>
                             <td align="right">
-                                @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                                @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                             </td>
                         </tr>
             }
@@ -356,13 +326,13 @@
             <thead>
                 <tr>
                     <th>
-                        Fly (total)
+                        @_("Plane") @_("(total)")
                     </th>
                     <th>
-                        Antal
+                        @_("Count")
                     </th>
                     <th>
-                        Flyvetid
+                        @_("Duration")
                     </th>
                 </tr>
             </thead>
@@ -374,14 +344,13 @@
             {
                     <tr>
                         <td>
-                            <span class="hidden-xs">@item.Plane</span>
-                            <span class="visible-xs">@item.Plane.CompetitionId</span>
+                            @Html.DisplayFor(modelItem => item.Plane)
                         </td>
                         <td align="right">
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
             }
@@ -390,7 +359,7 @@
     </div>
 </div>
 <h2>
-    Logbøger / Piloter @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
+    @_("Pilot Logbooks") @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
 </h2>
 <div class="row">
     <div class="col-md-6">
@@ -398,16 +367,16 @@
             <thead>
                 <tr>
                     <th>
-                        Forsæde
+                        @_("Pilot")
                     </th>
                     <th>
-                        Fly
+                        @_("Plane")
                     </th>
                     <th>
-                        Antal
+                        @_("Count")
                     </th>
                     <th>
-                        Flyvetid
+                        @_("Duration")
                     </th>
                 </tr>
             </thead>
@@ -422,14 +391,13 @@
                             @item.Pilot.Name
                         </td>
                         <td>
-                            <span class="hidden-xs">@item.Plane</span>
-                            <span class="visible-xs">@item.Plane.CompetitionId</span>
+                            @Html.DisplayFor(modelItem => item.Plane)
                         </td>
                         <td align="right">
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -441,16 +409,16 @@
             <thead>
                 <tr>
                     <th>
-                        Bagsæde
+                        @_("Co-Pilot")
                     </th>
                     <th>
-                        Fly
+                        @_("Plane")
                     </th>
                     <th>
-                        Antal
+                        @_("Count")
                     </th>
                     <th>
-                        Flyvetid
+                        @_("Duration")
                     </th>
                 </tr>
             </thead>
@@ -465,14 +433,13 @@
                             @item.PilotBackseat.Name
                         </td>
                         <td>
-                            <span class="hidden-xs">@item.Plane</span>
-                            <span class="visible-xs">@item.Plane.CompetitionId</span>
+                            @Html.DisplayFor(modelItem => item.Plane)
                         </td>
                         <td align="right">
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f => f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -482,6 +449,6 @@
 </div>
 <br />
 <p>
-    <a href="@Path.Combine(root, Model.Date.ToString("yyyy"))" class="btn btn-primary">Statistik for @Model.Date.ToString("yyyy")</a>
-    <a href="@Path.Combine(root, Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">Statistik for @Model.Date.ToString("MMMM")</a>
+    <a href="@Path.Combine(root, Model.Date.ToString("yyyy"))" class="btn btn-primary">@Html.Raw(string.Format(_("Statistics for {0}"), Model.Date.ToString("yyyy")))</a>
+    <a href="@Path.Combine(root, Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">@Html.Raw(string.Format(_("Statistics for {0}"), Model.Date.ToString("MMMM")))</a>
 </p>

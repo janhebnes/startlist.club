@@ -1,0 +1,10 @@
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Flight
+@if (Model != null)
+{
+    @(Model.Duration.TotalHoursWithMinutesAsDecimal())
+    if (Model.Departure.HasValue && Model.Landing.HasValue && Model.Landing < Model.Departure)
+    {
+        <span class="fa fa-exclamation-triangle" style="color:red" title="@_("(ERROR) Landing time is before or Departure time")"></span>
+    }
+}

@@ -1,0 +1,5 @@
+﻿@model FlightJournal.Web.Models.Flight
+@if (Model != null && Model.LandedOn != null && Model.LandedOn.Name != Model.StartedFrom.Name)
+{
+    @Model.LandedOn.Name
+}

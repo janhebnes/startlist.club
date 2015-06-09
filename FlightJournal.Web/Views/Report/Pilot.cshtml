@@ -73,7 +73,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                    @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -82,7 +82,7 @@
                         @((count>0)?count.ToString():"")
                     </td>
                     <td align="right">
-                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                     </td>
                 }
             </tr>
@@ -99,7 +99,7 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                    @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -108,7 +108,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                     <td align="right">
-                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                        @item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                     </td>
                 }
             </tr>
@@ -155,7 +155,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -197,7 +197,7 @@
                             @item.Count
                         </td>
                         <td align="right">
-                            @item.ItemFlights.Sum(f=>f.FlightTime().Ticks).TotalHoursWithMinutesAsDecimal()
+                            @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
                 }
@@ -223,12 +223,6 @@
                 Pilote(r)
             </th>
             <th>
-                Start
-            </th>
-            <th>
-                Landing
-            </th>
-            <th>
                 Flyvetid
             </th>
             <th class="hidden-sm">
@@ -252,51 +246,26 @@
                     @item.Date.ToShortDateString()
                 </td>
                 <td>
-                    <span class="hidden-xs">@item.Plane</span>
-                    <span class="visible-xs">@item.Plane.CompetitionId</span>
+                    @Html.DisplayFor(modelItem => item.Plane)
                 </td>
                 <td>
-                    @item.Pilot.Name
-                    @if (item.PilotBackseat != null)
-                    {
-                        <text> / </text>@item.PilotBackseat.Name
-                    }
-                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                    {
-                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                    }
+                    @Html.DisplayFor(modelItem => item, "Pilots")
                 </td>
                 <td>
-                    @if (item.Departure.HasValue)
-                    {
-                        @item.Departure.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @if (item.Landing.HasValue)
-                    {
-                        @item.Landing.Value.ToString("HH:mm");
-                    }
-                </td>
-                <td>
-                    @item.FlightTime().TotalHoursWithMinutesAsDecimal()
+                    @Html.DisplayFor(modelItem => item, "Duration")
                 </td>
                 <td class="hidden-sm">
-                    @item.StartedFrom.Name
-                    @if ((item.LandedOn != null) && (item.LandedOn.Name != item.StartedFrom.Name))
-                    {
-                        <text>, </text>
-                        @item.LandedOn.Name
-                    }
+                    @Html.DisplayFor(modelItem => item, "StartedFrom")
+                    @Html.DisplayFor(modelItem => item, "LandedOn")
                 </td>
                 <td class="hidden-sm">
-                    @Html.Partial("DisplayTemplates/_TachoPartial", item)
+                    @Html.DisplayFor(modelItem => item, "Tacho")
                 </td>
                 <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
                 <td>
-                    @Html.ActionLink("Detaljer", "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
+                    @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
                 </td>
             </tr>
         }

@@ -133,12 +133,13 @@ namespace FlightJournal.Web.Models
 
         [LocalizedDisplayName("Take-off")]
         public int StartedFromId { get; set; }
+        [LocalizedDisplayName("Take-off")]
         [ForeignKey("StartedFromId")]
         public virtual Location StartedFrom { get; set; }
 
         [LocalizedDisplayName("Landing")]
         public int? LandedOnId { get; set; }
-
+        [LocalizedDisplayName("Landing")]
         [ForeignKey("LandedOnId")]
         public virtual Location LandedOn { get; set; }
 
@@ -158,7 +159,7 @@ namespace FlightJournal.Web.Models
         //[XmlIgnore]
         //public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
 
-        [LocalizedDisplayName("Billing account")]
+        [LocalizedDisplayName("Billing")]
         public int BetalerId { get; set; }
         public virtual Pilot Betaler { get; set; }
 
@@ -204,10 +205,10 @@ namespace FlightJournal.Web.Models
                     this.Betaler != null ? this.Betaler.UnionId : string.Empty,
                     this.Departure.HasValue ? this.Departure.Value.ToString("HH:mm") : string.Empty,
                     this.Landing.HasValue ? this.Landing.Value.ToString("HH:mm") : string.Empty,
-                    this.FlightTime().TotalHoursWithMinutesAsDecimal(),
+                    this.Duration.TotalHoursWithMinutesAsDecimal(),
                     this.TachoDeparture,
                     this.TachoLanding,
-                    this.TachoCount(),
+                    this.Tacho,
                     this.Description,
                     this.TaskDistance,
                     this.StartType,
@@ -218,20 +219,26 @@ namespace FlightJournal.Web.Models
             
         }
 
-        [LocalizedDisplayName("Billing Amount")]
-        public double TotalCost()
+        [LocalizedDisplayName("Cost")]
+        public double TotalCost
         {
-            return this.FlightCost + this.StartCost + this.TachoCost;
+            get
+            {
+                return this.FlightCost + this.StartCost + this.TachoCost;    
+            }
         }
 
-        [LocalizedDisplayName("Billing Tacho Amount")]
-        public double TachoCount()
+        [LocalizedDisplayName("Tacho")]
+        public double Tacho
         {
-            if (this.TachoLanding.HasValue && this.TachoDeparture.HasValue && this.TachoLanding.Value > this.TachoDeparture.Value)
+            get 
             {
-                return this.TachoLanding.Value - this.TachoDeparture.Value;
+                if (this.TachoLanding.HasValue && this.TachoDeparture.HasValue && this.TachoLanding.Value > this.TachoDeparture.Value)
+                {
+                    return this.TachoLanding.Value - this.TachoDeparture.Value;
+                }
+                return 0;
             }
-            return 0;
         }
 
         /// <summary>
@@ -241,14 +248,17 @@ namespace FlightJournal.Web.Models
         /// Timespan if not zero
         /// </returns>
         [LocalizedDisplayName("Duration")]
-        public TimeSpan FlightTime()
+        public TimeSpan Duration
         {
-            if (this.Departure.HasValue && this.Landing.HasValue && this.Landing > this.Departure)
+            get
             {
-                return this.Landing.Value - this.Departure.Value;
-            }
+                if (this.Departure.HasValue && this.Landing.HasValue && this.Landing > this.Departure)
+                {
+                    return this.Landing.Value - this.Departure.Value;
+                }
 
-            return TimeSpan.Zero;
+                return TimeSpan.Zero;    
+            }
         }
 
         /// <summary>

@@ -1,0 +1,19 @@
+﻿@model FlightJournal.Web.Models.Flight
+@if (Model.Pilot != null)
+{
+    @Model.Pilot.Name
+    if (Model.PilotBackseat != null)
+    {
+        <text>/ </text>
+        @Model.PilotBackseat.Name
+    }
+    if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
+    {
+        @Html.Raw(string.Format(" " + _("(payed by {0})"), Model.Betaler.Name))
+    }
+    if ((Model.Betaler == null) && (Model.Pilot != null))
+    {
+        <text> </text>
+        @_("(missing payer)")
+    }
+}
