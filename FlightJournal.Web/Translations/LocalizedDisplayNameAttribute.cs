@@ -9,7 +9,7 @@ namespace FlightJournal.Web.Translations
 {
     public class LocalizedDisplayNameAttribute : DisplayNameAttribute
     {
-        private string _displayName;
+        private readonly string _displayName;
 
         public LocalizedDisplayNameAttribute(string resourceId)
             : base(resourceId)
