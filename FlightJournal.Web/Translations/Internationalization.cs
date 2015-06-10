@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Web;
 
@@ -149,8 +150,9 @@ namespace FlightJournal.Web.Translations
         {
             get
             {
+                // LocalizedDisplayNameAttribute is run from applicationstart and without context. 
                 if (HttpContext.Current == null)
-                    return string.Empty;
+                    return "en"; 
 
                 if (HttpContext.Current.Items[Settings.LanguageCodeCookieKey] != null)
                     return HttpContext.Current.Items[Settings.LanguageCodeCookieKey] as string;

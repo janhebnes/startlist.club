@@ -9,13 +9,25 @@ namespace FlightJournal.Web.Translations
 {
     public class LocalizedDisplayNameAttribute : DisplayNameAttribute
     {
+        private string _displayName;
+
         public LocalizedDisplayNameAttribute(string resourceId)
-            : base(GetMessageFromResource(resourceId))
-        { }
+            : base(resourceId)
+        {
+            _displayName = resourceId;
+        }
 
         private static string GetMessageFromResource(string resourceId)
         {
             return Internationalization.GetText(resourceId, Internationalization.LanguageCode);
+        }
+
+        public override string DisplayName
+        {
+            get
+            {
+                return GetMessageFromResource(_displayName);
+            }
         }
     }
 }
