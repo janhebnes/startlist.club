@@ -204,6 +204,10 @@
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
+    <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.cs" />
+    <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.Designer.cs">
+      <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>
+    </Compile>
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -367,6 +371,7 @@
     <Content Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.sql" />
     <Content Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.sql" />
     <Content Include="Migrations\FlightContext\201505062147469_FlightVersion-Deleted-Date.sql" />
+    <Content Include="Migrations\FlightContext\201506232105012_Club-Visibility.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -570,6 +575,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201505062147469_FlightVersion-Deleted-Date.resx">
       <DependentUpon>201505062147469_FlightVersion-Deleted-Date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\201506232105012_Club-Visibility.resx">
+      <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
