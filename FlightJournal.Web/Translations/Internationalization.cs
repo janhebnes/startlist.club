@@ -53,6 +53,9 @@ namespace FlightJournal.Web.Translations
         static Internationalization()
         {
             Localizations = new Dictionary<string, Localization>();
+            if (HttpContext.Current == null)
+                return;
+
             _basePathAbsolute = HttpContext.Current.Server.MapPath(Settings.BasePath).ToLower();
 
             if (!Directory.Exists(_basePathAbsolute))
@@ -99,6 +102,11 @@ namespace FlightJournal.Web.Translations
             if (Settings.HideAllLocalizedText)
             {
                 return "";
+            }
+
+            if (HttpContext.Current == null)
+            {
+                return msgID;
             }
 
             if (!Localizations.ContainsKey(languageCode.ToLower()))
