@@ -23,6 +23,9 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Website")]
         public string Website { get; set; }
 
+        [LocalizedDisplayName("Visible in Club filter")]
+        public bool Visible { get; set; }
+
         [LocalizedDisplayName("Contact information")]
         public string ContactInformation { get; set; }
 
