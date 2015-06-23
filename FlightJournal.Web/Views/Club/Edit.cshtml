@@ -56,6 +56,15 @@
             @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Visible)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Visible)
+            @Html.ValidationMessageFor(model => model.Visible)
+        </div>
+
+
         <p>
             <input type="submit" value="Save" />
         </p>

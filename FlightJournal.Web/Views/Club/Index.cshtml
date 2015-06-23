@@ -26,6 +26,9 @@
         <th>
             @Html.LabelFor(model => Model.FirstOrDefault().Location)
         </th>
+        <th>
+            @Html.LabelFor(model => Model.FirstOrDefault().Visible)
+        </th>
         <th></th>
     </tr>
 
@@ -46,6 +49,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Visible)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ClubId }) |

@@ -33,6 +33,11 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Location)
     </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Visible)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Visible)
+    </div>
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.ClubId }) |
