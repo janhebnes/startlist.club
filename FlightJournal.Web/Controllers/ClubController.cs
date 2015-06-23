@@ -114,7 +114,7 @@ namespace FlightJournal.Web.Controllers
         [AllowAnonymous]
         public PartialViewResult ClubSelector()
         {
-            return this.PartialView(db.Clubs.OrderBy(c=>c.Name).ToList());
+            return this.PartialView(db.Clubs.Where(p=>p.Visible).OrderBy(c=>c.Name).ToList());
         }
 
         /// <summary>
