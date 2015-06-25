@@ -201,6 +201,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
+    <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />

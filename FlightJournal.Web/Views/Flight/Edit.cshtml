@@ -52,7 +52,7 @@
                     @Html.LabelFor(model => model.PlaneId)
                 </div>
                 <div class="editor-field">
-                    @Html.DropDownList("PlaneId", String.Empty)
+                    @Html.ExtendedDropDownListFor(model => model.PlaneId, (IEnumerable<ExtendedSelectListItem>)ViewBag.PlaneId, string.Empty)
                     @Html.ValidationMessageFor(model => model.PlaneId)
                 </div>
                 <div class="editor-label">

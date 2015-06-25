@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
@@ -7,7 +13,7 @@ using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Extensions
 {
-    public static class HtmlHelperExtension
+    public static partial class HtmlHelperExtension
     {
         public static MvcHtmlString MenuLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName)
         {
@@ -46,5 +52,6 @@ namespace FlightJournal.Web.Extensions
             }
             return Internationalization.GetText(en, Internationalization.LanguageCode);
         }
+        
     }
 }
