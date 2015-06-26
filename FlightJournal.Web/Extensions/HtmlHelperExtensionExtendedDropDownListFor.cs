@@ -46,31 +46,29 @@ namespace FlightJournal.Web.Extensions
         {
             string fullName = htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(name);
             if (String.IsNullOrEmpty(fullName))
-                throw new ArgumentException("No name");
+            {
+                throw new ArgumentException("no name");
+            }
 
+            bool usedViewData = false;
+
+            // If we got a null selectList, try to use ViewData to get the list of items.
             if (selectList == null)
-                throw new ArgumentException("No selectlist");
+            {
+                selectList = (IEnumerable<ExtendedSelectListItem>) GetSelectData(htmlHelper, name);
+                usedViewData = true;
+            }
 
-            object defaultValue = (allowMultiple) ? GetModelStateValue(htmlHelper, fullName, typeof(string[])) : GetModelStateValue(htmlHelper, fullName, typeof(string));
+            object defaultValue = (allowMultiple) ? htmlHelper.GetModelStateValue(fullName, typeof(string[])) : htmlHelper.GetModelStateValue(fullName, typeof(string));
 
             // If we haven't already used ViewData to get the entire list of items then we need to
             // use the ViewData-supplied value before using the parameter-supplied value.
-            if (defaultValue == null)
-                defaultValue = htmlHelper.ViewData.Eval(fullName);
-
-            if (defaultValue != null)
+            if (defaultValue == null && !String.IsNullOrEmpty(name))
             {
-                IEnumerable defaultValues = (allowMultiple) ? defaultValue as IEnumerable : new[] { defaultValue };
-                IEnumerable<string> values = from object value in defaultValues select Convert.ToString(value, CultureInfo.CurrentCulture);
-                HashSet<string> selectedValues = new HashSet<string>(values, StringComparer.OrdinalIgnoreCase);
-                List<ExtendedSelectListItem> newSelectList = new List<ExtendedSelectListItem>();
-
-                foreach (ExtendedSelectListItem item in selectList)
+                if (!usedViewData)
                 {
-                    item.Selected = (item.Value != null) ? selectedValues.Contains(item.Value) : selectedValues.Contains(item.Text);
-                    newSelectList.Add(item);
+                    defaultValue = htmlHelper.ViewData.Eval(name);
                 }
-                selectList = newSelectList;
             }
 
             // Convert each ListItem to an <option> tag
@@ -78,13 +76,14 @@ namespace FlightJournal.Web.Extensions
 
             // Make optionLabel the first item that gets rendered.
             if (optionLabel != null)
-                listItemBuilder.Append(ListItemToOption(new ExtendedSelectListItem() { Text = optionLabel, Value = String.Empty, Selected = false }));
+                listItemBuilder.Append(ListItemToOption(new ExtendedSelectListItem() { Text = optionLabel, Value = string.Empty, Selected = false }));
 
             foreach (ExtendedSelectListItem item in selectList)
+            if (defaultValue != null)
             {
                 listItemBuilder.Append(ListItemToOption(item));
             }
-
+            
             TagBuilder tagBuilder = new TagBuilder("select")
             {
                 InnerHtml = listItemBuilder.ToString()
@@ -93,7 +92,9 @@ namespace FlightJournal.Web.Extensions
             tagBuilder.MergeAttribute("name", fullName, true /* replaceExisting */);
             tagBuilder.GenerateId(fullName);
             if (allowMultiple)
+            {
                 tagBuilder.MergeAttribute("multiple", "multiple");
+            }
 
             // If there are any errors for a named field, we add the css attribute.
             ModelState modelState;
@@ -107,7 +108,7 @@ namespace FlightJournal.Web.Extensions
 
             tagBuilder.MergeAttributes(htmlHelper.GetUnobtrusiveValidationAttributes(name));
 
-            return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal));
+            return MvcHtmlString.Create(tagBuilder.ToString(TagRenderMode.Normal)); 
         }
 
         internal static string ListItemToOption(ExtendedSelectListItem item)
@@ -127,14 +128,15 @@ namespace FlightJournal.Web.Extensions
             builder.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(item.htmlAttributes));
             return builder.ToString(TagRenderMode.Normal);
         }
+
         /// <summary>
-        /// http://stackoverflow.com/questions/6967148/not-able-to-access-getmodelstatevalue-in-custom-control-in-asp-net-mvc2
+        /// private /src/System.Web.Mvc/System.Web.Mvc/HtmlHelper.cs copied here
         /// </summary>
         /// <param name="htmlHelper"></param>
         /// <param name="key"></param>
         /// <param name="destinationType"></param>
         /// <returns></returns>
-        static object GetModelStateValue(HtmlHelper htmlHelper, string key, Type destinationType)
+        private static object GetModelStateValue(this HtmlHelper htmlHelper, string key, Type destinationType)
         {
             ModelState modelState;
             if (htmlHelper.ViewData.ModelState.TryGetValue(key, out modelState))
@@ -146,6 +148,33 @@ namespace FlightJournal.Web.Extensions
             }
             return null;
         }
+
+        /// <summary>
+        /// private /src/System.Web.Mvc/Html/SelectExtensions.cs copied here
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private static IEnumerable<SelectListItem> GetSelectData(HtmlHelper htmlHelper, string name)
+        {
+            object o = null;
+            if (htmlHelper.ViewData != null)
+            {
+                o = htmlHelper.ViewData.Eval(name);
+            }
+            if (o == null)
+            {
+                throw new InvalidOperationException("Missing IEnumerable<SelectListItem>");
+            }
+            IEnumerable<SelectListItem> selectList = o as IEnumerable<SelectListItem>;
+            if (selectList == null)
+            {
+                throw new InvalidOperationException("WrongSelectDataType IEnumerable<SelectListItem>");
+            }
+            return selectList;
+        }
+
+        
 
     }
 }
