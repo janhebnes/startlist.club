@@ -7,6 +7,7 @@ namespace FlightJournal.Web
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            ConfigureOpenGliderNetworkFlightLogMonitor(app);
         }
     }
 }
