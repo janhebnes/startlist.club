@@ -37,7 +37,7 @@ Contact
 -------
 E-mail jan.hebnes@gmail.com
 
-Project https://startlist.club/about
+Project https://startlist.club/about  
 Facebook https://www.facebook.com/startlist.club  
 Trello [https://trello.com/board/flight-journal](https://trello.com/board/flight-journal/4f592a73bb5d895218126fed)
 
