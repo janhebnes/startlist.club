@@ -512,6 +512,13 @@ namespace FlightJournal.Web.Controllers
                 this.ViewBag.PilotId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
                 this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
                 this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.ClubId == clubid).OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
+
+                if (Request.Club().Location.RegisteredOgnFlightLogAirfield)
+                {
+                    // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
+                    var ognFlights = OGN.FlightLog.Client.Client.GetFlights(new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, new DateTime(2016,03,28)));
+                    this.ViewBag.OgnFlightLog = ognFlights;
+                }
             }
             else
             {
