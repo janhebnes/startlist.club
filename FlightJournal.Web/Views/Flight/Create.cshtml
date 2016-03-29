@@ -145,7 +145,10 @@
     }
     </p>
     <div>
-
+        @if (ViewBag.OgnFlightLog != null)
+        {
+            @Html.Partial("_ognFlightLog", (IEnumerable<OGN.FlightLog.Client.Models.Flight>)ViewBag.OgnFlightLog)
+        }
     </div>
 
     @section scripts

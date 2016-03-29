@@ -1,0 +1,86 @@
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Extensions
+@model IEnumerable<OGN.FlightLog.Client.Models.Flight>
+
+@helper TruncateDate(DateTime input)
+{
+    if (input.Year == DateTime.Today.Year)
+    {
+        @(input.ToString("ddd. ") + input.ToString("m"));
+    }
+    else
+    {
+        @input.ToShortDateString()
+    }
+}
+
+@{
+    ViewBag.Title = "Startlisten / OGN FlightLog / FLARM";
+    var icao = Request.Club().Location.ICAO;
+}
+<br/>
+
+<fieldset>
+    <legend>Live / OGN FlightLog / FLARM Radar</legend>
+    <a href="http://live.glidernet.org/flightlog/index.php?a=@icao">http://live.glidernet.org/flightlog/index.php?a=@icao</a>
+    <table class="table table-striped table-hover table-condensed">
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                (Moto)Glider
+            </th>
+            <th>
+                Take Off
+            </th>
+            <th>
+                Glider
+                Landing
+            </th>
+            <th>
+                Glider
+                Time
+            </th>
+            <th>
+                Plane
+                Landing
+            </th>
+            <th>
+                Plane
+                Time
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.row)
+                    <small style="color:lightgrey">@Html.DisplayFor(modelItem => item.ID)</small>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.glider)
+                    @if (!item.plane.IsEmpty())
+                    {
+                        Html.DisplayFor(modelItem => item.plane);
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.takeoff)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.glider_landing)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.glider_time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.plane_landing)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.plane_time)
+                </td>
+            </tr>
+        }
+    </table>
+</fieldset>

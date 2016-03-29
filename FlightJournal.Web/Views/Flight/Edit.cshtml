@@ -180,6 +180,10 @@
     </fieldset>
 }
 @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
+@if (ViewBag.OgnFlightLog != null)
+{
+    @Html.Partial("_ognFlightLog", (IEnumerable<OGN.FlightLog.Client.Models.Flight>)ViewBag.OgnFlightLog)
+}
 
 @section scripts
 {

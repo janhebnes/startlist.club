@@ -552,6 +552,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Duration.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\StartedFrom.cshtml" />
     <Content Include="Translations\sv\LC_MESSAGES\messages.po" />
+    <Content Include="Views\Flight\_ognFlightLog.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
