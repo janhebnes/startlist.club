@@ -16,13 +16,16 @@
     <thead>
     <tr>
         <th>
-            Land
+            @Html.DisplayNameFor(d=>d.Country)
         </th>
         <th>
-            Stednavn
+            @Html.DisplayNameFor(d => d.Name)
         </th>
         <th>
-            ICAO
+            @Html.DisplayNameFor(d => d.ICAO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(d => d.RegisteredOgnFlightLogAirfield)
         </th>
         <th></th>
     </tr>
@@ -39,6 +42,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ICAO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredOgnFlightLogAirfield)
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm">
