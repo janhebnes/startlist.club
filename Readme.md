@@ -33,6 +33,11 @@ Translation
 -----------
 Language translation is currently supported through GNU PO files located in FlightJournal.Web\Translations.
 
+License
+-------
+The MIT License (MIT) / https://opensource.org/licenses/MIT
+Copyright (c) 2011-2015 Jan Hebnes
+
 Contact
 -------
 E-mail jan.hebnes@gmail.com
