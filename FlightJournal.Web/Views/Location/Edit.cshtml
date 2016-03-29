@@ -35,6 +35,15 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.RegisteredOgnFlightLogAirfield)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RegisteredOgnFlightLogAirfield)
+            @Html.ValidationMessageFor(model => model.RegisteredOgnFlightLogAirfield)
+        </div>
+        e.g. <a href="http://live.glidernet.org/flightlog/index.php?a=EKSL">http://live.glidernet.org/flightlog/index.php?a=EKSL</a>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Country)
         </div>
         <div class="editor-field">

@@ -1,6 +1,6 @@
 ﻿@model FlightJournal.Web.Models.Flight
 @{
-    ViewBag.Title = "Opret flyvning";
+    ViewBag.Title = _("Create flight");
 }
 
 <p>
@@ -136,7 +136,7 @@
             <div class="col-md-6">
                 <div class="btn-group btn-group-lg">
                     <input type="submit" value="Opret" class="btn btn-primary" />
-                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                    <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
                 </div>
             </div>
         </div>
