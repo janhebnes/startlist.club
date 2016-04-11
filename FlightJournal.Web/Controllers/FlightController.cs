@@ -515,8 +515,7 @@ namespace FlightJournal.Web.Controllers
 
                 if (Request.Club().Location.RegisteredOgnFlightLogAirfield)
                 {
-                    // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
-                    var ognFlights = OGN.FlightLog.Client.Client.GetFlights(new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, new DateTime(2016,03,28)));
+                    var ognFlights = GetOGNFlights(flight.Date);
                     this.ViewBag.OgnFlightLog = ognFlights;
                 }
             }
@@ -533,6 +532,27 @@ namespace FlightJournal.Web.Controllers
 
             // Add request context for keeping the back button alive
             ViewBag.UrlReferrer = ResolveUrlReferrer();
+        }
+
+        /// <summary>
+        /// Used to request OGN Flight information and safekeeping a cached request for not bombarding the OGN source.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private List<OGN.FlightLog.Client.Models.Flight> GetOGNFlights(DateTime date)
+        {
+            var cacheKey = Request.Club().Location.ICAO + date.ToShortDateString();
+
+            if (HttpContext?.Cache[cacheKey] != null)
+                return HttpContext.Cache[cacheKey] as List<OGN.FlightLog.Client.Models.Flight>;
+
+            // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
+            var ognFlights = OGN.FlightLog.Client.Client.GetFlights(new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date));
+
+            // Add to cache and add with a fixed expiration. 
+            HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20),System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+
+            return ognFlights;
         }
     }
 }
