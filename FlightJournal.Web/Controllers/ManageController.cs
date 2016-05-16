@@ -414,12 +414,18 @@ namespace FlightJournal.Web.Controllers
 
                 if (user.EmailConfirmed)
                 {
-                    otherPilots = context.Pilots.Where(p => p.Email == user.Email).Include(c => c.Club).ToList();
+                    otherPilots.AddRange(context.Pilots.Where(p => p.Email == user.Email).Include(c => c.Club).ToList());
                 }
 
                 if (user.PhoneNumberConfirmed)
                 {
-                    otherPilots = context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber).Include(c => c.Club).ToList();
+                    foreach (var pilot in context.Pilots.Where(p => p.MobilNumber == user.PhoneNumber).Include(c => c.Club).ToList())
+                    {
+                        if (!otherPilots.Exists(o => o.PilotId == pilot.PilotId))
+                        {
+                            otherPilots.Add(pilot);
+                        }
+                    }
                 }
 
                 // Remove the existing pilot
