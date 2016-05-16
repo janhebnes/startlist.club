@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -407,7 +408,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Views\Shared\DisplayTemplates\Description.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Location.ascx" />
-    <Content Include="Views\Shared\DisplayTemplates\StartType.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -542,6 +542,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Duration.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\StartedFrom.cshtml" />
     <Content Include="Translations\sv\LC_MESSAGES\messages.po" />
+    <Content Include="Views\Shared\DisplayTemplates\StartType.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
