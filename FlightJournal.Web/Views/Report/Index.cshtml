@@ -234,7 +234,7 @@
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </td> 
                 }
-                    <td class="hidden-print">
+                    <td class="hidden-print text-right">
                         @if (Request.IsPilot())
                         {
                             if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)

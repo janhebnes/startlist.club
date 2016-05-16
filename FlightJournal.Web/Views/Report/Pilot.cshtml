@@ -279,7 +279,7 @@
                 <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
-                <td>
+                <td class="text-right">
                     @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-info" })
                 </td>
             </tr>
