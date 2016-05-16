@@ -16,6 +16,7 @@
             <th>
                 Forsæde/Bagsæde
             </th>
+            <th></th>
             <th>
                 Antal
             </th>
@@ -62,13 +63,14 @@
     </thead>
     <tbody>
         @foreach (var item in from c in Model.Flights.Where(f=>f.PilotId == Model.Pilot.PilotId)
-            group c by new { c.Pilot } into g
-            select new { Pilot = g.Key.Pilot, Count = g.Count(), ItemFlights = g })
+            group c by new { c.Pilot, c.StartType } into g
+            select new { Pilot = g.Key.Pilot, StartType = g.Key.StartType, Count = g.Count(), ItemFlights = g })
         {
             <tr>
                 <td>
                     @item.Pilot.Name
                 </td>
+                <td>@item.StartType.ShortName</td>
                 <td align="right">
                     @item.Count
                 </td>
@@ -88,13 +90,14 @@
             </tr>
         }
         @foreach (var item in from c in Model.Flights.Where(f=>f.PilotBackseatId == Model.Pilot.PilotId)
-                             group c by new { c.PilotBackseat } into g
-                             select new { Pilot = g.Key.PilotBackseat, Count = g.Count(), ItemFlights = g })
+                             group c by new { c.PilotBackseat, c.StartType} into g
+                             select new { Pilot = g.Key.PilotBackseat, StartType = g.Key.StartType, Count = g.Count(), ItemFlights = g })
         {
             <tr>
                 <td>
                     @item.Pilot.Name (bagsæde)
                 </td>
+                <td>@item.StartType.ShortName</td>
                 <td align="right">
                     @item.Count
                 </td>
@@ -130,6 +133,7 @@
                     <th>
                         Forsæde
                     </th>
+                    <th></th>
                     <th>
                         Antal
                     </th>
@@ -141,8 +145,8 @@
             <tbody>
                 @foreach (var item in from c in Model.Flights
                                      where c.PilotId == Model.Pilot.PilotId
-                                     group c by new { c.Pilot, c.Plane } into g
-                                     select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+                                     group c by new { c.Pilot, c.Plane, c.StartType } into g
+                                     select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType,Count = g.Count(), ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -150,6 +154,9 @@
                         </td>
                         <td>
                             @item.Pilot.Name
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
                         </td>
                         <td align="right">
                             @item.Count
@@ -172,6 +179,7 @@
                     <th>
                         Bagsæde
                     </th>
+                    <th></th>
                     <th>
                         Antal
                     </th>
@@ -183,8 +191,8 @@
             <tbody>
                 @foreach (var item in from c in Model.Flights
                                      where c.PilotBackseatId == Model.Pilot.PilotId
-                                     group c by new { c.PilotBackseat, c.Plane } into g
-                                     select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, Count = g.Count(), ItemFlights = g })
+                                     group c by new { c.PilotBackseat, c.Plane, c.StartType } into g
+                                     select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, Count = g.Count(), ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -192,6 +200,9 @@
                         </td>
                         <td>
                             @item.PilotBackseat.Name
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
                         </td>
                         <td align="right">
                             @item.Count
@@ -222,6 +233,7 @@
             <th>
                 Pilote(r)
             </th>
+            <th></th>
             <th>
                 Flyvetid
             </th>
@@ -251,6 +263,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item, "Pilots")
                 </td>
+                <td class="hidden-xs hidden-sm text-center">
+                    @Html.DisplayFor(modelItem => item.StartType, "StartType")
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item, "Duration")
                 </td>
@@ -258,7 +273,7 @@
                     @Html.DisplayFor(modelItem => item, "StartedFrom")
                     @Html.DisplayFor(modelItem => item, "LandedOn")
                 </td>
-                <td class="hidden-sm">
+                <td class="hidden-sm text-right">
                     @Html.DisplayFor(modelItem => item, "Tacho")
                 </td>
                 <td class="hidden-xs">

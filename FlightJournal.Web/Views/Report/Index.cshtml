@@ -127,7 +127,7 @@
     var headerMetadata = Model.Flights.FirstOrDefault();
     bool enableStartTypeColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Select(s=>s.StartType).Distinct().Count() > 1;
     bool enableTachoColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).ToList().Sum(s => s.Tacho) > 0;
-    bool enableNoteColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Sum(s => s.Description.Length) > 0;
+    bool enableNoteColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Sum(s => (s.Description + "").Length) > 0;
 
     <a name="@location.LocationId"></a>
     <h2>
