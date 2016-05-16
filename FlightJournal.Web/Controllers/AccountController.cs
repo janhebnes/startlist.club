@@ -330,7 +330,7 @@ namespace FlightJournal.Web.Controllers
         {
             var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
             var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code = code}, protocol: Request.Url.Scheme);
-            await UserManager.SendEmailAsync(user.Id, "Startlist.club - Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+            await UserManager.SendEmailAsync(user.Id, "Startlist.club - Confirm your account", "Please confirm your account at " + callbackUrl);
             return callbackUrl;
         }
 
@@ -438,7 +438,7 @@ namespace FlightJournal.Web.Controllers
 
                     var welcomecode = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                     var callbackWelcomeUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = welcomecode }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Startlist.club - Set Password", "Please set your password by clicking here: <a href=\"" + callbackWelcomeUrl + "\">link</a>");
+                    await UserManager.SendEmailAsync(user.Id, "Startlist.club - Set Password", "Please set your password at " + callbackWelcomeUrl);
                     ViewBag.Link = callbackWelcomeUrl;
                     ViewBag.Pilot = pilot.Name;
                     ViewBag.Email = email;
@@ -453,7 +453,7 @@ namespace FlightJournal.Web.Controllers
 
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Startlist.club - Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                await UserManager.SendEmailAsync(user.Id, "Startlist.club - Reset Password", "Please reset your password at " + callbackUrl);
                 ViewBag.Link = callbackUrl;
                 return View("ForgotPasswordConfirmation");
             }
