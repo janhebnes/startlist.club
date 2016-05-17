@@ -200,7 +200,18 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                    @{
+                        var duration = item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal();
+                        if (duration.Length == 4)
+                        {
+                            duration = "0" + duration;
+                        }
+                        if (duration.Length == 5)
+                        {
+                            duration = "0" + duration;
+                        }
+                    }
+                    @duration
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
@@ -226,7 +237,18 @@
                     @item.Count
                 </td>
                 <td align="right">
-                    @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                    @{
+                        var duration = item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal();
+                        if (duration.Length == 4)
+                        {
+                            duration = "0" + duration;
+                        }
+                        if (duration.Length == 5)
+                        {
+                            duration = "0" + duration;
+                        }
+                    }
+                    @duration
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
