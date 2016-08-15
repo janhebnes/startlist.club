@@ -2,6 +2,8 @@ Startlist.club
 ==============
 *Flightlog for Soaring Clubs*
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ngkcbx24thlpffxy?svg=true)](https://ci.appveyor.com/project/janhebnes/startlist-club)
+
 Startlist.club is an open source project created for handling flightclub startlists and logbooks for pilots and plane.
 Flight journaling is a repetitive task that needs to be as smooth as possible, many clubs have there own version of these journaling systems more or less integrated in existing flows. This is an attempt to gather the ressources into one system. 
 
