@@ -18,7 +18,6 @@ using System.Web;
 using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Validators;
 using Microsoft.Ajax.Utilities;
-using SendGrid;
 using Twilio;
 
 namespace FlightJournal.Web.Models
@@ -152,33 +151,23 @@ namespace FlightJournal.Web.Models
         {
             // Plug in your email service here to send an email.
 
-            var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
-            if (settings == null)
-                throw new ConfigurationErrorsException("Missing ServiceCredentials section");
-
-            if (!string.IsNullOrWhiteSpace(settings.TwilioAccountSid)
-                && !string.IsNullOrWhiteSpace(settings.TwilioAuthToken)
-                && !string.IsNullOrWhiteSpace(settings.TwilioFromNumber))
+            try
             {
-                // Create the email object first, then add the properties.
-                SendGridMessage myMessage = new SendGridMessage();
-                myMessage.AddTo(message.Destination);
-                myMessage.From = new MailAddress(settings.SendGridFromEmail, settings.SendGridFromName);
-                myMessage.Subject = message.Subject;
-                myMessage.Text = message.Body;
+                using (SmtpClient smtpClient = new SmtpClient())
+                {
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.To.Add(new MailAddress(message.Destination));
+                        mail.Subject = message.Subject;
+                        mail.Body = message.Body;
 
-                // Create credentials, specifying your user name and password.
-                var credentials = new NetworkCredential(settings.SendGridUserName, settings.SendGridPassword);
-
-                // Create an Web transport for sending email.
-                var transportWeb = new SendGrid.Web(credentials);
-
-                // Send the email.
-                transportWeb.Deliver(myMessage);
+                        smtpClient.Send(mail);
+                    }
+                }
 
                 return Task.FromResult(0);
             }
-            else
+            catch (Exception)
             {
                 return Task.FromResult(1);
             }
