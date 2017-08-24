@@ -292,7 +292,7 @@
                 @foreach (var item in from c in Model.Flights
                                      where c.Deleted == null
                                      group c by new { c.Plane, c.Pilot, c.StartType } into g
-                                     select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, Count = g.Count(), StartType = g.Key.StartType, ItemFlights = g})
+                                     select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g})
                 {
                     <tr>
                         <td>
