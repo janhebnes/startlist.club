@@ -3,16 +3,16 @@
 @using FlightJournal.Web
 @using FlightJournal.Web.Extensions
 @{
-    ViewBag.Title = "Startlisten " + ViewBag.Date.ToShortDateString();
+    ViewBag.Title = _("Startlist") + " " + ViewBag.Date.ToShortDateString();
     int startNr = Model.Count();
 }
 <p>
     <div class="btn-group btn-group-lg">
         @if (Request.IsPilot())
         {
-            @Html.ActionLink("Opret flyvning", "Create", null, new { @class = "btn btn-info", type = "button" })
+            @Html.ActionLink(_("Create flight"), "Create", null, new { @class = "btn btn-info", type = "button" })
         }
-        @Html.ActionLink("Tidligere flyvninger", "Index", new { skip = 0 }, new { @class = "btn btn-default", type = "button" })
+        @Html.ActionLink(_("Previous flights"), "Index", new { skip = 0 }, new { @class = "btn btn-default", type = "button" })
     </div>
 </p>
 <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
@@ -22,28 +22,28 @@
                 #
             </th>
             <th>
-                Fly
+                @_("Plane")
             </th>
             <th>
-                Pilote(r)
+                @_("Pilot(s)")
             </th>
             <th>
-                Start
+                @_("Departure")
             </th>
             <th>
-                Landing
+                @_("Landing")
             </th>
             <th>
-                Flyvetid
+                @_("Duration")
             </th>
             <th class="hidden-sm">
-                Flyveplads
+                @_("Take-off")
             </th>
             <th class="hidden-sm">
-                Tacho
+                @_("Tacho")
             </th>
             <th class="hidden-xs">
-                Note
+                @_("Comment")
             </th>
             <th class="hidden-print">
             </th>

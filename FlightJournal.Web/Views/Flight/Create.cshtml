@@ -1,6 +1,6 @@
 ﻿@model FlightJournal.Web.Models.Flight
 @{
-    ViewBag.Title = "Opret flyvning";
+    ViewBag.Title = _("Create flight");
 }
 
 <p>
@@ -8,7 +8,7 @@
     {
         @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Opret flyvning</legend>
+        <legend>@_("Create flight")</legend>
         <div class="row">
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="editor-label">
@@ -96,7 +96,7 @@
             <div class="clearfix visible-sm visible-xs"></div>
             <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                 <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="Opret" class="btn btn-primary" />
+                    <input type="submit" value="@_("Create")" class="btn btn-primary" />
                 </div>
             </div>
 
@@ -135,8 +135,8 @@
         <div class="row" style="margin-top: 30px">
             <div class="col-md-6">
                 <div class="btn-group btn-group-lg">
-                    <input type="submit" value="Opret" class="btn btn-primary" />
-                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                    <input type="submit" value="@_("Create")" class="btn btn-primary" />
+                    <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
                 </div>
             </div>
         </div>

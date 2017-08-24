@@ -2,13 +2,13 @@
 @using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.Flight
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = _("Edit flight");
 }
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Rediger flyvning</legend>
+        <legend>@_("Edit flight")</legend>
         @if (Model.Deleted.HasValue)
         {
             <div class="row">
@@ -112,7 +112,7 @@
             <div class="clearfix visible-sm visible-xs"></div>
             <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                 <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="Gem" class="btn btn-primary"/>
+                    <input type="submit" value="@_("Save")" class="btn btn-primary"/>
                 </div>
             </div>
 
