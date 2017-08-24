@@ -64,7 +64,7 @@
     <tbody>
         @foreach (var item in from c in Model.Flights.Where(f=>f.PilotId == Model.Pilot.PilotId)
             group c by new { c.Pilot, c.StartType } into g
-            select new { Pilot = g.Key.Pilot, StartType = g.Key.StartType, Count = g.Count(), ItemFlights = g })
+            select new { Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g })
         {
             <tr>
                 <td>
@@ -72,14 +72,14 @@
                 </td>
                 <td>@item.StartType.ShortName</td>
                 <td align="right">
-                    @item.Count
+                    @item.ItemFlights.Sum(f=>f.LandingCount)
                 </td>
                 <td align="right">
                     @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                 </td>
                 @for (int i = 1; i <= 12; i++)
                 {
-                    var count = item.ItemFlights.Count(f => f.Date.Month == i);
+                    var count = item.ItemFlights.Where(f => f.Date.Month == i).Sum(f=>f.LandingCount);
                     <td align="right">
                         @((count>0)?count.ToString():"")
                     </td>
@@ -91,7 +91,7 @@
         }
         @foreach (var item in from c in Model.Flights.Where(f=>f.PilotBackseatId == Model.Pilot.PilotId)
                              group c by new { c.PilotBackseat, c.StartType} into g
-                             select new { Pilot = g.Key.PilotBackseat, StartType = g.Key.StartType, Count = g.Count(), ItemFlights = g })
+                             select new { Pilot = g.Key.PilotBackseat, StartType = g.Key.StartType, ItemFlights = g })
         {
             <tr>
                 <td>
@@ -99,7 +99,7 @@
                 </td>
                 <td>@item.StartType.ShortName</td>
                 <td align="right">
-                    @item.Count
+                    @item.ItemFlights.Sum(f=>f.LandingCount)
                 </td>
                 <td align="right">
                     @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
@@ -146,7 +146,7 @@
                 @foreach (var item in from c in Model.Flights
                                      where c.PilotId == Model.Pilot.PilotId
                                      group c by new { c.Pilot, c.Plane, c.StartType } into g
-                                     select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType,Count = g.Count(), ItemFlights = g })
+                                     select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType,ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -159,7 +159,7 @@
                             @Html.DisplayFor(modelItem => item.StartType, "StartType")
                         </td>
                         <td align="right">
-                            @item.Count
+                            @item.ItemFlights.Sum(f=>f.LandingCount)
                         </td>
                         <td align="right">
                             @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
@@ -192,7 +192,7 @@
                 @foreach (var item in from c in Model.Flights
                                      where c.PilotBackseatId == Model.Pilot.PilotId
                                      group c by new { c.PilotBackseat, c.Plane, c.StartType } into g
-                                     select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, Count = g.Count(), ItemFlights = g })
+                                     select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -205,7 +205,7 @@
                             @Html.DisplayFor(modelItem => item.StartType, "StartType")
                         </td>
                         <td align="right">
-                            @item.Count
+                            @item.ItemFlights.Sum(f=>f.LandingCount)
                         </td>
                         <td align="right">
                             @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
