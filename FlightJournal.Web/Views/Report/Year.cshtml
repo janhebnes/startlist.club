@@ -97,7 +97,7 @@
             </td>
             @for (int i = 1; i <= 12; i++)
             {
-                var count = Model.Flights.Where(f => f.Date.Month == i).Sum(f=>f.LandingCount);
+                var count = Model.Flights.Any(f => f.Date.Month == i) ? Model.Flights.Where(f => f.Date.Month == i).Sum(f => f.LandingCount) : 0;
                 <td align="right">
                     @(count != 0 ? count.ToString() : "")
                 </td>
