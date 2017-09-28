@@ -71,6 +71,14 @@
             @Html.ValidationMessageFor(model => model.UnionId)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExitDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExitDate)
+            @Html.ValidationMessageFor(model => model.ExitDate)
+        </div>
+
         <p style="margin-top: 30px">
             <div class="btn-group">
                 <input type="submit" value="Gem" class="btn btn-primary" />

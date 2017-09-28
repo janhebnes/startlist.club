@@ -51,6 +51,13 @@
         @Html.DisplayFor(model => model.UnionId)
     </div>
 
+    <div class="display-label">
+        @Html.LabelFor(model => model.ExitDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ExitDate)
+    </div>
+
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.PilotId }) |
