@@ -52,7 +52,14 @@ else
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @if (item.ExitDate.HasValue)
+                    {
+                        <span style="text-decoration: line-through;">@Html.DisplayFor(modelItem => item.Name)</span> <small style="color:#808080;">ExitDate: @item.ExitDate.Value.ToString("dd-MMM-yyyy")</small>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Name)
+                    }
                 </td>
                 <td>
                     @if (!string.IsNullOrWhiteSpace(item.Email))
