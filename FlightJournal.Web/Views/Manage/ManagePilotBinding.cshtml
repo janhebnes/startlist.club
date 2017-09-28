@@ -22,6 +22,14 @@
             @Model.CurrentPilotBinding.Email<br/>
             @Model.CurrentPilotBinding.MobilNumber
         </p>
+        <p>
+            @if (Model.CurrentPilotBinding.ExitDate.HasValue && Model.CurrentPilotBinding.ExitDate.Value < DateTime.Now)
+            {
+                @Html.LabelFor(model => model.CurrentPilotBinding.ExitDate) 
+                @Model.CurrentPilotBinding.ExitDate.Value.ToString(" dd-MMM-yyyy")
+            }
+        </p>
+
         @using (Html.BeginForm("RemovePilotBinding", "Manage"))
         {
             @Html.AntiForgeryToken()
