@@ -110,6 +110,7 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Plane")]
         [Required]
         public int PlaneId { get; set; }
+        [LocalizedDisplayName("Plane")]
         public virtual Plane Plane { get; set; }
 
         [LocalizedDisplayName("Pilot")]
