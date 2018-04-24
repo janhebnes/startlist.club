@@ -116,14 +116,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
-    <Reference Include="SendGrid.SmtpApi, Version=1.2.1.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SendGrid.SmtpApi.1.2.1\lib\net40\SendGrid.SmtpApi.dll</HintPath>
-    </Reference>
-    <Reference Include="SendGridMail, Version=5.1.0.0, Culture=neutral, PublicKeyToken=2ae73662c35d80e4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Sendgrid.5.1.0\lib\SendGridMail.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -388,6 +380,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="App_Data\ServiceCredentials.config" />
+    <Content Include="App_Data\mailSettings.config" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -417,7 +410,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Views\Shared\DisplayTemplates\Description.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Location.ascx" />
-    <Content Include="Views\Shared\DisplayTemplates\StartType.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -552,6 +544,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Duration.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\StartedFrom.cshtml" />
     <Content Include="Translations\sv\LC_MESSAGES\messages.po" />
+    <Content Include="Views\Shared\DisplayTemplates\StartType.cshtml" />
     <Content Include="Views\Flight\_ognFlightLog.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>

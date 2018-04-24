@@ -2,7 +2,7 @@
 @using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.Flight
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = _("Flight Details");
 
     if (Model == null)
     {
@@ -16,7 +16,7 @@
 @using (Html.BeginForm())
 {
     <fieldset>
-        <legend>Flyvning</legend>
+        <legend>@_("Flight Details")</legend>
         <div class="row">
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="display-label">
@@ -100,10 +100,10 @@
                         }
                         if (isEditable)
                         {
-                            @Html.ActionLink("Rediger", "Edit", new { id = Model.FlightId }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink(_("Edit"), "Edit", new { id = Model.FlightId }, new { @class = "btn btn-primary" })
                         }
                     }
-                    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                    <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
@@ -135,7 +135,7 @@
                 {
                     <br /><br />
                     <div class="alert alert-danger ">
-                        <h4>Markeret som slettet @Model.Deleted.ToString() af @Model.LastUpdatedBy</h4>
+                        <h4>@String.Format(_("Marked deleted {0} by {1}"), @Model.Deleted.ToString(), @Model.LastUpdatedBy)</h4>
                     </div>
                 }
             </div>
@@ -153,10 +153,10 @@
             }
             if (isEditable)
             {
-                @Html.ActionLink("Rediger", "Edit", new { id = Model.FlightId }, new { @class = "btn btn-primary" })
+                @Html.ActionLink(_("Edit"), "Edit", new { id = Model.FlightId }, new { @class = "btn btn-primary" })
             }
         }
-        <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+        <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
     </div>
 </p>
 @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)

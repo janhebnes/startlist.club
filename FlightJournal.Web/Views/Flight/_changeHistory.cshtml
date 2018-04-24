@@ -20,43 +20,42 @@
 <br/>
 
 <fieldset>
-    <legend>Historik</legend>
+    <legend>@_("Change history")</legend>
 
     <table class="table table-striped table-hover table-condensed">
         <tr>
             <th>
-                Rettet
+                @_("Timestamp")
             </th>
             <th>
-                Af
+                @_("User")
             </th>
             <th>
-                Dato
-            </th>
-
-            <th>
-                Fly
+                @_("Date")
             </th>
             <th>
-                Pilote(r)
+                @_("Plane")
             </th>
             <th>
-                Start
+                @_("Pilots")
             </th>
             <th>
-                Landing
+                @_("Departure")
             </th>
             <th>
-                Start metode
+                @_("Landing")
             </th>
             <th>
-                Flyveplads
+                @_("Take-off method")
             </th>
             <th>
-                Tacho
+                @_("Take-off")
             </th>
             <th>
-                Note
+                @_("Tacho")
+            </th>
+            <th>
+                @_("Comment")
             </th>
             <th></th>
         </tr>
@@ -77,18 +76,23 @@
                     @Html.DisplayFor(modelItem => item.Plane)
                 </td>
                 <td>
-                    @item.Pilot.Name
-                    @if (item.PilotBackseat != null)
+                    @if (item.Pilot != null)
                     {
-                        <text>/ </text>@item.PilotBackseat.Name
-                    }
-                    @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                    {
-                        <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                    }
-                    @if ((item.Betaler == null) && (item.Pilot != null))
-                    {
-                        <text> (mangler betaler) </text>
+                        @item.Pilot.Name
+                        if (item.PilotBackseat != null)
+                        {
+                            <text>/ </text>
+                            @item.PilotBackseat.Name
+                        }
+                        if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                        {
+                            @Html.Raw(string.Format(" " + _("(payed by {0})"), item.Betaler.Name))
+                        }
+                        if ((item.Betaler == null) && (item.Pilot != null))
+                        {
+                            <text> </text>
+                            @_("(missing payer)")
+                        }
                     }
                 </td>
                 <td>

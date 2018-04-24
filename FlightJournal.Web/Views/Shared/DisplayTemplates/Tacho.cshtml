@@ -2,10 +2,10 @@
 @if (Model.TachoDeparture.HasValue && Model.TachoLanding.HasValue)
 {
     var tacho = Model.TachoLanding.Value - Model.TachoDeparture.Value;
+    @: (@tacho)
     @Model.TachoDeparture
     @:-
     @Model.TachoLanding
-    @: (@tacho)
 }
 else if (Model.TachoDeparture.HasValue)
 {

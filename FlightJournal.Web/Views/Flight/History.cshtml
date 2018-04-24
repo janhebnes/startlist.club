@@ -11,50 +11,50 @@
     }
 }
 @{
-    ViewBag.Title = "Startliste Historik";
+    ViewBag.Title = @_("Changelog");
 }
 <h2>
-    Historik
+    @_("Changelog")
 </h2>
 <fieldset>
-    <legend>Flight</legend>
+    <legend>@_("Flight")</legend>
     <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
         <thead>
             <tr>
                 <th>
-                    Rettet
+                    @_("Timestamp")
                 </th>
                 <th>
-                    Af
+                    @_("User")
                 </th>
                 <th>
-                    Dato
+                    @_("Date")
                 </th>
                 <th>
-                    Fly
+                    @_("Plane")
                 </th>
                 <th>
-                    Pilote(r)
+                    @_("Pilots")
                 </th>
                 <th>
-                    Start
+                    @_("Departure")
                 </th>
                 <th>
-                    Landing
+                    @_("Landing")
                 </th>
                 <th class="hidden-sm">
-                    Flyveplads
+                    @_("Take-off")
                 </th>
                 <th class="hidden-sm">
-                    Tacho
+                    @_("Tacho")
                 </th>
                 <th class="hidden-xs">
-                    Note
+                    @_("Comment")
                 </th>
                 <th class="hidden-print">
                 </th>
                 <th class="hidden-xs">
-                    Action
+                    @_("Action")
                 </th>
             </tr>
         </thead>
@@ -76,19 +76,24 @@
                         @Html.DisplayFor(modelItem => item.Plane)
                     </td>
                     <td>
+                       @if (item.Pilot != null)
+                       {
                         @item.Pilot.Name
-                        @if (item.PilotBackseat != null)
-                        {
-                            <text>/ </text>@item.PilotBackseat.Name
-                        }
-                        @if ((item.Betaler != null) && (item.Betaler != item.Pilot))
-                        {
-                            <text> (</text>@item.Betaler.Name<text> betaler)</text>
-                        }
-                        @if ((item.Betaler == null) && (item.Pilot != null))
-                        {
-                            <text> (mangler betaler) </text>
-                        }
+                           if (item.PilotBackseat != null)
+                           {
+                            <text>/ </text>
+                            @item.PilotBackseat.Name
+                           }
+                           if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                           {
+                            @Html.Raw(string.Format(" " + _("(payed by {0})"), item.Betaler.Name))
+                           }
+                           if ((item.Betaler == null) && (item.Pilot != null))
+                           {
+                            <text> </text>
+                            @_("(missing payer)")
+                           }
+                       }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Departure)
@@ -116,12 +121,12 @@
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </td>
                     <td class="hidden-print">
-                        @Html.ActionLink("Detaljer", "Details", new { id = item.FlightId }, new { @class = "btn btn-default btn-sm" })
+                        @Html.ActionLink(_("Details"), "Details", new { id = item.FlightId }, new { @class = "btn btn-default btn-sm" })
                     </td>
                     <td class="hidden-xs">
                         @if (item.State == "Deleted")
                         {
-                            <strong class="error">DELETED</strong>
+                            <strong class="error">@_("DELETED")</strong>
                         }
                         else
                         {
@@ -134,9 +139,9 @@
     </table>
 </fieldset>
 <p>
-    <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+    <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
 
-    @Html.ActionLink("Forrige rettelser", "History", new { skip = ViewBag.Skip + 100 }, new { @class = "btn btn-default" })
+    @Html.ActionLink(_("Change history"), "History", new { skip = ViewBag.Skip + 100 }, new { @class = "btn btn-default" })
 </p>
 @section scripts
 {

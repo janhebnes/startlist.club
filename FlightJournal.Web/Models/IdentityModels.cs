@@ -42,11 +42,13 @@ namespace FlightJournal.Web.Models
                 using (var context = new FlightContext())
                 {
                     var userPilotBinding = context.Pilots.Find(Convert.ToInt32(this.BoundToPilotId));
-                    if (userPilotBinding != null)
-                    {
-                        // Load club reference information 
-                        context.Entry(userPilotBinding).Reference(p => p.Club).Load();
-                    }
+                    if (userPilotBinding == null) return null;
+
+                    bool isPilotExpired = userPilotBinding.ExitDate.HasValue && userPilotBinding.ExitDate.Value < DateTime.Now;
+                    if (isPilotExpired) return null;
+                     
+                    // Load club reference information 
+                    context.Entry(userPilotBinding).Reference(p => p.Club).Load();
                     return userPilotBinding;
                 }
             }
