@@ -512,6 +512,12 @@ namespace FlightJournal.Web.Controllers
                 this.ViewBag.PilotId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
                 this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
                 this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.ClubId == clubid).OrderBy(p => p.Name), "StartTypeId", "Name", (flight == null) ? (object)null : flight.StartTypeId);
+
+                if (Request.Club().Location.RegisteredOgnFlightLogAirfield)
+                {
+                    var ognFlights = GetOGNFlights(flight.Date);
+                    this.ViewBag.OgnFlightLog = ognFlights;
+                }
             }
             else
             {
@@ -526,6 +532,56 @@ namespace FlightJournal.Web.Controllers
 
             // Add request context for keeping the back button alive
             ViewBag.UrlReferrer = ResolveUrlReferrer();
+        }
+
+        /// <summary>
+        /// Used to request OGN Flight information and safekeeping a cached request for not bombarding the OGN source.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private List<OGN.FlightLog.Client.Models.Flight> GetOGNFlights(DateTime date)
+        {
+            var cacheKey = Request.Club().Location.ICAO + date.ToShortDateString();
+
+            var options = new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date);
+            this.ViewBag.OgnFlightLogSource = options.ToString();
+
+            if (HttpContext?.Cache[cacheKey] != null)
+                return HttpContext.Cache[cacheKey] as List<OGN.FlightLog.Client.Models.Flight>;
+
+            List<OGN.FlightLog.Client.Models.Flight> ognFlights = new List<OGN.FlightLog.Client.Models.Flight>();
+            try
+            {
+                // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
+                ognFlights = OGN.FlightLog.Client.Client.GetFlights(options);
+
+                // Add to cache and add with a fixed expiration. 
+                HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+            }
+            catch (Newtonsoft.Json.JsonReaderException jre)
+            {
+                bool emptyNotJsonParsable = jre.Message == "Error reading JObject from JsonReader. Path '', line 2, position 1.";
+                bool emptyUnfinishedJson = jre.Message == "JsonToken EndArray is not valid for closing JsonType None. Path '', line 3, position 3."; // 
+
+                // There is an expected empty result from json that is broken json
+                if (emptyNotJsonParsable || emptyUnfinishedJson)
+                {
+                    // Empty result page having not even json brackets... 
+                    HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+                }
+                else
+                {
+                    this.ViewBag.OgnFlightLogException = jre.ToString();
+                    this.ViewBag.OgnFlightLogExceptionUrl = options.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ViewBag.OgnFlightLogException = ex.ToString();
+                this.ViewBag.OgnFlightLogExceptionUrl = options.ToString();
+            }
+
+            return ognFlights;
         }
     }
 }

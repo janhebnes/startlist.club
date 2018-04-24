@@ -17,6 +17,8 @@ namespace FlightJournal.Web.Models
         public string Name { get; set; }
         [LocalizedDisplayName("ICAO")]
         public string ICAO { get; set; }
+        [LocalizedDisplayName("Registered OGN FlightLog Airfield")]
+        public bool RegisteredOgnFlightLogAirfield { get; set; }
         [LocalizedDisplayName("Country")]
         public string Country { get; set; } // ISO Alpha-2 code based on https://www.iso.org/obp/ui/#search
         [LocalizedDisplayName("Created")]

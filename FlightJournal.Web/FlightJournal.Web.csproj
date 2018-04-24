@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,12 +46,12 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -101,9 +102,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OGN.FlightLog.Client, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OGN.FlightLog.Client.1.2\lib\net45\OGN.FlightLog.Client.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -192,6 +196,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
@@ -201,6 +206,10 @@
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.Designer.cs">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.cs" />
+    <Compile Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.Designer.cs">
+      <DependentUpon>201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.cs</DependentUpon>
     </Compile>
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
@@ -370,7 +379,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="App_Data\ServiceCredentials.config" />
+    <Content Include="App_Data\ServiceCredentials.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\mailSettings.config" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -536,6 +547,7 @@
     <Content Include="Views\Shared\DisplayTemplates\StartedFrom.cshtml" />
     <Content Include="Translations\sv\LC_MESSAGES\messages.po" />
     <Content Include="Views\Shared\DisplayTemplates\StartType.cshtml" />
+    <Content Include="Views\Flight\_ognFlightLog.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -574,6 +586,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201506232105012_Club-Visibility.resx">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.resx">
+      <DependentUpon>201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
