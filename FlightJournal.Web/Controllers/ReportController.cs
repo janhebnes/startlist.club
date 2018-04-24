@@ -213,7 +213,52 @@ namespace FlightJournal.Web.Controllers
                 .OrderByDescending(o => o.Departure)
                 .AsQueryable();
 
+            var last12months = DateTime.Now.AddYears(-1);
+            model.TrainingBarometer = GetTrainingBarometer(model.Flights.Where(f => f.Date > last12months));
+
             return this.View(model);
+        }
+
+        private TrainingBarometerViewModel GetTrainingBarometer(IQueryable<Flight> last12MonthsFlights)
+        {
+            var result = new TrainingBarometerViewModel();
+            if (last12MonthsFlights.Any())
+            {
+                result.Last12MonthDepartures = last12MonthsFlights.Sum(f => f.LandingCount);
+                result.Last12MonthDuration = last12MonthsFlights.Sum(f => f.Duration.Ticks);
+            }
+            else
+            {
+                result.Last12MonthDepartures = 0;
+                result.Last12MonthDuration = 0;
+            }
+
+            // The following section is based on the uhb599 from DSvU Træningsbarometer
+            // Duration is weighted 0,75 of start amount 
+            var duration = new TimeSpan(result.Last12MonthDuration).TotalHours;
+            var weightedDuration = 0.75 * duration;
+            var meanFlightFitnessIndex = (result.Last12MonthDepartures + weightedDuration) / 2;
+
+            if (meanFlightFitnessIndex > 20.5)
+            {
+                result.BarometerColorCode = "#339933";
+                result.BarometerLabel = "Grønt område";
+                result.BarometerRecommendation = "Du er i god flyvetræning, men pas på !!";
+            }
+            else if (meanFlightFitnessIndex > 10.5)
+            {
+                result.BarometerColorCode = "#ffcc00";
+                result.BarometerLabel = "Gult område";
+                result.BarometerRecommendation = "Du er ikke så god som du tror !!";
+            }
+            else 
+            {
+                result.BarometerColorCode = "#ff3300";
+                result.BarometerLabel = "Rødt område";
+                result.BarometerRecommendation = "Du er rusten !!";
+            }
+
+            return result;
         }
 
     }
