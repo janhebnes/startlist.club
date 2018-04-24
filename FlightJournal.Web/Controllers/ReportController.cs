@@ -225,7 +225,7 @@ namespace FlightJournal.Web.Controllers
             if (last12MonthsFlights.Any())
             {
                 result.Last12MonthDepartures = last12MonthsFlights.Sum(f => f.LandingCount);
-                result.Last12MonthDuration = last12MonthsFlights.Sum(f => f.Duration.Ticks);
+                result.Last12MonthDuration = last12MonthsFlights.ToList().Sum(f => f.Duration.Ticks);
             }
             else
             {
