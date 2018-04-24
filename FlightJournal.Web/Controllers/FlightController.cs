@@ -543,6 +543,9 @@ namespace FlightJournal.Web.Controllers
         {
             var cacheKey = Request.Club().Location.ICAO + date.ToShortDateString();
 
+            var options = new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date);
+            this.ViewBag.OgnFlightLogSource = options.ToString();
+
             if (HttpContext?.Cache[cacheKey] != null)
                 return HttpContext.Cache[cacheKey] as List<OGN.FlightLog.Client.Models.Flight>;
 
@@ -550,18 +553,32 @@ namespace FlightJournal.Web.Controllers
             try
             {
                 // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
-                ognFlights = OGN.FlightLog.Client.Client.GetFlights(new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date));
+                ognFlights = OGN.FlightLog.Client.Client.GetFlights(options);
 
                 // Add to cache and add with a fixed expiration. 
                 HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
             }
             catch (Newtonsoft.Json.JsonReaderException jre)
             {
-                this.ViewBag.OgnFlightLogException = jre.ToString();
+                bool emptyNotJsonParsable = jre.Message == "Error reading JObject from JsonReader. Path '', line 2, position 1.";
+                bool emptyUnfinishedJson = jre.Message == "JsonToken EndArray is not valid for closing JsonType None. Path '', line 3, position 3."; // 
+
+                // There is an expected empty result from json that is broken json
+                if (emptyNotJsonParsable || emptyUnfinishedJson)
+                {
+                    // Empty result page having not even json brackets... 
+                    HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+                }
+                else
+                {
+                    this.ViewBag.OgnFlightLogException = jre.ToString();
+                    this.ViewBag.OgnFlightLogExceptionUrl = options.ToString();
+                }
             }
             catch (Exception ex)
             {
                 this.ViewBag.OgnFlightLogException = ex.ToString();
+                this.ViewBag.OgnFlightLogExceptionUrl = options.ToString();
             }
 
             return ognFlights;
