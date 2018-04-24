@@ -83,4 +83,9 @@
             </tr>
         }
     </table>
+    @if (!String.IsNullOrWhiteSpace(ViewBag.OgnFlightLogException))
+    {
+        <strong>Parsing from OGN failed</strong><br />
+        <textarea style="width: 100%;max-width:100%">@ViewBag.OgnFlightLogException</textarea>
+    }
 </fieldset>

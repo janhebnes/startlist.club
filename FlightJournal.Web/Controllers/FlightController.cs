@@ -546,11 +546,23 @@ namespace FlightJournal.Web.Controllers
             if (HttpContext?.Cache[cacheKey] != null)
                 return HttpContext.Cache[cacheKey] as List<OGN.FlightLog.Client.Models.Flight>;
 
-            // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
-            var ognFlights = OGN.FlightLog.Client.Client.GetFlights(new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date));
+            List<OGN.FlightLog.Client.Models.Flight> ognFlights = new List<OGN.FlightLog.Client.Models.Flight>();
+            try
+            {
+                // Request the latest live feed from http://live.glidernet.org/flightlog/index.php?a=EKSL&s=QFE&u=M&z=0&p=&t=0&d=28032016 in json and parse
+                ognFlights = OGN.FlightLog.Client.Client.GetFlights(new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date));
 
-            // Add to cache and add with a fixed expiration. 
-            HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20),System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+                // Add to cache and add with a fixed expiration. 
+                HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+            }
+            catch (Newtonsoft.Json.JsonReaderException jre)
+            {
+                this.ViewBag.OgnFlightLogException = jre.ToString();
+            }
+            catch (Exception ex)
+            {
+                this.ViewBag.OgnFlightLogException = ex.ToString();
+            }
 
             return ognFlights;
         }
