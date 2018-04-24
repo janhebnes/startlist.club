@@ -21,37 +21,43 @@
 <br/>
 
 <fieldset>
-    <legend>Live / OGN FlightLog / FLARM Radar</legend>
-    <a href="http://live.glidernet.org/flightlog/index.php?a=@icao">http://live.glidernet.org/flightlog/index.php?a=@icao</a>
+    <legend>OGN FlightLog / FLARM Radar / <a href="http://live.glidernet.org/flightlog/index.php?a=@icao">Live</a></legend>
+    @{ 
+        string json = ViewBag.OgnFlightLogSource;
+        string source = json.Remove(json.Length-2);
+    }
+    <span class="pull-right" style="color:lightgray;"><a href="@(source)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">kilde</a>/<a href="@(json)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">json</a></span>
     <table class="table table-striped table-hover table-condensed">
         <tr>
             <th>
                 #
             </th>
             <th>
-                (Moto)Glider
+                (@_("Motor"))
+                @_("Glider")
+
             </th>
             <th>
-                Take Off
+                @_("Take-off")
             </th>
             <th>
-                Glider
-                Landing
+                @_("Glider")
+                @_("Landing")
             </th>
             <th>
-                Glider
-                Time
+                @_("Glider")
+                @_("Time")
             </th>
             <th>
-                Plane
-                Landing
+                @_("Plane")
+                @_("Landing")
             </th>
             <th>
-                Plane
-                Time
+                @_("Plane")
+                @_("Time")
             </th>
         </tr>
-        @foreach (var item in Model)
+        @foreach (var item in Model.OrderByDescending(f => f.row))
         {
             <tr>
                 <td>
@@ -66,16 +72,25 @@
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.takeoff)
+                    @if (item.takeoff.HasValue)
+                    {
+                        @item.takeoff.Value.ToString("HH:mm:ss zz")
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.glider_landing)
+                    @if (item.glider_landing.HasValue)
+                    {
+                        @item.glider_landing.Value.ToString("HH:mm:ss zz")
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.glider_time)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.plane_landing)
+                    @if (item.plane_landing.HasValue)
+                    {
+                        @item.plane_landing.Value.ToString("HH:mm:ss zz")
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.plane_time)
@@ -83,9 +98,10 @@
             </tr>
         }
     </table>
+
     @if (!String.IsNullOrWhiteSpace(ViewBag.OgnFlightLogException))
     {
-        <strong>Parsing from OGN failed</strong><br />
+        <strong>Parsing from OGN failed (@ViewBag.OgnFlightLogExceptionUrl)</strong><br />
         <textarea style="width: 100%;max-width:100%">@ViewBag.OgnFlightLogException</textarea>
     }
 </fieldset>
