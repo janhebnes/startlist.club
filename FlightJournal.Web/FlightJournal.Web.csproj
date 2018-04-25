@@ -375,6 +375,7 @@
     <Content Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.sql" />
     <Content Include="Migrations\FlightContext\201505062147469_FlightVersion-Deleted-Date.sql" />
     <Content Include="Migrations\FlightContext\201506232105012_Club-Visibility.sql" />
+    <Content Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
