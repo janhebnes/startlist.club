@@ -151,26 +151,37 @@
         }
     </div>
 
-    @section scripts
+@section scripts
 {
-        <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").css("border", "3px solid #888");
-                $(".ui-autocomplete-input.ui-widget.ui-widget-content.ui-corner-left").first().focus();
+    <script type="text/javascript">
+        $(document).ready(function () {
 
-                $("#PlaneId").combobox();
-                $("#PilotId").combobox();
-                $("#PilotBackseatId").combobox();
-                $("#BetalerId").combobox();
-                $("#StartTypeId").combobox();
-                $("#StartedFromId").combobox();
-                $("#LandedOnId").combobox();
-            }
-            );
-        </script>
-    }
+            $("#PlaneId").combobox();
+            $("#PilotId").combobox();
+            $("#PilotBackseatId").combobox();
+            $("#BetalerId").combobox();
+            $("#StartTypeId").combobox();
+            $("#StartedFromId").combobox();
+            $("#LandedOnId").combobox();
+
+            $(".custom-combobox-input").css("border", "3px solid #888");
+
+            $(".custom-combobox-toggle").css("border", "3px solid #888");
+            $(".custom-combobox-toggle").css("border-left", "0px");
+            $(".custom-combobox-toggle").css("padding-top", "1px");
+            $(".custom-combobox-toggle").css("padding-bottom", "1px");
+            $(".custom-combobox-toggle").css("padding-left", "8px");
+            $(".custom-combobox-toggle").css("padding-right", "8px");
+            $(".custom-combobox-toggle").css("margin-left", "0px");
+            $(".custom-combobox-toggle").css("margin-right", "0px");
+                
+            $(".custom-combobox-input").first().focus();
+        }
+        );
+    </script>
+}
