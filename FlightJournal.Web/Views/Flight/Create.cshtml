@@ -181,6 +181,10 @@
             $(".custom-combobox-toggle").css("margin-right", "0px");
                 
             $(".custom-combobox-input").first().focus();
+
+            $("input.custom-combobox-input").on("click", function () {
+                $(this).select();
+            });
         }
         );
     </script>

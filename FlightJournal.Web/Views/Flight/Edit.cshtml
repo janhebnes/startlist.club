@@ -215,6 +215,11 @@
             $(".custom-combobox-toggle").css("margin-right", "0px");
 
             $("#Landing").focus();
+
+            $("input.custom-combobox-input").on("click", function () {
+                $(this).select();
+            });
+
         }
     );
     </script>
