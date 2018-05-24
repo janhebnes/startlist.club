@@ -533,7 +533,7 @@ namespace FlightJournal.Web.Controllers
             // Add request context for keeping the back button alive
             ViewBag.UrlReferrer = ResolveUrlReferrer();
         }
-
+        
         /// <summary>
         /// Used to request OGN Flight information and safekeeping a cached request for not bombarding the OGN source.
         /// </summary>
@@ -543,7 +543,12 @@ namespace FlightJournal.Web.Controllers
         {
             var cacheKey = Request.Club().Location.ICAO + date.ToShortDateString();
 
-            var options = new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, date);
+            var utcOffset = GetUtcOffset(Request.Club().Location.ICAO, date);
+            int timeZoneOffset = utcOffset.Hours;
+
+            var options = new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, timeZoneOffset, date);
+            options.Timeout = 5000;
+
             this.ViewBag.OgnFlightLogSource = options.ToString();
 
             if (HttpContext?.Cache[cacheKey] != null)
@@ -583,5 +588,42 @@ namespace FlightJournal.Web.Controllers
 
             return ognFlights;
         }
+
+        internal TimeSpan GetUtcOffset(string ICAO, DateTime date)
+        {
+            try
+            {
+                TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById(FindSystemTimeZoneIdByICAO(ICAO, "Central European Standard Time"));
+                return cstZone.GetUtcOffset(date);
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                return new TimeSpan();
+            }
+            catch (InvalidTimeZoneException)
+            {
+                return new TimeSpan();
+            }
+        }
+
+        internal string FindSystemTimeZoneIdByICAO(string ICAO, string defaultResult = "Central European Standard Time")
+        {
+            if (ICAO.Length < 5) return defaultResult;
+
+            // based on https://en.wikipedia.org/wiki/ICAO_airport_code and https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#EK_%E2%80%93_Denmark_and_the_Faroe_Islands
+            string ICAO1 = new string(ICAO.Take(1).ToArray()).ToUpperInvariant();
+            string ICAO2 = new string(ICAO.Take(2).ToArray()).ToUpperInvariant();
+            string ICAO3 = new string(ICAO.Take(3).ToArray()).ToUpperInvariant();
+            string ICAO4 = new string(ICAO.Take(4).ToArray()).ToUpperInvariant();
+
+
+            if (ICAO1 == "E")
+                return "Central European Standard Time";
+            
+            //TODO: When locations need this to work they can extend this location
+
+            return defaultResult;
+        }
+
     }
 }
