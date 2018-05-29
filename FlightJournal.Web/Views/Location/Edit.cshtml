@@ -11,67 +11,68 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@_("Edit Location")</legend>
+<fieldset>
+    <legend>@_("Edit Location")</legend>
 
-        @Html.HiddenFor(model => model.LocationId)
-        @Html.HiddenFor(model => model.CreatedBy)
-        @Html.HiddenFor(model => model.CreatedTimestamp)
+    @Html.HiddenFor(model => model.LocationId)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreatedTimestamp)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ICAO)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ICAO)
-            @Html.ValidationMessageFor(model => model.ICAO)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ICAO)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ICAO)
+        @Html.ValidationMessageFor(model => model.ICAO)
+    </div>
+    e.g. <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark">https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark</a>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.RegisteredOgnFlightLogAirfield)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.RegisteredOgnFlightLogAirfield)
-            @Html.ValidationMessageFor(model => model.RegisteredOgnFlightLogAirfield)
-        </div>
-        @{ 
-            var demoUrl = "EKSL";
-            if (!String.IsNullOrWhiteSpace(Model.ICAO))
-            {
-                demoUrl = Model.ICAO;
-            }
-        }
-        e.g. <a href="http://live.glidernet.org/flightlog/index.php?a=@(demoUrl)">http://live.glidernet.org/flightlog/index.php?a=@(demoUrl)</a>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Country)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("Country", String.Empty)
-            @Html.ValidationMessageFor(model => model.Country)
-        </div>
-
-        <p style="margin-top: 30px">
-            <div class="btn-group">
-                <input type="submit" value="@_("Change locationname {0}", @Model.Name)" class="btn btn-danger" />
-                <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
-            </div>
-        </p>
-
-        @if (@ViewBag.UsedCount > 0)
+    <div class="editor-label">
+        @Html.LabelFor(model => model.RegisteredOgnFlightLogAirfield)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.RegisteredOgnFlightLogAirfield)
+        @Html.ValidationMessageFor(model => model.RegisteredOgnFlightLogAirfield)
+    </div>
+    @{
+        var demoUrl = "EKSL";
+        if (!String.IsNullOrWhiteSpace(Model.ICAO))
         {
-            <div class="col-md-6">
-                <div class="alert alert-danger" style="margin-top: 10px">
-                    <span class="glyphicon glyphicon-alert"></span> @_("In use on {0} records.", @ViewBag.UsedCount)
-                </div>
-            </div>
+            demoUrl = Model.ICAO;
         }
-    </fieldset>
+    }
+    e.g. <a href="http://live.glidernet.org/flightlog/index.php?a=@(demoUrl)">http://live.glidernet.org/flightlog/index.php?a=@(demoUrl)</a>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Country)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("Country", String.Empty)
+        @Html.ValidationMessageFor(model => model.Country)
+    </div>
+
+    <p style="margin-top: 30px">
+        <div class="btn-group">
+            <input type="submit" value="@_("Change locationname {0}", @Model.Name)" class="btn btn-danger" />
+            <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
+        </div>
+    </p>
+
+    @if (@ViewBag.UsedCount > 0)
+    {
+        <div class="col-md-6">
+            <div class="alert alert-danger" style="margin-top: 10px">
+                <span class="glyphicon glyphicon-alert"></span> @_("In use on {0} records.", @ViewBag.UsedCount)
+            </div>
+        </div>
+    }
+</fieldset>
 }
