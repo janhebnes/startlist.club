@@ -15,7 +15,6 @@
 }
 @{
     ViewBag.Title = "Startlisten";
-    int startNr = 0;
 }
 
 <p>
@@ -95,7 +94,7 @@
                 </td>
                 <td class="hidden-print">
                     <div class="btn-group" style="display: flex;">
-                        @if (User.IsPilot())
+                        @if (User.IsPilot() && item.IsCurrentClubPilots())
                         {
                             if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
                             {

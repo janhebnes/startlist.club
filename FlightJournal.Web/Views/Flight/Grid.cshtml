@@ -81,7 +81,7 @@
                     @Html.DisplayFor(modelItem => item, "Pilots")
                 </td>
                 <td @style>
-                    @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
+                    @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today && item.IsCurrentClubPilots())
                     {
                         <div class="btn-group" style="white-space: nowrap;display: flex;">
                             @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
@@ -95,7 +95,7 @@
                     }
                 </td>
                 <td @style>
-                    @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today)
+                    @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today && item.IsCurrentClubPilots())
                     {
                         <div class="btn-group" style="white-space: nowrap;display: flex;">
                             @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
@@ -121,13 +121,13 @@
                 </td>
                 <td @style class="hidden-xs">
                     <span>
-                        @if (Request.IsPilot())
+                        @if (Request.IsPilot() && item.IsCurrentClubPilots())
                         {
                             <a href="#" class="editComment btn btn-default hidden-print"><span class="fa fa-comment fa-fw"></span></a>
                         }
                         @Html.DisplayFor(modelItem => item.Description, "Description")
                     </span>
-                    @if (Request.IsPilot())
+                    @if (Request.IsPilot() && item.IsCurrentClubPilots())
                     {
                         <span style="display:none;">
                             @using (Html.BeginForm("SetComment", "Flight"))
@@ -141,7 +141,7 @@
                 </td>
                 <td class="hidden-print">
                     <div class="btn-group" style="white-space: nowrap;display: flex;">
-                        @if (User.IsPilot())
+                        @if (User.IsPilot() && item.IsCurrentClubPilots())
                         {
                             if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
                             {

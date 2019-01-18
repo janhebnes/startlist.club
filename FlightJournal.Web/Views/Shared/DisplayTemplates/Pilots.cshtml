@@ -1,4 +1,5 @@
 ﻿@model FlightJournal.Web.Models.Flight
+@using FlightJournal.Web.Extensions
 @if (Model.Pilot != null)
 {
     @Model.Pilot.Name
@@ -7,13 +8,20 @@
         <text>/ </text>
         @Model.PilotBackseat.Name
     }
-    if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
+    if (Model.IsCurrentClubPilots())
     {
-        @Html.Raw(string.Format(" " + _("(payed by {0})"), Model.Betaler.Name))
+        if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
+        {
+            @Html.Raw(string.Format(" " + _("(payed by {0})"), Model.Betaler.Name))
+        }
+        if ((Model.Betaler == null) && (Model.Pilot != null))
+        {
+            <text> </text>
+            @_("(missing payer)")
+        }
     }
-    if ((Model.Betaler == null) && (Model.Pilot != null))
+    if (!Request.IsClub() || !Model.IsCurrentClubPilots())
     {
-        <text> </text>
-        @_("(missing payer)")
+        @Html.Raw(string.Format(" [{0}]", @Model.Pilot.Club.ShortName))
     }
 }

@@ -3,16 +3,16 @@
 @using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.ReportViewModel
 @{
-        ViewBag.Title = _("Day reports");
+    ViewBag.Title = _("Day reports");
 
-        var root = "/";
-        if (Request.IsClub())
-        {
-            // When root Action has problems identifying that the date is allready part of the path
-            root = Url.Action("Index", "Report");
-        }
+    var root = "/";
+    if (Request.IsClub())
+    {
+        // When root Action has problems identifying that the date is allready part of the path
+        root = Url.Action("Index", "Report");
+    }
 
-        var weekName = _("Week");
+    var weekName = _("Week");
 }
 
 @section head
@@ -99,7 +99,7 @@
 
         $(".tablesorter").tablesorter();
     });
-</script>
+    </script>
 }
 @*#HACK: for allowing the mobil view to function better we introduce this fix*@
 <div align="center" class="hidden-print" style="font-size: 0.82em">
@@ -110,437 +110,455 @@
     <div id="datepickermobil" class="visible-xs">
     </div>
 </div>
-<br class="clearfix"/>
-
-@if (Model.DistinctLocations.Count() > 1)
+<br class="clearfix" />
+@if (Model.Flights.Any())
 {
-    <div class="btn-group">
-        @foreach (var item in Model.DistinctLocations)
-        {
-            <a href="#@item.LocationId" class="btn btn-default">@item.ToString(Request.Club().Country)</a>
-        }
-    </div>
-}
-
-@foreach (var location in Model.DistinctLocations)
-{
-    var headerMetadata = Model.Flights.FirstOrDefault();
-    bool enableStartTypeColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Select(s=>s.StartType.ShortName).Distinct().Count() > 1;
-    bool enableTachoColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).ToList().Sum(s => s.Tacho) > 0;
-    bool enableNoteColumn = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Sum(s => (s.Description + "").Length) > 0;
-
-    <a name="@location.LocationId"></a>
-    <h2>
-        @location.ToString(Request.Club().Country) @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
-    </h2>
-    <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
-        <thead>
-            <tr>
-                <th>
-                    #
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => headerMetadata.Duration)
-                </th>
-                <th>
-                    @_("Plane")
-                </th>
-                <th>
-                    @_("Pilot(s)")
-                </th>
-                @if (enableStartTypeColumn)
-                {
-                    <th class="hidden-xs hidden-sm"></th>
-                }
-                <th>
-                    @Html.DisplayNameFor(model => headerMetadata.StartedFrom)
-                </th>
-                <th class="hidden-xs">
-                    @Html.DisplayNameFor(model => headerMetadata.LandedOn)
-                </th>
-                @if (enableTachoColumn)
-                {
-                <th class="hidden-xs hidden-sm text-right">
-                    @Html.DisplayNameFor(model => headerMetadata.Tacho) &nbsp;&nbsp;
-                </th> 
-                }
-                @if (enableNoteColumn)
-                {
-                <th class="hidden-xs text-right">
-                    @Html.DisplayNameFor(model => headerMetadata.Description) &nbsp;&nbsp;
-                </th> 
-                }
-                <th class="hidden-print">
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ int startNr = 0; }
-            @foreach (var item in Model.Flights.Where(d => d.StartedFromId == location.LocationId))
+    if (Model.DistinctLocations.Count() > 1)
+    {
+        <div class="btn-group">
+            @foreach (var item in Model.DistinctLocations)
             {
-                var style = new HtmlString(string.Empty);
-                if (item.Deleted.HasValue)
-                {
-                    style = new HtmlString("style=\"text-decoration: line-through;\"");
-                }
-                <tr>
-                    <td>
-                        @if (!item.Deleted.HasValue)
-                        {
-                            @(++startNr)
-                            if (item.LandingCount > 1)
-                            {
-                                startNr = startNr + item.LandingCount;
-                                <text> - </text>
-                                @(startNr)
-                            }
-                        }
-                        else
-                        {
-                            <span class="fa fa-trash-o"></span>
-                        }
-                    </td>
-                    <td @style align="right">
-                        @Html.DisplayFor(modelItem => item, "Duration")
-                    </td>
-                    <td @style>
-                        @Html.DisplayFor(modelItem => item.Plane, "Plane")
-                    </td>
-                    <td @style>
-                        @Html.DisplayFor(modelItem => item, "Pilots")
-                    </td>
-                @if (enableStartTypeColumn)
-                {
-                    <td @style class="hidden-xs hidden-sm text-center">
-                        @(item.StartType.ShortName)
-                        <!--@Html.DisplayFor(modelItem => item.StartType, "StartType")-->
-                    </td>
-                }
-                    <td @style align="right">
-                        @Html.DisplayFor(modelItem => item, "Departure")
-                    </td>
-                    <td @style class="hidden-xs text-right">
-                        @Html.DisplayFor(modelItem => item, "Landing")
-                        @Html.DisplayFor(modelItem => item, "LandedOn")
-                    </td>
-                @if (enableTachoColumn)
-                {
-                    <td @style class="hidden-xs hidden-sm text-right">
-                        @Html.DisplayFor(modelItem => item, "Tacho")
-                    </td> 
-                }
-                @if (enableNoteColumn)
-                {
-                    <td @style class="hidden-xs">
-                        @Html.DisplayFor(modelItem => item.Description, "Description")
-                    </td> 
-                }
-                    <td class="hidden-print text-right">
-                        @if (Request.IsPilot())
-                        {
-                            if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
-                            {
-                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
-                            }
-                        }
-                        @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
-                    </td>
-                </tr>
+                <a href="#@item.LocationId" class="btn btn-default">@item.ToString(Request.Club().Country)</a>
             }
-        </tbody>
-    </table>
-    <p style="color: silver" class="noprint pull-right">
-        <em title="Total">S: @Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d=>d.StartType.ShortName == "S").Count() / F: @Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d=>d.StartType.ShortName == "F").Count() </em>
-    </p>
-    <p style="color: silver" class="noprint">
-        <em>@_("Editing is restricted after 48 hours.")</em>
-    </p>
-}
+        </div>
+    }
 
-<br style="page-break-after: always;"/>
+    foreach (var location in Model.DistinctLocations)
+    {
+        var headerMetadata = Model.Flights.FirstOrDefault();
+        bool enableStartTypeColumn = Model.ClubFlights.Any(d => d.StartedFromId == location.LocationId) 
+            && Model.Flights.Where(d => d.StartedFromId == location.LocationId).Select(s => s.StartType.ShortName).Distinct().Count() > 1;
+        bool enableTachoColumn = Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId).ToList().Sum(s => s.Tacho) > 0;
+        bool enableNoteColumn = Model.ClubFlights.Any(d => d.StartedFromId == location.LocationId)
+            && Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId).Sum(s => (s.Description + "").Length) > 0;
 
-@{ 
-    bool enableLogStartTypeColumn = Model.Flights.Select(s => s.StartType).Distinct().Count() > 1;
-    bool enableLogTachoColumn = Model.Flights.ToList().Sum(s => s.Tacho) > 0;
-}
-<h2>
-    @_("Plane Logbooks") @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
-</h2>
-<div class="row">
-    <div class="col-md-6">
-        
-        <table class="tablesorter table table-striped table-condensed">
+        <a name="@location.LocationId"></a>
+        <h2>
+            @location.ToString(Request.Club().Country) @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
+        </h2>
+        <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
             <thead>
                 <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => headerMetadata.Duration)
+                    </th>
                     <th>
                         @_("Plane")
                     </th>
                     <th>
-                        @_("Pilot")
+                        @_("Pilot(s)")
                     </th>
-                @if (enableLogStartTypeColumn)
-                {
-                    <th></th> }
-                @if (enableLogTachoColumn)
-                {
-                    <th class="text-right">@_("Tacho") &nbsp;&nbsp;</th>}
+                    @if (enableStartTypeColumn)
+                    {
+                        <th class="hidden-xs hidden-sm"></th>
+                    }
                     <th>
-                        @_("Count")
+                        @Html.DisplayNameFor(model => headerMetadata.StartedFrom)
                     </th>
-                    <th>
-                        @_("Duration")
+                    <th class="hidden-xs">
+                        @Html.DisplayNameFor(model => headerMetadata.LandedOn)
+                    </th>
+                    @if (enableTachoColumn)
+                    {
+                        <th class="hidden-xs hidden-sm text-right">
+                            @Html.DisplayNameFor(model => headerMetadata.Tacho) &nbsp;&nbsp;
+                        </th>
+                    }
+                    @if (enableNoteColumn)
+                    {
+                        <th class="hidden-xs text-right">
+                            @Html.DisplayNameFor(model => headerMetadata.Description) &nbsp;&nbsp;
+                        </th>
+                    }
+                    <th class="hidden-print">
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.Flights
-                                     where c.Deleted == null
-                                     group c by new { c.Plane, c.Pilot, c.StartType } into g
-                                     select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g})
+                @{ int startNr = 0; }
+                @foreach (var item in Model.Flights.Where(d => d.StartedFromId == location.LocationId))
                 {
+                    var style = new HtmlString(string.Empty);
+                    if (item.Deleted.HasValue)
+                    {
+                        style = new HtmlString("style=\"text-decoration: line-through;\"");
+                    }
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Plane)
-                        </td>
-                        <td>
-                            @item.Pilot.Name
-                        </td>
-                    @if (enableLogStartTypeColumn)
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
-                        </td> }
-                    @if (enableLogTachoColumn)
-                    {
-                        <td class="text-right">
-                            @if (item.ItemFlights.Count() == 1)
+                            @if (!item.Deleted.HasValue)
                             {
-                                var tachoFlight = item.ItemFlights.First();
-                                @Html.DisplayFor(modelItem => tachoFlight, "Tacho")
+                                @(++startNr)
+                                if (item.LandingCount > 1)
+                                {
+                                    startNr = startNr + item.LandingCount;
+                                    <text> - </text>
+                                    @(startNr)
+                                }
                             }
                             else
                             {
-                                var tachoUnits = item.ItemFlights.Sum(s => s.Tacho);
-                                if (tachoUnits > 0)
+                                <span class="fa fa-trash-o"></span>
+                            }
+                        </td>
+                        <td @style align="right">
+                            @Html.DisplayFor(modelItem => item, "Duration")
+                        </td>
+                        <td @style>
+                            @Html.DisplayFor(modelItem => item.Plane, "Plane")
+                        </td>
+                        <td @style>
+                            @Html.DisplayFor(modelItem => item, "Pilots")
+                        </td>
+                        @if (enableStartTypeColumn)
+                        {
+                            <td @style class="hidden-xs hidden-sm text-center">
+                                @(item.StartType.ShortName)
+                                <!--@Html.DisplayFor(modelItem => item.StartType, "StartType")-->
+                            </td>
+                        }
+                        <td @style align="right">
+                            @Html.DisplayFor(modelItem => item, "Departure")
+                        </td>
+                        <td @style class="hidden-xs text-right">
+                            @Html.DisplayFor(modelItem => item, "Landing")
+                            @Html.DisplayFor(modelItem => item, "LandedOn")
+                        </td>
+                        @if (enableTachoColumn)
+                        {
+                            <td @style class="hidden-xs hidden-sm text-right">
+                                @Html.DisplayFor(modelItem => item, "Tacho")
+                            </td>
+                        }
+                        @if (enableNoteColumn)
+                        {
+                            <td @style class="hidden-xs">
+                                @Html.DisplayFor(modelItem => item.Description, "Description")
+                            </td>
+                        }
+                        <td class="hidden-print text-right">
+                            @if (Request.IsPilot() && item.IsCurrentClubPilots())
+                            {
+                                if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
                                 {
-                                    @tachoUnits
+                                    @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
                                 }
                             }
-                        </td>}
-                        <td align="right">
-                            @item.ItemFlights.Sum(f=>f.LandingCount)
-                        </td>
-                        <td align="right">
-                            @item.ItemFlights.Sum(f=>f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                            @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-    </div>
-    <div class="col-md-6">
-        @if (Model.Flights.Any(f=>f.PilotBackseat != null))
-        {
-            <table class="tablesorter table table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th>
-                            @_("Plane")
-                        </th>
-                        <th>
-                            @_("Co-Pilot")
-                        </th>
-                    @if (enableLogStartTypeColumn)
-                    {
-                        <th></th> }
-                        <th>
-                            @_("Count")
-                        </th>
-                        <th>
-                            @_("Duration")
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in from c in Model.Flights
-                where c.PilotBackseat != null && c.Deleted == null
-                group c by new {c.Plane, c.PilotBackseat, c.StartType}
-                into g
-                select new {Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, StartType = g.Key.StartType, ItemFlights = g})
-            {
+        <p style="color: silver" class="noprint pull-right">
+            <em title="Total">S: @Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d => d.StartType.ShortName == "S").Count() / F: @Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d => d.StartType.ShortName == "F").Count() </em>
+        </p>
+        <p style="color: silver" class="noprint">
+            <em>@_("Editing is restricted after 48 hours.")</em>
+        </p>
+    }
+
+    <br style="page-break-after: always;" />
+
+    if (Request.IsClub())
+    {
+        bool enableLogStartTypeColumn = Model.ClubFlights.Select(s => s.StartType).Distinct().Count() > 1;
+        bool enableLogTachoColumn = Model.ClubFlights.ToList().Sum(s => s.Tacho) > 0;
+        <h2>
+            @_("Plane Logbooks") @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
+        </h2>
+        <div class="row">
+            <div class="col-md-6">
+
+                <table class="tablesorter table table-striped table-condensed">
+                    <thead>
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Plane)
-                            </td>
-                            <td>
-                                @item.PilotBackseat.Name
-                            </td>
-                        @if (enableLogStartTypeColumn)
-                        {
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.StartType, "StartType")
-                            </td> }
-                            <td class="text-right">
-                                @item.ItemFlights.Sum(f => f.LandingCount)
-                            </td>
-                            <td class="text-right">
-                                @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
-                            </td>
+                            <th>
+                                @_("Plane")
+                            </th>
+                            <th>
+                                @_("Pilot")
+                            </th>
+                            @if (enableLogStartTypeColumn)
+                            {
+                                <th></th>}
+                            @if (enableLogTachoColumn)
+                            {
+                                <th class="text-right">@_("Tacho") &nbsp;&nbsp;</th>}
+                            <th>
+                                @_("Count")
+                            </th>
+                            <th>
+                                @_("Duration")
+                            </th>
                         </tr>
-            }
-                </tbody>
-            </table>
-        }
-        
-        <table class="tablesorter table table-striped table-condensed">
-            <thead>
-                <tr>
-                    <th>
-                        @_("Plane") @_("(total)")
-                    </th>
-                @if (enableLogStartTypeColumn)
+                    </thead>
+                    <tbody>
+                        @foreach (var item in from c in Model.ClubFlights
+                                             where c.Deleted == null
+                                             group c by new { c.Plane, c.Pilot, c.StartType } into g
+                                             select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g })
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Plane)
+                                </td>
+                                <td>
+                                    @item.Pilot.Name
+                                </td>
+                                @if (enableLogStartTypeColumn)
+                                {
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.StartType, "StartType")
+                                    </td>}
+                                @if (enableLogTachoColumn)
+                                {
+                                    <td class="text-right">
+                                        @if (item.ItemFlights.Count() == 1)
+                                        {
+                                            var tachoFlight = item.ItemFlights.First();
+                                            @Html.DisplayFor(modelItem => tachoFlight, "Tacho")
+                                        }
+                                        else
+                                        {
+                                            var tachoUnits = item.ItemFlights.Sum(s => s.Tacho);
+                                            if (tachoUnits > 0)
+                                            {
+                                                @tachoUnits
+                                            }
+                                        }
+                                    </td>}
+                                <td align="right">
+                                    @item.ItemFlights.Sum(f => f.LandingCount)
+                                </td>
+                                <td align="right">
+                                    @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                @if (Model.ClubFlights.Any(f => f.PilotBackseat != null))
                 {
-                    <th></th> }
-                    <th>
-                        @_("Count")
-                    </th>
-                    <th>
-                        @_("Duration")
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in from c in Model.Flights
-                                    where c.Deleted == null
-                                    group c by new { c.Plane, c.StartType } into g
-                                    select new { Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                    <table class="tablesorter table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @_("Plane")
+                                </th>
+                                <th>
+                                    @_("Co-Pilot")
+                                </th>
+                                @if (enableLogStartTypeColumn)
+                                {
+                                    <th></th>}
+                                <th>
+                                    @_("Count")
+                                </th>
+                                <th>
+                                    @_("Duration")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in from c in Model.ClubFlights
+                                                 where c.PilotBackseat != null && c.Deleted == null
+                                                 group c by new { c.Plane, c.PilotBackseat, c.StartType }
+                into g
+                                                 select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, StartType = g.Key.StartType, ItemFlights = g })
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Plane)
+                                    </td>
+                                    <td>
+                                        @item.PilotBackseat.Name
+                                    </td>
+                                    @if (enableLogStartTypeColumn)
+                                    {
+                                        <td class="text-center">
+                                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
+                                        </td>}
+                                    <td class="text-right">
+                                        @item.ItemFlights.Sum(f => f.LandingCount)
+                                    </td>
+                                    <td class="text-right">
+                                        @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                <table class="tablesorter table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                @_("Plane") @_("(total)")
+                            </th>
+                            @if (enableLogStartTypeColumn)
+                            {
+                                <th></th>}
+                            <th>
+                                @_("Count")
+                            </th>
+                            <th>
+                                @_("Duration")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in from c in Model.ClubFlights
+                                             where c.Deleted == null
+                                             group c by new { c.Plane, c.StartType } into g
+                                             select new { Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Plane)
+                                </td>
+                                @if (enableLogStartTypeColumn)
+                                {
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.StartType, "StartType")
+                                    </td>}
+                                <td class="text-right">
+                                    @item.ItemFlights.Sum(f => f.LandingCount)
+                                </td>
+                                <td class="text-right">
+                                    @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h2>
+            @_("Pilot Logbooks") @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
+        </h2>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="tablesorter table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                @_("Pilot")
+                            </th>
+                            <th>
+                                @_("Plane")
+                            </th>
+                            @if (enableLogStartTypeColumn)
+                            {
+                                <th></th>}
+                            <th>
+                                @_("Count")
+                            </th>
+                            <th>
+                                @_("Duration")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in from c in Model.ClubFlights
+                                             where c.Deleted == null
+                                             group c by new { c.Pilot, c.Plane, c.StartType } into g
+                                             select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                        {
+                            <tr>
+                                <td>
+                                    @item.Pilot.Name
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Plane)
+                                </td>
+                                @if (enableLogStartTypeColumn)
+                                {
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.StartType, "StartType")
+                                    </td>}
+                                <td align="right">
+                                    @item.ItemFlights.Sum(f => f.LandingCount)
+                                </td>
+                                <td align="right">
+                                    @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="tablesorter table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                @_("Co-Pilot")
+                            </th>
+                            <th>
+                                @_("Plane")
+                            </th>
+                            @if (enableLogStartTypeColumn)
+                            {
+                                <th></th>}
+                            <th>
+                                @_("Count")
+                            </th>
+                            <th>
+                                @_("Duration")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in from c in Model.ClubFlights
+                                             where c.PilotBackseat != null && c.Deleted == null
+                                             group c by new { c.PilotBackseat, c.Plane, c.StartType } into g
+                                             select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                        {
+                            <tr>
+                                <td>
+                                    @item.PilotBackseat.Name
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Plane)
+                                </td>
+                                @if (enableLogStartTypeColumn)
+                                {
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.StartType, "StartType")
+                                    </td>}
+                                <td align="right">
+                                    @item.ItemFlights.Sum(f => f.LandingCount)
+                                </td>
+                                <td align="right">
+                                    @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else // @if (Request.IsClub())
+    {
+        <p>
+            @foreach (var club in Model.Flights.Where(f => f.Deleted == null).GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count()))
             {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Plane)
-                        </td>
-                    @if (enableLogStartTypeColumn)
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
-                        </td> }
-                        <td class="text-right">
-                            @item.ItemFlights.Sum(f => f.LandingCount)
-                        </td>
-                        <td class="text-right">
-                            @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
-                        </td>
-                    </tr>
+                <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM-dd"))" class="btn btn-primary">@Html.Raw(string.Format(_("{0} logbøger {1} starter {2} timer"), club.Key.ShortName, club.Count(), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
             }
-            </tbody>
-        </table>
-    </div>
-</div>
-<h2>
-    @_("Pilot Logbooks") @Model.Date.ToShortDateString() <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
-</h2>
-<div class="row">
-    <div class="col-md-6">
-        <table class="tablesorter table table-striped table-condensed">
-            <thead>
-                <tr>
-                    <th>
-                        @_("Pilot")
-                    </th>
-                    <th>
-                        @_("Plane")
-                    </th>
-                @if (enableLogStartTypeColumn)
-                {
-                    <th></th> }
-                    <th>
-                        @_("Count")
-                    </th>
-                    <th>
-                        @_("Duration")
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in from c in Model.Flights
-                                     where c.Deleted == null
-                                     group c by new { c.Pilot, c.Plane, c.StartType } into g
-                                     select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
-                {
-                    <tr>
-                        <td>
-                            @item.Pilot.Name
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Plane)
-                        </td>
-                    @if (enableLogStartTypeColumn)
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
-                        </td> }
-                        <td align="right">
-                            @item.ItemFlights.Sum(f => f.LandingCount)
-                        </td>
-                        <td align="right">
-                            @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-</div>
-    <div class="col-md-6">
-        <table class="tablesorter table table-striped table-condensed">
-            <thead>
-                <tr>
-                    <th>
-                        @_("Co-Pilot")
-                    </th>
-                    <th>
-                        @_("Plane")
-                    </th>
-                @if (enableLogStartTypeColumn)
-                {
-                    <th></th> }
-                    <th>
-                        @_("Count")
-                    </th>
-                    <th>
-                        @_("Duration")
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in from c in Model.Flights
-                                     where c.PilotBackseat != null && c.Deleted == null
-                                     group c by new { c.PilotBackseat, c.Plane, c.StartType } into g
-                                     select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
-                {
-                    <tr>
-                        <td>
-                            @item.PilotBackseat.Name
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Plane)
-                        </td>
-                    @if (enableLogStartTypeColumn)
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.StartType, "StartType")
-                        </td> }
-                        <td align="right">
-                            @item.ItemFlights.Sum(f => f.LandingCount)
-                        </td>
-                        <td align="right">
-                            @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-</div>
-</div>
+        </p>
+    }
+}
+else //if (Model.Flights.Any())
+{
+    <p>Ingen flyvninger registreret den Model.Date.ToString("dd-MMM-yyyy")</p>
+}
 <br />
 <p>
     <a href="@Path.Combine(root, Model.Date.ToString("yyyy"))" class="btn btn-primary">@Html.Raw(string.Format(_("Statistics for {0}"), Model.Date.ToString("yyyy")))</a>

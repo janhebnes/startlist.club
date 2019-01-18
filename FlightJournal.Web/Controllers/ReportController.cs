@@ -125,13 +125,13 @@ namespace FlightJournal.Web.Controllers
         {
             if (month.HasValue)
             {
-                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
+                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + "-" + month + ".csv");
             }
             else
             {
-                var flights = this.db.Flights.Where(f => f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrent());
+                var flights = this.db.Flights.Where(f => f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + ".csv");
             }

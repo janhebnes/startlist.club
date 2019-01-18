@@ -214,7 +214,7 @@ namespace FlightJournal.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (club == null) ? (object)null : club.LocationId);
             return View(club);
         }
 
@@ -239,6 +239,7 @@ namespace FlightJournal.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (club == null) ? (object)null : club.LocationId);
             return View(club);
         }
 

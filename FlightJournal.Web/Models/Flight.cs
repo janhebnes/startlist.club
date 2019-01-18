@@ -184,7 +184,7 @@ namespace FlightJournal.Web.Models
             get
             {
                 return
-                    "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde unionsnr;Bagsæde medlemsnr;Bagsæde navn;Bagsæde unionsnr;Betaler medlemsnr;Betaler navn;Betaler unionsnr;Startet;Landed;Flyvetid;Tacho start;Tacho slut;Tacho;Note;Km;Starttype;Start fra;Landed på;Sidst opdateret;Sidst opdateret af\n";
+                    @"Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde unionsnr;Bagsæde medlemsnr;Bagsæde navn;Bagsæde unionsnr;Betaler medlemsnr;Betaler navn;Betaler unionsnr;Startet;Landed;Flyvetid;Tacho start;Tacho slut;Tacho;Note;Km;Starttype;Start fra;Landed på;Klub;Sidst opdateret;Sidst opdateret af\n";
             }
         }
 
@@ -192,7 +192,7 @@ namespace FlightJournal.Web.Models
         {
                 return
                 string.Format(
-                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23}\n",
+                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24}\n",
                     this.Date.ToShortDateString(),
                     this.Plane,
                     this.Pilot != null ? this.Pilot.MemberId : string.Empty,
@@ -215,6 +215,7 @@ namespace FlightJournal.Web.Models
                     this.StartType,
                     this.StartedFrom,
                     this.LandedOn,
+                    this.Pilot != null ? this.Pilot.Club.ShortName : string.Empty,
                     this.LastUpdated,
                     this.LastUpdatedBy);
             
@@ -285,5 +286,26 @@ namespace FlightJournal.Web.Models
                 || (arg.Betaler != null && arg.Betaler.ClubId == ClubController.CurrentClub.ClubId);
         }
 
+        /// <summary>
+        /// Return true if the current Flight is relevant for the Currently Selected Club
+        /// </summary>
+        /// <returns></returns>
+        public bool IsCurrentClubPilots()
+        {
+            return IsCurrentClubPilots(this);
+        }
+
+        /// <summary>
+        /// Return true if the current Flight is relevant for the Currently Selected Club
+        /// </summary>
+        /// <remarks>usable direcly in linq where statements</remarks>
+        public static bool IsCurrentClubPilots(Flight arg)
+        {
+            return ClubController.CurrentClub.ShortName == null 
+                || (arg.Pilot != null && arg.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                || (arg.PilotBackseat != null && arg.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                || (arg.Betaler != null && arg.Betaler.ClubId == ClubController.CurrentClub.ClubId)
+                || (arg.Pilot == null && arg.PilotBackseat == null && arg.Betaler == null);
+        }
     }
 }
