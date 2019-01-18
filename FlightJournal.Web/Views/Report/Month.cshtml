@@ -76,7 +76,7 @@
                 </td>
                 <td align="right">
                     @{
-                        int clubTotalFlights = Model.ClubFlights.Sum(d => d.LandingCount);
+                        int clubTotalFlights = Model.ClubFlights.Any() ? Model.ClubFlights.Sum(d => d.LandingCount) : 0;
                         int totalTotalFlights = Model.Flights.Sum(d => d.LandingCount);
                     }
                     @clubTotalFlights
@@ -89,8 +89,8 @@
                 {
                     <td align="right">
                         @{
-                            int clubFlights = Model.ClubFlights.Where(d => d.Date == date).Sum(d => d.LandingCount);
-                            int totalFlights = Model.Flights.Where(d => d.Date == date).Sum(d => d.LandingCount);
+                            int clubFlights = Model.ClubFlights.Any(d => d.Date == date) ? Model.ClubFlights.Where(d => d.Date == date).Sum(d => d.LandingCount) : 0;
+                            int totalFlights = Model.Flights.Any(d => d.Date == date) ? Model.Flights.Where(d => d.Date == date).Sum(d => d.LandingCount) : 0;
                         }
                         @clubFlights
                         @if (clubFlights != totalFlights)
