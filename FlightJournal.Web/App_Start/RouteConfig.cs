@@ -10,6 +10,8 @@ namespace FlightJournal.Web{
         public static void RegisterRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
             //// Custom club Urls
             //routes.MapRoute(
             //    name: "Root", // Route name
@@ -41,6 +43,15 @@ namespace FlightJournal.Web{
                  new { club = new ClubRouteConstraint(new ClubValidator())
                      , date = new DateRouteConstraint(new DatePathValidator()) }
              );
+
+            // Custom club Urls with default behavior
+            routes.MapRoute(
+                "LogbookWithClubFlavor", // Route name
+                "{club}/logbook/{year}", // URL with parameters
+                new { club = UrlParameter.Optional, controller = "Logbook", action = "Index", year = UrlParameter.Optional },
+                new { club = new ClubRouteConstraint(new ClubValidator()) }
+            );
+
 
             // Custom club Urls with default behavior
             routes.MapRoute(

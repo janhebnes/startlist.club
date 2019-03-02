@@ -44,11 +44,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    
+
                     <li>@Html.MenuLink(_("Day Report"), "Index", "Report")</li>
                     @if (!Request.IsClub() && Request.IsPilot())
                     {
-                        <li>@Html.ActionLink(_("Day Report")+" (" + Request.Pilot().Club.ShortName + ")", "Index", "Report", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                        <li>@Html.ActionLink(_("Day Report") + " (" + Request.Pilot().Club.ShortName + ")", "Index", "Report", new { club = Request.Pilot().Club.ShortName }, null)</li>
                     }
                     @if (Request.IsAuthenticated)
                     {
@@ -58,12 +58,12 @@
                         }
                         else if (Request.IsPilot())
                         {
-                            <li>@Html.ActionLink(_("Startlist ({0})",Request.Pilot().Club.ShortName), "Grid", "Flight", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                            <li>@Html.ActionLink(_("Startlist ({0})", Request.Pilot().Club.ShortName), "Grid", "Flight", new { club = Request.Pilot().Club.ShortName }, null)</li>
                         }
                     }
                     @if (User.IsPilot() && Request.Club().ClubId == User.Pilot().Club.ClubId)
                     {
-                        <li>@Html.MenuLink(_("Logbook"), "Pilot", "Report")</li>
+                        <li>@Html.ActionLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName }, null)</li>
                     }
                     @if (Request.IsClub() && !string.IsNullOrWhiteSpace(Request.Club().Website) && !User.IsEditor())
                     {
@@ -115,7 +115,8 @@
                     }
                     @if (User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
                     {
-                        <li>@Html.MenuLink(_("Logbook"), "Pilot", "Report")</li>
+                        @*<li>@Html.MenuLink(_("Logbook"), "Index", "Logbook")</li>*@
+                        <li>@Html.ActionLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName }, null)</li>
                     }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_LanguagePartial")

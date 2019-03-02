@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
+    <Compile Include="Controllers\LogbookController.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.Designer.cs">
       <DependentUpon>201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\LogbookViewModels.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -479,7 +481,7 @@
     <Content Include="Views\Plane\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Report\Month.cshtml" />
-    <Content Include="Views\Report\Pilot.cshtml" />
+    <Content Include="Views\Logbook\Index.cshtml" />
     <Content Include="Views\Report\Plane.cshtml" />
     <Content Include="Views\Report\Year.cshtml" />
     <Content Include="Views\StartType\Create.cshtml" />
