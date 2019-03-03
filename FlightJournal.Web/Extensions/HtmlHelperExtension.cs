@@ -15,14 +15,14 @@ namespace FlightJournal.Web.Extensions
 {
     public static partial class HtmlHelperExtension
     {
-        public static MvcHtmlString MenuLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName)
+        public static MvcHtmlString MenuLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues = null, object htmlAttributes = null)
         {
             var currentAction = htmlHelper.ViewContext.RouteData.GetRequiredString("action");
             var currentController = htmlHelper.ViewContext.RouteData.GetRequiredString("controller");
 
             var builder = new TagBuilder("li")
             {
-                InnerHtml = htmlHelper.ActionLink(linkText, actionName, controllerName).ToHtmlString()
+                InnerHtml = htmlHelper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes).ToHtmlString()
             };
 
             if (controllerName == currentController && actionName == currentAction)

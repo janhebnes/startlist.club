@@ -11,6 +11,7 @@ namespace FlightJournal.Web.Models
         public int Year { get; set; }
         public Pilot Pilot { get; set; }
         public IQueryable<Models.Flight> Flights { get; set; }
+        public bool TrainingBarometerEnabled { get; set; } = false;
     }
 
     public class TrainingBarometerViewModel

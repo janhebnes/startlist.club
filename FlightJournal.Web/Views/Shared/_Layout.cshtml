@@ -63,7 +63,7 @@
                     }
                     @if (User.IsPilot() && Request.Club().ClubId == User.Pilot().Club.ClubId)
                     {
-                        <li>@Html.ActionLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                        <li>@Html.MenuLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
                     }
                     @if (Request.IsClub() && !string.IsNullOrWhiteSpace(Request.Club().Website) && !User.IsEditor())
                     {
@@ -115,8 +115,7 @@
                     }
                     @if (User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
                     {
-                        @*<li>@Html.MenuLink(_("Logbook"), "Index", "Logbook")</li>*@
-                        <li>@Html.ActionLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName }, null)</li>
+                        <li>@Html.MenuLink(_("Logbook"), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
                     }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_LanguagePartial")

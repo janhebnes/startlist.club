@@ -40,8 +40,13 @@ namespace FlightJournal.Web.Controllers
                 .OrderByDescending(o => o.Departure)
                 .AsQueryable();
 
-            var last12months = DateTime.Now.AddYears(-1);
-            model.TrainingBarometer = GetTrainingBarometer(model.Flights.Where(f => f.Date > last12months));
+            if (model.Year == DateTime.Now.Year)
+            {
+                var last12months = DateTime.Now.AddYears(-1);
+                model.TrainingBarometer = GetTrainingBarometer(model.Flights.Where(f => f.Date > last12months));
+                model.TrainingBarometerEnabled = true;
+            }
+            
 
             return this.View(model);
         }

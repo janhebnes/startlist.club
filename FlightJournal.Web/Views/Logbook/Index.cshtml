@@ -1,21 +1,37 @@
 ﻿@using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.LogbookViewModel
 @{
-    ViewBag.Title = "Pilot logbog";
+    var flightsDataset = Model.Flights.Where(f => f.Date.Year == Model.Year);
+
+    ViewBag.Title = _("Logbook") + " " + Model.Year;
+}
+@if (Model.TrainingBarometerEnabled)
+{
+    <span class="pull-right text-right">
+        @Model.TrainingBarometer.Last12MonthDepartures starter og @Model.TrainingBarometer.Last12MonthDuration.TotalHoursWithMinutesAsDecimal() timer de sidste 12 måneder
+        <br /><a href="https://medlem.dsvu.dk/grp500/171-uhb599-traeningsbarometer-pdf/file/menu-id-117">Træningsbarometer</a> er i <span style="color:@Model.TrainingBarometer.BarometerColorCode;"><b>@Model.TrainingBarometer.BarometerLabel</b></span>
+        <br /><em>@Model.TrainingBarometer.BarometerRecommendation</em>
+    </span>
 }
 
+<p>
+    <div class="btn-group">
+        @Html.ActionLink((Model.Year - 1).ToString(), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName, year = Model.Year - 1 }, new { Class = "btn btn-default" })
+        <a href="@Url.Action("Index", "Logbook", new { club = Request.Pilot().Club.ShortName, year = Model.Year })" class="btn btn-info"><span class="glyphicon glyphicon-stats"></span> <strong>@Model.Year</strong></a>
+        @if (DateTime.Now.Year >= Model.Year)
+        {
+            @Html.ActionLink((Model.Year + 1).ToString(), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName, year = Model.Year + 1 }, new { Class = "btn btn-default" })
+        }
+    </div>
+    @*@if (Model.Flights.Any())
+        {
+            <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("yyyy")</a>
+        }*@
+</p>
 
-<h2>Pilot logbog @Model.Year-@(Model.Year - 1)</h2>
-
-<span class="pull-right text-right">
-    @Model.TrainingBarometer.Last12MonthDepartures starter og @Model.TrainingBarometer.Last12MonthDuration.TotalHoursWithMinutesAsDecimal() timer de sidste 12 måneder
-    <br /><a href="https://medlem.dsvu.dk/grp500/171-uhb599-traeningsbarometer-pdf/file/menu-id-117">Træningsbarometer</a> er i <span style="color:@Model.TrainingBarometer.BarometerColorCode;"><b>@Model.TrainingBarometer.BarometerLabel</b></span>
-    <br /><em>@Model.TrainingBarometer.BarometerRecommendation</em>
-</span>
-
-<h3>
-    Pilot statistik <small>@Model.Pilot.Name</small>
-</h3>
+<h2>
+    @_("Logbook") <small>@Model.Pilot.Name</small>
+</h2>
 <table class="tablesorter table table-striped table-hover table-condensed table-bordered">
     <thead>
         <tr>
@@ -67,8 +83,9 @@
             </th>
         </tr>
     </thead>
+
     <tbody>
-        @foreach (var item in from c in Model.Flights.Where(f => f.PilotId == Model.Pilot.PilotId)
+        @foreach (var item in from c in flightsDataset.Where(f => f.PilotId == Model.Pilot.PilotId)
                              group c by new { c.Pilot, c.StartType } into g
                              select new { Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g })
         {
@@ -95,7 +112,7 @@
                 }
             </tr>
         }
-        @foreach (var item in from c in Model.Flights.Where(f => f.PilotBackseatId == Model.Pilot.PilotId)
+        @foreach (var item in from c in flightsDataset.Where(f => f.PilotBackseatId == Model.Pilot.PilotId)
                              group c by new { c.PilotBackseat, c.StartType } into g
                              select new { Pilot = g.Key.PilotBackseat, StartType = g.Key.StartType, ItemFlights = g })
         {
@@ -125,9 +142,6 @@
     </tbody>
 </table>
 
-<h2>
-    Logbøger <small>@Model.Pilot.Name</small>
-</h2>
 <div class="row">
     <div class="col-md-6">
         <table class="tablesorter table table-striped table-hover table-condensed">
@@ -149,7 +163,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.Flights
+                @foreach (var item in from c in flightsDataset
                                      where c.PilotId == Model.Pilot.PilotId
                                      group c by new { c.Pilot, c.Plane, c.StartType } into g
                                      select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
@@ -195,7 +209,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.Flights
+                @foreach (var item in from c in flightsDataset
                                      where c.PilotBackseatId == Model.Pilot.PilotId
                                      group c by new { c.PilotBackseat, c.Plane, c.StartType } into g
                                      select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
@@ -225,7 +239,7 @@
 
 <br style="page-break-after: always;" />
 <h2>
-    Startlister <small>@Model.Pilot.Name</small>
+    @_("Startlist") <small>@Model.Pilot.Name</small>
 </h2>
 <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
     <thead>
@@ -257,7 +271,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Flights.OrderByDescending(d => d.Departure))
+        @foreach (var item in flightsDataset.OrderByDescending(d => d.Departure))
         {
             <tr>
                 <td>
