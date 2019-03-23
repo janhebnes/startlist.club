@@ -117,12 +117,26 @@ namespace FlightJournal.Web.Models
         [Required]
         public int PilotId { get; set; }
         public virtual Pilot Pilot { get; set; }
-        
+
         //Pilot function time (copilot/instructor or passenger)
+
+        // Pilot Role  PilotInCommand / FlightStudent / Passenger / FlightInstructor / FlightExaminer (FlightTraining) 
+
+        // FlightTrainingLessonId (TMG ? S ? A normer B normer )
+
+        // FlightTrainingLessonApprovedByPilotId (int Pilot approving the lesson (on solo flights this might not be an FI onboard))
+        // FlightTrainingLesson also has aspects not controlled by a flight 
+
+        // Flight Type FlightSchool (Elev/skoling) / ProficiencyCheck (Færdighedstræning) / Passanger
 
         [LocalizedDisplayName("Co-Pilot")]
         public int? PilotBackseatId { get; set; }
         public virtual Pilot PilotBackseat { get; set; }
+        
+        ///// <summary>
+        ///// When flying two seats the passenger name can be registered instead of using the Description field
+        ///// </summary>
+        //public string PassengerName { get; set; }
 
         //PilotBackseat function Co-Pilot / Instructor / Passenger 
         //PilotBackseat Name
