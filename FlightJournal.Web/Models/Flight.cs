@@ -120,14 +120,13 @@ namespace FlightJournal.Web.Models
 
         //Pilot function time (copilot/instructor or passenger)
 
-        // Pilot Role  PilotInCommand / FlightStudent / Passenger / FlightInstructor / FlightExaminer (FlightTraining) 
+        // Pilot position  PilotInCommand (Luftfartøjschef) / Student (Elev) / FlightInstructor (Instruktør) / FlightExaminer (Kontrollant) / Passenger
 
         // FlightTrainingLessonId (TMG ? S ? A normer B normer )
-
         // FlightTrainingLessonApprovedByPilotId (int Pilot approving the lesson (on solo flights this might not be an FI onboard))
         // FlightTrainingLesson also has aspects not controlled by a flight 
 
-        // Flight Type FlightSchool (Elev/skoling) / ProficiencyCheck (Færdighedstræning) / Passanger
+        // Flight Type FlightSchool (Elev/skoling) / ProficiencyCheck (Færdighedstræning) / Passenger
 
         [LocalizedDisplayName("Co-Pilot")]
         public int? PilotBackseatId { get; set; }
@@ -169,8 +168,9 @@ namespace FlightJournal.Web.Models
 
         [LocalizedDisplayName("Description")]
         public string Description { get; set; }
-        [XmlIgnore]
-        public virtual ICollection<Note> Notes { get; set; }
+        
+        //[XmlIgnore]
+        //public virtual ICollection<Note> Notes { get; set; }
         //[XmlIgnore]
         //public virtual ICollection<PilotLogEntry> PilotLogEntries { get; set; }
 

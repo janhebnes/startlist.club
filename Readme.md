@@ -20,8 +20,8 @@ For allowing easy contribution, downloading the project to Visual Studio and pre
  
 Software Requirements for Contributing 
 --------------------------------------
-1. Visual Studio Community 2015 (Free)
-2. SQL Server 2014 LocalDB (Free) 
+1. Visual Studio Community (Free)
+2. SQL Server LocalDB (Free) 
 3. Github Account (Free)
 
 Process for Contributing
@@ -38,7 +38,7 @@ Language translation is currently supported through GNU PO files located in Flig
 License
 -------
 The MIT License (MIT) / https://opensource.org/licenses/MIT
-Copyright (c) 2011-2017 Jan Hebnes
+Copyright (c) 2011-2019 Jan Hebnes
 
 Contact
 -------

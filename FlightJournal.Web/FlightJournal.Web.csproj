@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -217,7 +217,16 @@
     <Compile Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.Designer.cs">
       <DependentUpon>201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs" />
+    <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
+      <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InstructorPilotRelation.cs" />
+    <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\LogbookViewModels.cs" />
+    <Compile Include="Models\PilotPosition.cs" />
+    <Compile Include="Models\TrainingLesson.cs" />
+    <Compile Include="Models\TrainingLessonCategory.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -300,7 +309,6 @@
     <Compile Include="Models\FlightContext.cs" />
     <Compile Include="Models\FlightVersionHistory.cs" />
     <Compile Include="Models\Location.cs" />
-    <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Pilot.cs" />
     <Compile Include="Models\PilotLogEntry.cs" />
     <Compile Include="Models\PilotStatusType.cs" />
@@ -383,6 +391,7 @@
     <Content Include="Migrations\FlightContext\201505062147469_FlightVersion-Deleted-Date.sql" />
     <Content Include="Migrations\FlightContext\201506232105012_Club-Visibility.sql" />
     <Content Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.sql" />
+    <Content Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -598,6 +607,9 @@
     <EmbeddedResource Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.resx">
       <DependentUpon>201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.resx">
+      <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
@@ -612,7 +624,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>

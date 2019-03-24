@@ -21,6 +21,12 @@ namespace FlightJournal.Web.Migrations.FlightContext
         {
             //  This method will be called after migrating to the latest version.
             
+            if (!context.TrainingLessonCategories.Any()
+                && !context.TrainingLessons.Any())
+            {
+                InitializeTrainingLessons(context);
+            }
+
             //  Only seed if the database is empty
             if (!context.StartTypes.Any() 
                 && (!context.Clubs.Any())
@@ -40,6 +46,26 @@ namespace FlightJournal.Web.Migrations.FlightContext
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+        }
+
+        private void InitializeTrainingLessons(Models.FlightContext context)
+        {
+            context.TrainingLessonCategories.AddOrUpdate(
+              new TrainingLessonCategory { TrainingLessonCategoryId = 1, TrainingLessonCategoryName = "A-normer (SPL)", Enabled = true },
+              new TrainingLessonCategory { TrainingLessonCategoryId = 2, TrainingLessonCategoryName = "B-normer (SPL)", Enabled = true },
+              new TrainingLessonCategory { TrainingLessonCategoryId = 3, TrainingLessonCategoryName = "Typeomskoling", Enabled = true },
+              new TrainingLessonCategory { TrainingLessonCategoryId = 4, TrainingLessonCategoryName = "Startmetode", Enabled = true }
+            );
+
+            int sortOrder = 1;
+            context.TrainingLessons.AddOrUpdate(
+                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-0 (1)", Description = "Grundlæggende kenskab til svæveflyet", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
+                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-0 (2)", Description = "Flyvesikkerhed", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
+                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-0 (-)", Description = "Safety Management System - DSvU", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
+                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-1 (3)", Description = "Tilvænningsflyvning forberedelse", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
+                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-1 (4)", Description = "Tilvænningsflyvning", SortOrder = sortOrder++, Enabled = true, RequiresFlight = true, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
+                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-2 (5)", Description = "Grundlæggende kenskab til svæveflyet", SortOrder = sortOrder++, Enabled = true, RequiresFlight = true, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 }
+                );
         }
 
         internal static void InitializeDemoFlights(Models.FlightContext context)

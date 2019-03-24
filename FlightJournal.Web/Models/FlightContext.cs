@@ -20,11 +20,15 @@ namespace FlightJournal.Web.Models
         public DbSet<FlightVersionHistory> FlightVersions { get; set; }
         public DbSet<Plane> Planes { get; set; }
         public DbSet<Pilot> Pilots { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<PilotStatusType> PilotStatusTypes { get; set; }
         public DbSet<StartType> StartTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<PilotLogEntry> PilotLogEntries { get; set; }
+        //public DbSet<PilotLogEntryVersionHistory> PilotLogEntryVersions { get; set; }
+        public DbSet<TrainingLessonCategory> TrainingLessonCategories { get; set; }
+        public DbSet<TrainingLesson> TrainingLessons { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -103,13 +107,17 @@ namespace FlightJournal.Web.Models
             modelBuilder.Entity<PilotLogEntry>()
                         .HasRequired(i => i.Pilot)
                         .WithMany()
-                        .WillCascadeOnDelete(true);
-            
+                        .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<PilotLogEntry>()
-                        .HasRequired(i => i.Flight)
+                        .HasOptional(i => i.Flight)
                         .WithMany()
                         .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<PilotLogEntry>()
+                        .HasOptional(i => i.TrainingLessonApprovedByFlightInstructor)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);
         }
     }
 }

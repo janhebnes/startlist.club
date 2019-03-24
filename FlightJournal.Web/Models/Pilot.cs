@@ -30,6 +30,7 @@ namespace FlightJournal.Web.Models
         
         [LocalizedDisplayName("Note")]
         public string Note { get; set; }
+
         [LocalizedDisplayName("Exit date")]
         public DateTime? ExitDate { get; set; }
 
