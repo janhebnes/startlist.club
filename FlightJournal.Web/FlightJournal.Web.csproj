@@ -427,6 +427,8 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\vue.js" />
+    <Content Include="Scripts\vue.min.js" />
     <Content Include="Views\Shared\DisplayTemplates\Description.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Location.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />
