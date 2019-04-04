@@ -49,7 +49,7 @@ namespace FlightJournal.Web.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
-            ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+            ViewBag.EnableDemo = Demo.IsDemoEnvironment();
             ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
 
             var initialModel = new LoginViewModel()
@@ -106,7 +106,7 @@ namespace FlightJournal.Web.Controllers
             {
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
-                ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+                ViewBag.EnableDemo = Demo.IsDemoEnvironment();
                 ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
                 model.LoginState = LoginViewModel.State.Login;
                 return View(model);
@@ -134,7 +134,7 @@ namespace FlightJournal.Web.Controllers
                 default:
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
-                    ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+                    ViewBag.EnableDemo = Demo.IsDemoEnvironment();
                     ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
                     model.LoginState = LoginViewModel.State.Login;
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -149,7 +149,7 @@ namespace FlightJournal.Web.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
-            ViewBag.EnableDemo = (ViewBag.LiveDemoMemberships != null && ViewBag.LiveDemoMemberships.Count > 0);
+            ViewBag.EnableDemo = Demo.IsDemoEnvironment();
             ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
             model.LoginState = LoginViewModel.State.TokenLogin;
 

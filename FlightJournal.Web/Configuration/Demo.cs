@@ -69,5 +69,17 @@ namespace FlightJournal.Web.Configuration
         {
             return GetDemoMembershipTemplates.Where(user => user.GetApplicationUser != null && user.GetApplicationUser.Id != null).ToList();
         }
+
+        /// <summary>
+        /// When the database is seeded from zero the users are present
+        /// Demo and Development seed the database from zero.
+        /// Live has these users disabled 
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsDemoEnvironment()
+        {
+            var demoMemberships = GetLiveDemoMemberships();
+            return (demoMemberships != null && demoMemberships.Count > 0);
+        }
     }
 }
