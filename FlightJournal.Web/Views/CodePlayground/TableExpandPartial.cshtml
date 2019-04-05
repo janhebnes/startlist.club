@@ -1,0 +1,408 @@
+﻿<h2>table-expand</h2>
+https://foundation.zurb.com/building-blocks/blocks/table-expand.html
+
+
+<style type="text/css">
+
+    .table-expand {
+        margin-top: 5rem;
+    }
+
+        .table-expand td {
+            color: #8a8a8a;
+        }
+
+        .table-expand tr {
+            border: 1px solid #e6e6e6;
+        }
+
+        .table-expand .text-right {
+            padding-right: 3rem;
+        }
+
+    .table-expand-row.is-active .expand-icon::after {
+        content: '-';
+    }
+
+    .table-expand-row .expand-icon::after {
+        content: '+';
+        float: right;
+    }
+
+    .table-expand-row-content {
+        display: none;
+    }
+
+        .table-expand-row-content.is-active {
+            display: table-row;
+            -webkit-animation: fadeIn ease-in 1;
+            animation: fadeIn ease-in 1;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            -webkit-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+        }
+
+    .table-expand-row-nested {
+        background-color: #e6e6e6;
+    }
+
+    @@-webkit-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+
+<table class="table-expand">
+    <thead>
+        <tr class="table-expand-row">
+            <th width="200">Date</th>
+            <th>Number of items</th>
+            <th class="text-right" width="150">Amount</th>
+            <th width="150">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="table-expand-row" data-open-details>
+            <td>August 15</td>
+            <td>2 items</td>
+            <td class="text-right">$0.50</td>
+            <td>in progress <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>July 15</td>
+            <td>4 items</td>
+            <td class="text-right">$1.30</td>
+            <td>scheduled <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>June 15</td>
+            <td>1 item</td>
+            <td class="text-right">$0.10</td>
+            <td>carried over <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>May 15</td>
+            <td>1 item</td>
+            <td class="text-right">$0.10</td>
+            <td>carried over <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>April 15</td>
+            <td>1 item</td>
+            <td class="text-right">$0.10</td>
+            <td>carried over <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>March 15</td>
+            <td>1 item</td>
+            <td class="text-right">$0.10</td>
+            <td>carried over <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>February 15</td>
+            <td>2 items</td>
+            <td class="text-right">$1.20</td>
+            <td>paid <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>January 15</td>
+            <td>5 items</td>
+            <td class="text-right">$0.50</td>
+            <td>carried over <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+        <tr class="table-expand-row" data-open-details>
+            <td>December 15</td>
+            <td>2 items</td>
+            <td class="text-right">$0.20</td>
+            <td>carried over <span class="expand-icon"></span></td>
+        </tr>
+
+        <tr class="table-expand-row-content">
+            <td colspan="8" class="table-expand-row-nested">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque unde quaerat reprehenderit ipsa ipsam, adipisci facere repellendus impedit at, quisquam dicta optio veniam quia nesciunt, inventore quod in neque magni?</p>
+            </td>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+@*Moved to non partial primary*@
+@section scripts
+{
+    <script>
+
+        $('[data-open-details]').click(function (e) {
+            e.preventDefault();
+            $(this).next().toggleClass('is-active');
+            $(this).toggleClass('is-active');
+        });
+
+    </script>
+}
+
+
+
+    <hr />
+
+<h2>responsive-card-table</h2>
+<style type="text/css">
+
+    .responsive-card-table {
+        border-collapse: collapse;
+    }
+
+        .responsive-card-table.unstriped tbody {
+            background-color: transparent;
+        }
+
+        .responsive-card-table th {
+            background-color: #e6e6e6;
+        }
+
+        .responsive-card-table tr,
+        .responsive-card-table th,
+        .responsive-card-table td {
+            border: 1px solid #0a0a0a;
+        }
+
+    @@media screen and (max-width: 640px) {
+        .responsive-card-table {
+        }
+
+            .responsive-card-table thead tr {
+                position: absolute;
+                top: -9999em;
+                left: -9999em;
+            }
+
+            .responsive-card-table tr {
+                border: 1px solid #0a0a0a;
+                display: block;
+            }
+
+                .responsive-card-table tr + tr {
+                    margin-top: 1.5rem;
+                }
+
+            .responsive-card-table td {
+                border: none;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-justify-content: flex-start;
+                -ms-flex-pack: start;
+                justify-content: flex-start;
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                align-items: center;
+                border-bottom: 1px solid #0a0a0a;
+                padding-left: 50%;
+                position: relative;
+            }
+
+                .responsive-card-table td:before {
+                    content: attr(data-label);
+                    display: inline-block;
+                    font-weight: bold;
+                    line-height: 1.5;
+                    margin-left: -100%;
+                    width: 100%;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .responsive-card-table td:after {
+                    content: '';
+                    position: absolute;
+                    background: #e6e6e6;
+                    width: 45%;
+                    height: 95%;
+                    left: 1px;
+                    top: 1px;
+                    z-index: 0;
+                }
+    }
+</style>
+<table class="responsive-card-table unstriped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hero Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td data-label="First Name">Bruce</td>
+            <td data-label="Last Name">Wayne</td>
+            <td data-label="Hero Title">Batman</td>
+        </tr>
+        <tr>
+            <td data-label="First Name">Peter</td>
+            <td data-label="Last Name">Parker</td>
+            <td data-label="Hero Title">Spiderman</td>
+        </tr>
+        <tr>
+            <td data-label="First Name">Bruce</td>
+            <td data-label="Last Name">Banner</td>
+            <td data-label="Hero Title">The Hulk</td>
+        </tr>
+        <tr>
+            <td data-label="First Name">Clark</td>
+            <td data-label="Last Name">Kent</td>
+            <td data-label="Hero Title">Superman</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+
+
+<h2>Button rounded hover</h2>
+https://foundation.zurb.com/building-blocks/blocks/button-rounded-hover.html
+<br />
+<!-- use a tag for links to other locations -->
+<a class="button button-rounded-hover">Hover Link</a>
+
+<!-- use button tag for on page actions -->
+<button class="button button-rounded-hover">Hover Button</button>
+<style type="text/css">
+
+    .button-rounded-hover {
+        border: 0;
+        border-radius: 5000px;
+        padding: 1rem 2rem;
+        text-transform: uppercase;
+        position: relative;
+        overflow: hidden;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        transition: all 0.35s ease;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+        .button-rounded-hover:before {
+            opacity: 0;
+            content: "";
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            border-radius: inherit;
+            background-color: #fefefe;
+            transition: all 0.3s;
+            -webkit-transform: translateX(-100%);
+            -ms-transform: translateX(-100%);
+            transform: translateX(-100%);
+        }
+
+        .button-rounded-hover:after {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            border: 5px solid #115b8d;
+            content: '';
+            border-radius: inherit;
+        }
+
+        .button-rounded-hover:hover,
+        .button-rounded-hover:focus {
+            background-color: #115b8d;
+        }
+
+            .button-rounded-hover:hover:before,
+            .button-rounded-hover:focus:before {
+                -webkit-transform: translateX(0%);
+                -ms-transform: translateX(0%);
+                transform: translateX(0%);
+                opacity: 0.25;
+            }
+
+
+</style>
+

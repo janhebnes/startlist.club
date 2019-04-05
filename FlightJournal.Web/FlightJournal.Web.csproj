@@ -203,6 +203,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Configuration\Demo.cs" />
+    <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
@@ -567,6 +568,8 @@
     <Content Include="Translations\sv\LC_MESSAGES\messages.po" />
     <Content Include="Views\Shared\DisplayTemplates\StartType.cshtml" />
     <Content Include="Views\Flight\_ognFlightLog.cshtml" />
+    <Content Include="Views\CodePlayground\Index.cshtml" />
+    <Content Include="Views\CodePlayground\TableExpandPartial.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
