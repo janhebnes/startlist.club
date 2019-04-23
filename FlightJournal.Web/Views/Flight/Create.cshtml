@@ -185,6 +185,23 @@
             $("input.custom-combobox-input").on("click", function () {
                 $(this).select();
             });
+
+            // Default pilot to betaler 
+            $("#BetalerId").on("change", function () {
+                if ($("#BetalerId").val().trim() != "" && $("#PilotId").val() == "") {
+                    $("#PilotId").combobox('autocomplete', $("#BetalerId").val());
+                }
+            });
+
+            // Default landing to start from
+            $("#StartedFromId").on("change", function () {
+                if ($("#StartedFromId").val().trim() != "" && $("#LandedOnId").val() == "") {
+                    $("#LandedOnId").combobox('autocomplete', $("#StartedFromId").val());
+                }
+            });
+
+            // Default to Spilstart type 1
+            $("#StartTypeId").combobox('autocomplete', "1");
         }
         );
     </script>

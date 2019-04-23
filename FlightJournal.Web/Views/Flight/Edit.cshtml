@@ -220,6 +220,19 @@
                 $(this).select();
             });
 
+            // Default pilot to betaler 
+            $("#BetalerId").on("change", function () {
+                if ($("#BetalerId").val().trim() != "" && $("#PilotId").val() == "") {
+                    $("#PilotId").combobox('autocomplete', $("#BetalerId").val());
+                }
+            });
+
+            // Default landing to start from
+            $("#StartedFromId").on("change", function () {
+                if ($("#StartedFromId").val().trim() != "" && $("#LandedOnId").val() == "") {
+                    $("#LandedOnId").combobox('autocomplete', $("#StartedFromId").val());
+                }
+            });
         }
     );
     </script>

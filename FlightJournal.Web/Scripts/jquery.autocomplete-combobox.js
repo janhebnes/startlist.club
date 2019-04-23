@@ -23,6 +23,13 @@ $(function() {
             this._createShowAllButton();
         },
 
+        autocomplete: function (value) {
+            this.element.val(value);
+            var selected = this.element.children(":selected"),
+                inputvalue = selected.val() ? selected.text() : "";
+            this.input.val(inputvalue);
+        },
+
         _createAutocomplete: function () {
             var selected = this.element.children(":selected"),
                 value = selected.val() ? selected.text() : "";
@@ -47,6 +54,7 @@ $(function() {
                     this._trigger("select", event, {
                         item: ui.item.option
                     });
+                    this.element.trigger("change");
                 },
 
                 autocompletechange: "_removeIfInvalid"
