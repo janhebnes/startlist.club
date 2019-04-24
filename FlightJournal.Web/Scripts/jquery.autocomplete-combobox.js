@@ -21,6 +21,7 @@ $(function() {
             this.element.hide();
             this._createAutocomplete();
             this._createShowAllButton();
+            this._isDestroyed = false;
         },
 
         autocomplete: function (value) {
@@ -28,6 +29,19 @@ $(function() {
             var selected = this.element.children(":selected"),
                 inputvalue = selected.val() ? selected.text() : "";
             this.input.val(inputvalue);
+        },
+
+        create: function () {
+            this._create();
+        },
+
+        destroy: function () {
+            this._destroy();
+            this._isDestroyed = true;
+        },
+
+        isDestroyed: function () {
+            return this._isDestroyed;
         },
 
         _createAutocomplete: function () {
@@ -139,6 +153,7 @@ $(function() {
         },
 
         _destroy: function () {
+            this.input.autocomplete("destroy");
             this.wrapper.remove();
             this.element.show();
         }

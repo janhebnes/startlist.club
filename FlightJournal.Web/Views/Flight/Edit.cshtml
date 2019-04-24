@@ -193,6 +193,60 @@
     <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
     
     <script type="text/javascript">
+        function resetJsCss() {
+            $(".custom-combobox-input").css("border", "3px solid #888");
+            $(".custom-combobox-toggle").css("border", "3px solid #888");
+            $(".custom-combobox-toggle").css("border-left", "0px");
+            $(".custom-combobox-toggle").css("padding-top", "1px");
+            $(".custom-combobox-toggle").css("padding-bottom", "1px");
+            $(".custom-combobox-toggle").css("padding-left", "8px");
+            $(".custom-combobox-toggle").css("padding-right", "8px");
+            $(".custom-combobox-toggle").css("margin-left", "0px");
+            $(".custom-combobox-toggle").css("margin-right", "0px");
+        }
+
+        function processPlaneAttributes() {
+
+            var value = $("#PlaneId").val();
+            if (!value.trim()) return;
+
+            var option = $("#PlaneId option[value='" + $("#PlaneId").val() + "']");
+
+            // data-defaultstarttype="1" 
+            // data-engine="0" 
+            // data-seats="1"
+
+            var seats = option.attr('data-seats');
+            if (seats == "1") {
+                $("#PilotBackseatId").combobox("destroy");
+                $("#PilotBackseatId").hide("fast");
+                $("#PilotBackseatId").val = "";
+            } else {
+                if ($("#PilotBackseatId").combobox("isDestroyed")) {
+                    $("#PilotBackseatId").show();
+                    $("#PilotBackseatId").combobox();
+                    $("#PilotBackseatId").combobox("create");
+                    resetJsCss();
+                }
+            }
+
+            var engines = option.attr('data-engine');
+            if (engines == "0") {
+                $("#TachoDeparture").hide("fast");
+                $("#TachoDeparture").val = "";
+                $("#TachoLanding").hide("fast");
+                $("#TachoLanding").val = "";
+            } else {
+                $("#TachoDeparture").show("fast");
+                $("#TachoLanding").show("fast");
+            }
+
+            var defaultStarttype = option.attr('data-defaultstarttype');
+            if (!defaultStarttype.trim()) {
+                $("#StartTypeId").combobox('autocomplete', defaultStarttype);
+            }
+        }
+
         $(document).ready(function () {
 
             $("#PlaneId").combobox();
@@ -203,16 +257,7 @@
             $("#StartedFromId").combobox();
             $("#LandedOnId").combobox();
 
-            $(".custom-combobox-input").css("border", "3px solid #888");
-
-            $(".custom-combobox-toggle").css("border", "3px solid #888");
-            $(".custom-combobox-toggle").css("border-left", "0px");
-            $(".custom-combobox-toggle").css("padding-top", "1px");
-            $(".custom-combobox-toggle").css("padding-bottom", "1px");
-            $(".custom-combobox-toggle").css("padding-left", "8px");
-            $(".custom-combobox-toggle").css("padding-right", "8px");
-            $(".custom-combobox-toggle").css("margin-left", "0px");
-            $(".custom-combobox-toggle").css("margin-right", "0px");
+            resetJsCss();
 
             $("#Landing").focus();
 
@@ -233,6 +278,14 @@
                     $("#LandedOnId").combobox('autocomplete', $("#StartedFromId").val());
                 }
             });
+
+            // Default enabled fields based on selected plane
+            $("#PlaneId").on("change", function () {
+                processPlaneAttributes();
+            });
+
+            // Default visible fields on initial load
+            processPlaneAttributes();
         }
     );
     </script>

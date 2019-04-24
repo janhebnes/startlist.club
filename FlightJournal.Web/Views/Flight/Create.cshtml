@@ -1,4 +1,5 @@
-﻿@model FlightJournal.Web.Models.Flight
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Flight
 @{
     ViewBag.Title = _("Create flight");
 }
@@ -7,149 +8,149 @@
     @using (Html.BeginForm())
     {
         @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@_("Create flight")</legend>
-        <div class="row">
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Date)
+        <fieldset>
+            <legend>@_("Create flight")</legend>
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Date)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Date)
+                        @Html.ValidationMessageFor(model => model.Date)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Departure)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Departure)
+                        @Html.ValidationMessageFor(model => model.Departure)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Landing)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Landing)
+                        @Html.ValidationMessageFor(model => model.Landing)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PlaneId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.ExtendedDropDownListFor(model => model.PlaneId, (IEnumerable<ExtendedSelectListItem>)ViewBag.PlaneId, "")
+                        @Html.ValidationMessageFor(model => model.PlaneId)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.BetalerId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("BetalerId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.BetalerId)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PilotId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("PilotId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.PilotId)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PilotBackseatId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("PilotBackseatId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.PilotBackseatId)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Description)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Description)
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
                 </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Date)
-                    @Html.ValidationMessageFor(model => model.Date)
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StartTypeId)
+                    </div>
+
+                    <div class="editor-field">
+                        @Html.DropDownList("StartTypeId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.StartTypeId)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StartedFromId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("StartedFromId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.StartedFromId)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LandedOnId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("LandedOnId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.LandedOnId)
+                    </div>
                 </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Departure)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Departure)
-                    @Html.ValidationMessageFor(model => model.Departure)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Landing)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Landing)
-                    @Html.ValidationMessageFor(model => model.Landing)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.PlaneId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("PlaneId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.PlaneId)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.BetalerId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("BetalerId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.BetalerId)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.PilotId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("PilotId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.PilotId)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.PilotBackseatId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("PilotBackseatId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.PilotBackseatId)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Description)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Description)
-                    @Html.ValidationMessageFor(model => model.Description)
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.StartTypeId)
+                <!-- Add the extra clearfix for only the required viewport -->
+                <div class="clearfix visible-sm visible-xs"></div>
+                <div class="col-md-4 col-sm-12 visible-sm visible-xs">
+                    <div class="btn-group btn-group-lg ">
+                        <input type="submit" value="@_("Create")" class="btn btn-primary" />
+                    </div>
                 </div>
 
-                <div class="editor-field">
-                    @Html.DropDownList("StartTypeId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.StartTypeId)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.StartedFromId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("StartedFromId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.StartedFromId)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.LandedOnId)
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("LandedOnId", String.Empty)
-                    @Html.ValidationMessageFor(model => model.LandedOnId)
+                <div class="col-md-4 col-sm-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TachoDeparture)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.TachoDeparture)
+                        @Html.ValidationMessageFor(model => model.TachoDeparture)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TachoLanding)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.TachoLanding)
+                        @Html.ValidationMessageFor(model => model.TachoLanding)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LandingCount)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.LandingCount)
+                        @Html.ValidationMessageFor(model => model.LandingCount)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TaskDistance)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.TaskDistance)
+                        @Html.ValidationMessageFor(model => model.TaskDistance)
+                    </div>
                 </div>
             </div>
-            <!-- Add the extra clearfix for only the required viewport -->
-            <div class="clearfix visible-sm visible-xs"></div>
-            <div class="col-md-4 col-sm-12 visible-sm visible-xs">
-                <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="@_("Create")" class="btn btn-primary" />
+            <div class="row" style="margin-top: 30px">
+                <div class="col-md-6">
+                    <div class="btn-group btn-group-lg">
+                        <input type="submit" value="@_("Create")" class="btn btn-primary" />
+                        <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-4 col-sm-12">
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.TachoDeparture)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.TachoDeparture)
-                    @Html.ValidationMessageFor(model => model.TachoDeparture)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.TachoLanding)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.TachoLanding)
-                    @Html.ValidationMessageFor(model => model.TachoLanding)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.LandingCount)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.LandingCount)
-                    @Html.ValidationMessageFor(model => model.LandingCount)
-                </div>
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.TaskDistance)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.TaskDistance)
-                    @Html.ValidationMessageFor(model => model.TaskDistance)
-                </div>
-            </div>
-        </div>
-        <div class="row" style="margin-top: 30px">
-            <div class="col-md-6">
-                <div class="btn-group btn-group-lg">
-                    <input type="submit" value="@_("Create")" class="btn btn-primary" />
-                    <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
-                </div>
-            </div>
-        </div>
-
-    </fieldset>
+        </fieldset>
     }
-    </p>
-    <div>
-        @if (ViewBag.OgnFlightLog != null)
-        {
-            @Html.Partial("_ognFlightLog", (IEnumerable<OGN.FlightLog.Client.Models.Flight>)ViewBag.OgnFlightLog)
-        }
-    </div>
+</p>
+<div>
+    @if (ViewBag.OgnFlightLog != null)
+    {
+        @Html.Partial("_ognFlightLog", (IEnumerable<OGN.FlightLog.Client.Models.Flight>)ViewBag.OgnFlightLog)
+    }
+</div>
 
 @section scripts
 {
@@ -159,6 +160,18 @@
     <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
 
     <script type="text/javascript">
+        function resetJsCss() {
+            $(".custom-combobox-input").css("border", "3px solid #888");
+            $(".custom-combobox-toggle").css("border", "3px solid #888");
+            $(".custom-combobox-toggle").css("border-left", "0px");
+            $(".custom-combobox-toggle").css("padding-top", "1px");
+            $(".custom-combobox-toggle").css("padding-bottom", "1px");
+            $(".custom-combobox-toggle").css("padding-left", "8px");
+            $(".custom-combobox-toggle").css("padding-right", "8px");
+            $(".custom-combobox-toggle").css("margin-left", "0px");
+            $(".custom-combobox-toggle").css("margin-right", "0px");
+        }
+
         $(document).ready(function () {
 
             $("#PlaneId").combobox();
@@ -169,24 +182,18 @@
             $("#StartedFromId").combobox();
             $("#LandedOnId").combobox();
 
-            $(".custom-combobox-input").css("border", "3px solid #888");
+            resetJsCss();
 
-            $(".custom-combobox-toggle").css("border", "3px solid #888");
-            $(".custom-combobox-toggle").css("border-left", "0px");
-            $(".custom-combobox-toggle").css("padding-top", "1px");
-            $(".custom-combobox-toggle").css("padding-bottom", "1px");
-            $(".custom-combobox-toggle").css("padding-left", "8px");
-            $(".custom-combobox-toggle").css("padding-right", "8px");
-            $(".custom-combobox-toggle").css("margin-left", "0px");
-            $(".custom-combobox-toggle").css("margin-right", "0px");
-                
             $(".custom-combobox-input").first().focus();
+
+            // Default to Spilstart type 1
+            $("#StartTypeId").combobox('autocomplete', "1");
 
             $("input.custom-combobox-input").on("click", function () {
                 $(this).select();
             });
 
-            // Default pilot to betaler 
+            // Default pilot to betaler
             $("#BetalerId").on("change", function () {
                 if ($("#BetalerId").val().trim() != "" && $("#PilotId").val() == "") {
                     $("#PilotId").combobox('autocomplete', $("#BetalerId").val());
@@ -200,8 +207,49 @@
                 }
             });
 
-            // Default to Spilstart type 1
-            $("#StartTypeId").combobox('autocomplete', "1");
+            // Default enabled fields based on selected plane
+            $("#PlaneId").on("change", function () {
+                var value = $("#PlaneId").val();
+                if (!value.trim()) return;
+
+                var option = $("#PlaneId option[value='" + $("#PlaneId").val() + "']");
+
+                // data-defaultstarttype="1" 
+                // data-engine="0" 
+                // data-seats="1"
+
+                var seats = option.attr('data-seats');
+                if (seats == "1") {
+                    $("#PilotBackseatId").combobox("destroy");
+                    $("#PilotBackseatId").hide("fast");
+                    $("#PilotBackseatId").val = "";
+                } else {
+                    if ($("#PilotBackseatId").combobox("isDestroyed")) {
+                        $("#PilotBackseatId").show();
+                        $("#PilotBackseatId").combobox();
+                        $("#PilotBackseatId").combobox("create");
+                        resetJsCss();
+                    }
+                }
+
+                var engines = option.attr('data-engine');
+                if (engines == "0") {
+                    $("#TachoDeparture").hide("fast");
+                    $("#TachoDeparture").val = "";
+                    $("#TachoLanding").hide("fast");
+                    $("#TachoLanding").val = "";
+                } else {
+                    $("#TachoDeparture").show("fast");
+                    $("#TachoLanding").show("fast");
+                }
+
+                var defaultStarttype = option.attr('data-defaultstarttype');
+                if (!defaultStarttype.trim()) {
+                    $("#StartTypeId").combobox('autocomplete', defaultStarttype);
+                }
+
+            });
+
         }
         );
     </script>
