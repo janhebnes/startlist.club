@@ -436,6 +436,18 @@
                             </tr>
                         }
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="color:lightgray;">@_("Total")</td>
+                            @if (enableLogStartTypeColumn) { <td class="text-center"></td> }
+                            <td style="color:lightgray;" class="text-right">
+                                @Model.ClubFlights.Where(f=>f.Deleted == null).Sum(f => f.LandingCount)
+                            </td>
+                            <td style="color:lightgray;" class="text-right">
+                                @Model.ClubFlights.Where(f => f.Deleted == null).ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
