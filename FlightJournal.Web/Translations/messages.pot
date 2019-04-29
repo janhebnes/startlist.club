@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2018-04-25 01:42+0200\n"
+"POT-Creation-Date: 2019-04-29 02:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: FlightJournal.Web\Models\Club.cs:14 FlightJournal.Web\Models\Plane.cs:28
@@ -69,19 +69,22 @@ msgstr ""
 msgid "Departure"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:63 FlightJournal.Web\Models\Flight.cs:141
-#: FlightJournal.Web\Models\Flight.cs:143
+#: FlightJournal.Web\Models\Flight.cs:63 FlightJournal.Web\Models\Flight.cs:154
+#: FlightJournal.Web\Models\Flight.cs:156
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:34
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:46
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:45
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:53
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:34
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:46
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:45
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:53
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:34
 #: FlightJournal.Web\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:46
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:45
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:47
 msgid "Landing"
 msgstr ""
 
@@ -94,153 +97,162 @@ msgstr ""
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:25
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:37
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:146
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:276
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:348
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:399
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:451
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:501
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:52
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:56
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:149
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:279
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:351
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:402
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:466
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:516
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:25
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:37
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:146
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:276
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:348
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:399
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:451
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:501
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:52
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:56
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:149
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:279
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:351
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:402
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:466
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:516
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:25
 #: FlightJournal.Web\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:37
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:52
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:56
-#: FlightJournal.Web\Views\Report\Index.cshtml:146
-#: FlightJournal.Web\Views\Report\Index.cshtml:276
-#: FlightJournal.Web\Views\Report\Index.cshtml:348
-#: FlightJournal.Web\Views\Report\Index.cshtml:399
-#: FlightJournal.Web\Views\Report\Index.cshtml:451
-#: FlightJournal.Web\Views\Report\Index.cshtml:501
+#: FlightJournal.Web\Views\Report\Index.cshtml:149
+#: FlightJournal.Web\Views\Report\Index.cshtml:279
+#: FlightJournal.Web\Views\Report\Index.cshtml:351
+#: FlightJournal.Web\Views\Report\Index.cshtml:402
+#: FlightJournal.Web\Views\Report\Index.cshtml:466
+#: FlightJournal.Web\Views\Report\Index.cshtml:516
 msgid "Plane"
 msgstr ""
 
 #: FlightJournal.Web\Models\Flight.cs:116
 #: FlightJournal.Web\Models\IdentityModels.cs:36
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:279
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:448
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:279
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:448
-#: FlightJournal.Web\Views\Report\Index.cshtml:279
-#: FlightJournal.Web\Views\Report\Index.cshtml:448
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:282
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:463
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:282
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:463
+#: FlightJournal.Web\Views\Report\Index.cshtml:282
+#: FlightJournal.Web\Views\Report\Index.cshtml:463
 msgid "Pilot"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:123
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:351
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:498
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:351
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:498
-#: FlightJournal.Web\Views\Report\Index.cshtml:351
-#: FlightJournal.Web\Views\Report\Index.cshtml:498
+#: FlightJournal.Web\Models\Flight.cs:131
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:354
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:513
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:354
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:513
+#: FlightJournal.Web\Views\Report\Index.cshtml:354
+#: FlightJournal.Web\Views\Report\Index.cshtml:513
 msgid "Co-Pilot"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:130
+#: FlightJournal.Web\Models\Flight.cs:143
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:49
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:49
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:49
 msgid "Take-off method"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:135
-#: FlightJournal.Web\Models\Flight.cs:137
+#: FlightJournal.Web\Models\Flight.cs:148
+#: FlightJournal.Web\Models\Flight.cs:150
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:40
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:46
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:52
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:41
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:40
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:46
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:52
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:41
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:40
 #: FlightJournal.Web\Views\Flight\History.cshtml:46
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:52
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:41
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:44
 msgid "Take-off"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:147
+#: FlightJournal.Web\Models\Flight.cs:160
 msgid "Tacho Departure"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:150
+#: FlightJournal.Web\Models\Flight.cs:163
 msgid "Tacho Landing"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:153
+#: FlightJournal.Web\Models\Flight.cs:166
 msgid "Task Distance"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:156
-#: FlightJournal.Web\Models\PilotLogEntry.cs:23
+#: FlightJournal.Web\Models\Flight.cs:169
+#: FlightJournal.Web\Models\PilotLogEntry.cs:24
 #: FlightJournal.Web\Models\PilotStatusType.cs:12
 msgid "Description"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:163
+#: FlightJournal.Web\Models\Flight.cs:177
 msgid "Billing"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:171
+#: FlightJournal.Web\Models\Flight.cs:185
+#: FlightJournal.Web\Models\PilotLogEntry.cs:42
 msgid "Deleted"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:175
-#: FlightJournal.Web\Models\Location.cs:28 FlightJournal.Web\Models\Plane.cs:61
+#: FlightJournal.Web\Models\Flight.cs:189
+#: FlightJournal.Web\Models\Location.cs:28
+#: FlightJournal.Web\Models\PilotLogEntry.cs:46
+#: FlightJournal.Web\Models\Plane.cs:61
 msgid "Last updated"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:177
-#: FlightJournal.Web\Models\Location.cs:30 FlightJournal.Web\Models\Plane.cs:63
+#: FlightJournal.Web\Models\Flight.cs:191
+#: FlightJournal.Web\Models\Location.cs:30
+#: FlightJournal.Web\Models\PilotLogEntry.cs:48
+#: FlightJournal.Web\Models\Plane.cs:63
 msgid "Last updated by"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:223
+#: FlightJournal.Web\Models\Flight.cs:238
 msgid "Cost"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:232
+#: FlightJournal.Web\Models\Flight.cs:247
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:43
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:55
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:286
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:289
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:43
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:55
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:286
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:289
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:43
 #: FlightJournal.Web\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:55
-#: FlightJournal.Web\Views\Report\Index.cshtml:286
+#: FlightJournal.Web\Views\Report\Index.cshtml:289
 msgid "Tacho"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:251
+#: FlightJournal.Web\Models\Flight.cs:266
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:37
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:291
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:360
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:408
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:460
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:510
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:294
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:363
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:411
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:475
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:525
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:37
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:291
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:360
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:408
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:460
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:510
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:294
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:363
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:411
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:475
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:525
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:37
-#: FlightJournal.Web\Views\Report\Index.cshtml:291
-#: FlightJournal.Web\Views\Report\Index.cshtml:360
-#: FlightJournal.Web\Views\Report\Index.cshtml:408
-#: FlightJournal.Web\Views\Report\Index.cshtml:460
-#: FlightJournal.Web\Views\Report\Index.cshtml:510
+#: FlightJournal.Web\Views\Report\Index.cshtml:294
+#: FlightJournal.Web\Views\Report\Index.cshtml:363
+#: FlightJournal.Web\Views\Report\Index.cshtml:411
+#: FlightJournal.Web\Views\Report\Index.cshtml:475
+#: FlightJournal.Web\Views\Report\Index.cshtml:525
 msgid "Duration"
 msgstr ""
 
@@ -304,16 +316,24 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: FlightJournal.Web\Models\Pilot.cs:33 FlightJournal.Web\Models\Plane.cs:51
+#: FlightJournal.Web\Models\Pilot.cs:34 FlightJournal.Web\Models\Plane.cs:51
 msgid "Exit date"
 msgstr ""
 
-#: FlightJournal.Web\Models\Pilot.cs:36
+#: FlightJournal.Web\Models\Pilot.cs:37
 msgid "Pilot status"
 msgstr ""
 
-#: FlightJournal.Web\Models\PilotLogEntry.cs:21
+#: FlightJournal.Web\Models\PilotLogEntry.cs:31
 msgid "Lesson"
+msgstr ""
+
+#: FlightJournal.Web\Models\PilotLogEntry.cs:35
+msgid "Lesson approved"
+msgstr ""
+
+#: FlightJournal.Web\Models\PilotLogEntry.cs:38
+msgid "Lesson approved by"
 msgstr ""
 
 #: FlightJournal.Web\Models\PilotStatusType.cs:10
@@ -360,6 +380,36 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#: FlightJournal.Web\Models\TrainingLesson.cs:14
+msgid "Lesson identifier"
+msgstr ""
+
+#: FlightJournal.Web\Models\TrainingLesson.cs:17
+msgid "Lesson description"
+msgstr ""
+
+#: FlightJournal.Web\Models\TrainingLesson.cs:20
+msgid "Requires flight"
+msgstr ""
+
+#: FlightJournal.Web\Models\TrainingLesson.cs:23
+msgid "Requires flight instructor approval"
+msgstr ""
+
+#: FlightJournal.Web\Models\TrainingLesson.cs:26
+#: FlightJournal.Web\Models\TrainingLessonCategory.cs:14
+msgid "Enabled"
+msgstr ""
+
+#: FlightJournal.Web\Models\TrainingLesson.cs:29
+#: FlightJournal.Web\Models\TrainingLessonCategory.cs:17
+msgid "Sort order"
+msgstr ""
+
+#: FlightJournal.Web\Models\TrainingLessonCategory.cs:11
+msgid "Lesson category"
+msgstr ""
+
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\About\Index.cshtml:145
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\About\Index.cshtml:145
 #: FlightJournal.Web\Views\About\Index.cshtml:145
@@ -396,42 +446,42 @@ msgstr ""
 msgid "Select a flightclub (unfiltered)"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:3
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:11
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:4
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:12
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:13
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:3
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:11
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:4
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:12
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:13
-#: FlightJournal.Web\Views\Flight\Create.cshtml:3
-#: FlightJournal.Web\Views\Flight\Create.cshtml:11
+#: FlightJournal.Web\Views\Flight\Create.cshtml:4
+#: FlightJournal.Web\Views\Flight\Create.cshtml:12
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:13
 msgid "Create flight"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:139
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:140
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Details.cshtml:106
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Details.cshtml:159
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Disable.cshtml:17
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:20
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:142
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:48
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:139
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:65
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:140
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Details.cshtml:106
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Details.cshtml:159
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Disable.cshtml:17
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:20
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:142
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:48
-#: FlightJournal.Web\Views\Flight\Create.cshtml:139
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:65
+#: FlightJournal.Web\Views\Flight\Create.cshtml:140
 #: FlightJournal.Web\Views\Flight\Details.cshtml:106
 #: FlightJournal.Web\Views\Flight\Details.cshtml:159
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:17
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:20
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
-#: FlightJournal.Web\Views\Location\Edit.cshtml:64
+#: FlightJournal.Web\Views\Location\Edit.cshtml:65
 msgid "Back"
 msgstr ""
 
@@ -447,24 +497,24 @@ msgstr ""
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Details.cshtml:103
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Details.cshtml:156
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:148
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Index.cshtml:102
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:243
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Index.cshtml:101
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:246
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Details.cshtml:40
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Edit.cshtml:4
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Index.cshtml:58
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Details.cshtml:103
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Details.cshtml:156
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:148
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Index.cshtml:102
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:243
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Index.cshtml:101
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:246
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Details.cshtml:40
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Edit.cshtml:4
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Index.cshtml:58
 #: FlightJournal.Web\Views\Flight\Details.cshtml:103
 #: FlightJournal.Web\Views\Flight\Details.cshtml:156
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:148
-#: FlightJournal.Web\Views\Flight\Index.cshtml:102
-#: FlightJournal.Web\Views\Report\Index.cshtml:243
+#: FlightJournal.Web\Views\Flight\Index.cshtml:101
+#: FlightJournal.Web\Views\Report\Index.cshtml:246
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:58
@@ -539,10 +589,13 @@ msgid "Delete permanently"
 msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:6
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Logbook\Index.cshtml:244
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:57
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:6
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Logbook\Index.cshtml:244
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:57
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:6
+#: FlightJournal.Web\Views\Logbook\Index.cshtml:244
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:57
 msgid "Startlist"
 msgstr ""
@@ -554,11 +607,11 @@ msgid "Previous flights"
 msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:28
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:149
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:152
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:28
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:149
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:152
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:28
-#: FlightJournal.Web\Views\Report\Index.cshtml:149
+#: FlightJournal.Web\Views\Report\Index.cshtml:152
 msgid "Pilot(s)"
 msgstr ""
 
@@ -588,26 +641,26 @@ msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:156
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:124
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Index.cshtml:105
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:246
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Month.cshtml:301
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Pilot.cshtml:289
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Index.cshtml:104
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Logbook\Index.cshtml:305
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:249
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Month.cshtml:405
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Index.cshtml:59
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:156
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:124
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Index.cshtml:105
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:246
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Month.cshtml:301
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Pilot.cshtml:289
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Index.cshtml:104
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Logbook\Index.cshtml:305
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:249
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Month.cshtml:405
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Index.cshtml:59
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:156
 #: FlightJournal.Web\Views\Flight\History.cshtml:124
-#: FlightJournal.Web\Views\Flight\Index.cshtml:105
-#: FlightJournal.Web\Views\Report\Index.cshtml:246
-#: FlightJournal.Web\Views\Report\Month.cshtml:301
-#: FlightJournal.Web\Views\Report\Pilot.cshtml:289
+#: FlightJournal.Web\Views\Flight\Index.cshtml:104
+#: FlightJournal.Web\Views\Logbook\Index.cshtml:305
+#: FlightJournal.Web\Views\Report\Index.cshtml:249
+#: FlightJournal.Web\Views\Report\Month.cshtml:405
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:59
 msgid "Details"
@@ -663,26 +716,26 @@ msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:89
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:89
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:12
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:15
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:89
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:89
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:12
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:15
 #: FlightJournal.Web\Views\Flight\History.cshtml:89
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:89
-#: FlightJournal.Web\Views\Shared\DisplayTemplates\Pilots.cshtml:12
+#: FlightJournal.Web\Views\Shared\DisplayTemplates\Pilots.cshtml:15
 #, csharp-format
 msgid "(payed by {0})"
 msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:94
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:94
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:17
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:20
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:94
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:94
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:17
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\DisplayTemplates\Pilots.cshtml:20
 #: FlightJournal.Web\Views\Flight\History.cshtml:94
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:94
-#: FlightJournal.Web\Views\Shared\DisplayTemplates\Pilots.cshtml:17
+#: FlightJournal.Web\Views\Shared\DisplayTemplates\Pilots.cshtml:20
 msgid "(missing payer)"
 msgstr ""
 
@@ -701,17 +754,54 @@ msgstr ""
 msgid "Change history"
 msgstr ""
 
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:36
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:36
+msgid "Motor"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:37
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:44
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:48
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:37
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:44
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:48
+msgid "Glider"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:49
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:57
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:49
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:57
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:50
+msgid "Time"
+msgstr ""
+
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:15
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:15
 #: FlightJournal.Web\Views\Location\Edit.cshtml:15
 msgid "Edit Location"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:56
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:56
-#: FlightJournal.Web\Views\Location\Edit.cshtml:72
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:73
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:73
+#: FlightJournal.Web\Views\Location\Edit.cshtml:73
 #, csharp-format
 msgid "In use on {0} records."
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Logbook\Index.cshtml:7
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Logbook\Index.cshtml:35
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:66
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:118
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Logbook\Index.cshtml:7
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Logbook\Index.cshtml:35
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:66
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:118
+#: FlightJournal.Web\Views\Logbook\Index.cshtml:7
+#: FlightJournal.Web\Views\Logbook\Index.cshtml:35
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:66
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:118
+msgid "Logbook"
 msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:6
@@ -745,54 +835,67 @@ msgstr ""
 msgid "'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:256
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:256
-#: FlightJournal.Web\Views\Report\Index.cshtml:256
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:259
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:259
+#: FlightJournal.Web\Views\Report\Index.cshtml:259
 msgid "Editing is restricted after 48 hours."
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:267
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:267
-#: FlightJournal.Web\Views\Report\Index.cshtml:267
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:270
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:270
+#: FlightJournal.Web\Views\Report\Index.cshtml:270
 msgid "Plane Logbooks"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:288
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:357
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:405
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:457
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:507
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:288
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:357
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:405
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:457
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:507
-#: FlightJournal.Web\Views\Report\Index.cshtml:288
-#: FlightJournal.Web\Views\Report\Index.cshtml:357
-#: FlightJournal.Web\Views\Report\Index.cshtml:405
-#: FlightJournal.Web\Views\Report\Index.cshtml:457
-#: FlightJournal.Web\Views\Report\Index.cshtml:507
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:291
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:360
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:408
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:472
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:522
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:291
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:360
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:408
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:472
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:522
+#: FlightJournal.Web\Views\Report\Index.cshtml:291
+#: FlightJournal.Web\Views\Report\Index.cshtml:360
+#: FlightJournal.Web\Views\Report\Index.cshtml:408
+#: FlightJournal.Web\Views\Report\Index.cshtml:472
+#: FlightJournal.Web\Views\Report\Index.cshtml:522
 msgid "Count"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:399
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:399
-#: FlightJournal.Web\Views\Report\Index.cshtml:399
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:402
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:402
+#: FlightJournal.Web\Views\Report\Index.cshtml:402
 msgid "(total)"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:440
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:440
-#: FlightJournal.Web\Views\Report\Index.cshtml:440
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:441
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:441
+#: FlightJournal.Web\Views\Report\Index.cshtml:441
+msgid "Total"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:455
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:455
+#: FlightJournal.Web\Views\Report\Index.cshtml:455
 msgid "Pilot Logbooks"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:546
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:547
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:546
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:547
-#: FlightJournal.Web\Views\Report\Index.cshtml:546
-#: FlightJournal.Web\Views\Report\Index.cshtml:547
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:565
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:565
+#: FlightJournal.Web\Views\Report\Index.cshtml:565
+#, csharp-format
+msgid "{0} logbøger {1} starter {2} timer"
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:576
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:577
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:576
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:577
+#: FlightJournal.Web\Views\Report\Index.cshtml:576
+#: FlightJournal.Web\Views\Report\Index.cshtml:577
 #, csharp-format
 msgid "Statistics for {0}"
 msgstr ""
@@ -811,15 +914,6 @@ msgstr ""
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:61
 #, csharp-format
 msgid "Startlist ({0})"
-msgstr ""
-
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:66
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:118
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:66
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:118
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:66
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:118
-msgid "Logbook"
 msgstr ""
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:74
@@ -981,13 +1075,30 @@ msgstr ""
 msgid "unconfirmed"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:37
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:44
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:48
-msgid "Glider"
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:30
+msgid "FLARM Logbook"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:49
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:57
-msgid "Time"
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:30
+msgid "Live view"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:38
+msgid "Aircraft"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:41
+msgid "Type"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
+msgid "Max Alt."
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:56
+msgid "Avg. Climb rate"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:59
+msgid "Initial Climb rate"
 msgstr ""

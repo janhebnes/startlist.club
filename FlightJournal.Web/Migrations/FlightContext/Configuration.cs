@@ -107,7 +107,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var pl2 = new Plane
             {
                 CompetitionId = "R2",
-                Registration = "OY-XMO",
+                Registration = "OY-XKO",
                 Type = "ASK21",
                 Seats = 2,
                 DefaultStartType = start,

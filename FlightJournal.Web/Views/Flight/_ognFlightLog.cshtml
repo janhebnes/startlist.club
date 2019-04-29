@@ -17,83 +17,101 @@
 @{
     ViewBag.Title = "Startlisten / OGN FlightLog / FLARM";
     var icao = Request.Club().Location.ICAO;
+
+    if (Model.Count() == 1 && Model.All(r=>r.row == -1))
+    {
+        return;
+    }
+
 }
 <br/>
 
 <fieldset>
-    <legend>OGN FlightLog / FLARM Radar / <a href="http://live.glidernet.org/flightlog/index.php?a=@icao">Live</a></legend>
-    @{ 
-        string json = ViewBag.OgnFlightLogSource;
-        string source = json.Remove(json.Length-2);
+    <legend>@_("FLARM Logbook") @(ViewBag.EnableLiveView ? Html.Raw("(<a href=\"http://live.glidernet.org/#c=56.03515,11.57221&z=8&m=3&s=1\">"+ @_("Live view") +"</a>)") : Html.Raw(""))</legend>
+    @if (!string.IsNullOrWhiteSpace(ViewBag.OgnFlightLogSource))
+    {
+        <span class="pull-right" style="color:lightgray;"><a href="@(ViewBag.OgnFlightLogSource)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">kilde</a>/<a href="@(ViewBag.OgnFlightLogSourceCsv)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">csv</a></span>
     }
-    <span class="pull-right" style="color:lightgray;"><a href="@(source)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">kilde</a>/<a href="@(json)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">json</a></span>
     <table class="table table-striped table-hover table-condensed">
         <tr>
             <th>
-                #
+                @_("Aircraft")
             </th>
             <th>
-                (@_("Motor"))
-                @_("Glider")
-
+                @_("Type")
             </th>
             <th>
                 @_("Take-off")
             </th>
             <th>
-                @_("Glider")
                 @_("Landing")
             </th>
             <th>
-                @_("Glider")
                 @_("Time")
             </th>
-            <th>
-                @_("Plane")
-                @_("Landing")
+            <th style="text-align:right">
+                @_("Max Alt.")
             </th>
-            <th>
-                @_("Plane")
-                @_("Time")
+            <th style="text-align:right">
+                @_("Avg. Climb rate")
+            </th>
+            <th style="text-align:right">
+                @_("Initial Climb rate")
             </th>
         </tr>
-        @foreach (var item in Model.OrderByDescending(f => f.row))
+        @foreach (var item in Model.OrderByDescending(f => f.seq_nr))
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.row)
-                    <small style="color:lightgrey">@Html.DisplayFor(modelItem => item.ID)</small>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.glider)
-                    @if (!item.plane.IsEmpty())
+                <td title="@item.identifier">
+                    @if (string.IsNullOrWhiteSpace(item.callsign) && string.IsNullOrWhiteSpace(item.competition_number))
                     {
-                        Html.DisplayFor(modelItem => item.plane);
+                        @item.identifier
+                    }
+                    else if (string.IsNullOrWhiteSpace(item.callsign))
+                    {
+                        @item.competition_number
+                    }
+                    else if (string.IsNullOrWhiteSpace(item.competition_number))
+                    {
+                        @item.callsign
+                    }
+                    else
+                    {
+                        @Html.Raw(string.Format("{0} ({1})", item.competition_number, item.callsign))
                     }
                 </td>
                 <td>
-                    @if (item.takeoff.HasValue)
+                    @item.detailed_plane_type
+                </td>
+                <td>
+                    @if (item.tkof_time.HasValue)
                     {
-                        @item.takeoff.Value.ToString("HH:mm:ss zz")
+                        @item.tkof_time.Value.ToString("HH:mm:ss zz")
                     }
                 </td>
                 <td>
-                    @if (item.glider_landing.HasValue)
+                    @if (item.ldg_time.HasValue)
                     {
-                        @item.glider_landing.Value.ToString("HH:mm:ss zz")
+                        @item.ldg_time.Value.ToString("HH:mm:ss zz")
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.glider_time)
-                </td>
-                <td>
-                    @if (item.plane_landing.HasValue)
+                    @if (item.flight_time.HasValue)
                     {
-                        @item.plane_landing.Value.ToString("HH:mm:ss zz")
+                        @item.flight_time.Value.TotalHoursWithMinutesAsDecimal()
                     }
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.plane_time)
+                <td style="text-align:right">
+                    @if (item.max_alt.HasValue)
+                    {
+                        @item.max_alt.Value.ToString() <span>m</span>
+                    }
+                </td>
+                <td style="text-align:right">
+                    @item.average_climb_rate <span>m/s</span>
+                </td>
+                <td style="text-align:right">
+                    @item.initial_climbrate <span>m/s</span>
                 </td>
             </tr>
         }
