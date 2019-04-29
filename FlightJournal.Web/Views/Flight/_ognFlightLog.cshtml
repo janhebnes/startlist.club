@@ -26,95 +26,105 @@
 }
 <br/>
 
-<fieldset>
-    <legend>@_("FLARM Logbook") @(ViewBag.EnableLiveView ? Html.Raw("(<a href=\"http://live.glidernet.org/#c=56.03515,11.57221&z=8&m=3&s=1\">"+ @_("Live view") +"</a>)") : Html.Raw(""))</legend>
-    @if (!string.IsNullOrWhiteSpace(ViewBag.OgnFlightLogSource))
-    {
-        <span class="pull-right" style="color:lightgray;"><a href="@(ViewBag.OgnFlightLogSource)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">kilde</a>/<a href="@(ViewBag.OgnFlightLogSourceCsv)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">csv</a></span>
-    }
-    <table class="table table-striped table-hover table-condensed">
-        <tr>
-            <th>
-                @_("Aircraft")
-            </th>
-            <th>
-                @_("Type")
-            </th>
-            <th>
-                @_("Take-off")
-            </th>
-            <th>
-                @_("Landing")
-            </th>
-            <th>
-                @_("Time")
-            </th>
-            <th style="text-align:right">
-                @_("Max Alt.")
-            </th>
-            <th style="text-align:right">
-                @_("Avg. Climb rate")
-            </th>
-            <th style="text-align:right">
-                @_("Initial Climb rate")
-            </th>
-        </tr>
-        @foreach (var item in Model.OrderByDescending(f => f.seq_nr))
+<fieldset id="flarm">
+    <legend>
+        @if (!string.IsNullOrWhiteSpace(ViewBag.OgnFlightLogSource))
         {
-            <tr>
-                <td title="@item.identifier">
-                    @if (string.IsNullOrWhiteSpace(item.callsign) && string.IsNullOrWhiteSpace(item.competition_number))
-                    {
-                        @item.identifier
-                    }
-                    else if (string.IsNullOrWhiteSpace(item.callsign))
-                    {
-                        @item.competition_number
-                    }
-                    else if (string.IsNullOrWhiteSpace(item.competition_number))
-                    {
-                        @item.callsign
-                    }
-                    else
-                    {
-                        @Html.Raw(string.Format("{0} ({1})", item.competition_number, item.callsign))
-                    }
-                </td>
-                <td>
-                    @item.detailed_plane_type
-                </td>
-                <td>
-                    @if (item.tkof_time.HasValue)
-                    {
-                        @item.tkof_time.Value.ToString("HH:mm:ss zz")
-                    }
-                </td>
-                <td>
-                    @if (item.ldg_time.HasValue)
-                    {
-                        @item.ldg_time.Value.ToString("HH:mm:ss zz")
-                    }
-                </td>
-                <td>
-                    @if (item.flight_time.HasValue)
-                    {
-                        @item.flight_time.Value.TotalHoursWithMinutesAsDecimal()
-                    }
-                </td>
-                <td style="text-align:right">
-                    @if (item.max_alt.HasValue)
-                    {
-                        @item.max_alt.Value.ToString() <span>m</span>
-                    }
-                </td>
-                <td style="text-align:right">
-                    @item.average_climb_rate <span>m/s</span>
-                </td>
-                <td style="text-align:right">
-                    @item.initial_climbrate <span>m/s</span>
-                </td>
-            </tr>
+            <span class="pull-right" style="color:lightgray;"><a href="@(ViewBag.OgnFlightLogSource)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">kilde</a>/<a href="@(ViewBag.OgnFlightLogSourceCsv)" title="Der kan gå op til 20 minutter før ændringer fra kilden kan ses her">csv</a></span>
         }
+        <span id="FLARMAircraftFiltered"></span>
+
+        @_("FLARM Logbook") @(ViewBag.EnableLiveView ? Html.Raw("(<a href=\"http://live.glidernet.org/#c=56.03515,11.57221&z=8&m=3&s=1\">" + @_("Live view") + "</a>)") : Html.Raw(""))
+    </legend>
+    <table class="table table-striped table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    @_("Aircraft")
+                </th>
+                <th>
+                    @_("Type")
+                </th>
+                <th>
+                    @_("Take-off")
+                </th>
+                <th>
+                    @_("Landing")
+                </th>
+                <th>
+                    @_("Time")
+                </th>
+                <th style="text-align:right">
+                    @_("Max Alt.")
+                </th>
+                <th style="text-align:right">
+                    @_("Avg. Climb rate")
+                </th>
+                <th style="text-align:right">
+                    @_("Initial Climb rate")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderByDescending(f => f.seq_nr))
+            {
+                string attribute = string.IsNullOrWhiteSpace(item.callsign) ? "" : "data-callsign=\"" + item.callsign + "\"";
+
+                <tr @Html.Raw(attribute)>
+                    <td title="@item.identifier">
+                        @if (string.IsNullOrWhiteSpace(item.callsign) && string.IsNullOrWhiteSpace(item.competition_number))
+                        {
+                            @item.identifier
+                        }
+                        else if (string.IsNullOrWhiteSpace(item.callsign))
+                        {
+                            @item.competition_number
+                        }
+                        else if (string.IsNullOrWhiteSpace(item.competition_number))
+                        {
+                            @item.callsign
+                        }
+                        else
+                        {
+                            @Html.Raw(string.Format("{0} ({1})", item.competition_number, item.callsign))
+                        }
+                    </td>
+                    <td>
+                        @item.detailed_plane_type
+                    </td>
+                    <td>
+                        @if (item.tkof_time.HasValue)
+                        {    
+                            <a class="btn btn-warning ognFlightLogAction" data-departure="@item.tkof_time.Value.ToString("HH:mm")" type="button">@item.tkof_time.Value.ToString("HH:mm:ss zz")</a>
+                        }
+                    </td>
+                    <td>
+                        @if (item.ldg_time.HasValue)
+                        {
+                            <a class="btn btn-warning ognFlightLogAction" data-landing="@item.ldg_time.Value.ToString("HH:mm")" type="button">@item.ldg_time.Value.ToString("HH:mm:ss zz")</a>
+                        }
+                    </td>
+                    <td>
+                        @if (item.flight_time.HasValue)
+                        {
+                            @item.flight_time.Value.TotalHoursWithMinutesAsDecimal()
+                        }
+                    </td>
+                    <td style="text-align:right">
+                        @if (item.max_alt.HasValue)
+                        {
+                            @item.max_alt.Value.ToString() <span>m</span>
+                        }
+                    </td>
+                    <td style="text-align:right">
+                        @item.average_climb_rate <span>m/s</span>
+                    </td>
+                    <td style="text-align:right">
+                        @item.initial_climbrate <span>m/s</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 
     @if (!String.IsNullOrWhiteSpace(ViewBag.OgnFlightLogException))

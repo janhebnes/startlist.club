@@ -498,8 +498,7 @@ namespace FlightJournal.Web.Controllers
             var planeList = new List<ExtendedSelectListItem>();
             foreach (var plane in this.db.Planes.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).OrderBy(p => p.CompetitionId))
             {
-                //planeList.Add(new ExtendedSelectListItem() { Value = plane.PlaneId.ToString(), Text = plane.RenderName, Selected = (flight != null && flight.PlaneId == plane.PlaneId), htmlAttributes = new { data_seats=plane.Seats, data_engine=plane.Engines, data_defaultStartType=plane.DefaultStartType.StartTypeId }});
-                planeList.Add(new ExtendedSelectListItem() { Value = plane.PlaneId.ToString(), Text = plane.RenderName, Selected = (flight != null && flight.PlaneId == plane.PlaneId), htmlAttributes = new { data_seats = plane.Seats, data_engine = plane.Engines, data_defaultStartType = (plane.DefaultStartType==null)?1:plane.DefaultStartType.StartTypeId } });
+                planeList.Add(new ExtendedSelectListItem() { Value = plane.PlaneId.ToString(), Text = plane.RenderName, Selected = (flight != null && flight.PlaneId == plane.PlaneId), htmlAttributes = new { data_registration = plane.Registration, data_competitionid = plane.CompetitionId, data_seats = plane.Seats, data_engine = plane.Engines, data_defaultStartType = (plane.DefaultStartType==null)?1:plane.DefaultStartType.StartTypeId } });
             }
             this.ViewBag.PlaneId = planeList;
             this.ViewBag.StartedFromId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (flight == null) ? (object)null : flight.StartedFromId);

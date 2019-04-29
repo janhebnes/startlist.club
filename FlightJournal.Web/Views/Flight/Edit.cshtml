@@ -245,6 +245,24 @@
             if (!defaultStarttype.trim()) {
                 $("#StartTypeId").combobox('autocomplete', defaultStarttype);
             }
+
+            var registration = option.attr('data-registration');
+            if ($("#flarm")) {
+                $('#flarm > table > tbody  > tr').each(function (tr) {
+                    if (this.hasAttribute("data-callsign")) {
+                        if (this.attributes["data-callsign"].value == registration) {
+                            this.className = "";
+                        } else {
+                            this.className = "hide";
+                        }
+                    }
+                });
+                if (registration) {
+                    $('#FLARMAircraftFiltered').text(registration + " ");
+                } else {
+                    $('#FLARMAircraftFiltered').text("");
+                }
+            }
         }
 
         $(document).ready(function () {
@@ -284,8 +302,20 @@
                 processPlaneAttributes();
             });
 
+            if ($("#flarm")) {
+                $('.ognFlightLogAction').on("click", function () {
+                    if (this.hasAttribute("data-departure")) {
+                        $('#Departure').val(this.attributes["data-departure"].value);
+                    }
+                    else if (this.hasAttribute("data-landing")) {
+                        $('#Landing').val(this.attributes["data-landing"].value);
+                    }
+                });
+            }
+
             // Default visible fields on initial load
             processPlaneAttributes();
+            
         }
     );
     </script>
