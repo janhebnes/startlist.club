@@ -18,13 +18,13 @@
     ViewBag.Title = "Startlisten / OGN FlightLog / FLARM";
     var icao = Request.Club().Location.ICAO;
 
-    if (Model.Count() == 1 && Model.All(r=>r.row == -1))
+    if (Model.Count() == 1 && Model.All(r => r.row == -1))
     {
         return;
     }
 
 }
-<br/>
+<br />
 
 <fieldset id="flarm">
     <legend>
@@ -36,7 +36,8 @@
 
         @_("FLARM Logbook") @(ViewBag.EnableLiveView ? Html.Raw("(<a href=\"http://live.glidernet.org/#c=56.03515,11.57221&z=8&m=3&s=1\">" + @_("Live view") + "</a>)") : Html.Raw(""))
     </legend>
-    <table class="table table-striped table-hover table-condensed">
+    <table class="table table-hover table-condensed">
+        @*We do not table-striped because the table is filtered depending on plane selected*@
         <thead>
             <tr>
                 <th>
@@ -94,14 +95,14 @@
                     </td>
                     <td>
                         @if (item.tkof_time.HasValue)
-                        {    
-                            <a class="btn btn-warning ognFlightLogAction" data-departure="@item.tkof_time.Value.ToString("HH:mm")" type="button">@item.tkof_time.Value.ToString("HH:mm:ss zz")</a>
+                        {
+                            <a class="btn btn-warning ognFlightLogAction" data-departure="@item.tkof_time.Value.ToString("HH:mm")" role="button">@item.tkof_time.Value.ToString("HH:mm:ss zz")</a>
                         }
                     </td>
                     <td>
                         @if (item.ldg_time.HasValue)
                         {
-                            <a class="btn btn-warning ognFlightLogAction" data-landing="@item.ldg_time.Value.ToString("HH:mm")" type="button">@item.ldg_time.Value.ToString("HH:mm:ss zz")</a>
+                            <a class="btn btn-warning ognFlightLogAction" data-landing="@item.ldg_time.Value.ToString("HH:mm")" role="button">@item.ldg_time.Value.ToString("HH:mm:ss zz")</a>
                         }
                     </td>
                     <td>

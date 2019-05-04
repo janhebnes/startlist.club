@@ -271,13 +271,36 @@
                 $('.ognFlightLogAction').on("click", function () {
                     if (this.hasAttribute("data-departure")) {
                         $('#Departure').val(this.attributes["data-departure"].value);
+                        processOgnFlightAction("#Departure", "data-departure");
                     }
                     else if (this.hasAttribute("data-landing")) {
                         $('#Landing').val(this.attributes["data-landing"].value);
+                        processOgnFlightAction("#Landing", "data-landing");
                     }
                 });
+
+                $("#Departure").on("change", function () {
+                    processOgnFlightAction("#Departure", "data-departure");
+                });
+
+                $("#Landing").on("change", function () {
+                    processOgnFlightAction("#Landing", "data-landing");
+                });
+
+                processOgnFlightAction("#Departure", "data-departure");
+                processOgnFlightAction("#Landing", "data-landing");
+            }
+        });
+
+        function processOgnFlightAction(formIdentifier, actionAttribute) {
+            if ($("#flarm")) {
+                if ($(formIdentifier).val()) {
+                    $(".ognFlightLogAction[" + actionAttribute + "]").removeClass("btn-warning").addClass("btn-xs").removeClass("btn-success").addClass("btn-secondary");
+                    $(".ognFlightLogAction[" + actionAttribute + "='" + $(formIdentifier).val() + "']").removeClass("btn-secondary").addClass("btn-success");
+                } else {
+                    $(".ognFlightLogAction[" + actionAttribute + "]").addClass("btn-warning").removeClass("btn-xs").removeClass("btn-secondary").removeClass("btn-success");
+                }
             }
         }
-        );
     </script>
 }
