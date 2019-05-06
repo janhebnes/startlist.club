@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2019-04-29 02:38+0200\n"
+"POT-Creation-Date: 2019-05-06 21:29+0200\n"
 "PO-Revision-Date: 2015-10-14 11:45+0100\n"
 "Last-Translator: Peter Christensen <peter@pdk.se>\n"
 "Language: sv\n"
@@ -72,17 +72,15 @@ msgstr "Start"
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:34
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:46
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:45
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:53
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:52
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:34
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:46
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:45
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:53
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:52
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:34
 #: FlightJournal.Web\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:46
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:47
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
 msgid "Landing"
 msgstr "Landning"
 
@@ -95,8 +93,6 @@ msgstr "Antal flygningar"
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:25
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:37
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:52
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:56
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:149
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:279
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:351
@@ -106,8 +102,6 @@ msgstr "Antal flygningar"
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:25
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:37
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:52
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:56
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:149
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:279
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:351
@@ -159,15 +153,15 @@ msgstr "Startmetod"
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:40
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\History.cshtml:46
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:52
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:41
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:49
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:40
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\History.cshtml:46
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_changeHistory.cshtml:52
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:41
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:49
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:40
 #: FlightJournal.Web\Views\Flight\History.cshtml:46
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:52
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:44
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:50
 msgid "Take-off"
 msgstr "Start"
 
@@ -760,27 +754,56 @@ msgstr "RADERAT"
 msgid "Change history"
 msgstr "Historik över ändringar"
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:36
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:36
-msgid "Motor"
-msgstr ""
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:37
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:37
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:37
+#, fuzzy
+msgid "FLARM Logbook"
+msgstr "Loggbok"
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:37
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:44
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:48
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:37
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:44
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:48
-msgid "Glider"
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:37
+msgid "Live view"
 msgstr ""
 
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:49
-#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:57
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:49
-#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:57
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:50
-msgid "Time"
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:43
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:43
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:44
+#, fuzzy
+msgid "Aircraft"
+msgstr "Flygplanstyp"
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:46
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:46
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:47
+msgid "Type"
 msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:55
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:55
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:56
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:59
+msgid "Time"
+msgstr "Tid"
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:58
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:58
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:62
+msgid "Max Alt."
+msgstr ""
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:61
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:61
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:65
+msgid "Avg. Climb rate"
+msgstr "Gns.stig"
+
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:64
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\_ognFlightLog.cshtml:64
+#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:68
+msgid "Initial Climb rate"
+msgstr "Init.stig"
 
 #: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Location\Edit.cshtml:15
 #: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Location\Edit.cshtml:15
@@ -1081,33 +1104,3 @@ msgstr "Skapa ny"
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
 msgid "unconfirmed"
 msgstr "obekräftad"
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:30
-#, fuzzy
-msgid "FLARM Logbook"
-msgstr "Loggbok"
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:30
-msgid "Live view"
-msgstr ""
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:38
-#, fuzzy
-msgid "Aircraft"
-msgstr "FLygplanstyp"
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:41
-msgid "Type"
-msgstr ""
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
-msgid "Max Alt."
-msgstr ""
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:56
-msgid "Avg. Climb rate"
-msgstr ""
-
-#: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:59
-msgid "Initial Climb rate"
-msgstr ""
