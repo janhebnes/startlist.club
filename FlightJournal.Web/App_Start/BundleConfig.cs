@@ -12,11 +12,14 @@ namespace FlightJournal.Web
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-{version}.js",
-                        "~/Scripts/jquery.tablesorter.min.js"));    // NuGet installed
+                        "~/Scripts/jquery.editorhookup.js", // extending the time format of the date picker
+                        "~/Scripts/jquery.tablesorter.min.js"));    
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.unobtrusive-ajax.js",
+                        "~/Scripts/jquery.validate.js",
+                        "~/Scripts/jquery.validate.unobtrusive.js",
+                        "~/Scripts/jquery.autocomplete-combobox.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -44,7 +47,7 @@ namespace FlightJournal.Web
                       //"~/Content/themes/base/progressbar.css",
                       //"~/Content/themes/base/theme.css"
             
-            //// When using deployment and not running in debug mode it is expected that the bundling automatically takes place
+            //// When running release it is expected that the bundling automatically takes place
             //// BundleTable.EnableOptimizations = true;
 
         }

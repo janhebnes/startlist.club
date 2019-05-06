@@ -52,6 +52,19 @@ namespace FlightJournal.Web.Extensions
             }
             return Internationalization.GetText(en, Internationalization.LanguageCode);
         }
-        
+
+        /// <summary>
+        /// Allows to use the debug mode of the application in razor
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <returns></returns>
+        public static bool IsDebug(this HtmlHelper htmlHelper)
+        {
+#if DEBUG
+            return true;
+#else
+      return false;
+#endif
+        }
     }
 }

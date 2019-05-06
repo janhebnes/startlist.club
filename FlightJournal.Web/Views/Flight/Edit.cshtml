@@ -112,7 +112,7 @@
             <div class="clearfix visible-sm visible-xs"></div>
             <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                 <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary"/>
+                    <input type="submit" value="@_("Save")" class="btn btn-primary" />
                 </div>
             </div>
 
@@ -147,15 +147,15 @@
                     @Html.ValidationMessageFor(model => model.TaskDistance)
                 </div>
 
-                
+
             </div>
 
         </div>
-        
+
         <div class="row" style="margin-top: 30px">
             <div class="col-md-3">
                 <div class="btn-group btn-group-lg">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary"/>
+                    <input type="submit" value="@_("Save")" class="btn btn-primary" />
                     <a href="@ViewBag.UrlReferrer" class="btn btn-default">@_("Back")</a>
                 </div>
             </div>
@@ -187,10 +187,7 @@
 
 @section scripts
 {
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/jqueryval")
     
     <script type="text/javascript">
         function resetJsCss() {
@@ -212,8 +209,8 @@
 
             var option = $("#PlaneId option[value='" + $("#PlaneId").val() + "']");
 
-            // data-defaultstarttype="1" 
-            // data-engine="0" 
+            // data-defaultstarttype="1"
+            // data-engine="0"
             // data-seats="1"
 
             var seats = option.attr('data-seats');
@@ -283,7 +280,7 @@
                 $(this).select();
             });
 
-            // Default pilot to betaler 
+            // Default pilot to betaler
             $("#BetalerId").on("change", function () {
                 if ($("#BetalerId").val().trim() != "" && $("#PilotId").val() == "") {
                     $("#PilotId").combobox('autocomplete', $("#BetalerId").val());
@@ -341,7 +338,7 @@
                 }
             }
         }
-    
+
     </script>
 }
 

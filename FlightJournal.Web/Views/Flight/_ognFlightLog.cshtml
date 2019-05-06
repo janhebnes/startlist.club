@@ -53,7 +53,10 @@
                     @_("Landing")
                 </th>
                 <th>
-                    @_("Time")
+                    @_("Time") (~5min)
+                </th>
+                <th>
+                    @_("Time") (~1min)
                 </th>
                 <th style="text-align:right">
                     @_("Max Alt.")
@@ -71,59 +74,65 @@
             {
                 string attribute = string.IsNullOrWhiteSpace(item.callsign) ? "" : "data-callsign=\"" + item.callsign + "\"";
 
-                <tr @Html.Raw(attribute)>
-                    <td title="@item.identifier">
-                        @if (string.IsNullOrWhiteSpace(item.callsign) && string.IsNullOrWhiteSpace(item.competition_number))
-                        {
-                            @item.identifier
-                        }
-                        else if (string.IsNullOrWhiteSpace(item.callsign))
-                        {
-                            @item.competition_number
-                        }
-                        else if (string.IsNullOrWhiteSpace(item.competition_number))
-                        {
-                            @item.callsign
-                        }
-                        else
-                        {
-                            @Html.Raw(string.Format("{0} ({1})", item.competition_number, item.callsign))
-                        }
-                    </td>
-                    <td>
-                        @item.detailed_plane_type
-                    </td>
-                    <td>
-                        @if (item.tkof_time.HasValue)
-                        {
-                            <a class="btn btn-warning ognFlightLogAction" data-departure="@item.tkof_time.Value.ToString("HH:mm")" role="button">@item.tkof_time.Value.ToString("HH:mm:ss zz")</a>
-                        }
-                    </td>
-                    <td>
-                        @if (item.ldg_time.HasValue)
-                        {
-                            <a class="btn btn-warning ognFlightLogAction" data-landing="@item.ldg_time.Value.ToString("HH:mm")" role="button">@item.ldg_time.Value.ToString("HH:mm:ss zz")</a>
-                        }
-                    </td>
-                    <td>
-                        @if (item.flight_time.HasValue)
-                        {
-                            @item.flight_time.Value.TotalHoursWithMinutesAsDecimal()
-                        }
-                    </td>
-                    <td style="text-align:right">
-                        @if (item.max_alt.HasValue)
-                        {
-                            @item.max_alt.Value.ToString() <span>m</span>
-                        }
-                    </td>
-                    <td style="text-align:right">
-                        @item.average_climb_rate <span>m/s</span>
-                    </td>
-                    <td style="text-align:right">
-                        @item.initial_climbrate <span>m/s</span>
-                    </td>
-                </tr>
+            <tr @Html.Raw(attribute)>
+                <td title="@item.identifier">
+                    @if (string.IsNullOrWhiteSpace(item.callsign) && string.IsNullOrWhiteSpace(item.competition_number))
+                    {
+                        @item.identifier
+                    }
+                    else if (string.IsNullOrWhiteSpace(item.callsign))
+                    {
+                        @item.competition_number
+                    }
+                    else if (string.IsNullOrWhiteSpace(item.competition_number))
+                    {
+                        @item.callsign
+                    }
+                    else
+                    {
+                        @Html.Raw(string.Format("{0} ({1})", item.competition_number, item.callsign))
+                    }
+                </td>
+                <td>
+                    @item.detailed_plane_type
+                </td>
+                <td>
+                    @if (item.tkof_time.HasValue)
+                    {
+                        <a class="btn btn-warning ognFlightLogAction" data-departure="@item.tkof_time_for_logbook().Value.ToString("HH:mm")" role="button" title="@item.tkof_time.Value.ToString("HH:mm:ss zz")">@item.tkof_time_for_logbook().Value.ToString("HH:mm") <span>/ @item.tkof_time.Value.ToString("HH:mm:ss")</span></a>
+                    }
+                </td>
+                <td>
+                    @if (item.ldg_time.HasValue && item.ldg_time_for_logbook().HasValue)
+                    {
+                        <a class="btn btn-warning ognFlightLogAction" data-landing="@item.ldg_time_for_logbook().Value.ToString("HH:mm")" role="button" title="@item.ldg_time.Value.ToString("HH:mm:ss zz")">@item.ldg_time_for_logbook().Value.ToString("HH:mm") <span>/ @item.ldg_time.Value.ToString("HH:mm:ss")</span></a>
+                    }
+                </td>
+                <td>
+                    @if (item.flight_time.HasValue && item.flight_time_for_logbook().HasValue)
+                    {
+                        @item.flight_time_for_logbook().Value.TotalHoursWithMinutesAsDecimal()
+                    }
+                </td>
+                <td>
+                    @if (item.flight_time.HasValue && item.flight_time_for_logbook().HasValue)
+                    {
+                        @item.flight_time.Value.TotalHoursWithMinutesAsDecimal()
+                    }
+                </td>
+                <td style="text-align:right">
+                    @if (item.max_alt.HasValue)
+                    {
+                        @item.max_alt.Value.ToString() <span>m</span>
+                    }
+                </td>
+                <td style="text-align:right">
+                    @item.average_climb_rate <span>m/s</span>
+                </td>
+                <td style="text-align:right">
+                    @item.initial_climbrate <span>m/s</span>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

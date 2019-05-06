@@ -154,10 +154,7 @@
 
 @section scripts
 {
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.editorhookup.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery.autocomplete-combobox.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">
         function resetJsCss() {
@@ -214,8 +211,8 @@
 
                 var option = $("#PlaneId option[value='" + $("#PlaneId").val() + "']");
 
-                // data-defaultstarttype="1" 
-                // data-engine="0" 
+                // data-defaultstarttype="1"
+                // data-engine="0"
                 // data-seats="1"
 
                 var seats = option.attr('data-seats');

@@ -1,31 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
 namespace FlightJournal.Web.Extensions
 {
-    public static class TimeSpanExtension
+    public static class DateTimeOffsetExtension
     {
-        /// <summary>
-        /// Format the TimeSpan as TotalHours : Minutes 
-        /// </summary>
-        /// <param name="timeSpan"></param>
-        /// <returns></returns>
-        public static string TotalHoursWithMinutesAsDecimal(this TimeSpan timeSpan)
-        {
-            if (timeSpan.TotalMinutes > 0)
-            {
-                return string.Format("{0}:{1}"
-                    , timeSpan.TotalHours.ToString("#0.000", CultureInfo.InvariantCulture).Substring(0, timeSpan.TotalHours.ToString("#0.000", CultureInfo.InvariantCulture).IndexOf(".", StringComparison.InvariantCulture))
-                    , timeSpan.Minutes.ToString("#00"));
-            }
-
-            return string.Empty;
-        }
-
         public enum RoundingDirection
         {
             Up,
@@ -39,9 +20,9 @@ namespace FlightJournal.Web.Extensions
         /// <param name="dt">static extension method</param>
         /// <param name="rndmin">mins to round to</param>
         /// <param name="directn">Up,Down,Nearest</param>
-        /// <returns>rounded TimeSpan with all smaller units than mins rounded off</returns>
+        /// <returns>rounded datetime with all smaller units than mins rounded off</returns>
         /// <remarks>http://metadataconsulting.blogspot.com/2018/10/C-Round-Datetime-Extension-To-Nearest-Minute-And-Smaller-Units-Are-Rounded-To-Zero.html</remarks>
-        public static TimeSpan RoundToNearestMinute(this TimeSpan dt, int rndmin = 1, RoundingDirection directn = RoundingDirection.Nearest)
+        public static DateTimeOffset RoundToNearestMinute(this DateTimeOffset dt, int rndmin = 1, RoundingDirection directn = RoundingDirection.Nearest)
         {
             if (rndmin == 0) //can be > 60 mins
                 return dt;
@@ -68,7 +49,7 @@ namespace FlightJournal.Web.Extensions
                     }
 
             }
-            return new TimeSpan(dt.Ticks + delta);
+            return new DateTimeOffset(dt.Ticks + delta, dt.Offset);
         }
     }
 }
