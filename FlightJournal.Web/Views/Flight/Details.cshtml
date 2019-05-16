@@ -8,8 +8,8 @@
     {
         <text><span class="error">Flight id was not found </span></text>
         @ViewBag.FlightId;
-    @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
-                         return;
+        @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
+        return;
     }
 
 }
@@ -160,3 +160,4 @@
     </div>
 </p>
 @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
+@*@Html.Partial("_changeHistoryLog", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)*@

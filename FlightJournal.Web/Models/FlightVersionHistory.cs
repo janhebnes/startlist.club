@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlightJournal.Web.Translations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -89,5 +91,78 @@ namespace FlightJournal.Web.Models
         [Required]
         public DateTime LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
+
+        /// <summary>
+        /// Get the change log from previous to this 
+        /// </summary>
+        /// <param name="previous"></param>
+        /// <returns></returns>
+        public string GetChangeHistoryDescription(FlightVersionHistory previous)
+        {
+            if (previous == null)
+                return _("Created");
+
+            var log = new List<string>();
+
+            if (this.Description != previous.Description)
+                log.Add(_("Note") + $": {this.Description} <strike>{previous.Description}</strike>");
+
+            if (this.Date != previous.Date)
+                log.Add(_("Date") + $": {this.Date.ToString("dd-MMM-yyyy")} <strike>{previous.Date.ToString("dd-MMM-yyyy")}</strike>");
+
+            if (this.Departure != previous.Departure)
+            {
+                if (this.Departure.HasValue && previous.Departure.HasValue)
+                {
+                    log.Add(_("Departure") + $": {this.Departure.Value.ToString("HH:mm")} <strike>{previous.Departure.Value.ToString("HH:mm")}</strike>");
+                }
+                else if (this.Departure.HasValue && !previous.Departure.HasValue)
+                {
+                    log.Add(_("Departure") + $": {this.Departure.Value.ToString("HH:mm")}");
+                }
+                else //if (!this.Departure.HasValue && previous.Departure.HasValue)
+                {
+                    log.Add(_("Departure") + $": <strike>{previous.Departure.Value.ToString("HH:mm")}</strike>");
+                }
+            }
+
+            if (this.Landing != previous.Landing)
+            {
+                if (this.Landing.HasValue && previous.Landing.HasValue)
+                {
+                    log.Add(_("Landing") + $": {this.Landing.Value.ToString("HH:mm")} <strike>{previous.Landing.Value.ToString("HH:mm")}</strike>");
+                }
+                else if (this.Landing.HasValue && !previous.Landing.HasValue)
+                {
+                    log.Add(_("Landing") + $": {this.Landing.Value.ToString("HH:mm")}");
+                }
+                else //if (!this.Landing.HasValue && previous.Landing.HasValue)
+                {
+                    log.Add(_("Landing") + $": <strike>{previous.Landing.Value.ToString("HH:mm")}</strike>");
+                }
+            }
+
+            if (this.LandingCount != previous.LandingCount)
+                log.Add(_("Landing Count") + $": {this.LandingCount} <strike>{previous.LandingCount}</strike>");
+
+            throw new NotImplementedException("This way of providing the change history has not been completed, i am unsure if it is the right direction.");
+
+            //this.PlaneId = previous.PlaneId;
+            //this.PilotId = previous.PilotId;
+            //this.PilotBackseatId = previous.PilotBackseatId;
+            //this.BetalerId = previous.BetalerId;
+            //this.StartTypeId = previous.StartTypeId;
+            //this.StartedFromId = previous.StartedFromId;
+            //this.LandedOnId = previous.LandedOnId;
+            //this.TachoDeparture = previous.TachoDeparture;
+            //this.TachoLanding = previous.TachoLanding;
+
+            return string.Join(", ",log.ToArray());
+        }
+
+        private string _(string resourceId)
+        {
+            return Internationalization.GetText(resourceId, Internationalization.LanguageCode);
+        }
     }
 }

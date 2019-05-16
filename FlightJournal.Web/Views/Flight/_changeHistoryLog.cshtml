@@ -1,0 +1,52 @@
+﻿@using FlightJournal.Web
+@using FlightJournal.Web.Extensions
+@model IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>
+
+@helper TruncateDate(DateTime input)
+{
+    if (input.Year == DateTime.Today.Year)
+    {
+        @(input.ToString("ddd. ") + input.ToString("m"));
+    }
+    else
+    {
+        @input.ToShortDateString()
+    }
+}
+
+@{
+    ViewBag.Title = "Startlisten / Historik";
+    FlightJournal.Web.Models.FlightVersionHistory previous = null;
+}
+<br/>
+
+@*<fieldset>
+    <legend>@_("Change history")</legend>*@
+
+    <table class="table table-striped table-hover table-condensed">
+        <tr>
+            <th colspan="2">
+                @_("Change history")
+            </th>
+            <th>
+                @_("User")
+            </th>
+
+        </tr>
+        @foreach (var item in Model.OrderBy(f=>f.Created))
+        {
+        <tr>
+            <td width="10%">
+                @((item.Created.Date == item.Date) ? item.Created.ToString("HH:mm") : (item.Created.Date.Year == item.Date.Year) ? item.Created.ToString("HH:mm dd-MMM") : item.Created.ToString("HH:mm dd-MMM-yyyy"))
+            </td>
+            <td width="60%">
+                @Html.Raw(item.GetChangeHistoryDescription(previous))
+            </td>
+            <td width="30%">
+                @((previous == null || item.LastUpdatedBy != previous.LastUpdatedBy)?item.LastUpdatedBy:"")
+            </td>
+        </tr>
+        previous = item;
+        }
+    </table>
+@*</fieldset>*@
