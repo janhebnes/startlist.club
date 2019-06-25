@@ -183,7 +183,8 @@ table.tablesorter thead tr .headerSortDown {
 
 /* Override jquery-ui- default theme and bootstrap theme default fonts */
 body, .ui-widget, .tooltip, .popover {
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; 
 }
 /* Override bootstrap default font size */
 body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover, .popover-title {
