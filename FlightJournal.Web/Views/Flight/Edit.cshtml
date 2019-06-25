@@ -217,7 +217,7 @@
             if (seats == "1") {
                 $("#PilotBackseatId").combobox("destroy");
                 $("#PilotBackseatId").hide("fast");
-                $("#PilotBackseatId").val = "";
+                $("#PilotBackseatId")[0].selectedIndex = 0;
             } else {
                 if ($("#PilotBackseatId").combobox("isDestroyed")) {
                     $("#PilotBackseatId").show();
@@ -230,9 +230,9 @@
             var engines = option.attr('data-engine');
             if (engines == "0") {
                 $("#TachoDeparture").hide("fast");
-                $("#TachoDeparture").val = "";
+                $("#TachoDeparture")[0].value = "";
                 $("#TachoLanding").hide("fast");
-                $("#TachoLanding").val = "";
+                $("#TachoLanding")[0].value = "";
             } else {
                 $("#TachoDeparture").show("fast");
                 $("#TachoLanding").show("fast");
