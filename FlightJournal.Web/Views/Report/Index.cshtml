@@ -126,7 +126,7 @@
     foreach (var location in Model.DistinctLocations)
     {
         var headerMetadata = Model.Flights.FirstOrDefault();
-        bool enableStartTypeColumn = Model.ClubFlights.Any(d => d.StartedFromId == location.LocationId) 
+        bool enableStartTypeColumn = Model.ClubFlights.Any(d => d.StartedFromId == location.LocationId)
             && Model.Flights.Where(d => d.StartedFromId == location.LocationId).Select(s => s.StartType.ShortName).Distinct().Count() > 1;
         bool enableTachoColumn = Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId).ToList().Sum(s => s.Tacho) > 0;
         bool enableNoteColumn = Model.ClubFlights.Any(d => d.StartedFromId == location.LocationId)
@@ -178,7 +178,7 @@
                 </tr>
             </thead>
             <tbody>
-                @{ int startNr = 0; }
+                @{ int startNr = 1; }
                 @foreach (var item in Model.Flights.Where(d => d.StartedFromId == location.LocationId))
                 {
                     var style = new HtmlString(string.Empty);
@@ -190,13 +190,14 @@
                         <td>
                             @if (!item.Deleted.HasValue)
                             {
-                                @(++startNr)
+                                @(startNr)
                                 if (item.LandingCount > 1)
                                 {
-                                    startNr = startNr + item.LandingCount;
+                                    startNr = startNr + item.LandingCount - 1;
                                     <text> - </text>
                                     @(startNr)
                                 }
+                                startNr++;
                             }
                             else
                             {
@@ -252,9 +253,29 @@
                 }
             </tbody>
         </table>
-        <p style="color: silver" class="noprint pull-right">
-            <em title="Total">S: @Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d => d.StartType.ShortName == "S").Count() / F: @Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d => d.StartType.ShortName == "F").Count() </em>
-        </p>
+        {
+            var s_Starts = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d => d.StartType.ShortName == "S" && !d.Deleted.HasValue);
+            int total_S_starts = s_Starts.Count();
+            int total_S_starts_by_landingCount = total_S_starts == 0 ? 0 : s_Starts.Sum(f=>f.LandingCount);
+            string format_total_S_starts = total_S_starts_by_landingCount.ToString();
+            if (total_S_starts != total_S_starts_by_landingCount)
+            {
+                format_total_S_starts += " ("+ total_S_starts + ")";
+            }
+
+            var f_Starts = Model.Flights.Where(d => d.StartedFromId == location.LocationId).Where(d => d.StartType.ShortName == "F" && !d.Deleted.HasValue);
+            int total_F_starts = f_Starts.Count();
+            int total_F_starts_by_landingCount = total_F_starts == 0 ? 0 : f_Starts.Sum(f => f.LandingCount);
+            string format_total_F_starts = total_F_starts_by_landingCount.ToString();
+            if (total_F_starts != total_F_starts_by_landingCount)
+            {
+                format_total_F_starts += " (" + total_F_starts + ")";
+            }
+
+            <p style="color: silver" class="noprint pull-right">
+                <em title="Total">S: @format_total_S_starts / F: @format_total_F_starts </em>
+            </p>
+        }
         <p style="color: silver" class="noprint">
             <em>@_("Editing is restricted after 48 hours.")</em>
         </p>
@@ -439,9 +460,11 @@
                     <tfoot>
                         <tr>
                             <td style="color:lightgray;">@_("Total")</td>
-                            @if (enableLogStartTypeColumn) { <td class="text-center"></td> }
+                            @if (enableLogStartTypeColumn)
+                            {
+                                <td class="text-center"></td>}
                             <td style="color:lightgray;" class="text-right">
-                                @Model.ClubFlights.Where(f=>f.Deleted == null).ToList().Sum(f => f.LandingCount)
+                                @Model.ClubFlights.Where(f => f.Deleted == null).ToList().Sum(f => f.LandingCount)
                             </td>
                             <td style="color:lightgray;" class="text-right">
                                 @Model.ClubFlights.Where(f => f.Deleted == null).ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()

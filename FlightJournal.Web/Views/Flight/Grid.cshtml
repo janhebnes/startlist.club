@@ -4,7 +4,7 @@
 @using FlightJournal.Web.Extensions
 @{
     ViewBag.Title = _("Startlist") + " " + ViewBag.Date.ToShortDateString();
-    int startNr = Model.Count();
+    int startNr = Model != null ? Model.Where(f=> !f.Deleted.HasValue).Sum(m=>m.LandingCount) : 0;
 }
 <p>
     <div class="btn-group btn-group-lg">
@@ -61,13 +61,15 @@
                 <td>
                     @if (!item.Deleted.HasValue)
                     {
-                        @(startNr--)
+                        var startNr1 = startNr;
                         if (item.LandingCount > 1)
                         {
-                            startNr = startNr - item.LandingCount;
-                            <text> - </text>
+                            startNr = startNr - item.LandingCount + 1;
                             @(startNr)
+                            <text> - </text>
                         }
+                        @(startNr1)
+                        startNr--;
                     }
                     else
                     {
