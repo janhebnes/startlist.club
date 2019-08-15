@@ -40,6 +40,9 @@ packages\Gettext.Tools.0.19.8.1\tools\bin\msgmerge.exe --backup=none --lang=en -
 echo Updating Translations\da\LC_MESSAGES\messages.po with po template
 packages\Gettext.Tools.0.19.8.1\tools\bin\msgmerge.exe --backup=none --lang=da -U FlightJournal.Web\Translations\da\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot  
 
+echo Updating Translations\no\LC_MESSAGES\messages.po with po template
+packages\Gettext.Tools.0.19.8.1\tools\bin\msgmerge.exe --backup=none --lang=no -U FlightJournal.Web\Translations\no\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot  
+
 echo Updating Translations\sv\LC_MESSAGES\messages.po with po template
 packages\Gettext.Tools.0.19.8.1\tools\bin\msgmerge.exe --backup=none --lang=sv -U FlightJournal.Web\Translations\sv\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot  
 
