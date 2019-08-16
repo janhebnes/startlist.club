@@ -1,5 +1,6 @@
 @using FlightJournal.Web.Configuration
 @using FlightJournal.Web.Models
+@using FlightJournal.Web.Extensions
 @using Microsoft.AspNet.Identity
 @model FlightJournal.Web.Models.LoginViewModel
 @{
@@ -11,11 +12,13 @@
     <ul id="myTab" class="nav nav-tabs" role="tablist">
         @if (ViewBag.EnableDemo)
         {
-        <li role="presentation" class="@(Model.LoginState==LoginViewModel.State.Demo?"active":"")"><a href="#demo" id="demo-tab" role="tab" data-toggle="tab" aria-controls="demo" aria-expanded="false">Demo login</a></li>}
-        <li role="presentation" class="@(Model.LoginState == LoginViewModel.State.Login ? "active" : "")"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Email login</a></li>
+            <li role="presentation" class="@(Model.LoginState==LoginViewModel.State.Demo?"active":"")"><a href="#demo" id="demo-tab" role="tab" data-toggle="tab" aria-controls="demo" aria-expanded="false">@_("Demo login")</a></li>
+}
+        <li role="presentation" class="@(Model.LoginState == LoginViewModel.State.Login ? "active" : "")"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">@_("Email login")</a></li>
         @if (ViewBag.EnableMobil)
         {
-        <li role="presentation" class="@(Model.LoginState==LoginViewModel.State.TokenLogin?"active":"")"><a href="#mobile" role="tab" id="mobile-tab" data-toggle="tab" aria-controls="mobile" aria-expanded="false">Mobil login</a></li>}
+            <li role="presentation" class="@(Model.LoginState==LoginViewModel.State.TokenLogin?"active":"")"><a href="#mobile" role="tab" id="mobile-tab" data-toggle="tab" aria-controls="mobile" aria-expanded="false">@_("Mobil login")</a></li>
+}
     </ul>
     <div id="myTabContent" class="tab-content">
 
@@ -25,7 +28,7 @@
             <div role="tabpanel" class="tab-pane fade @(Model.LoginState==LoginViewModel.State.Demo?"active":"") in" id="demo" aria-labelledby="demo-tab">
                 <div class="row">
                     <div class="col-md-8">
-                        <h4>Live Demo Accounts (and Passwords)</h4>
+                        <h4>@_("Live Demo Accounts (and Passwords)")</h4>
                         <hr />
                         <div class="form-group">
 
@@ -41,10 +44,10 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <h4>Autologin Enabled</h4>
+                        <h4>@_("Autologin Enabled")</h4>
                         <hr />
                         <div class="alert alert-warning">
-                            Autologin by clicking account<br /><span class="glyphicon glyphicon-alert"></span> <em>Remember to remove accounts in production</em>
+                            @_("Autologin by clicking account")<br /><span class="glyphicon glyphicon-alert"></span> <em>@_("Remember to remove accounts in production")</em>
                         </div>
                     </div>
                 </div>
@@ -59,7 +62,7 @@
                         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
-                            <h4>Use a local account to log in.</h4>
+                            <h4>@_("Use a local account to log in.")</h4>
                             <hr />
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group">
@@ -89,14 +92,14 @@
                                     @*<input type="submit" value="Log in" class="btn btn-default" />*@
                                     <button class="btn btn-primary" onclick=" this.form.submit(); " name="button" type="submit" id="Login">
                                         <span class="glyphicon glyphicon-ok"></span>
-                                        Log in
+                                        @_("Login")
                                     </button>
                                     <br /><br />
                                     <p>
-                                        @Html.ActionLink("Register a new user?", "Register")
+                                        @Html.ActionLink(_("Register a new user?"), "Register")
                                     </p>
                                     <p>
-                                        @Html.ActionLink("Forget your password?", "ForgotPassword")
+                                        @Html.ActionLink(_("Forget your password?"), "ForgotPassword")
                                     </p>
                                 </div>
                             </div>
@@ -122,14 +125,16 @@
                             @using (Html.BeginForm("TokenLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <h4>Sign-in with sms code</h4>
+                                <h4>@_("Sign-in with sms code")</h4>
                                 <hr />
                                 if (!Model.MobilNumberValidated)
                                 {
+                                    string mobilePlaceholder = "11223344 or " + Request.PhoneNumberInternationalPrefix() + "11223344";
+
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.MobilNumber, new { @class = "col-md-4 control-label" })
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.MobilNumber, new { @class = "form-control", placeholder = "11223344 or +4511223344" })
+                                            @Html.TextBoxFor(m => m.MobilNumber, new { @class = "form-control", placeholder = mobilePlaceholder })
                                             @Html.ValidationMessageFor(m => m.MobilNumber, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -137,7 +142,7 @@
                                         <div class="col-md-offset-4 col-md-10">
                                             <button class="btn btn-primary" onclick=" this.form.submit(); " name="button" type="submit" id="SendCode">
                                                 <span class="glyphicon glyphicon-phone"></span>
-                                                Send code
+                                                @_("Send code")
                                             </button>
                                         </div>
                                     </div>
@@ -157,7 +162,7 @@
                                         <div class="col-md-offset-4 col-md-10">
                                             <button class="btn btn-success" onclick=" this.form.submit(); " name="button" type="submit" id="ValidateCode">
                                                 <span class="glyphicon glyphicon-ok"></span>
-                                                Validate code sent to @Model.MobilNumber
+                                                @_("Validate code sent to ") @Model.MobilNumber
                                             </button>
                                         </div>
                                     </div>

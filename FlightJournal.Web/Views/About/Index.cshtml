@@ -8,7 +8,7 @@
     }
 }
 <div class="jumbotron">
-        @if (Request.DefaultUserLanguage() == "da")
+        @if (Request.LanguageCode() == "da")
         {
             <p>
                 <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/startlist.club">open source</a> projekt skabt for at håndtere flyveklubbers behov omkring startlister og logbøger for piloter og fly.
@@ -35,8 +35,8 @@
 <hr/>
 <div class="row">
     
-    @if (Request.DefaultUserLanguage() == "da")
-    {
+    @if (Request.LanguageCode() == "da")
+        {
         <div class="col-md-6">
             <h2>Projekt fælles startliste</h2>
             <p>

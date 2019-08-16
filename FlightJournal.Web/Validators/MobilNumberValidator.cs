@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Extensions;
+using System;
 
 namespace FlightJournal.Web.Validators
 {
@@ -76,14 +78,31 @@ namespace FlightJournal.Web.Validators
                 n = "+" + n.Substring(2);
             }
 
-            // Add potential missing use of +45
+            // Add potential missing use of international phone code
             if (n.Length == 8)
             {
-                //default to danish number
-                n = "+45" + n;
+                //default based on language number
+                string lang = Translations.Internationalization.LanguageCode;
+                n = FindPhoneNumberInternationalPrefix(lang) + n;
             }
 
             return n;
+        }
+
+        /// <summary>
+        /// Based on language iso code render phone number prefix
+        /// </summary>
+        /// <param name="lang">Language Code</param>
+        /// <returns></returns>
+        internal static string FindPhoneNumberInternationalPrefix(string lang)
+        {
+            if (lang == "no")
+                return "+47";
+
+            if (lang == "sv")
+                return "+46";
+
+            return "+45";
         }
     }
 }

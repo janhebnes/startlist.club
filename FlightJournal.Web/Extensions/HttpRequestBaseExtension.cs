@@ -69,9 +69,21 @@ namespace FlightJournal.Web.Extensions
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static string DefaultUserLanguage(this HttpRequestBase request)
+        public static string LanguageCode(this HttpRequestBase request)
         {
             return Translations.Internationalization.LanguageCode;
+        }
+
+        /// <summary>
+        /// Help return the default mobile prefix for the selected UI language
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string PhoneNumberInternationalPrefix(this HttpRequestBase request)
+        {
+            string lang = Translations.Internationalization.LanguageCode;
+            return Web.Validators.MobilNumberValidator.FindPhoneNumberInternationalPrefix(lang);
+            
         }
     }
 }

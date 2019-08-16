@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2019-08-15 21:48+0200\n"
+"POT-Creation-Date: 2019-08-16 22:55+0200\n"
 "PO-Revision-Date: 2015-06-23 22:51+0100\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
@@ -16,6 +16,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8\n"
+
+#: FlightJournal.Web\Models\AccountViewModels.cs:8
+#: FlightJournal.Web\Models\AccountViewModels.cs:47
+#: FlightJournal.Web\Models\AccountViewModels.cs:113
+#: FlightJournal.Web\Models\Pilot.cs:24
+#: FlightJournal.Web\Models\PilotViewModels.cs:13
+msgid "Email"
+msgstr "E-mail"
+
+#: FlightJournal.Web\Models\AccountViewModels.cs:53
+msgid "Password"
+msgstr ""
+
+#: FlightJournal.Web\Models\AccountViewModels.cs:56
+msgid "Remember me?"
+msgstr "Husk mig?"
+
+#: FlightJournal.Web\Models\AccountViewModels.cs:59
+#: FlightJournal.Web\Models\Pilot.cs:22
+#: FlightJournal.Web\Models\PilotViewModels.cs:20
+msgid "Mobil number"
+msgstr "Mobil nummer"
+
+#: FlightJournal.Web\Models\AccountViewModels.cs:63
+msgid "Security code"
+msgstr ""
+
+#: FlightJournal.Web\Models\AccountViewModels.cs:66
+msgid "Husk mig?"
+msgstr ""
 
 #: FlightJournal.Web\Models\Club.cs:14 FlightJournal.Web\Models\Plane.cs:28
 #: FlightJournal.Web\Models\StartType.cs:12
@@ -232,16 +262,6 @@ msgstr "Unions nr."
 msgid "Club id"
 msgstr "Klub nr."
 
-#: FlightJournal.Web\Models\Pilot.cs:22
-#: FlightJournal.Web\Models\PilotViewModels.cs:20
-msgid "Mobil number"
-msgstr "Mobil nummer"
-
-#: FlightJournal.Web\Models\Pilot.cs:24
-#: FlightJournal.Web\Models\PilotViewModels.cs:13
-msgid "Email"
-msgstr "E-mail"
-
 #: FlightJournal.Web\Models\Pilot.cs:28
 #: FlightJournal.Web\Models\PilotStatusType.cs:16
 #: FlightJournal.Web\Models\StartType.cs:18
@@ -347,6 +367,83 @@ msgstr ""
 #: FlightJournal.Web\Views\About\Index.cshtml:145
 msgid "Choose Flightclub"
 msgstr "Vælg Flyveklub"
+
+#: FlightJournal.Web\Views\Account\ConfirmEmail.cshtml:3
+#: FlightJournal.Web\Views\Account\Login.cshtml:7
+#: FlightJournal.Web\Views\Account\Login.cshtml:95
+#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
+msgid "Login"
+msgstr "Log ind"
+
+#: FlightJournal.Web\Views\Account\ConfirmEmail.cshtml:9
+msgid "Thank you for confirming your email."
+msgstr "Tak fordi du har bekræftet din e-mail."
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:15
+msgid "Demo login"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:17
+#, fuzzy
+msgid "Email login"
+msgstr "E-mail"
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:20
+#, fuzzy
+msgid "Mobil login"
+msgstr "Mobil nummer"
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:31
+msgid "Live Demo Accounts (and Passwords)"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:47
+msgid "Autologin Enabled"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:50
+msgid "Autologin by clicking account"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:50
+msgid "Remember to remove accounts in production"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:65
+msgid "Use a local account to log in."
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:99
+msgid "Register a new user?"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:102
+msgid "Forget your password?"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:128
+msgid "Sign-in with sms code"
+msgstr "Log ind med sms kode"
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:145
+msgid "Send code"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Login.cshtml:165
+msgid "Validate code sent to "
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Manage.cshtml:4
+msgid "Manage Account"
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Manage.cshtml:13
+msgid "You're logged in as "
+msgstr ""
+
+#: FlightJournal.Web\Views\Account\Manage.cshtml:27
+msgid "Add an external login"
+msgstr ""
 
 #: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:9
 msgid "All flightclubs"
@@ -591,6 +688,10 @@ msgstr "Benyttes på {0} registreringer"
 msgid "Logbook"
 msgstr "Logbog"
 
+#: FlightJournal.Web\Views\Manage\AddPhoneNumber.cshtml:14
+msgid "Add a phone number."
+msgstr "Tilføj mobil nummer"
+
 #: FlightJournal.Web\Views\Report\Index.cshtml:6
 #, fuzzy
 msgid "Day reports"
@@ -645,8 +746,13 @@ msgstr "Pilot Logbog"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:588
 #, csharp-format
-msgid "{0} logbøger {1} starter {2} timer"
-msgstr ""
+msgid "{0} logbooks {1} take-offs {2} hours"
+msgstr "{0} logbøger {1} starter {2} timer"
+
+#: FlightJournal.Web\Views\Report\Index.cshtml:595
+#, fuzzy
+msgid "No flights registered on "
+msgstr "Ingen flyvninger registreret"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:599
 #: FlightJournal.Web\Views\Report\Index.cshtml:600
@@ -713,10 +819,6 @@ msgstr "Historik over rettelser"
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:58
 msgid "Logout"
 msgstr "Log ud"
-
-#: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
-msgid "Login"
-msgstr "Log ind"
 
 #: FlightJournal.Web\Views\StartType\Create.cshtml:48
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28

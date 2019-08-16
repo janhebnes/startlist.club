@@ -123,7 +123,7 @@ namespace FlightJournal.Web.Controllers
             {
                 if (!MobilNumberValidator.IsValid(pilot.MobilNumber, false))
                 {
-                    ModelState.AddModelError("MobilNumber", "Invalid format, please use the format +4512345678");
+                    ModelState.AddModelError("MobilNumber", "Invalid format, please use the format "+ Request.PhoneNumberInternationalPrefix() + "12345678");
                 }
                 else
                 {

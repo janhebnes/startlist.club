@@ -1,10 +1,11 @@
+using FlightJournal.Web.Translations;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FlightJournal.Web.Models {
     public class ExternalLoginConfirmationViewModel {
         [Required]
-        [Display(Name = "Email")]
+        [LocalizedDisplayName("Email")]
         public string Email { get; set; }
     }
 
@@ -43,26 +44,26 @@ namespace FlightJournal.Web.Models {
         public State LoginState { get; set; }
 
         [Required]
-        [Display(Name = "Email")]
+        [LocalizedDisplayName("Email")]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [LocalizedDisplayName("Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [LocalizedDisplayName("Remember me?")]
         public bool RememberMe { get; set; }
         
-        [Display(Name = "Mobil number")]
+        [LocalizedDisplayName("Mobil number")]
         [DataType(DataType.PhoneNumber)]
         public string MobilNumber { get; set; }
 
-        [Display(Name = "Security code")]
+        [LocalizedDisplayName("Security code")]
         public string VerifyCode { get; set; }
 
-        [Display(Name = "Husk mig?")]
+        [LocalizedDisplayName("Husk mig?")]
         public bool RememberBrowser { get; set; }
 
         public bool MobilNumberValidated { get; set; }
@@ -109,7 +110,7 @@ namespace FlightJournal.Web.Models {
     public class ForgotPasswordViewModel {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [LocalizedDisplayName("Email")]
         public string Email { get; set; }
     }
 }

@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Edit";
+    string mobilePlaceholder = Request.PhoneNumberInternationalPrefix() + "11223344";
 }
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -36,7 +37,7 @@
             @Html.LabelFor(model => model.MobilNumber)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.MobilNumber, new { placeholder = "+4500000000" })
+            @Html.TextBoxFor(model => model.MobilNumber, new { placeholder = mobilePlaceholder })
             @Html.ValidationMessageFor(model => model.MobilNumber)
         </div>
         

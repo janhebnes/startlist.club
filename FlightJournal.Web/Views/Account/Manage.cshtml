@@ -1,6 +1,7 @@
-﻿@model FlightJournal.Web.Models.LocalPasswordModel
+﻿@using FlightJournal.Web.Extensions
+@*@model FlightJournal.Web.Models.LocalPasswordModel*@
 @{
-    ViewBag.Title = "Manage Account";
+    ViewBag.Title = _("Manage Account");
 }
 
 <hgroup class="title">
@@ -9,21 +10,21 @@
 
 <p class="message-success">@ViewBag.StatusMessage</p>
 
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+<p>@_("You're logged in as ")<strong>@User.Identity.Name</strong>.</p>
 
 @if (ViewBag.HasLocalPassword)
 {
     @Html.Partial("_ChangePasswordPartial")
 }
 else
-{ 
+{
     @Html.Partial("_SetPasswordPartial")
 }
 
 <section id="externalLogins">
     @Html.Action("RemoveExternalLogins")
 
-    <h3>Add an external login</h3>
+    <h3>@_("Add an external login")</h3>
     @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
 </section>
 

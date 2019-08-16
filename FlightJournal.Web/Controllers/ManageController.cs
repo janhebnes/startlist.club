@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -194,8 +195,9 @@ namespace FlightJournal.Web.Controllers
 
                 if (model.Number.Length == 8)
                 {
+
                     // default to danish 
-                    model.Number = "+45" + model.Number;
+                    model.Number = Request.PhoneNumberInternationalPrefix() + model.Number;
                 }
             }
 

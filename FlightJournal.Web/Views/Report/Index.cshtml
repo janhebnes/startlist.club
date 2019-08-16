@@ -585,14 +585,14 @@
         <p>
             @foreach (var club in Model.Flights.Where(f => f.Deleted == null).GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count()))
             {
-                <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM-dd"))" class="btn btn-primary">@Html.Raw(string.Format(_("{0} logbøger {1} starter {2} timer"), club.Key.ShortName, club.Sum(f => f.LandingCount), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
+                <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM-dd"))" class="btn btn-primary">@Html.Raw(string.Format(_("{0} logbooks {1} take-offs {2} hours"), club.Key.ShortName, club.Sum(f => f.LandingCount), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
             }
         </p>
     }
 }
 else //if (Model.Flights.Any())
 {
-    <p>Ingen flyvninger registreret den Model.Date.ToString("dd-MMM-yyyy")</p>
+    <p>@_("No flights registered on ") @Model.Date.ToString("dd-MMM-yyyy")</p>
 }
 <br />
 <p>

@@ -1,22 +1,22 @@
 @using FlightJournal.Web.Extensions
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        @if (Request.DefaultUserLanguage() == "en")
+        @if (Request.LanguageCode() == "en")
         {
             <span class="flag-gb" title="United Kingdom" rel="tooltip"></span>
             <span class="visible-xs">English</span>
         }
-        @if (Request.DefaultUserLanguage() == "da")
+        @if (Request.LanguageCode() == "da")
         {
             <span class="flag-dk" title="Danmark" rel="tooltip"></span>
             <span class="visible-xs">Dansk</span>
         }
-        @if (Request.DefaultUserLanguage() == "no")
+        @if (Request.LanguageCode() == "no")
         {
             <span class="flag-no" title="Norge" rel="tooltip"></span>
             <span class="visible-xs">Norsk</span>
         }
-        @if (Request.DefaultUserLanguage() == "sv")
+        @if (Request.LanguageCode() == "sv")
         {
             <span class="flag-se" title="Sverige" rel="tooltip"></span>
             <span class="visible-xs">Svenska</span>

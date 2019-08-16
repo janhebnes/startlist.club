@@ -4,6 +4,7 @@
 
 @{
     ViewBag.Title = "Create";
+    string mobilePlaceholder = Request.PhoneNumberInternationalPrefix() + "11223344";
 }
 
 @using (Html.BeginForm()) {
@@ -31,7 +32,7 @@
             @Html.LabelFor(model => model.MobilNumber)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.MobilNumber, new { placeholder = "+4500000000" })
+            @Html.TextBoxFor(model => model.MobilNumber, new { placeholder = mobilePlaceholder })
             @Html.ValidationMessageFor(model => model.MobilNumber)
         </div>
         

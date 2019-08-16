@@ -1,10 +1,11 @@
 ﻿@{
     ViewBag.Title = "Confirm Email";
+    string linkText = _("Login");
 }
 
 <h2>@ViewBag.Title</h2>
 <div>
     <p>
-        Thank you for confirming your email. Please @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        @_("Thank you for confirming your email.") @Html.ActionLink(linkText, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
     </p>
 </div>

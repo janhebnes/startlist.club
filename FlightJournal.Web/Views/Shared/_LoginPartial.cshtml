@@ -38,7 +38,7 @@
         <ul class="dropdown-menu">
             <li>@Html.MenuLink(_("Flight change history"), "History", "Flight")</li>
             <li class="divider"></li>
-            @if (Request.DefaultUserLanguage() == "da")
+            @if (Request.LanguageCode() == "da")
             {
                 <li>@Html.MenuLink("UHB 530 og 531 (Journalføring)", "UHB530", "About")</li>
             }
