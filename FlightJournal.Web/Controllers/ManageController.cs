@@ -194,6 +194,7 @@ namespace FlightJournal.Web.Controllers
 
                 if (model.Number.Length == 8)
                 {
+                    // default to danish 
                     model.Number = "+45" + model.Number;
                 }
             }

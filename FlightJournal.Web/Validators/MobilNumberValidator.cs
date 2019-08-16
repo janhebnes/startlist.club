@@ -29,7 +29,11 @@ namespace FlightJournal.Web.Validators
                 // Swedish number format validation
                 valid = (cleanNumber.Length == 12);
             }
-
+            else if (cleanNumber.StartsWith("+47"))
+            {
+                // Norsk number format validation
+                valid = (cleanNumber.Length == 11);
+            }
             if (valid)
             {
                 if (!isExistingPilot)
@@ -75,6 +79,7 @@ namespace FlightJournal.Web.Validators
             // Add potential missing use of +45
             if (n.Length == 8)
             {
+                //default to danish number
                 n = "+45" + n;
             }
 
