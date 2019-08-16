@@ -573,6 +573,7 @@
     <Content Include="Views\CodePlayground\Index.cshtml" />
     <Content Include="Views\CodePlayground\TableExpandPartial.cshtml" />
     <Content Include="Views\Flight\_changeHistoryLog.cshtml" />
+    <Content Include="Translations\no\LC_MESSAGES\messages.po" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

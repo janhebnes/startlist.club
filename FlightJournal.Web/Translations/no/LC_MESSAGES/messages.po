@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
 "POT-Creation-Date: 2019-08-15 21:48+0200\n"
 "PO-Revision-Date: 2015-06-23 22:51+0100\n"
-"Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
+"Last-Translator: André Ebert <andre@ebert.no>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: no\n"
 "MIME-Version: 1.0\n"
@@ -716,7 +716,7 @@ msgstr "Logg ut"
 
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
 msgid "Login"
-msgstr "Logg ut"
+msgstr "Logg inn"
 
 #: FlightJournal.Web\Views\StartType\Create.cshtml:48
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28
