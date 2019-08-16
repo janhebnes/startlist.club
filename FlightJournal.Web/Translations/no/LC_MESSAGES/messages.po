@@ -20,7 +20,7 @@ msgstr ""
 #: FlightJournal.Web\Models\Club.cs:14 FlightJournal.Web\Models\Plane.cs:28
 #: FlightJournal.Web\Models\StartType.cs:12
 msgid "Shortname"
-msgstr "Korte navn"
+msgstr "Forkortelse"
 
 #: FlightJournal.Web\Models\Club.cs:16
 msgid "Fullname"
@@ -36,11 +36,11 @@ msgstr "Website"
 
 #: FlightJournal.Web\Models\Club.cs:26
 msgid "Visible in Club filter"
-msgstr "Synlig i klub filteret"
+msgstr "Synlig i klubb filteret"
 
 #: FlightJournal.Web\Models\Club.cs:29
 msgid "Contact information"
-msgstr "Kontakt information"
+msgstr "Kontaktinformasjon"
 
 #: FlightJournal.Web\Models\Club.cs:52 FlightJournal.Web\Models\Location.cs:22
 msgid "Country"
@@ -61,7 +61,7 @@ msgstr "Dato"
 #: FlightJournal.Web\Views\Flight\History.cshtml:40
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:43
 msgid "Departure"
-msgstr "Start"
+msgstr "Avgang"
 
 #: FlightJournal.Web\Models\Flight.cs:63 FlightJournal.Web\Models\Flight.cs:154
 #: FlightJournal.Web\Models\Flight.cs:156
@@ -78,7 +78,7 @@ msgstr "Landing"
 #: FlightJournal.Web\Models\Flight.cs:106
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:146
 msgid "Landing Count"
-msgstr "Antal flyvninger"
+msgstr "Antall flyginger"
 
 #: FlightJournal.Web\Models\Flight.cs:110
 #: FlightJournal.Web\Models\Flight.cs:113
@@ -106,7 +106,7 @@ msgstr "Pilot"
 #: FlightJournal.Web\Views\Report\Index.cshtml:375
 #: FlightJournal.Web\Views\Report\Index.cshtml:536
 msgid "Co-Pilot"
-msgstr "Bagsæde Pilot"
+msgstr "Baksete Pilot"
 
 #: FlightJournal.Web\Models\Flight.cs:143
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:49
@@ -120,7 +120,7 @@ msgstr "Startmetode"
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:52
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:50
 msgid "Take-off"
-msgstr "Start"
+msgstr "Avgang"
 
 #: FlightJournal.Web\Models\Flight.cs:160
 msgid "Tacho Departure"
@@ -132,13 +132,13 @@ msgstr "Tacho Landing"
 
 #: FlightJournal.Web\Models\Flight.cs:166
 msgid "Task Distance"
-msgstr "Opgave km"
+msgstr "Oppgave km"
 
 #: FlightJournal.Web\Models\Flight.cs:169
 #: FlightJournal.Web\Models\PilotLogEntry.cs:24
 #: FlightJournal.Web\Models\PilotStatusType.cs:12
 msgid "Description"
-msgstr "Note"
+msgstr "Merknad"
 
 #: FlightJournal.Web\Models\Flight.cs:177
 #, fuzzy
@@ -155,14 +155,14 @@ msgstr "Slettet"
 #: FlightJournal.Web\Models\PilotLogEntry.cs:46
 #: FlightJournal.Web\Models\Plane.cs:61
 msgid "Last updated"
-msgstr "Sidst opdateret"
+msgstr "Sist oppdateret"
 
 #: FlightJournal.Web\Models\Flight.cs:191
 #: FlightJournal.Web\Models\Location.cs:30
 #: FlightJournal.Web\Models\PilotLogEntry.cs:48
 #: FlightJournal.Web\Models\Plane.cs:63
 msgid "Last updated by"
-msgstr "Sidst opdateret af"
+msgstr "Sist opdatert av"
 
 #: FlightJournal.Web\Models\Flight.cs:238
 msgid "Cost"
@@ -189,20 +189,20 @@ msgstr "Tid"
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:103
 #: FlightJournal.Web\Models\Location.cs:24 FlightJournal.Web\Models\Plane.cs:57
 msgid "Created"
-msgstr "Oprettet"
+msgstr "Opprettet"
 
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:108
 #: FlightJournal.Web\Models\Pilot.cs:31 FlightJournal.Web\Models\Plane.cs:41
 msgid "Note"
-msgstr "Note"
+msgstr "Merknad"
 
 #: FlightJournal.Web\Models\IdentityModels.cs:30
 msgid "Bound to PilotId"
-msgstr "Bundet til PilotId"
+msgstr "Knyttet til PilotId"
 
 #: FlightJournal.Web\Models\IdentityModels.cs:32
 msgid "Last logon"
-msgstr "Sidste login"
+msgstr "Siste innlogging"
 
 #: FlightJournal.Web\Models\Location.cs:16
 msgid "Location Name"
@@ -214,11 +214,11 @@ msgstr "ICAO"
 
 #: FlightJournal.Web\Models\Location.cs:20
 msgid "Registered OGN FlightLog Airfield"
-msgstr "Registreret OGN FlightLog Lufthavn"
+msgstr "Registrert OGN FlightLog flyplass"
 
 #: FlightJournal.Web\Models\Location.cs:26 FlightJournal.Web\Models\Plane.cs:59
 msgid "Created by"
-msgstr "Oprettet af"
+msgstr "Opprettet av"
 
 #: FlightJournal.Web\Models\Pilot.cs:16
 msgid "Pilot name"
@@ -226,11 +226,11 @@ msgstr "Pilot navn"
 
 #: FlightJournal.Web\Models\Pilot.cs:18
 msgid "Union id"
-msgstr "Unions nr."
+msgstr "NLF nr."
 
 #: FlightJournal.Web\Models\Pilot.cs:20
 msgid "Club id"
-msgstr "Klub nr."
+msgstr "Klubb nr."
 
 #: FlightJournal.Web\Models\Pilot.cs:22
 #: FlightJournal.Web\Models\PilotViewModels.cs:20
@@ -246,11 +246,11 @@ msgstr "E-mail"
 #: FlightJournal.Web\Models\PilotStatusType.cs:16
 #: FlightJournal.Web\Models\StartType.cs:18
 msgid "Club"
-msgstr "Klub"
+msgstr "Klubb"
 
 #: FlightJournal.Web\Models\Pilot.cs:34 FlightJournal.Web\Models\Plane.cs:51
 msgid "Exit date"
-msgstr "Udmeldt dato"
+msgstr "Avregistrert dato"
 
 #: FlightJournal.Web\Models\Pilot.cs:37
 msgid "Pilot status"
@@ -278,7 +278,7 @@ msgstr "Fly registrering"
 
 #: FlightJournal.Web\Models\Plane.cs:22
 msgid "Competition Number"
-msgstr "Konkurrence nr."
+msgstr "Konkurranse nr."
 
 #: FlightJournal.Web\Models\Plane.cs:32
 msgid "Aircraft Type"
@@ -286,7 +286,7 @@ msgstr "Fly type"
 
 #: FlightJournal.Web\Models\Plane.cs:34
 msgid "Aircraft Model"
-msgstr "Fly model"
+msgstr "Fly modell"
 
 #: FlightJournal.Web\Models\Plane.cs:36
 msgid "Aircraft Class"
@@ -294,11 +294,11 @@ msgstr "Fly klasse"
 
 #: FlightJournal.Web\Models\Plane.cs:39
 msgid "Aircraft Owner"
-msgstr "Fly ejer"
+msgstr "Fly eier"
 
 #: FlightJournal.Web\Models\Plane.cs:45
 msgid "Seats"
-msgstr "Sæder"
+msgstr "Seter"
 
 #: FlightJournal.Web\Models\Plane.cs:48
 msgid "Engines"
@@ -319,12 +319,12 @@ msgstr ""
 #: FlightJournal.Web\Models\TrainingLesson.cs:17
 #, fuzzy
 msgid "Lesson description"
-msgstr "Note"
+msgstr "Merknad"
 
 #: FlightJournal.Web\Models\TrainingLesson.cs:20
 #, fuzzy
 msgid "Requires flight"
-msgstr "Forrige flyvning"
+msgstr "Krever flyvning"
 
 #: FlightJournal.Web\Models\TrainingLesson.cs:23
 msgid "Requires flight instructor approval"
@@ -346,11 +346,11 @@ msgstr ""
 
 #: FlightJournal.Web\Views\About\Index.cshtml:145
 msgid "Choose Flightclub"
-msgstr "Vælg Flyveklub"
+msgstr "Velg flyklubb"
 
 #: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:9
 msgid "All flightclubs"
-msgstr "Alle Flyveklubber"
+msgstr "Alle flyklubber"
 
 #: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:35
 msgid "Contact"
@@ -358,22 +358,22 @@ msgstr "Kontakt"
 
 #: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:41
 msgid "The club has no registered contact"
-msgstr "Klubben har ingen registreret kontakt"
+msgstr "Klubben har ingen registrert kontakt"
 
 #: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:48
 msgid "Notice that this is not your flightclub"
-msgstr "Bemærk dette ikke er din flyveklub"
+msgstr "OBS! Dette ikke er din flyklubb"
 
 #: FlightJournal.Web\Views\Club\ClubSelector.cshtml:8
 msgid "Select a flightclub (unfiltered)"
-msgstr "Vælg Flyveklub (ufiltreret)"
+msgstr "Velg flyveklubb (ufiltrert)"
 
 #: FlightJournal.Web\Views\Flight\Create.cshtml:4
 #: FlightJournal.Web\Views\Flight\Create.cshtml:12
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:13
 #, fuzzy
 msgid "Create flight"
-msgstr "Opret flyvning"
+msgstr "Opprett flygning"
 
 #: FlightJournal.Web\Views\Flight\Create.cshtml:140
 #: FlightJournal.Web\Views\Flight\Details.cshtml:106
@@ -384,7 +384,7 @@ msgstr "Opret flyvning"
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
 msgid "Back"
-msgstr "Tilbage"
+msgstr "Tilbake"
 
 #: FlightJournal.Web\Views\Flight\Details.cshtml:5
 #: FlightJournal.Web\Views\Flight\Details.cshtml:19
@@ -406,42 +406,42 @@ msgstr "Rediger"
 #: FlightJournal.Web\Views\Flight\Details.cshtml:138
 #, csharp-format
 msgid "Marked deleted {0} by {1}"
-msgstr "Markeret slettet {0} af {1}"
+msgstr "Markeret slettet {0} av {1}"
 
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:4
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:166
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
 msgid "Delete"
-msgstr "Slet"
+msgstr "Slett"
 
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:7
 msgid "Confirm deletion"
-msgstr "Bekræft sletning"
+msgstr "Bekreft sletting"
 
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:14
 #, fuzzy
 msgid "Are you sure you want to delete this flight?"
-msgstr "Er du sikker på at du vil slette denne bruger?"
+msgstr "Er du sikker på at du vil slette denne turen?"
 
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:24
 #: FlightJournal.Web\Views\Flight\History.cshtml:20
 msgid "Flight"
-msgstr "Flyvning"
+msgstr "Flygning"
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:5
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:11
 msgid "Edit flight"
-msgstr "Rediger flyvning"
+msgstr "Rediger flygning"
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:19
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:170
 msgid "Undo Delete"
-msgstr "Fortryd slet"
+msgstr "Angre slett"
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:173
 msgid "Delete permanently"
-msgstr "Slet permanent"
+msgstr "Slett permanent"
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:6
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:244
@@ -451,7 +451,7 @@ msgstr "Startliste"
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:15
 msgid "Previous flights"
-msgstr "Forrige flyvning"
+msgstr "Forrige flygning"
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:28
 #: FlightJournal.Web\Views\Report\Index.cshtml:152
@@ -467,7 +467,7 @@ msgstr "Kommentar"
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:153
 msgid "Clone"
-msgstr "Klon"
+msgstr "Kopi"
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:154
 msgid "Copy"
@@ -488,7 +488,7 @@ msgstr "Detaljer"
 #: FlightJournal.Web\Views\Flight\History.cshtml:17
 #, fuzzy
 msgid "Changelog"
-msgstr "Historik over rettelser"
+msgstr "Historikk over rettelser"
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:25
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:28
@@ -501,7 +501,7 @@ msgstr "Tidstempel"
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:10
 #, fuzzy
 msgid "User"
-msgstr "Bruger"
+msgstr "Bruker"
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:37
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:40
@@ -519,7 +519,7 @@ msgstr "Handling"
 #: FlightJournal.Web\Views\Shared\DisplayTemplates\Pilots.cshtml:15
 #, csharp-format
 msgid "(payed by {0})"
-msgstr "(betalt af {0})"
+msgstr "(betalt av {0})"
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:94
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:94
@@ -537,12 +537,12 @@ msgstr "SLETTET"
 #: FlightJournal.Web\Views\Flight\_changeHistoryLog.cshtml:29
 #, fuzzy
 msgid "Change history"
-msgstr "Historik over rettelser"
+msgstr "Historikk over rettelser"
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:37
 #, fuzzy
 msgid "FLARM Logbook"
-msgstr "FLARM Logbog"
+msgstr "FLARM Loggbok"
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:37
 msgid "Live view"
@@ -551,7 +551,7 @@ msgstr "FLARM Radar"
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:44
 #, fuzzy
 msgid "Aircraft"
-msgstr "Luftfartøj"
+msgstr "Luftfartøy"
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:47
 msgid "Type"
@@ -565,11 +565,11 @@ msgstr "Tid"
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:62
 msgid "Max Alt."
-msgstr "Maks højde"
+msgstr "Maks høyde"
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:65
 msgid "Avg. Climb rate"
-msgstr "Gns. stig"
+msgstr "Gj.snitt stig"
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:68
 msgid "Initial Climb rate"
@@ -577,7 +577,7 @@ msgstr "Init. stig"
 
 #: FlightJournal.Web\Views\Location\Edit.cshtml:15
 msgid "Edit Location"
-msgstr "Rediger Landingssted"
+msgstr "Rediger landingssted"
 
 #: FlightJournal.Web\Views\Location\Edit.cshtml:73
 #, csharp-format
@@ -589,7 +589,7 @@ msgstr "Benyttes på {0} registreringer"
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:66
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:118
 msgid "Logbook"
-msgstr "Logbog"
+msgstr "Loggbok"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:6
 #, fuzzy
@@ -598,7 +598,7 @@ msgstr "Dagsrapport"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:15
 msgid "Week"
-msgstr "Uge"
+msgstr "Uke"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:43
 #, csharp-format
@@ -613,12 +613,12 @@ msgstr "'Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø'"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:280
 msgid "Editing is restricted after 48 hours."
-msgstr "Redigering begrænses efter 48 timer."
+msgstr "Redigering begrenses etter 48 timer."
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:291
 #, fuzzy
 msgid "Plane Logbooks"
-msgstr "Fly Logbog"
+msgstr "Fly Loggbok"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:312
 #: FlightJournal.Web\Views\Report\Index.cshtml:381
@@ -627,7 +627,7 @@ msgstr "Fly Logbog"
 #: FlightJournal.Web\Views\Report\Index.cshtml:545
 #, fuzzy
 msgid "Count"
-msgstr "Antal"
+msgstr "Antall"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:423
 msgid "(total)"
@@ -641,7 +641,7 @@ msgstr "Total"
 #: FlightJournal.Web\Views\Report\Index.cshtml:478
 #, fuzzy
 msgid "Pilot Logbooks"
-msgstr "Pilot Logbog"
+msgstr "Pilot Loggbok"
 
 #: FlightJournal.Web\Views\Report\Index.cshtml:588
 #, csharp-format
@@ -652,7 +652,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\Index.cshtml:600
 #, csharp-format
 msgid "Statistics for {0}"
-msgstr "Statistik for {0}"
+msgstr "Statistikk for {0}"
 
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:48
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:51
@@ -672,7 +672,7 @@ msgstr "Om startlist.club"
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:80
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:53
 msgid "Settings"
-msgstr "Opsætning"
+msgstr "Innstillinger"
 
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:82
 msgid "Planes"
@@ -688,7 +688,7 @@ msgstr "Roller"
 
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:92
 msgid "Users"
-msgstr "Brugere"
+msgstr "Brukere"
 
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:94
 msgid "Startmethods"
@@ -708,64 +708,64 @@ msgstr "Om"
 
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:39
 msgid "Flight change history"
-msgstr "Historik over rettelser"
+msgstr "Historikk over rettelser"
 
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:58
 msgid "Logout"
-msgstr "Log ud"
+msgstr "Logg ut"
 
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:69
 msgid "Login"
-msgstr "Log ind"
+msgstr "Logg ut"
 
 #: FlightJournal.Web\Views\StartType\Create.cshtml:48
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:41
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:51
 msgid "Back to List"
-msgstr "Tilbage til listen"
+msgstr "Tilbake til listen"
 
 #: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
 #, fuzzy
 msgid "Create"
-msgstr "Opret"
+msgstr "Opprett"
 
 #: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:11
 msgid "Create a new account."
-msgstr "Opret en ny konto."
+msgstr "Opprett en ny konto."
 
 #: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:34
 msgid "Select User Role"
-msgstr "Vælg en bruger rolle"
+msgstr "Velg en brukerrolle"
 
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:9
 msgid "Are you sure you want to delete this User?"
-msgstr "Er du sikker på at du vil slette denne bruger?"
+msgstr "Er du sikker på at du vil slette denne bruker?"
 
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:21
 msgid "List of roles for this user"
-msgstr "Liste af roller for denne bruger"
+msgstr "Liste over roller for denne bruker"
 
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:25
 msgid "No roles found for this user."
-msgstr "Ingen roller fundet for denne bruger."
+msgstr "Ingen roller funnet for denne bruker."
 
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:12
 msgid "Edit User Form"
-msgstr "Rediger bruger"
+msgstr "Rediger bruker"
 
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:4
 msgid "User administration"
-msgstr "Bruger administration"
+msgstr "Bruker administrasjon"
 
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:10
 #, fuzzy
 msgid "Create New"
-msgstr "Opret ny"
+msgstr "Opprett ny"
 
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
 msgid "unconfirmed"
-msgstr "ikke bekræftet"
+msgstr "ikke bekreftet"
 
 #~ msgid "Glider"
-#~ msgstr "Svævefly"
+#~ msgstr "Seilfly"
