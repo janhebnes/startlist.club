@@ -87,6 +87,10 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Delete(int id)
         {
             StartType starttype = db.StartTypes.Find(id);
+            if (db.Flights.Any(f => f.StartTypeId == id))
+            {
+                return View("DeleteLocked", starttype);
+            }
             return View(starttype);
         }
 
@@ -97,6 +101,10 @@ namespace FlightJournal.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {            
             StartType starttype = db.StartTypes.Find(id);
+            if (db.Flights.Any(f => f.StartTypeId == id))
+            {
+                return View("DeleteLocked", starttype);
+            }
             db.StartTypes.Remove(starttype);
             db.SaveChanges();
             return RedirectToAction("Index");

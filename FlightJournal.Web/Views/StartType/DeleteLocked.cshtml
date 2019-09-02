@@ -1,0 +1,36 @@
+﻿@model FlightJournal.Web.Models.StartType
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="pull-right alert alert-danger text-right">
+    <span class="glyphicon glyphicon-alert"></span> Startype is in use on registered flight. <br />You can only delete starttypes that have not yet been used.
+</div>
+
+<h2>Unable to delete</h2>
+<hr />
+<fieldset>
+    <legend>StartType</legend>
+
+    <div class="display-label">ShortName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ShortName)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Club</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.ShortName)
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

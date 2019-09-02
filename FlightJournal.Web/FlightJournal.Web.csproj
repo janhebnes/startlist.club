@@ -574,6 +574,7 @@
     <Content Include="Views\CodePlayground\TableExpandPartial.cshtml" />
     <Content Include="Views\Flight\_changeHistoryLog.cshtml" />
     <Content Include="Translations\no\LC_MESSAGES\messages.po" />
+    <Content Include="Views\StartType\DeleteLocked.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

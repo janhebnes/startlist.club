@@ -113,6 +113,10 @@ namespace FlightJournal.Web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {            
             Location location = db.Locations.Find(id);
+            if (db.Flights.Any(f => f.StartedFromId == id || f.LandedOnId == id))
+            {
+                return View("DeleteLocked", location);
+            }
             db.Locations.Remove(location);
             db.SaveChanges();
             return RedirectToAction("Index");
