@@ -27,11 +27,11 @@ msgstr "E-mail"
 
 #: FlightJournal.Web\Models\AccountViewModels.cs:53
 msgid "Password"
-msgstr ""
+msgstr "Passord"
 
 #: FlightJournal.Web\Models\AccountViewModels.cs:56
 msgid "Remember me?"
-msgstr "Husk mig?"
+msgstr "Husk meg?"
 
 #: FlightJournal.Web\Models\AccountViewModels.cs:59
 #: FlightJournal.Web\Models\Pilot.cs:22
@@ -41,11 +41,11 @@ msgstr "Mobil nummer"
 
 #: FlightJournal.Web\Models\AccountViewModels.cs:63
 msgid "Security code"
-msgstr ""
+msgstr "Sikkerhetskode"
 
 #: FlightJournal.Web\Models\AccountViewModels.cs:66
 msgid "Husk mig?"
-msgstr ""
+msgstr "Husk meg?"
 
 #: FlightJournal.Web\Models\Club.cs:14 FlightJournal.Web\Models\Plane.cs:28
 #: FlightJournal.Web\Models\StartType.cs:12
@@ -399,51 +399,51 @@ msgstr ""
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:47
 msgid "Autologin Enabled"
-msgstr ""
+msgstr "Automatisk innlogging aktiv"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:50
 msgid "Autologin by clicking account"
-msgstr ""
+msgstr "Automatisk innlogging ved å klikke på konto"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:50
 msgid "Remember to remove accounts in production"
-msgstr ""
+msgstr "Husk å fjerne kontoer i produksjon"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:65
 msgid "Use a local account to log in."
-msgstr ""
+msgstr "Benytt en lokal konto for pålogging"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:99
 msgid "Register a new user?"
-msgstr ""
+msgstr "Registrere ny bruker?"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:102
 msgid "Forget your password?"
-msgstr ""
+msgstr "Glemt pasord?"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:128
 msgid "Sign-in with sms code"
-msgstr ""
+msgstr "Logg inn med SMS-kode"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:145
 msgid "Send code"
-msgstr ""
+msgstr "Send kode"
 
 #: FlightJournal.Web\Views\Account\Login.cshtml:165
 msgid "Validate code sent to "
-msgstr ""
+msgstr "Valider kode"
 
 #: FlightJournal.Web\Views\Account\Manage.cshtml:4
 msgid "Manage Account"
-msgstr ""
+msgstr "Administrer konto"
 
 #: FlightJournal.Web\Views\Account\Manage.cshtml:13
 msgid "You're logged in as "
-msgstr ""
+msgstr "Du er innlogget som"
 
 #: FlightJournal.Web\Views\Account\Manage.cshtml:27
 msgid "Add an external login"
-msgstr ""
+msgstr "Legg til ekstern innlogging"
 
 #: FlightJournal.Web\Views\Club\ClubPresentation.cshtml:9
 msgid "All flightclubs"
@@ -590,7 +590,7 @@ msgstr "Historikk over rettelser"
 #: FlightJournal.Web\Views\Flight\History.cshtml:25
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:28
 msgid "Timestamp"
-msgstr "Tidstempel"
+msgstr "Tidsstempel"
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:28
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:31
