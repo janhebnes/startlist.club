@@ -95,7 +95,7 @@
                 <td>
                     @item.Pilot.Name
                 </td>
-                <td>@item.StartType.ShortName</td>
+                <td>@item.StartType.LocalizedShortName</td>
                 <td align="right">
                     @item.ItemFlights.Sum(f => f.LandingCount)
                 </td>
@@ -122,7 +122,7 @@
                 <td>
                     @item.Pilot.Name (bagsæde)
                 </td>
-                <td>@item.StartType.ShortName</td>
+                <td>@item.StartType.LocalizedShortName</td>
                 <td align="right">
                     @item.ItemFlights.Sum(f => f.LandingCount)
                 </td>

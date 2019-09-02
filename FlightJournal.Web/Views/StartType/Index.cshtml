@@ -15,7 +15,13 @@
             ShortName
         </th>
         <th>
+            ShortName (Localized)
+        </th>
+        <th>
             Name
+        </th>
+        <th>
+            Name (Localized)
         </th>
         <th>
             Club
@@ -25,22 +31,28 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Club.ShortName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {id = item.StartTypeId}) |
-                @Html.ActionLink("Details", "Details", new {id = item.StartTypeId}) |
-                @Html.ActionLink("Delete", "Delete", new {id = item.StartTypeId})
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ShortName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LocalizedShortName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LocalizedDisplayName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Club.ShortName)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.StartTypeId }) |
+        @Html.ActionLink("Details", "Details", new { id = item.StartTypeId }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.StartTypeId })
+    </td>
+</tr>
     }
 
 </table>
