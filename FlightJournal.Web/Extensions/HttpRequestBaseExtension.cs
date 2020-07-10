@@ -20,6 +20,16 @@ namespace FlightJournal.Web.Extensions
             return (PilotController.CurrentUserPilot != null 
                 && PilotController.CurrentUserPilot.PilotId > 0);
         }
+        /// <summary>
+        /// Validates if the visiting request is bound to an instructor profile
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <example>in razor you can simply ask Request.IsPilot</example>
+        public static bool IsInstructor(this HttpRequestBase request)
+        {
+            return request?.IsPilot() ?? false; // TODO: implement
+        }
 
         /// <summary>
         /// Returns the active pilot profile bound to the authenticated user session

@@ -206,6 +206,7 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
+    <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
@@ -230,6 +231,8 @@
     <Compile Include="Models\PilotPosition.cs" />
     <Compile Include="Models\TrainingLesson.cs" />
     <Compile Include="Models\TrainingLessonCategory.cs" />
+    <Compile Include="Models\TrainingLogDemo.cs" />
+    <Compile Include="Models\TrainingLogViewModel.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -319,6 +322,7 @@
     <Compile Include="Models\StartType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\IPrincipalExtension.cs" />
+    <Compile Include="Views\CssHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -576,6 +580,7 @@
     <Content Include="Views\Flight\_changeHistoryLog.cshtml" />
     <Content Include="Translations\no\LC_MESSAGES\messages.po" />
     <Content Include="Views\StartType\DeleteLocked.cshtml" />
+    <Content Include="Views\TrainingLog\Edit.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,6 +1,4 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
-@using System.Web.Script.Serialization;
-@using FlightJournal.Web
 @using FlightJournal.Web.Extensions
 @{
     ViewBag.Title = _("Startlist") + " " + ViewBag.Date.ToShortDateString();
@@ -152,6 +150,10 @@
 
                             @Html.ActionLink(" ", "Clone", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Clone") }, "fa fa-clipboard fa-fw")
                             @Html.ActionLink(" ", "Duplicate", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Copy") }, "fa fa-files-o fa-fw")
+                            if (Request.IsInstructor())
+                             {
+                                 @Html.ActionLink(_(" "), "Edit", "TrainingLog", new {id = item.FlightId, }, new {@class = "btn btn-default", type = "button", title = _("Training") },  "fa fa-graduation-cap fa-fw")
+                             }
                         }
                         else
                         {

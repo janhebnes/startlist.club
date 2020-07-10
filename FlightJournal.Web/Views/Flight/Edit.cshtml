@@ -159,7 +159,7 @@
                     <a href="@ViewBag.UrlReferrer" class="btn btn-default">@_("Back")</a>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <div class="btn-group btn-group-lg">
                     @if (!Model.Deleted.HasValue)
                     {
@@ -175,7 +175,14 @@
                     }
                 </div>
             </div>
-
+            @if (Request.IsInstructor())
+            {
+                <div class="col-md-3">
+                    <div class="btn-group btn-group-lg">
+                        @Html.ActionLink(_("TrainingLog"), "Edit", "TrainingLog", new {id = Model.FlightId, }, new {@class = "btn btn-default"}, "fa fa-graduation-cap")
+                    </div>
+                </div>
+            }
         </div>
     </fieldset>
 }
