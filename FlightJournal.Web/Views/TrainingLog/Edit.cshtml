@@ -14,70 +14,72 @@
             }
         </select>
     </div>
-    @foreach (var program in Model.TrainingPrograms)
-    {
-        <div class="col-md-12 @program.Id">
-            <div class="btn-group-toggle" data-toggle="buttons" style="white-space: nowrap; display: flex;">
-                @foreach (var lesson in program.Lessons)
-                {
-                    <label class="btn @CssHelper.CssClassFor(lesson.Status, false)"><input type="checkbox" data-lessonclz="@program.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
-                }
-            </div>
-        </div>
-    }
+    <div class="col-md-4">
+        @Model.Pilot / @Model.BackseatPilot
+    </div>
 </div>
+@foreach (var program in Model.TrainingPrograms)
+{
+    <div class="row no-gutter btn-group-toggle @program.Id" data-toggle="buttons" >
+        @foreach (var lesson in program.Lessons)
+        {
+            <label class="col-xs-2 col-sm-1 traininglesson btn @CssHelper.CssClassFor(lesson.Status, false)"><input type="checkbox" data-lessonclz="@program.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
+        }
+    </div>
+}
 <table class="table table-responsive table-condensed">
     <thead>
-    <tr>
-        <th>Norm</th>
-        <th>Øvelse</th>
-        <th>Briefet</th>
-        <th>Øvet</th>
-        <th>Ok</th>
-    </tr>
+        <tr>
+            <th>Norm</th>
+            <th>Øvelse</th>
+            <th>Briefet</th>
+            <th>Øvet</th>
+            <th>Ok</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var program in Model.TrainingPrograms)
-    {
-        foreach (var lesson in program.Lessons)
+        @foreach (var program in Model.TrainingPrograms)
         {
-            foreach (var exercise in lesson.Exercises)
+            foreach (var lesson in program.Lessons)
             {
-                var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                var briefedClass = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                var trainedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
-                var completedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
-                var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
-                var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-        <tr class="@program.Id-@lesson.Id exercise">
-            <td class="@clz exercisedetails">@lesson.Name</td>
-            <td class="@clz exercisedetails"  data-exerciselongdescription="@exercise.LongDescription">@exercise.Description</td>
-            <td class="@briefedClass">@Html.Raw(briefedMarker) </td>
-            <td class="@trainedClass">@Html.Raw(trainedMarker)</td>
-            <td class="@completedClass">@Html.Raw(completedMarker)</td>
-        </tr>
+                foreach (var exercise in lesson.Exercises)
+                {
+                    var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                    var briefedClass = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                    var trainedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
+                    var completedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
+                    var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
+                    var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
+                    <tr class="@program.Id-@lesson.Id exercise" data-exerciselongdescription="@exercise.LongDescription">
+                        <td class="@clz exercisedetails">@lesson.Name</td>
+                        <td class="@clz exercisedetails">@exercise.Description @Html.Raw(infoMarker)</td>
+                        <td class="@briefedClass">@Html.Raw(briefedMarker) </td>
+                        <td class="@trainedClass">@Html.Raw(trainedMarker)</td>
+                        <td class="@completedClass">@Html.Raw(completedMarker)</td>
+                    </tr>
+                }
             }
         }
-    }
     </tbody>
 </table>
-    
+
 <div>
     <p>Noter</p>
     <textarea id="flightnotes" rows="5" cols="80"></textarea>
 </div>
 
 <div class="row" style="margin-top: 30px">
-<div class="col-md-6">
-    <div class="btn-group btn-group-lg">
-        <input type="submit" value="@_("Save")" class="btn btn-primary" />
-        <button class="btn btn-default">@_("Back")</button>
-        <button class="btn btn-default" id="showrecentflights">@_("Show last 15 flights")</button>
+    <div class="col-md-6">
+        <div class="btn-group btn-group-lg">
+            <input type="submit" value="@_("Save")" class="btn btn-primary" />
+            <button class="btn btn-default">@_("Back")</button>
+            <button class="btn btn-default" id="showrecentflights">@_("Show last 15 flights")</button>
+        </div>
     </div>
 </div>
-</div>
-    
+
 
 <div class="modal" tabindex="-1" role="dialog" id="exercisemodal">
     <div class="modal-dialog" role="document">
@@ -134,12 +136,15 @@
             });
 
             $(".exercisedetails").click(function() {
-                $("#exercisemodaltitle").text($(this).text());
-                $("#exercise-description").text($(this).data("exerciselongdescription"));
-                $("#exercisemodal").modal();
+                var info = $(this).parent().data("exerciselongdescription");
+                if (info && info.length) {
+                    $("#exercisemodaltitle").text($(this).text());
+                    $("#exercise-description").text(info);
+                    $("#exercisemodal").modal();
+                }
             });
 
-            $("#showrecentflights").click(function () {
+            $("#showrecentflights").click(function() {
                 var table = "<table class='table table-responsive table-condensed'><tr><td>2/7-2020</td><td>A6</td><td>Øvet</td><td>Ok - lidt slingrende</td><td>PL</td></tr></table>";
                 $("#recentflightstable").html(table);
                 $("#recentflightsmodal").modal();
@@ -150,7 +155,7 @@
 
         var showRelevantExercises = function(lesson) {
             var key = "." + lesson.data("lessonclz");
-            $(key).each(function () {
+            $(key).each(function() {
                 if (lesson.is(":checked"))
                     $(this).show();
                 else
@@ -163,18 +168,19 @@
             {
                 <text>
                     if (sel.find(":selected").val() == "@program.Id")
-                        $(".@program.Id").show();   
+                        $(".@program.Id").show();
                     else
                         $(".@program.Id").hide();
                 </text>
 
             }
-            $(".exercise").each(function () {
+            $(".active").removeClass("active");
+            $(".exercise").each(function() {
                 $(this).hide();
             });
         }
 
-        
+
     </script>
 }
 

@@ -1,39 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
-using Flight = OGN.FlightLog.Client.Models.Flight;
 
 namespace FlightJournal.Web.Controllers
 {
     public class TrainingLogController : Controller
     {
+        private FlightContext db = new FlightContext();
+
         [Authorize]
-        public ViewResult Edit(Flight id)
+        public ViewResult Edit(Guid flightId)
         {
-            var model = BuildTrainingLogViewModel();
+            var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId);
+            var model = BuildTrainingLogViewModel(flight);
 
             return View(model);
         }
 
 
 
-        private TrainingLogViewModel BuildTrainingLogViewModel()
+        private TrainingLogViewModel BuildTrainingLogViewModel(Flight flight)
         {
-            //TODO: extract this from DB
-            var model = new TrainingLogViewModel();
+            var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
+            var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
 
-            var programs = new List<TrainingProgramViewModel>();
+            var model = new TrainingLogViewModel(pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId));
 
+            //var programs = new List<TrainingProgramViewModel>();
+            //programs.Add(TrainingLogDemo.BuildSplWinchTrainingProgram());
+            //programs.Add(TrainingLogDemo.BuildSplTowTrainingProgram());
+            //programs.Add(TrainingLogDemo.BuildSplTmgTrainingProgram());
+            //programs.Add(TrainingLogDemo.BuildStartMethodWinchTrainingProgram());
+            //programs.Add(TrainingLogDemo.BuildStartMethodTowTrainingProgram());
+            //programs.Add(TrainingLogDemo.BuildTypeRatingSingleTrainingProgram());
+            //programs.Add(TrainingLogDemo.BuildTypeRatingDualTrainingProgram());
 
-            programs.Add(TrainingLogDemo.BuildSplWinchTrainingProgram());
-            programs.Add(TrainingLogDemo.BuildSplTowTrainingProgram());
-            programs.Add(TrainingLogDemo.BuildSplTmgTrainingProgram());
-            programs.Add(TrainingLogDemo.BuildStartMethodWinchTrainingProgram());
-            programs.Add(TrainingLogDemo.BuildStartMethodTowTrainingProgram());
-            programs.Add(TrainingLogDemo.BuildTypeRatingSingleTrainingProgram());
-            programs.Add(TrainingLogDemo.BuildTypeRatingDualTrainingProgram());
-
-            model.TrainingPrograms = programs;
+            //model.TrainingPrograms = programs;
 
             return model;
         }

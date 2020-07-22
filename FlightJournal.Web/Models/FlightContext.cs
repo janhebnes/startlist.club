@@ -6,6 +6,7 @@ using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using FlightJournal.Web.Migrations.FlightContext;
+using FlightJournal.Web.Models.Training;
 
 namespace FlightJournal.Web.Models
 {
@@ -27,8 +28,14 @@ namespace FlightJournal.Web.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<PilotLogEntry> PilotLogEntries { get; set; }
         //public DbSet<PilotLogEntryVersionHistory> PilotLogEntryVersions { get; set; }
-        public DbSet<TrainingLessonCategory> TrainingLessonCategories { get; set; }
-        public DbSet<TrainingLesson> TrainingLessons { get; set; }
+        
+        public DbSet<Training.Training2Program> TrainingPrograms { get; set; }
+        public DbSet<Training.Training2Lesson> TrainingLessons{ get; set; }
+        public DbSet<Training.Training2Exercise> TrainingExercises{ get; set; }
+        public DbSet<Training.Training2ProgramLessonRelation> TrainingProgramLessonRelations{ get; set; }
+        public DbSet<Training.Training2LessonExerciseRelation> TrainingLessonExerciseRelations{ get; set; }
+
+        public DbSet<Training.AppliedExercise> AppliedExercises { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions

@@ -10,10 +10,10 @@ namespace FlightJournal.Web.Views
             switch (status)
             {
                 case TrainingStatus.Briefed:
-                    clz = isBriefingOnlyRequired ? "btn-success" : "btn-warning";
+                    clz = isBriefingOnlyRequired ? "btn-success" : "btn-info";
                     break;
                 case TrainingStatus.Trained:
-                    clz = "btn-warning";
+                    clz = "btn-info";
                     break;
                 case TrainingStatus.Completed:
                     clz = "btn-success";

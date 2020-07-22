@@ -233,6 +233,12 @@
     <Compile Include="Models\TrainingLessonCategory.cs" />
     <Compile Include="Models\TrainingLogDemo.cs" />
     <Compile Include="Models\TrainingLogViewModel.cs" />
+    <Compile Include="Models\Training\AppliedExercise.cs" />
+    <Compile Include="Models\Training\Training2Exercise.cs" />
+    <Compile Include="Models\Training\Training2Lesson.cs" />
+    <Compile Include="Models\Training\Training2LessonExerciseRelation.cs" />
+    <Compile Include="Models\Training\Training2Program.cs" />
+    <Compile Include="Models\Training\Training2ProgramLessonRelation.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
