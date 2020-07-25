@@ -43,40 +43,37 @@
 
 <div class="table-responsive">
     <table class="table table-condensed">
-        <thead class="exercise">
-            <tr>
-                <th>Norm</th>
-                <th>Øvelse</th>
-                <th>Briefet</th>
-                <th>Øvet</th>
-                <th>Ok</th>
-            </tr>
+        <thead >
+        <tr >
+            <th>Norm</th>
+            <th>Øvelse</th>
+            <th>Briefet</th>
+            <th>Øvet</th>
+            <th>Ok</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var program in Model.TrainingPrograms)
+        @foreach (var program in Model.TrainingPrograms)
+        {
+            foreach (var lesson in program.Lessons)
             {
-                foreach (var lesson in program.Lessons)
+                foreach (var exercise in lesson.Exercises)
                 {
-                    foreach (var exercise in lesson.Exercises)
-                    {
-                        var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                        var briefedClass = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                        var trainedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
-                        var completedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
-                        var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
-                        var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                        var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                        var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
-                        <tr class="@program.Id-@lesson.Id exercise" data-exerciselongdescription="@exercise.LongDescription">
-                            <td class="@clz exercisedetails">@lesson.Name</td>
-                            <td class="@clz exercisedetails">@exercise.Description @Html.Raw(infoMarker)</td>
-                            <td class="@briefedClass">@Html.Raw(briefedMarker) </td>
-                            <td class="@trainedClass">@Html.Raw(trainedMarker)</td>
-                            <td class="@completedClass">@Html.Raw(completedMarker)</td>
-                        </tr>
-                    }
+                    var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                    var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
+                    var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
+                    <tr class="@program.Id-@lesson.Id exercise">
+                        <td class="@clz lessondetails" data-lessonid="@lesson.Id">@lesson.Name</td>
+                        <td class="@clz exercisedetails" data-exerciseid="@exercise.Id">@exercise.Description @Html.Raw(infoMarker)</td>
+                        <td class="@clz">@Html.Raw(briefedMarker) </td>
+                        <td class="@clz">@Html.Raw(trainedMarker)</td>
+                        <td class="@clz">@Html.Raw(completedMarker)</td>
+                    </tr>
                 }
             }
+        }
         </tbody>
     </table>
 </div>
@@ -166,6 +163,9 @@
             </div>
             <div class="modal-body">
                 <p id="exercise-description"></p>
+
+                <h4 id="exercise-precondition-header">Forudsætninger</h4>
+                <p id="exercise-precondition"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -200,6 +200,15 @@
     </div>
 </div>
 
+    @foreach (var lesson in Model.TrainingLessons)
+    {
+        <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@lesson.Description" data-precondition="@lesson.Precondition"></div>
+    }
+    @foreach (var exercise in Model.TrainingExercises)
+    {
+        <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@exercise.Note"></div>
+    }
+
 @section scripts
 {
     <script type="text/javascript">
@@ -213,17 +222,14 @@
             });
             showRelevantTrainingProgram($("#TrainingProgram"));
 
-            $(".exercise").each(function() {
-                $(this).hide();
-            });
+            $(".exercise").hide();
+            $(".table").hide();
 
             $(".exercisedetails").click(function() {
-                var info = $(this).parent().data("exerciselongdescription");
-                if (info && info.length) {
-                    $("#exercisemodaltitle").text($(this).text());
-                    $("#exercise-description").text(info);
-                    $("#exercisemodal").modal();
-                }
+                showInfoFromId($(this).data("exerciseid"));
+            });
+            $(".lessondetails").click(function() {
+                showInfoFromId($(this).data("lessonid"));
             });
 
             $("#showrecentflights").click(function() {
@@ -253,7 +259,8 @@
         });
 
 
-        var showRelevantExercises = function(lesson) {
+        var showRelevantExercises = function (lesson) {
+            $(".table").show();
             var key = "." + lesson.data("lessonclz");
             $(key).each(function() {
                 if (lesson.is(":checked"))
@@ -261,6 +268,11 @@
                 else
                     $(this).hide();
             });
+            var anyLessons = $(".lessontoggle:checked").length;
+            if (anyLessons)
+                $(".table").show();
+            else
+                $(".table").hide();
         }
 
         var showRelevantTrainingProgram = function(sel) {
@@ -275,9 +287,25 @@
 
             }
             $(".active").removeClass("active");
-            $(".exercise").each(function() {
-                $(this).hide();
-            });
+            $(".exercise").hide();
+        }
+
+
+        var showInfoFromId = function (infoid) {
+            var info = $("#" + infoid);
+            var descr= info.data("description");
+            var precondition= info.data("precondition");
+            var title = info.data("header");
+            if (descr && descr.length) {
+                $("#exercisemodaltitle").html(title);
+                $("#exercise-description").html(descr);
+                $("#exercise-precondition").html(precondition ? precondition : "");
+                if (precondition)
+                    $("#exercise-precondition-header").show();
+                else
+                    $("#exercise-precondition-header").hide();
+                $("#exercisemodal").modal();
+            }
         }
 
 

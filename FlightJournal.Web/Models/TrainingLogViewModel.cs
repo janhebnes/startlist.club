@@ -189,7 +189,10 @@ namespace FlightJournal.Web.Models
             FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x.FlightId, dbmodel, date));
 
             // catalogue stuff
-            TrainingPrograms = dbmodel.TrainingPrograms.Select(x => new TrainingProgramViewModel(x, dbmodel));
+            TrainingPrograms = dbmodel.TrainingPrograms.Select(x => new TrainingProgramViewModel(x, dbmodel)); // also includes some status - should be separated!
+            TrainingLessons = dbmodel.TrainingLessons.Select(x => new TrainingLessonViewModel(x));
+            TrainingExercises = dbmodel.TrainingExercises.Select(x => new TrainingExerciseViewModel(x));
+
             Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
         }
@@ -199,6 +202,8 @@ namespace FlightJournal.Web.Models
 
         public IEnumerable<FlightLogEntryViewModel> FlightLog { get; }
         public IEnumerable<TrainingProgramViewModel> TrainingPrograms { get; }
+        public IEnumerable<TrainingLessonViewModel> TrainingLessons { get; }
+        public IEnumerable<TrainingExerciseViewModel> TrainingExercises { get; }
 
         public IEnumerable<FlightManeuverViewModel> Maneuvers { get; }
         public IEnumerable<FlightPhaseAnnotationViewModel> Annotations{ get; }
@@ -237,6 +242,38 @@ namespace FlightJournal.Web.Models
         }
 
     }
+
+    public class TrainingLessonViewModel
+    {
+        public string Id => _lesson.Id.ToString();
+        public string Name => _lesson.Name;
+        public string Description => _lesson.Purpose;
+        public string Precondition => _lesson.Precondition;
+
+        private readonly Training.Training2Lesson _lesson;
+
+        public TrainingLessonViewModel(Training.Training2Lesson lesson)
+        {
+            _lesson = lesson;
+        }
+    }
+
+
+    public class TrainingExerciseViewModel
+    {
+        public string Id => _exercise.Id.ToString();
+        public string Description => _exercise.Name;
+        public string Note => _exercise.Note;
+
+        private readonly Training.Training2Exercise _exercise;
+
+        public TrainingExerciseViewModel(Training.Training2Exercise  exercise)
+        {
+            _exercise = exercise;
+        }
+    }
+
+
 
     public class TrainingLessonOverallStatusViewModel
     {
@@ -309,11 +346,27 @@ namespace FlightJournal.Web.Models
             var isBriefed = totalApplied.Any(y => y.Action == ExerciseAction.Briefed);
             var isTrained = totalApplied.Any(y => y.Action == ExerciseAction.Trained);
             var isCompleted = totalApplied.Any(y => y.Action == ExerciseAction.Completed);
-            Status = 
-                isCompleted ? TrainingStatus.Completed :
-                isTrained ? TrainingStatus.Trained :
-                isBriefed ? TrainingStatus.Briefed : 
-                TrainingStatus.NotStarted;
+
+            if (true) // fake it for UI demo purposes
+            {
+                var toss = new Random().NextDouble();
+                if (toss > 0.8)
+                    Status = _exercise.IsBriefingOnly ? TrainingStatus.Briefed : TrainingStatus.Completed;
+                else if (toss > 0.6)
+                    Status = _exercise.IsBriefingOnly ? TrainingStatus.Briefed : TrainingStatus.Trained;
+                else if (toss > 0.4)
+                    Status = TrainingStatus.Briefed;
+                else
+                    Status = TrainingStatus.NotStarted;
+            }
+            else
+            {
+                Status =
+                    isCompleted ? TrainingStatus.Completed :
+                    isTrained ? TrainingStatus.Trained :
+                    isBriefed ? TrainingStatus.Briefed :
+                    TrainingStatus.NotStarted;
+            }
         }
     }
 

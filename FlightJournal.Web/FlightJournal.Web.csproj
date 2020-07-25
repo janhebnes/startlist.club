@@ -225,6 +225,7 @@
     <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\TrainingFlights.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\LogbookViewModels.cs" />
