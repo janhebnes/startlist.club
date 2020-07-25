@@ -1,74 +1,148 @@
 ﻿@using FlightJournal.Web
 @using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Models
+@using FlightJournal.Web.Models.Training
 @using FlightJournal.Web.Views
 @model FlightJournal.Web.Models.TrainingLogViewModel
 
 
-<div class="row">
+<div class="row no-gutter ">
     <div class="col-md-2">
-        <select id="TrainingProgram">
+        <select class="selectpicker" id="TrainingProgram">
             @foreach (var program in Model.TrainingPrograms)
             {
                 <option value="@program.Id">@program.Name</option>
             }
         </select>
     </div>
-    <div class="col-md-4">
-        @Model.Pilot / @Model.BackseatPilot
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-2">
+        @Model.Date
+    </div>
+    <div class="col-md-2">
+        @Model.Pilot
+    </div>
+    <div class="col-md-2">
+        @Model.BackseatPilot
     </div>
 </div>
 @foreach (var program in Model.TrainingPrograms)
 {
-    <div class="row no-gutter btn-group-toggle @program.Id" data-toggle="buttons" >
+    <div class="row no-gutter btn-group-toggle @program.Id" data-toggle="buttons">
         @foreach (var lesson in program.Lessons)
         {
             <label class="col-xs-2 col-sm-1 traininglesson btn @CssHelper.CssClassFor(lesson.Status, false)"><input type="checkbox" data-lessonclz="@program.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
         }
     </div>
 }
-<table class="table table-responsive table-condensed">
-    <thead>
-        <tr>
-            <th>Norm</th>
-            <th>Øvelse</th>
-            <th>Briefet</th>
-            <th>Øvet</th>
-            <th>Ok</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var program in Model.TrainingPrograms)
-        {
-            foreach (var lesson in program.Lessons)
+<div class="row no-gutter btn-group-toggle" data-toggle="buttons">
+    <label class="col-xs-2 col-sm-1 btn btn-default" id="maneuverstoggle"><input type="checkbox">Manøvrer</label>
+    <label class="col-xs-2 col-sm-1 btn btn-default" id="annotationstoggle"><input type="checkbox">SFIL</label>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-condensed">
+        <thead class="exercise">
+            <tr>
+                <th>Norm</th>
+                <th>Øvelse</th>
+                <th>Briefet</th>
+                <th>Øvet</th>
+                <th>Ok</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var program in Model.TrainingPrograms)
             {
-                foreach (var exercise in lesson.Exercises)
+                foreach (var lesson in program.Lessons)
                 {
-                    var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                    var briefedClass = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                    var trainedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
-                    var completedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
-                    var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
-                    var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                    var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                    var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
-                    <tr class="@program.Id-@lesson.Id exercise" data-exerciselongdescription="@exercise.LongDescription">
-                        <td class="@clz exercisedetails">@lesson.Name</td>
-                        <td class="@clz exercisedetails">@exercise.Description @Html.Raw(infoMarker)</td>
-                        <td class="@briefedClass">@Html.Raw(briefedMarker) </td>
-                        <td class="@trainedClass">@Html.Raw(trainedMarker)</td>
-                        <td class="@completedClass">@Html.Raw(completedMarker)</td>
-                    </tr>
+                    foreach (var exercise in lesson.Exercises)
+                    {
+                        var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                        var briefedClass = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                        var trainedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
+                        var completedClass = exercise.BriefingOnlyRequired ? "btn-secondary" : clz;
+                        var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
+                        var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                        var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                        var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
+                        <tr class="@program.Id-@lesson.Id exercise" data-exerciselongdescription="@exercise.LongDescription">
+                            <td class="@clz exercisedetails">@lesson.Name</td>
+                            <td class="@clz exercisedetails">@exercise.Description @Html.Raw(infoMarker)</td>
+                            <td class="@briefedClass">@Html.Raw(briefedMarker) </td>
+                            <td class="@trainedClass">@Html.Raw(trainedMarker)</td>
+                            <td class="@completedClass">@Html.Raw(completedMarker)</td>
+                        </tr>
+                    }
                 }
             }
-        }
-    </tbody>
-</table>
-
-<div>
-    <p>Noter</p>
-    <textarea id="flightnotes" rows="5" cols="80"></textarea>
+        </tbody>
+    </table>
 </div>
+
+<div id="maneuverscontainer" class="bg-info" style="padding-left: 2px; padding-right: 2px;">
+    <div class="row">
+        <select class="col-xs-12 selectpicker" multiple title="Vælg manøvrer">
+            @foreach (var maneuver in Model.Maneuvers)
+            {
+                <option value="@maneuver.Id" data-icon="@maneuver.Icon">@Html.Raw(maneuver.Name)</option>
+            }
+        </select>
+    </div>
+</div>
+
+
+<div id="annotationscontainer" class="bg-info" style="padding-left: 2px; padding-right: 2px;">
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">
+            <button class="btn btn-success" id="sfilok">SFIL ok</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">Start</div>
+        <select class="col-xs-10 col-sm-11 selectpicker annotation" multiple title="Kommenter start">
+            @foreach (var annotation in Model.Annotations)
+            {
+                <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            }
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">Flyvning</div>
+        <select class="col-xs-10 col-sm-11  selectpicker annotation" multiple title="Kommenter flyvning">
+            @foreach (var annotation in Model.Annotations)
+            {
+                <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            }
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">Indflyvning</div>
+        <select class="col-xs-10  col-sm-11 selectpicker annotation" multiple title="Kommenter indflyvning">
+            @foreach (var annotation in Model.Annotations)
+            {
+                <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            }
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">Landing</div>
+        <select class="col-xs-10 col-sm-11  selectpicker annotation" multiple title="Kommenter landing">
+            @foreach (var annotation in Model.Annotations)
+            {
+                <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            }
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-sm-1">Note</div>
+        <div class="col-xs-10 col-sm-11 ">
+            <textarea style="width: 100%; max-width:100%" id="flightnotes" rows="3"></textarea>
+        </div>
+    </div>
+</div>
+
 
 <div class="row" style="margin-top: 30px">
     <div class="col-md-6">
@@ -110,6 +184,14 @@
                 </button>
             </div>
             <div class="modal-body" id="recentflightstable">
+                <table class='table table-responsive table-condensed'>
+                    @{
+                        foreach (var flight in Model.FlightLog)
+                        {
+                            <tr><td>@flight.Date</td><td></td><td>Øvet</td><td>Ok - lidt slingrende</td><td></td></tr>
+                        }
+                    }
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -145,11 +227,29 @@
             });
 
             $("#showrecentflights").click(function() {
-                var table = "<table class='table table-responsive table-condensed'><tr><td>2/7-2020</td><td>A6</td><td>Øvet</td><td>Ok - lidt slingrende</td><td>PL</td></tr></table>";
-                $("#recentflightstable").html(table);
                 $("#recentflightsmodal").modal();
             });
 
+            $("#annotationscontainer").hide();
+            $("#maneuverscontainer").hide();
+            $("#maneuverstoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#maneuverscontainer").hide();
+                else
+                    $("#maneuverscontainer").show();
+            });
+            $("#annotationstoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#annotationscontainer").hide();
+                else
+                    $("#annotationscontainer").show();
+            });
+
+            $("#sfilok").click(function() {
+                $(".selectpicker.annotation").each(function() {
+                    $(this).selectpicker('val', 'Ok');
+                });
+            });
         });
 
 

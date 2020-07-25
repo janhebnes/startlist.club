@@ -36,6 +36,7 @@ namespace FlightJournal.Web.Models
         public DbSet<Training.Training2LessonExerciseRelation> TrainingLessonExerciseRelations{ get; set; }
 
         public DbSet<Training.AppliedExercise> AppliedExercises { get; set; }
+        public DbSet<Training.TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace FlightJournal.Web.Models.Training
 {
     /// <summary>
-    /// A Training2Exercise that has been applied in a flight
+    /// A Training2Exercise (belonging to a specific lesson in a program) that has been applied in a flight
     /// </summary>
     public class AppliedExercise
     {
@@ -13,6 +13,10 @@ namespace FlightJournal.Web.Models.Training
 
         [Required]
         public Guid FlightId { get; set; } // the pilot can be found through the flight
+        [Required]
+        public Guid ProgramId { get; set; }
+        [Required]
+        public Guid LessonId { get; set; }
         [Required]
         public Guid ExerciseId { get; set; }
 
