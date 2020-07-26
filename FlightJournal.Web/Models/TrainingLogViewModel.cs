@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Web.Mvc.Html;
 using FlightJournal.Web.Models.Training;
 
 namespace FlightJournal.Web.Models
@@ -297,6 +294,12 @@ namespace FlightJournal.Web.Models
             }
         }
 
+        public int ExercisesTotal => Exercises.Count();
+        public int ExercisesCompleted => Exercises.Count(x=>x.Status == TrainingStatus.Completed);
+        public int ExercisesInProgress => ExercisesTotal - ExercisesCompleted - ExercisesNotStarted;
+        public int ExercisesNotStarted => Exercises.Count(x => x.Status == TrainingStatus.NotStarted);
+
+        public string StatusSummary => $"{ExercisesNotStarted}/{ExercisesInProgress}/{ExercisesCompleted} ({ExercisesTotal})";
         public TrainingStatus Status => 
         Exercises.All(x => x.Status == TrainingStatus.NotStarted)
             ? TrainingStatus.NotStarted
