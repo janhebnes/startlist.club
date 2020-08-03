@@ -1,85 +1,86 @@
-﻿@using FlightJournal.Web
-@using FlightJournal.Web.Extensions
-@using FlightJournal.Web.Models
-@using FlightJournal.Web.Models.Training
-@using FlightJournal.Web.Views
+﻿@using FlightJournal.Web.Views
 @model FlightJournal.Web.Models.TrainingLogViewModel
 
 
-<div class="row no-gutter ">
-    <div class="col-md-2">
-        <select class="selectpicker" id="TrainingProgram">
-            @foreach (var program in Model.TrainingPrograms)
-            {
-                <option value="@program.Id">@program.Name</option>
-            }
-        </select>
+    <div class="row no-gutter">
+        <div class="col-xs-12">
+            <select class="selectpicker" id="TrainingProgram">
+                @foreach (var program in Model.TrainingPrograms)
+                {
+                    <option value="@program.Id">@program.Name</option>
+                }
+            </select>
+        </div>
     </div>
-    <div class="col-md-2">
+    <div class="row no-gutter">
+        <div class="col-xs-4 col-sm-2">
+            @Model.Date
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            @Model.Pilot
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            @Model.BackseatPilot
+        </div>
     </div>
-    <div class="col-md-2">
-        @Model.Date
-    </div>
-    <div class="col-md-2">
-        @Model.Pilot
-    </div>
-    <div class="col-md-2">
-        @Model.BackseatPilot
-    </div>
+
+<div class="row no-gutter btn-group-toggle" data-toggle="buttons">
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle"><input type="checkbox"><i class="fa fa-file-text"></i><span class="hidden-xs hidden-sm"> Normer</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle"><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> Normstatus</span></label>
+    <div class="col-xs-2"></div>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle"><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> Manøvrer</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle"><input type="checkbox">SFIL</label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle"><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> Vejr</span></label>
 </div>
+
 @foreach (var program in Model.TrainingPrograms)
 {
-    <div class="row no-gutter btn-group-toggle @program.Id" data-toggle="buttons">
+    <div class="row no-gutter btn-group-toggle @program.Id lessonscontainer" data-toggle="buttons">
         @foreach (var lesson in program.Lessons)
         {
-            <label class="col-xs-2 col-sm-1 traininglesson btn @CssHelper.CssClassFor(lesson.Status, false)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@program.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
+            <label class="col-xs-2 col-sm-1 traininglogstatebutton btn @CssHelper.CssClassFor(lesson.Status, false)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@program.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
         }
     </div>
 }
-<div class="row no-gutter btn-group-toggle" data-toggle="buttons">
-    <label class="col-xs-2 col-sm-1 btn btn-default" id="lessonoverviewtoggle"><input type="checkbox">Oversigt</label>
-    <label class="col-xs-2 col-sm-1 btn btn-default" id="maneuverstoggle"><input type="checkbox">Manøvrer</label>
-    <label class="col-xs-2 col-sm-1 btn btn-default" id="annotationstoggle"><input type="checkbox">SFIL</label>
-</div>
 
-    <div id="lessonsoverviewcontainer" class="table-responsive">
-        <table class="table table-condensed">
-        <thead>
-        <tr>
-            <th>Norm</th>
-            <th>#Ok</th>
-            <th>#I gang</th>
-            <th>#Ikke startet</th>
-            <th>#i alt</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var program in Model.TrainingPrograms)
-        {
-            foreach (var lesson in program.Lessons)
-            {
-                <tr class="@program.Id">
-                    <td>@lesson.Name</td>
-                    <td>@lesson.ExercisesCompleted</td>
-                    <td>@lesson.ExercisesInProgress</td>
-                    <td>@lesson.ExercisesNotStarted</td>
-                    <td>@lesson.ExercisesTotal</td>
-                </tr>
-            }
-        }
-        </tbody>
-        </table>
-    </div>
-
-
-<div id="lessonscontainer" class="table-responsive">
+<div id="lessonsoverviewcontainer" class="table-responsive">
     <table class="table table-condensed">
         <thead>
             <tr>
                 <th>Norm</th>
+                <th>#Ok</th>
+                <th>#I gang</th>
+                <th>#Ikke startet</th>
+                <th>#i alt</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var program in Model.TrainingPrograms)
+            {
+                foreach (var lesson in program.Lessons)
+                {
+                    <tr class="@program.Id">
+                        <td>@lesson.Name</td>
+                        <td>@lesson.ExercisesCompleted</td>
+                        <td>@lesson.ExercisesInProgress</td>
+                        <td>@lesson.ExercisesNotStarted</td>
+                        <td>@lesson.ExercisesTotal</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter" >
+    <table class="table table-condensed col-xs-12">
+        <thead>
+            <tr>
+                <th></th>
                 <th>Øvelse</th>
-                <th>Briefet</th>
-                <th>Øvet</th>
+                <th>B<span class="hidden-xs">riefet</span></th>
+                <th>Ø<span class="hidden-xs">vet</span></th>
                 <th>Ok</th>
             </tr>
         </thead>
@@ -109,9 +110,10 @@
     </table>
 </div>
 
-<div id="maneuverscontainer" class="bg-info" style="padding-left: 2px; padding-right: 2px;">
+<div id="maneuverscontainer" class="annotationcontainer">
     <div class="row">
-        <select class="col-xs-12 selectpicker" multiple title="Vælg manøvrer">
+        <div class="col-xs-2  col-sm-1">Manøvrer</div>
+        <select class="col-xs-10  col-sm-11 selectpicker" multiple title="Vælg manøvrer">
             @foreach (var maneuver in Model.Maneuvers)
             {
                 <option value="@maneuver.Id" data-icon="@maneuver.Icon">@Html.Raw(maneuver.Name)</option>
@@ -121,7 +123,7 @@
 </div>
 
 
-<div id="annotationscontainer" class="bg-info" style="padding-left: 2px; padding-right: 2px;">
+<div id="annotationscontainer" class="annotationcontainer">
     <div class="row">
         <div class="col-xs-2 col-sm-1">
             <button class="btn btn-success" id="sfilok">SFIL ok</button>
@@ -170,6 +172,25 @@
         </div>
     </div>
 </div>
+
+<div id="weathercontainer" class="annotationcontainer">
+    <div class="row">
+        <div class="col-xs-2  col-sm-1">Vejr</div>
+        <select class="col-xs-5 selectpicker" title="Vindretning">
+            @foreach (var v in Model.WindDirections)
+            {
+                <option value="@v.Value">@Html.Raw(v.Text)</option>
+            }
+        </select>
+        <select class="col-xs-4 selectpicker" title="Vindstyrke">
+            @foreach (var v in Model.WindSpeeds)
+            {
+                <option value="@v.Value">@Html.Raw(v.Text)</option>
+            }
+        </select>
+    </div>
+</div>
+
 
 
 <div class="row" style="margin-top: 30px">
@@ -267,8 +288,12 @@
                 $("#recentflightsmodal").modal();
             });
 
+            $(".lessonscontainer").hide();
             $("#annotationscontainer").hide();
             $("#maneuverscontainer").hide();
+            $("#weathercontainer").hide();
+
+
             $("#maneuverstoggle").click(function() {
                 if ($(this).find("input").is(":checked"))
                     $("#maneuverscontainer").hide();
@@ -281,11 +306,23 @@
                 else
                     $("#annotationscontainer").show();
             });
+            $("#weathertoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#weathercontainer").hide();
+                else
+                    $("#weathercontainer").show();
+            });
             $("#lessonoverviewtoggle").click(function() {
                 if ($(this).find("input").is(":checked"))
                     $("#lessonsoverviewcontainer").hide();
                 else
                     $("#lessonsoverviewcontainer").show();
+            });
+            $("#lessonstoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $(".lessonscontainer").hide();
+                else
+                    $(".lessonscontainer").show();
             });
 
             $("#sfilok").click(function() {

@@ -175,6 +175,33 @@ namespace FlightJournal.Web.Models
             }
         }
     }
+
+
+
+    public class WindSpeedViewModel
+    {
+        public int Value { get; }
+        public string Text { get; }
+
+        public WindSpeedViewModel(int speed)
+        {
+            Value = speed;
+            Text = $"{speed}kn";
+        }
+    }
+
+    public class WindDirectionViewModel
+    {
+        public int Value { get; }
+        public string Text { get; }
+
+        public WindDirectionViewModel(int direction)
+        {
+            Value = direction;
+            Text = $"{direction}°";
+        }
+    }
+
     public class TrainingLogViewModel
     {
         public TrainingLogViewModel(DateTime date, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
@@ -192,6 +219,17 @@ namespace FlightJournal.Web.Models
 
             Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
+
+            var wd = new List<WindDirectionViewModel>();
+            for (int v = 0; v < 360; v += 45)
+                wd.Add(new WindDirectionViewModel(v ));
+            WindDirections = wd;
+
+            var ws = new List<WindSpeedViewModel>();
+            for (int v = 0; v < 30; v += 5)
+                ws.Add(new WindSpeedViewModel(v));
+            WindSpeeds = ws;
+
         }
         public DateTime Date { get; }
         public string Pilot { get; }
@@ -203,6 +241,8 @@ namespace FlightJournal.Web.Models
         public IEnumerable<TrainingExerciseViewModel> TrainingExercises { get; }
 
         public IEnumerable<FlightManeuverViewModel> Maneuvers { get; }
+        public IEnumerable<WindDirectionViewModel> WindDirections { get; }
+        public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
         public IEnumerable<FlightPhaseAnnotationViewModel> Annotations{ get; }
     }
 
