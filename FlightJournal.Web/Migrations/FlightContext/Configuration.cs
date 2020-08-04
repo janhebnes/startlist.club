@@ -14,7 +14,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
         public Configuration()
         {
             AutomaticMigrationsEnabled = true; 
-            AutomaticMigrationDataLossAllowed = false;
+            AutomaticMigrationDataLossAllowed = true;
             MigrationsDirectory = @"Migrations\FlightContext";
         }
 
@@ -26,10 +26,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             if (forceTrainingProgramRecreation
                 || !context.TrainingPrograms.Any()
-                || !context.TrainingLessons.Any()
-                || !context.TrainingExercises.Any()
-                || !context.TrainingProgramLessonRelations.Any()
-                || !context.TrainingLessonExerciseRelations.Any()
                 )
             {
                 TrainingFlights.InitializeTrainingLessons(context);

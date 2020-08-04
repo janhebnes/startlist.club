@@ -9,16 +9,16 @@ namespace FlightJournal.Web.Models.Training
     public class AppliedExercise
     {
         [Key] 
-        public Guid Id { get; set; }
+        public int AppliedExerciseId { get; set; }
 
         [Required]
         public Guid FlightId { get; set; } // the pilot can be found through the flight
         [Required]
-        public Guid ProgramId { get; set; }
+        public virtual Training2Program Program { get; set; }
         [Required]
-        public Guid LessonId { get; set; }
+        public virtual Training2Lesson Lesson { get; set; }
         [Required]
-        public Guid ExerciseId { get; set; }
+        public virtual Training2Exercise Exercise { get; set; }
 
         [Required] public ExerciseAction Action { get; set; } = ExerciseAction.None;
     }

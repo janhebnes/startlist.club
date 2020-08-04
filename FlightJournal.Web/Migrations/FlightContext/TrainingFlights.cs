@@ -9,10 +9,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
         {
             // ren røv
             context.TrainingPrograms.RemoveRange(context.TrainingPrograms);
-            context.TrainingLessons.RemoveRange(context.TrainingLessons);
-            context.TrainingExercises.RemoveRange(context.TrainingExercises);
-            context.TrainingProgramLessonRelations.RemoveRange(context.TrainingProgramLessonRelations);
-            context.TrainingLessonExerciseRelations.RemoveRange(context.TrainingLessonExerciseRelations);
 
 
             var tpSPL_S = new Training2Program("SPL-S", "SPL, spilstart",
@@ -337,12 +333,9 @@ Krav om strækflyvning kan ikke reduceres eller erstattes<br>
             var exSPL_A1_12 = new Training2Exercise("Orientering fra luften"){Note= @"Markante terrænpunkter" };
             var exSPL_A1_13 = new Training2Exercise("Procedure for udkig");
 
-
-            context.TrainingPrograms.AddOrUpdate(
-                tpSPL_S
-            );
-            context.TrainingLessons.AddOrUpdate(
-                lessSPL_A0,                
+            tpSPL_S.Lessons = new[]
+            {
+                lessSPL_A0,
                 lessSPL_A1,
                 lessSPL_A2,
                 lessSPL_A3,
@@ -363,107 +356,59 @@ Krav om strækflyvning kan ikke reduceres eller erstattes<br>
                 lessSPL_B6,
                 lessSPL_B7,
                 lessSPL_B8
+            };
+                
+                lessSPL_A0.Exercises = new[]{                
+                    exSPL_A0_1,
+                    exSPL_A0_2,
+                    exSPL_A0_3,
+                    exSPL_A0_4,
+                    exSPL_A0_5,
+                    exSPL_A0_6,
+                    exSPL_A0_7,
+                    exSPL_A0_8,
+                    exSPL_A0_9,
+                    exSPL_A0_10,
+                };
+
+                lessSPL_A1.Exercises = new[] {                
+                    exSPL_A1_1,
+                    exSPL_A1_2,
+                    exSPL_A1_3,
+                    exSPL_A1_4,
+                    exSPL_A1_5,
+                    exSPL_A1_6,
+                    exSPL_A1_7,
+                    exSPL_A1_8,
+                    exSPL_A1_9,
+                    exSPL_A1_10,
+                    exSPL_A1_11,
+                    exSPL_A1_12,
+                    exSPL_A1_13
+                };
+            context.TrainingPrograms.AddOrUpdate(
+                tpSPL_S
             );
+            lessSPL_A2.Exercises = new[] {exSPL_dummy};
+            lessSPL_A3.Exercises = new[] {exSPL_dummy};
+            lessSPL_A4.Exercises = new[] {exSPL_dummy};
+            lessSPL_A5.Exercises = new[] {exSPL_dummy};
+            lessSPL_A6.Exercises = new[] {exSPL_dummy};
+            lessSPL_A7.Exercises = new[] {exSPL_dummy};
+            lessSPL_A8.Exercises = new[] {exSPL_dummy};
+            lessSPL_A9.Exercises = new[] {exSPL_dummy};
+            lessSPL_A10.Exercises = new[] {exSPL_dummy};
+            lessSPL_A11.Exercises = new[] {exSPL_dummy};
+            lessSPL_A12.Exercises = new[] {exSPL_dummy};
+            lessSPL_B1.Exercises = new[] {exSPL_dummy};
+            lessSPL_B2.Exercises = new[] {exSPL_dummy};
+            lessSPL_B3.Exercises = new[] {exSPL_dummy};
+            lessSPL_B4.Exercises = new[] {exSPL_dummy};
+            lessSPL_B5.Exercises = new[] {exSPL_dummy};
+            lessSPL_B6.Exercises = new[] {exSPL_dummy};
+            lessSPL_B7.Exercises = new[] {exSPL_dummy};
+            lessSPL_B8.Exercises = new[] {exSPL_dummy};
 
-
-            context.TrainingExercises.AddOrUpdate(
-                exSPL_dummy,
-                exSPL_A0_1,
-                exSPL_A0_2,
-                exSPL_A0_3,
-                exSPL_A0_4,
-                exSPL_A0_5,
-                exSPL_A0_6,
-                exSPL_A0_7,
-                exSPL_A0_8,
-                exSPL_A0_9,
-                exSPL_A0_10,
-                exSPL_A1_1,
-                exSPL_A1_2,
-                exSPL_A1_3,
-                exSPL_A1_4,
-                exSPL_A1_5,
-                exSPL_A1_6,
-                exSPL_A1_7,
-                exSPL_A1_8,
-                exSPL_A1_9,
-                exSPL_A1_10,
-                exSPL_A1_11,
-                exSPL_A1_12,
-                exSPL_A1_13
-            );
-
-
-            context.TrainingProgramLessonRelations.AddOrUpdate(
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A0, 1),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A1, 2),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A2, 3),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A3, 4),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A4, 5),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A5, 6),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A6, 7),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A7, 8),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A8, 9),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A9, 10),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A10, 11),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A11, 12),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_A12, 13),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B1, 14),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B2, 15),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B3, 16),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B4, 17),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B5, 18),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B6, 19),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B7, 20),
-                new Training2ProgramLessonRelation(tpSPL_S, lessSPL_B8, 21)
-            );
-
-            context.TrainingLessonExerciseRelations.AddOrUpdate(
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_1,1),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_2, 2),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_3, 3),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_4, 4),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_5, 5),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_6, 6),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_7, 7),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_8, 8),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_9, 9),
-                new Training2LessonExerciseRelation(lessSPL_A0, exSPL_A0_10, 10),
-
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_1,1),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_2, 2),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_3, 3),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_4, 4),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_5, 5),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_6, 6),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_7, 7),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_8, 8),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_9, 9),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_10, 10),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_11, 11),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_12, 12),
-                new Training2LessonExerciseRelation(lessSPL_A1, exSPL_A1_13, 13),
-
-                new Training2LessonExerciseRelation(lessSPL_A2, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A3, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A4, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A5, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A6, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A7, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A8, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A9, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A10, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A11, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_A12, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B1, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B2, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B3, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B4, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B5, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B6, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B7, exSPL_dummy, 1),
-                new Training2LessonExerciseRelation(lessSPL_B8, exSPL_dummy, 1)
-            );
 
             context.SaveChanges();
         }

@@ -28,13 +28,8 @@ namespace FlightJournal.Web.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<PilotLogEntry> PilotLogEntries { get; set; }
         //public DbSet<PilotLogEntryVersionHistory> PilotLogEntryVersions { get; set; }
-        
-        public DbSet<Training.Training2Program> TrainingPrograms { get; set; }
-        public DbSet<Training.Training2Lesson> TrainingLessons{ get; set; }
-        public DbSet<Training.Training2Exercise> TrainingExercises{ get; set; }
-        public DbSet<Training.Training2ProgramLessonRelation> TrainingProgramLessonRelations{ get; set; }
-        public DbSet<Training.Training2LessonExerciseRelation> TrainingLessonExerciseRelations{ get; set; }
 
+        public DbSet<Training.Training2Program> TrainingPrograms { get; set; }
         public DbSet<Training.AppliedExercise> AppliedExercises { get; set; }
         public DbSet<Training.TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
 

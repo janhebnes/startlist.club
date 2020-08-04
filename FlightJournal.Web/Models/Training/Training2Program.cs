@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FlightJournal.Web.Models.Training
@@ -9,7 +9,7 @@ namespace FlightJournal.Web.Models.Training
     public class Training2Program
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Training2ProgramId { get; set; }
         [Required]
         public string ShortName { get; set; }
         [Required]
@@ -17,13 +17,15 @@ namespace FlightJournal.Web.Models.Training
         public string Notes{ get; set; }
         public string Url{ get; set; }
 
+        public virtual ICollection<Training2Lesson> Lessons { get; set; } // N:M
+
         public Training2Program(){}
         public Training2Program(string shortName, string name, string notes)
         {
-            Id = Guid.NewGuid();
             ShortName = shortName;
             Name = name;
             Notes = notes;
+            Lessons = new HashSet<Training2Lesson>();
         }
     }
 }

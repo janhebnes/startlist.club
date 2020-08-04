@@ -27,7 +27,7 @@ namespace FlightJournal.Web.Controllers
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
             var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
 
-            var model = new TrainingLogViewModel(flight.Date, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight.FlightId));
+            var model = new TrainingLogViewModel(flight.Date, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight));
 
             //var programs = new List<TrainingProgramViewModel>();
             //programs.Add(TrainingLogDemo.BuildSplWinchTrainingProgram());

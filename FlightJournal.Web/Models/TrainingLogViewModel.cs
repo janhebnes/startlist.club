@@ -11,14 +11,12 @@ namespace FlightJournal.Web.Models
     public class TrainingDataWrapper
     {
         //TODO: split this in a catalogue wrapper and a pilot/flight specific wrapper
-        internal TrainingDataWrapper(FlightContext db, int pilotId, Guid flightId)
+        internal TrainingDataWrapper(FlightContext db, int pilotId, Flight flight)
         {
-            FlightId = flightId;
+            FlightId = flight.FlightId;
             TrainingPrograms = db.TrainingPrograms;
-            TrainingLessons = db.TrainingLessons;
-            TrainingExercises = db.TrainingExercises;
-            TrainingProgramLessonRelations = db.TrainingProgramLessonRelations;
-            TrainingLessonExerciseRelations = db.TrainingLessonExerciseRelations;
+            //TrainingLessons = db.TrainingLessons;
+            //TrainingExercises = db.TrainingExercises;
 
             PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x=>x.Date);
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
@@ -26,11 +24,9 @@ namespace FlightJournal.Web.Models
         }
 
         // catalogue stuff
-        public IEnumerable<Training.Training2ProgramLessonRelation> TrainingProgramLessonRelations { get; }
-        public IEnumerable<Training.Training2LessonExerciseRelation> TrainingLessonExerciseRelations { get; }
         public IEnumerable<Training.Training2Program> TrainingPrograms { get; }
-        public IEnumerable<Training.Training2Lesson> TrainingLessons { get; }
-        public IEnumerable<Training.Training2Exercise> TrainingExercises { get; }
+        //public IEnumerable<Training.Training2Lesson> TrainingLessons { get; }
+        //public IEnumerable<Training.Training2Exercise> TrainingExercises { get; }
 
         // flight specific data
         public Guid FlightId { get; }
@@ -60,11 +56,11 @@ namespace FlightJournal.Web.Models
         /// <param name="date"></param>
         /// <param name="exercises">Exercises applied in this flight</param> 
         /// <param name="annotations">Annotations for this flight</param>
-        public FlightLogEntryViewModel(Guid flightId, TrainingDataWrapper db, DateTime date)
+        public FlightLogEntryViewModel(Flight flight, TrainingDataWrapper db, DateTime date)
         {
             Date = date;
-            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flightId).ToList();
-            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flightId);
+            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).ToList();
+            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
             Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
             //TODO: localize / map to symbols
             Maneuvers = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
@@ -210,12 +206,12 @@ namespace FlightJournal.Web.Models
             Pilot = pilot;
             BackseatPilot = backseatPilot;
 
-            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x.FlightId, dbmodel, date));
+            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x, dbmodel, date));
 
             // catalogue stuff
             TrainingPrograms = dbmodel.TrainingPrograms.Select(x => new TrainingProgramViewModel(x, dbmodel)); // also includes some status - should be separated!
-            TrainingLessons = dbmodel.TrainingLessons.Select(x => new TrainingLessonViewModel(x));
-            TrainingExercises = dbmodel.TrainingExercises.Select(x => new TrainingExerciseViewModel(x));
+            //TrainingLessons = dbmodel.TrainingLessons.Select(x => new TrainingLessonViewModel(x));
+            //TrainingExercises = dbmodel.TrainingExercises.Select(x => new TrainingExerciseViewModel(x));
 
             Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
@@ -237,8 +233,8 @@ namespace FlightJournal.Web.Models
 
         public IEnumerable<FlightLogEntryViewModel> FlightLog { get; }
         public IEnumerable<TrainingProgramViewModel> TrainingPrograms { get; }
-        public IEnumerable<TrainingLessonViewModel> TrainingLessons { get; }
-        public IEnumerable<TrainingExerciseViewModel> TrainingExercises { get; }
+        //public IEnumerable<TrainingLessonViewModel> TrainingLessons { get; }
+        //public IEnumerable<TrainingExerciseViewModel> TrainingExercises { get; }
 
         public IEnumerable<FlightManeuverViewModel> Maneuvers { get; }
         public IEnumerable<WindDirectionViewModel> WindDirections { get; }
@@ -248,7 +244,7 @@ namespace FlightJournal.Web.Models
 
     public class TrainingProgramViewModel
     {
-        public string Id => _program.Id.ToString();
+        public string Id => _program.Training2ProgramId.ToString();
         public string Name => _program.Name;
 
         private IEnumerable<TrainingLessonOverallStatusViewModel> _lessons;
@@ -259,9 +255,7 @@ namespace FlightJournal.Web.Models
             {
                 if (_lessons == null)
                 {
-                    var rels = _db.TrainingProgramLessonRelations.Where(x => x.ProgramId == _program.Id).OrderBy(x=>x.RelativeOrder);
-                    var lessons = rels.Select(x => _db.TrainingLessons.SingleOrDefault(y => y.Id == x.LessonId)).Where(z => z != null);
-                    _lessons = lessons.Select(less => new TrainingLessonOverallStatusViewModel(less, _db));
+                    _lessons = _program.Lessons.Select(less => new TrainingLessonOverallStatusViewModel(less, _db));
                 }
 
                 return _lessons;
@@ -282,7 +276,7 @@ namespace FlightJournal.Web.Models
 
     public class TrainingLessonViewModel
     {
-        public string Id => _lesson.Id.ToString();
+        public string Id => _lesson.Training2LessonId.ToString();
         public string Name => _lesson.Name;
         public string Description => _lesson.Purpose;
         public string Precondition => _lesson.Precondition;
@@ -298,7 +292,7 @@ namespace FlightJournal.Web.Models
 
     public class TrainingExerciseViewModel
     {
-        public string Id => _exercise.Id.ToString();
+        public string Id => _exercise.Training2ExerciseId.ToString();
         public string Description => _exercise.Name;
         public string Note => _exercise.Note;
 
@@ -314,7 +308,7 @@ namespace FlightJournal.Web.Models
 
     public class TrainingLessonOverallStatusViewModel
     {
-        public string Id => _lesson.Id.ToString();
+        public string Id => _lesson.Training2LessonId.ToString();
         public string Name => _lesson.Name;
 
         public string Description => _lesson.Purpose;
@@ -326,9 +320,7 @@ namespace FlightJournal.Web.Models
             {
                 if (_exercises == null)
                 {
-                    var rels = _db.TrainingLessonExerciseRelations.Where(x => x.LessonId == _lesson.Id).OrderBy(x=>x.RelativeOrder);
-                    var exercises = rels.Select(x => _db.TrainingExercises.SingleOrDefault(y => y.Id == x.ExerciseId)).Where(z => z != null);
-                    _exercises = exercises.Select(ex => new TrainingExerciseOverallStatusViewModel( ex, _db));
+                    _exercises = _lesson.Exercises.Select(ex => new TrainingExerciseOverallStatusViewModel( ex, _db));
                 }
                 return _exercises;
             }
@@ -365,7 +357,7 @@ namespace FlightJournal.Web.Models
 
     public class TrainingExerciseOverallStatusViewModel
     {
-        public string Id => _exercise.Id.ToString();
+        public string Id => _exercise.Training2ExerciseId.ToString();
 
         public string Description => _exercise.Name;
         public string LongDescription => _exercise.Note;
@@ -385,7 +377,7 @@ namespace FlightJournal.Web.Models
         {
             _db = db;
             _exercise = exercise;
-            var totalApplied = _db.AppliedExercises.Where(x => x.ExerciseId == _exercise.Id).ToList();
+            var totalApplied = _db.AppliedExercises.Where(x => x.Exercise == _exercise).ToList();
             var isBriefed = totalApplied.Any(y => y.Action == ExerciseAction.Briefed);
             var isTrained = totalApplied.Any(y => y.Action == ExerciseAction.Trained);
             var isCompleted = totalApplied.Any(y => y.Action == ExerciseAction.Completed);
@@ -423,9 +415,9 @@ namespace FlightJournal.Web.Models
         public AppliedExerciseViewModel(TrainingDataWrapper db, AppliedExercise appliedExercise)
         {
             Action = appliedExercise.Action;
-            var program = db.TrainingPrograms.SingleOrDefault(x=>x.Id == appliedExercise.ProgramId);
-            var lesson = db.TrainingLessons.SingleOrDefault(x=>x.Id == appliedExercise.LessonId);
-            var exercise = db.TrainingExercises.SingleOrDefault(x => x.Id == appliedExercise.ExerciseId);
+            var program = db.TrainingPrograms.SingleOrDefault(x=>x == appliedExercise.Program);
+            var lesson = program.Lessons.SingleOrDefault(x=>x == appliedExercise.Lesson);
+            var exercise = lesson.Exercises.SingleOrDefault(x => x == appliedExercise.Exercise);
             Description = $"{program?.Name} {lesson?.Name} {exercise?.Name}";
         }
     }

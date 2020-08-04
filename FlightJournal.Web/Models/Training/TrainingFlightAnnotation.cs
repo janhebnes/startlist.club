@@ -14,9 +14,9 @@ namespace FlightJournal.Web.Models.Training
     public class TrainingFlightAnnotation
     {
         [Key]
-        public Guid Id { get; set; }
+        public int TrainingFlightAnnotationId { get; set; }
         [Required]
-        public Guid FlightId { get; set; } // the pilot can be found through the flight
+        public Guid FlightId{ get; set; } 
         public string Note { get; set; }
 
         public IEnumerable<FlightPhaseAnnotation> StartAnnotation { get; set; } = new List<FlightPhaseAnnotation>();

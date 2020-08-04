@@ -252,14 +252,14 @@
     </div>
 </div>
 
-@foreach (var lesson in Model.TrainingLessons)
+@*@foreach (var lesson in Model.TrainingLessons)
 {
     <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@lesson.Description" data-precondition="@lesson.Precondition"></div>
 }
 @foreach (var exercise in Model.TrainingExercises)
 {
     <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@exercise.Note"></div>
-}
+}*@
 
 @section scripts
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FlightJournal.Web.Models.Training
@@ -11,7 +12,7 @@ namespace FlightJournal.Web.Models.Training
     public class Training2Exercise
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Training2ExerciseId { get; set; }
         [Required]
         // Example: "Mærkelanding"
         public string Name { get; set; }
@@ -24,12 +25,13 @@ namespace FlightJournal.Web.Models.Training
         public bool IsBriefingOnly { get; set; }
 
         public Training2Exercise() { }
+        public virtual ICollection<Training2Lesson> Lessons{ get; set; }
 
         public Training2Exercise(string name, bool briefingOnly = false)
         {
-            Id = Guid.NewGuid();
             Name = name;
             IsBriefingOnly = briefingOnly;
+            Lessons = new HashSet<Training2Lesson>();
         }
     }
 }
