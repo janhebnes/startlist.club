@@ -1,15 +1,16 @@
 using System.Data.Entity.Migrations;
-using FlightJournal.Web.Models.Training;
 
-namespace FlightJournal.Web.Migrations.FlightContext
+namespace FlightJournal.Web.Models.Training.Catalogue
 {
-    internal static class TrainingFlights
+    internal static class TrainingProgramCatalogue
     {
-        public static void InitializeTrainingLessons(Models.FlightContext context)
+        public static void InitializeTrainingPrograms(FlightContext context)
         {
             // ren røv
             context.TrainingPrograms.RemoveRange(context.TrainingPrograms);
-
+            context.TrainingLessons.RemoveRange(context.TrainingLessons);
+            context.TrainingExercises.RemoveRange(context.TrainingExercises);
+            context.SaveChanges();
 
             var tpSPL_S = new Training2Program("SPL-S", "SPL, spilstart",
                     @"<b>Særligt for elever, der indtræder i træningsprogrammet fra en anden DTO/ATO:</b> <br>
@@ -22,7 +23,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 {Url = @"https://medlem.dsvu.dk/grp900/2129-uhb922-flyvelektioner-til-spl-certifikat-spilstart/file/menu-id-117" };
 
 
-            var lessSPL_A0 =  new Models.Training.Training2Lesson(
+            var lessSPL_A0 =  new Training2Lesson(
                 "A0",
                 @"<h4>Introduktion til skoleflyet</h4> 
                 Eleven skal instrueres i, hvordan skoleflyet er indrettet og hvilke elementer, der skal betjenes under flyvningen. <br>
@@ -37,7 +38,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             {
                 Precondition = @"Eleven skal være fyldt 14 år for at kunne flyve solo efter afsluttet uddannelse som svæveflyvepilot"
             };
-            var lessSPL_A1 = new Models.Training.Training2Lesson(
+            var lessSPL_A1 = new Training2Lesson(
                 "A1",
                 @"<h4>Forberedelse til flyvning</h4> 
                 Eleven skal orienteres om, hvad der skal være på plads, inden man kan flyve, og at enhver skolingsflyvning starter med en briefing om, hvad der skal ske under flyvningen.<br>
@@ -46,7 +47,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 <h4>Forberedelse inden start</h4>Eleven skal lære at lave cockpitcheck efter flyets checkliste. Han skal forberede sig mentalt på en afbrudt start samt lære, at wiren under spilstart skal udkobles, hvis min. hastighed eller max. hastighed i spilstart nås.<br>
                 <h4>Tilvænningsflyvning</h4>Eleven skal orienteres om, hvordan flyveplads og terræn ser ud fra luften, og han skal lære at kigge ud inden ændring af flyveretning.<br>"
             );
-            var lessSPL_A2 = new Models.Training.Training2Lesson(
+            var lessSPL_A2 = new Training2Lesson(
                 "A2",
                 @"
 <h4>Fartkontrol og brug af ror</h4>
@@ -55,7 +56,7 @@ Han skal have demonstreret og senere selv prøve at bringe flyet i sin normale po
 Luftbremser og evt. flaps demonstreres, så eleven kan opleve virkningen
                 "
             );
-            var lessSPL_A3 = new Models.Training.Training2Lesson(
+            var lessSPL_A3 = new Training2Lesson(
                 "A3",
                 @"
 <h4>Ligeudflyvning</h4>
@@ -69,7 +70,7 @@ Eleven skal endvidere kunne korrigere kursen ved brug af små bevægelser på side-
 Eleven skal endvidere lære at bruge flyets trim, så flyet selv holder den valgte hastighed, selv om styrepinden slippes<br>
                 "
             );
-            var lessSPL_A4 = new Models.Training.Training2Lesson(
+            var lessSPL_A4 = new Training2Lesson(
                 "A4",
                 @"
 <h4>Rorkoordination</h4>
@@ -80,7 +81,7 @@ Eleven skal endvidere lære, hvordan uldsnoren eller kuglelibellen kommer ind på 
 Ind- og udgang af drej med 20&deg; krængning med korrektion, når krængning er nået. Eleven skal lære at korrigere i drejet<br>
                 "
             );
-            var lessSPL_A5 = new Models.Training.Training2Lesson(
+            var lessSPL_A5 = new Training2Lesson(
                 "A5",
                 @"
 <h4>Drej med 30&deg; krængning</h4>
@@ -94,7 +95,7 @@ Eleven skal lære at sætte en korrekt landingsrunde op under hensyntagen til vind
 Eleven skal lære proceduren for udkig i landingsrunden og forstå betydningen af begrebet sigtepunkt i indflyvningen samt begynde at bruge luftbremser til regulering af indflyvning
                 "
             );
-            var lessSPL_A6 = new Models.Training.Training2Lesson(
+            var lessSPL_A6 = new Training2Lesson(
                 "A6",
                 @"
 <h4>Forberedelse til spilstart</h4>
@@ -124,7 +125,7 @@ Eleven skal fortsætte træningen i indflyvning og landing.
 
                 "
             );
-            var lessSPL_A7 = new Models.Training.Training2Lesson(
+            var lessSPL_A7 = new Training2Lesson(
                 "A7",
                 @"
 <h4>Landing</h4>
@@ -137,7 +138,7 @@ Eleven skal lære at flyve ind med fuldt luftbremseudslag i en stejl nedflyvning,
 Eleven skal lære at landing med kort afløb – teknik ved udelanding. Hvis det er muligt vil denne øvelse med fordel kunne laves et andet sted på flyvepladsen, end hvor landingsfeltet normalt ligger.
                 "
             );
-            var lessSPL_A8 = new Models.Training.Training2Lesson(
+            var lessSPL_A8 = new Training2Lesson(
                 "A8",
                 @"
 <h4>Langsomflyvning</h4>
@@ -154,7 +155,7 @@ Udretning skal også indeholde lukning af luftbremser.<br>
 Eleven skal også prøve stall under stor G-påvirkning – f.eks. med stor krængning eller high-speed-stall
 "
             );
-            var lessSPL_A9 = new Models.Training.Training2Lesson(
+            var lessSPL_A9 = new Training2Lesson(
                 "A9",
                 @"
 <h4>Drej med stor krængning</h4>
@@ -167,7 +168,7 @@ Eleven skal prøve et stall under drej samt lære at rette ud af det.<br>
  Eleven skal endvidere lære at undgå, at et stall under drej udvikler sig til et egentligt spind.
                 "
             );
-            var lessSPL_A10 = new Models.Training.Training2Lesson(
+            var lessSPL_A10 = new Training2Lesson(
                 "A10",
                 @"
 <h4>Begyndende spind</h4>
@@ -180,7 +181,7 @@ Eleven skal prøve et fuldt udviklet spind på mindst én hel omgang.<br>
 Eleven skal kunne håndtere den stressede situation, der kan opstå under denne manøvre.<br>
 Hvis uddannelsesstedet ikke har et skolefly, der kan spinde, bør denne øvelse foregå i et fly, der kan spinde.                "
             );
-            var lessSPL_A11 = new Models.Training.Training2Lesson(
+            var lessSPL_A11 = new Training2Lesson(
                 "A11",
                 @"
 <h4>Opsamling før solo</h4>
@@ -195,14 +196,14 @@ Eleven skal flyve en flyvning med tildækket højdemåler, hvor eleven alene ud fra
 <h4>Gennemgang af relevant teori</h4>
 Eleven skal gennemgå relevant teori med emner fra fagene i SPL-teorien, hvis ikke eleven i forvejen har bestået teorien til SPL-certifikatet. Teorien skal indeholde relevante emner, som vedrører den konkrete flyveplads, som soloflyvningen skal foregå fra – f.eks. luftrum, klarering, miljøbestemmelser osv."
             );
-            var lessSPL_A12 = new Models.Training.Training2Lesson(
+            var lessSPL_A12 = new Training2Lesson(
                 "A12",
                 @"
 <h4>Soloflyvning</h4>
 Eleven skal gennemføre min. tre soloflyvninger på skoleflyet
                 "
             );
-            var lessSPL_B1 = new Models.Training.Training2Lesson(
+            var lessSPL_B1 = new Training2Lesson(
                 "B1",
                 @"
 <h4>Typeomskoling - forberedelse</h4>
@@ -213,14 +214,14 @@ Forberedelsen omfatter gennemgang flyets håndbog med udfyldelse af omskolingsske
 Eleven skal gennemgå den praktiske omskoling til flyet incl. flyvning med lav og høj hastighed, stall fra ligeudflyvning, betjening af optrækkeligt understel
                 "
             );
-            var lessSPL_B2 = new Models.Training.Training2Lesson(
+            var lessSPL_B2 = new Training2Lesson(
                 "B2",
                 @"
 <h4>Soloflyvning på en-sædet svævefly</h4>
 Eleven skal min. have 2 timers soloflyvning, og denne lektion giver mulighed for at opbygge rutine på flyet til opnåelse af disse to timer og til evt. at flyve solostrækflyvning som en senere del af uddannelsen til SPL-certifikatet. <br>
 I denne lektion får eleven lejlighed til at prøve det ensædede svævefly i forskellige vejrforhold                "
             );
-            var lessSPL_B3 = new Models.Training.Training2Lesson(
+            var lessSPL_B3 = new Training2Lesson(
                 "B3",
                 @"
 <h4>Begyndende termikflyvning</h4>
@@ -229,7 +230,7 @@ I starten af øvelsen vil det være hensigtsmæssigt, hvis eleven får lejlighed til
 
                 "
             );
-            var lessSPL_B4 = new Models.Training.Training2Lesson(
+            var lessSPL_B4 = new Training2Lesson(
                 "B4",
                 @"
 <h4>Videregående termikflyvning og anden trafik</h4>
@@ -238,7 +239,7 @@ I denne øvelse vil det være hensigtsmæssigt, hvis eleven får lejlighed til at tr
 
                 "
             );
-            var lessSPL_B5 = new Models.Training.Training2Lesson(
+            var lessSPL_B5 = new Training2Lesson(
                 "B5",
                 @"
 <h4>Udelanding</h4>
@@ -253,7 +254,7 @@ Landingsøvelser til marker skal afbrydes i min. 500’ AGL, medmindre der foreligg
 Hvis en sådan tilladelse foreligger, skal indflyvningen afbrydes senest i 50’ (15 meter) AGL.
                 "
             );
-            var lessSPL_B6 = new Models.Training.Training2Lesson(
+            var lessSPL_B6 = new Training2Lesson(
                 "B6",
                 @"
 <h4>Planlægning af strækflyvning</h4>
@@ -262,7 +263,7 @@ Eleven skal i denne lektion selvstændigt, men under overværelse af en instruktør
                 "
             )
             {Precondition = @"Alle deløvelser i denne lektion skal være gennemgået, inden eleven flyver strækflyvning solo eller med instruktør" };
-            var lessSPL_B7 = new Models.Training.Training2Lesson(
+            var lessSPL_B7 = new Training2Lesson(
                 "B7",
                 @"
 <h4>Strækflyvning og optimering</h4>
@@ -278,7 +279,7 @@ Hvis der ikke er termik, kan denne erstattes af stigning med motor, indtil højde
             {Precondition= @"Alle deløvelser i lektion 43 skal være gennemgået, inden eleven flyver strækflyvning solo eller med instruktør. Hvis
 strækflyvningen flyves solo, skal distancen være min. 50 km, og instruktøren skal autorisere eleven til denne flyvning.
 " };
-            var lessSPL_B8 = new Models.Training.Training2Lesson(
+            var lessSPL_B8 = new Training2Lesson(
                 "B8",
                 @"
 <h4>Forberedelse til certifikatprøve</h4>

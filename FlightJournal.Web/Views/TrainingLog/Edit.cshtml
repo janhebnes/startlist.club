@@ -25,7 +25,7 @@
     </div>
 
 <div class="row no-gutter btn-group-toggle" data-toggle="buttons">
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle"><input type="checkbox"><i class="fa fa-file-text"></i><span class="hidden-xs hidden-sm"> Normer</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle"><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> Normer</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle"><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> Normstatus</span></label>
     <div class="col-xs-2"></div>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle"><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> Manøvrer</span></label>
@@ -33,41 +33,28 @@
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle"><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> Vejr</span></label>
 </div>
 
-@foreach (var program in Model.TrainingPrograms)
-{
-    <div class="row no-gutter btn-group-toggle @program.Id lessonscontainer" data-toggle="buttons">
-        @foreach (var lesson in program.Lessons)
-        {
-            <label class="col-xs-2 col-sm-1 traininglogstatebutton btn @CssHelper.CssClassFor(lesson.Status, false)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@program.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
-        }
-    </div>
-}
+<div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer" data-toggle="buttons">
+    @foreach (var lesson in Model.TrainingProgram.Lessons)
+    {
+        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn @CssHelper.CssClassFor(lesson.Status, false)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
+    }
+</div>
 
-<div id="lessonsoverviewcontainer" class="table-responsive">
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                <th>Norm</th>
-                <th>#Ok</th>
-                <th>#I gang</th>
-                <th>#Ikke startet</th>
-                <th>#i alt</th>
-            </tr>
-        </thead>
+<div id="lessonsoverviewcontainer" class="table-responsive row no-gutter">
+    <table class="table table-condensed col-xs-12">
         <tbody>
-            @foreach (var program in Model.TrainingPrograms)
-            {
-                foreach (var lesson in program.Lessons)
+                @foreach (var lesson in Model.TrainingProgram.Lessons)
                 {
-                    <tr class="@program.Id">
-                        <td>@lesson.Name</td>
-                        <td>@lesson.ExercisesCompleted</td>
-                        <td>@lesson.ExercisesInProgress</td>
-                        <td>@lesson.ExercisesNotStarted</td>
-                        <td>@lesson.ExercisesTotal</td>
+                    var completedpct = 100 * lesson.ExercisesCompleted / lesson.ExercisesTotal;
+                    var wippct = 100 * lesson.ExercisesCompleted / lesson.ExercisesTotal;
+                    <tr class="@Model.TrainingProgram.Id">
+                        <td style="width:5%">@lesson.Name</td>
+                        <td class="progress" style="width: 95%; padding: 0px;" >
+                                <div class="progress-bar btn-success" role="progressbar" style="width: @completedpct%" ></div>
+                                <div class="progress-bar btn-info" role="progressbar" style="width: @wippct%"></div>
+                        </td>
                     </tr>
                 }
-            }
         </tbody>
     </table>
 </div>
@@ -85,25 +72,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var program in Model.TrainingPrograms)
+            @foreach (var lesson in Model.TrainingProgram.Lessons)
             {
-                foreach (var lesson in program.Lessons)
+                foreach (var exercise in lesson.Exercises)
                 {
-                    foreach (var exercise in lesson.Exercises)
-                    {
-                        var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
-                        var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
-                        var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                        var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                        var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
-                        <tr class="@program.Id-@lesson.Id exercise">
-                            <td class="@clz lessondetails" data-lessonid="@lesson.Id">@lesson.Name</td>
-                            <td class="@clz exercisedetails" data-exerciseid="@exercise.Id">@exercise.Description @Html.Raw(infoMarker)</td>
-                            <td class="@clz">@Html.Raw(briefedMarker) </td>
-                            <td class="@clz">@Html.Raw(trainedMarker)</td>
-                            <td class="@clz">@Html.Raw(completedMarker)</td>
-                        </tr>
-                    }
+                    var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                    var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
+                    var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
+                    <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise">
+                        <td class="@clz lessondetails" data-lessonid="@lesson.Id">@lesson.Name</td>
+                        <td class="@clz exercisedetails" data-exerciseid="@exercise.Id">@exercise.Description @Html.Raw(infoMarker)</td>
+                        <td class="@clz">@Html.Raw(briefedMarker) </td>
+                        <td class="@clz">@Html.Raw(trainedMarker)</td>
+                        <td class="@clz">@Html.Raw(completedMarker)</td>
+                    </tr>
                 }
             }
         </tbody>
@@ -252,6 +236,8 @@
     </div>
 </div>
 
+@*TODO: replace this with embedded info in the tree above, we're only showing one Program now, so no benefit*@
+
 @*@foreach (var lesson in Model.TrainingLessons)
 {
     <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@lesson.Description" data-precondition="@lesson.Precondition"></div>
@@ -266,13 +252,13 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#TrainingProgram").change(function() {
-                showRelevantTrainingProgram($(this));
+//                showRelevantTrainingProgram($(this)); 
+//TODO: reload with new program
             });
 
             $(".lessontoggle").change(function() {
                 showRelevantExercises($(this));
             });
-            showRelevantTrainingProgram($("#TrainingProgram"));
 
             $(".exercise").hide();
             $(".table").hide();
@@ -349,20 +335,16 @@
                 $(".table").hide();
         }
 
-        var showRelevantTrainingProgram = function(sel) {
-            @foreach (var program in Model.TrainingPrograms)
-            {
+        @*var showRelevantTrainingProgram = function(sel) {
                 <text>
-                    if (sel.find(":selected").val() == "@program.Id")
-                        $(".@program.Id").show();
+                    if (sel.find(":selected").val() == "@Model.TrainingProgram.Id")
+                        $(".@Model.TrainingProgram.Id").show();
                     else
-                        $(".@program.Id").hide();
+                        $(".@Model.TrainingProgram.Id").hide();
                 </text>
-
-            }
             $(".active").removeClass("active");
             $(".exercise").hide();
-        }
+        }*@
 
 
         var showInfoFromId = function (infoid) {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FlightJournal.Web.Models.Training
+namespace FlightJournal.Web.Models.Training.Catalogue
 {
     /// <summary>
     /// A training program. Example: SPL-S (SPL, spilstart)

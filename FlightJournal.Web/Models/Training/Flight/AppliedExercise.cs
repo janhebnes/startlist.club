@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using FlightJournal.Web.Models.Training.Catalogue;
 
-namespace FlightJournal.Web.Models.Training
+namespace FlightJournal.Web.Models.Training.Flight
 {
     /// <summary>
     /// A Training2Exercise (belonging to a specific lesson in a program) that has been applied in a flight

@@ -225,7 +225,7 @@
     <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\FlightContext\TrainingFlights.cs" />
+    <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\LogbookViewModels.cs" />
@@ -234,11 +234,11 @@
     <Compile Include="Models\TrainingLessonCategory.cs" />
     <Compile Include="Models\TrainingLogDemo.cs" />
     <Compile Include="Models\TrainingLogViewModel.cs" />
-    <Compile Include="Models\Training\AppliedExercise.cs" />
-    <Compile Include="Models\Training\Training2Exercise.cs" />
-    <Compile Include="Models\Training\Training2Lesson.cs" />
-    <Compile Include="Models\Training\Training2Program.cs" />
-    <Compile Include="Models\Training\TrainingFlightAnnotation.cs" />
+    <Compile Include="Models\Training\Flight\AppliedExercise.cs" />
+    <Compile Include="Models\Training\Catalogue\Training2Exercise.cs" />
+    <Compile Include="Models\Training\Catalogue\Training2Lesson.cs" />
+    <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
+    <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -498,6 +498,8 @@
     </Content>
     <Content Include="App_Data\mailSettings.config" />
     <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="ClassDiagram1.cd" />
+    <Content Include="ClassDiagram2.cd" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -762,6 +764,7 @@
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

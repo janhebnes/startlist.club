@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using FlightJournal.Web.Migrations.FlightContext;
 using FlightJournal.Web.Models.Training;
+using FlightJournal.Web.Models.Training.Catalogue;
+using FlightJournal.Web.Models.Training.Flight;
 
 namespace FlightJournal.Web.Models
 {
@@ -29,9 +31,11 @@ namespace FlightJournal.Web.Models
         public DbSet<PilotLogEntry> PilotLogEntries { get; set; }
         //public DbSet<PilotLogEntryVersionHistory> PilotLogEntryVersions { get; set; }
 
-        public DbSet<Training.Training2Program> TrainingPrograms { get; set; }
-        public DbSet<Training.AppliedExercise> AppliedExercises { get; set; }
-        public DbSet<Training.TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
+        public DbSet<Training2Program> TrainingPrograms { get; set; }
+        public DbSet<Training2Lesson> TrainingLessons { get; set; }
+        public DbSet<Training2Exercise> TrainingExercises{ get; set; }
+        public DbSet<AppliedExercise> AppliedExercises { get; set; }
+        public DbSet<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions

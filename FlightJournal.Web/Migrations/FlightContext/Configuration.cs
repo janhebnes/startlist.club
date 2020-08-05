@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training;
+using FlightJournal.Web.Models.Training.Catalogue;
 
 namespace FlightJournal.Web.Migrations.FlightContext
 {
@@ -28,7 +29,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 || !context.TrainingPrograms.Any()
                 )
             {
-                TrainingFlights.InitializeTrainingLessons(context);
+                TrainingProgramCatalogue.InitializeTrainingPrograms(context);
             }
 
             //  Only seed if the database is empty

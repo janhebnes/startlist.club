@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FlightJournal.Web.Models.Training
+namespace FlightJournal.Web.Models.Training.Flight
 {
     /// <summary>
     /// Annotations for a training flight that do not directly refer to a Training2Exercise.

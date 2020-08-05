@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FlightJournal.Web.Models.Training
+namespace FlightJournal.Web.Models.Training.Catalogue
 {
     /// <summary>
     /// A training exercise. The lowest level in the hierarchy. Part of one or more TrainingLessons (defined by Training2LessonExerciseRelation).
