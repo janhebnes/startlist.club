@@ -201,7 +201,10 @@ body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover,
 }
 
 .annotationcontainer {
-    padding: 2px;
-    background-color:darkkhaki;
-    border-top: 1px solid black;
+    background-color:gold;
+}
+
+.bordered {
+    border: 1px solid black;
+    border-radius: 5px;
 }

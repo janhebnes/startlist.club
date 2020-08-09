@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.UI;
 using FlightJournal.Web.Models.Training;
@@ -256,165 +257,116 @@ namespace FlightJournal.Web.Models
 
     public class TrainingProgramViewModel
     {
-        public string Id => _program.Training2ProgramId.ToString();
-        public string Name => _program.Name;
+        public string Id { get; }
 
-        private IEnumerable<TrainingLessonWithOverallStatusViewModel> _lessons;
-
-        public IEnumerable<TrainingLessonWithOverallStatusViewModel> Lessons
-        {
-            get
-            {
-                if (_lessons == null)
-                {
-                    _lessons = _program.Lessons.Select(less => new TrainingLessonWithOverallStatusViewModel(less, _db));
-                }
-
-                return _lessons;
-            }
-        }
-
-
-        private readonly TrainingDataWrapper _db;
-        private readonly Training2Program _program;
+        public string Name { get; } 
+        public IEnumerable<TrainingLessonWithOverallStatusViewModel> Lessons { get; }
 
         public TrainingProgramViewModel(Training2Program program, TrainingDataWrapper db)
         {
-            _db = db;
-            _program = program;
-        }
-
-    }
-
-    public class TrainingLessonViewModel
-    {
-        public string Id => _lesson.Training2LessonId.ToString();
-        public string Name => _lesson.Name;
-        public string Description => _lesson.Purpose;
-        public string Precondition => _lesson.Precondition;
-
-        private readonly Training2Lesson _lesson;
-
-        public TrainingLessonViewModel(Training2Lesson lesson)
-        {
-            _lesson = lesson;
+            Id = program.Training2ProgramId.ToString();
+            Name = program.Name;
+            Lessons = program.Lessons.Select(less => new TrainingLessonWithOverallStatusViewModel(less, db)).ToList();
         }
     }
-
-
-    public class TrainingExerciseViewModel
-    {
-        public string Id => _exercise.Training2ExerciseId.ToString();
-        public string Description => _exercise.Name;
-        public string Note => _exercise.Note;
-
-        private readonly Training2Exercise _exercise;
-
-        public TrainingExerciseViewModel(Training2Exercise  exercise)
-        {
-            _exercise = exercise;
-        }
-    }
-
-
 
     public class TrainingLessonWithOverallStatusViewModel
     {
-        public string Id => _lesson.Training2LessonId.ToString();
-        public string Name => _lesson.Name;
+        public string Id { get; }
+        public string Name { get; }
 
-        public string Description => _lesson.Purpose;
-        private IEnumerable<TrainingExerciseWithOverallStatusViewModel> _exercises;
+        public string Description { get; }
+        public string Precondition { get; }
 
-        public IEnumerable<TrainingExerciseWithOverallStatusViewModel> Exercises
-        {
-            get
-            {
-                if (_exercises == null)
-                {
-                    _exercises = _lesson.Exercises.Select(ex => new TrainingExerciseWithOverallStatusViewModel( ex, _db));
-                }
-                return _exercises;
-            }
-        }
+        public IEnumerable<TrainingExerciseWithOverallStatusViewModel> Exercises { get; }
 
         //TODO: for some reason, this calculation is broken. Numbers (and overall status) do not add up.
-        public int ExercisesTotal => Exercises.Count();
-        public int ExercisesCompleted => Exercises.Count(x=>x.Status == TrainingStatus.Completed);
-        public int ExercisesInProgress => ExercisesTotal - ExercisesCompleted - ExercisesNotStarted;
-        public int ExercisesNotStarted => Exercises.Count(x => x.Status == TrainingStatus.NotStarted);
+        public int ExercisesTotal { get; } 
+        public int ExercisesCompleted { get; }
+        public int ExercisesInProgress { get; }
+        public int ExercisesNotStarted { get; }
 
         public string StatusSummary => $"{ExercisesNotStarted}/{ExercisesInProgress}/{ExercisesCompleted} ({ExercisesTotal})";
-        public TrainingStatus Status => 
-        Exercises.All(x => x.Status == TrainingStatus.NotStarted)
-            ? TrainingStatus.NotStarted
-            : Exercises.All(x => x.Status == TrainingStatus.Completed)
-                ? TrainingStatus.Completed
-                : TrainingStatus.Trained;
+        public TrainingStatus Status { get; }
 
-        private readonly TrainingDataWrapper _db;
-        private readonly Training2Lesson _lesson;
         public TrainingLessonWithOverallStatusViewModel(Training2Lesson lesson, TrainingDataWrapper db)
         {
-            _db = db;
-            _lesson = lesson;
+            Id = lesson.Training2LessonId.ToString();
+            Name = lesson.Name;
+            Description = lesson.Purpose;
+            Precondition = lesson.Precondition;
+            Debug.WriteLine($"{Id} {Name}");
+            Exercises = lesson.Exercises.Select(ex => new TrainingExerciseWithOverallStatusViewModel(ex, db)).ToList();
+            ExercisesTotal = Exercises.Count();
+            ExercisesCompleted = Exercises.Count(x => x.Status == TrainingStatus.Completed);
+            ExercisesNotStarted = Exercises.Count(x => x.Status == TrainingStatus.NotStarted);
+            ExercisesInProgress = ExercisesTotal - ExercisesCompleted - ExercisesNotStarted;
+            Status = ExercisesTotal == ExercisesCompleted ? TrainingStatus.Completed 
+                : ExercisesTotal == ExercisesNotStarted ? TrainingStatus.NotStarted 
+                : TrainingStatus.Trained;
+            Debug.WriteLine($"     {StatusSummary} -> {Status}");
         }
     }
 
 
-
-    //TODO this needs separation into
-    // a 'overall status'  model (status to this day),
-    // a 'flight status' model with the AppliedExercise relevant for a specific flight
-    // a 'catalogue' model (no status, just the descriptions) (?)
-
     public class TrainingExerciseWithOverallStatusViewModel
     {
-        public string Id => _exercise.Training2ExerciseId.ToString();
+        public string Id { get; }
 
-        public string Description => _exercise.Name;
-        public string LongDescription => _exercise.Note;
-        public TrainingStatus Status { get; set; }
+        public string Description { get; }
+        public string LongDescription { get; }
+        public TrainingStatus Status { get; }
+
 
         public bool IsBriefed => Status == TrainingStatus.Briefed 
-                                 || Status == TrainingStatus.Trained 
+                                 || Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
         public bool IsTrained => Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
         public bool IsCompleted => Status == TrainingStatus.Completed;
-        public bool BriefingOnlyRequired => _exercise.IsBriefingOnly;
+        public bool BriefingOnlyRequired { get; } 
 
-        private readonly TrainingDataWrapper _db;
-        private readonly Training2Exercise _exercise;
         public TrainingExerciseWithOverallStatusViewModel(Training2Exercise exercise, TrainingDataWrapper db)
         {
-            _db = db;
-            _exercise = exercise;
-            var totalApplied = _db.AppliedExercises.Where(x => x.Exercise == _exercise).ToList();
-            var isBriefed = totalApplied.Any(y => y.Action == ExerciseAction.Briefed);
-            var isTrained = totalApplied.Any(y => y.Action == ExerciseAction.Trained);
-            var isCompleted = totalApplied.Any(y => y.Action == ExerciseAction.Completed);
+            Id = exercise.Training2ExerciseId.ToString();
+            Description = exercise.Name;
+            LongDescription = exercise.Note;
+            BriefingOnlyRequired = exercise.IsBriefingOnly;
 
             if (true) // fake it for UI demo purposes
             {
                 var toss = new Random().NextDouble();
                 if (toss > 0.8)
-                    Status = _exercise.IsBriefingOnly ? TrainingStatus.Briefed : TrainingStatus.Completed;
+                    Status = TrainingStatus.Completed;
                 else if (toss > 0.6)
-                    Status = _exercise.IsBriefingOnly ? TrainingStatus.Briefed : TrainingStatus.Trained;
+                    Status = TrainingStatus.Trained;
                 else if (toss > 0.4)
                     Status = TrainingStatus.Briefed;
                 else
                     Status = TrainingStatus.NotStarted;
+
+                if(BriefingOnlyRequired)
+                    Status = toss > 0.4 ? TrainingStatus.Briefed : TrainingStatus.NotStarted;
+
+                Debug.WriteLine($"{Description}:{Status}  {IsBriefed}/{IsTrained}/{IsCompleted}");
             }
             else
             {
+                var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
+                var isBriefed = totalApplied.Any(y => y.Action == ExerciseAction.Briefed);
+                var isTrained = totalApplied.Any(y => y.Action == ExerciseAction.Trained);
+                var isCompleted = totalApplied.Any(y => y.Action == ExerciseAction.Completed);
+
                 Status =
                     isCompleted ? TrainingStatus.Completed :
                     isTrained ? TrainingStatus.Trained :
                     isBriefed ? TrainingStatus.Briefed :
                     TrainingStatus.NotStarted;
             }
+
+            if (BriefingOnlyRequired && (Status == TrainingStatus.Briefed || Status == TrainingStatus.Trained))
+                Status = TrainingStatus.Completed;
+
         }
     }
 

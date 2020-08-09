@@ -2,66 +2,79 @@
 @model FlightJournal.Web.Models.TrainingLogViewModel
 
 
-    <div class="row no-gutter">
-        <div class="col-xs-12">
-            <select class="selectpicker" id="TrainingProgram">
-                @foreach (var program in Model.TrainingPrograms)
-                {
-                    <option value="@program.Id">@program.Name</option>
-                }
-            </select>
-        </div>
+<div class="row no-gutter">
+    <div class="col-xs-12">
+        <select class="selectpicker" id="TrainingProgram">
+            @foreach (var program in Model.TrainingPrograms)
+            {
+                <option value="@program.Id">@program.Name</option>
+            }
+        </select>
     </div>
-    <div class="row no-gutter">
-        <div class="col-xs-4 col-sm-2">
-            @Model.Date
-        </div>
-        <div class="col-xs-4 col-sm-2">
-            @Model.Pilot
-        </div>
-        <div class="col-xs-4 col-sm-2">
-            @Model.BackseatPilot
-        </div>
+</div>
+<div class="row no-gutter">
+    <div class="col-xs-4 col-sm-2">
+        @Model.Date
     </div>
+    <div class="col-xs-4 col-sm-2">
+        @Model.Pilot
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        @Model.BackseatPilot
+    </div>
+</div>
 
 <div class="row no-gutter btn-group-toggle" data-toggle="buttons">
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle"><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> Normer</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle"><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> Normstatus</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle"><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> Normer</span></label>
     <div class="col-xs-2"></div>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle"><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> Manøvrer</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle"><input type="checkbox">SFIL</label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle"><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> Vejr</span></label>
 </div>
 
-<div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer" data-toggle="buttons">
-    @foreach (var lesson in Model.TrainingProgram.Lessons)
-    {
-        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn @CssHelper.CssClassFor(lesson.Status, false)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
-    }
-</div>
-
-<div id="lessonsoverviewcontainer" class="table-responsive row no-gutter">
-    <table class="table table-condensed col-xs-12">
+<div id="lessonsoverviewcontainer" class="table-responsive row no-gutter bordered">
+    <table class="table table-condensed col-xs-12 lessonsoverviewtable">
         <tbody>
-                @foreach (var lesson in Model.TrainingProgram.Lessons)
-                {
-                    var completedpct = 100 * lesson.ExercisesCompleted / lesson.ExercisesTotal;
-                    var wippct = 100 * lesson.ExercisesCompleted / lesson.ExercisesTotal;
-                    <tr class="@Model.TrainingProgram.Id">
-                        <td style="width:5%">@lesson.Name</td>
-                        <td class="progress" style="width: 95%; padding: 0px;" >
-                                <div class="progress-bar btn-success" role="progressbar" style="width: @completedpct%" ></div>
-                                <div class="progress-bar btn-info" role="progressbar" style="width: @wippct%"></div>
-                        </td>
-                    </tr>
-                }
+            @foreach (var lesson in Model.TrainingProgram.Lessons)
+            {
+                var completedpct = (int)Math.Round(100.0 * lesson.ExercisesCompleted / lesson.ExercisesTotal);
+                var wippct = (int)Math.Round(100.0 * lesson.ExercisesInProgress / lesson.ExercisesTotal);
+                var nspct = 100 - completedpct - wippct;
+                <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id">
+                    <td style="width: 5%; line-height: 0.7;">@lesson.Name</td>
+                    <td class="progress" style="width: 95%; padding: 0px;">
+                        @if (completedpct > 0)
+                        {
+                            <div class="progress-bar btn-success" role="progressbar" style="width: @completedpct%">@lesson.ExercisesCompleted</div>
+                        }
+                        @if (wippct > 0)
+                        {
+                            <div class="progress-bar btn-info" role="progressbar" style="width: @wippct%; color: black;">@lesson.ExercisesInProgress</div>
+                        }
+                        @if (nspct > 0)
+                        {
+                            <div class="progress-bar btn-default" role="progressbar" style="width: @nspct%; color: black;">@lesson.ExercisesNotStarted</div>
+                        }
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
 
+<div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer bordered" data-toggle="buttons">
+    @foreach (var lesson in Model.TrainingProgram.Lessons)
+    {
+        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
+    }
+    <div class="col-xs-2 col-sm-1 "></div>
+</div>
 
-<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter" >
-    <table class="table table-condensed col-xs-12">
+
+
+<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered">
+    <table class="table table-condensed col-xs-12 lessonsdetailtable">
         <thead>
             <tr>
                 <th></th>
@@ -76,10 +89,10 @@
             {
                 foreach (var exercise in lesson.Exercises)
                 {
-                    var clz = CssHelper.CssClassFor(exercise.Status, exercise.BriefingOnlyRequired);
+                    var clz = CssHelper.CssClassFor(exercise.Status);
                     var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
-                    var trainedMarker = exercise.IsTrained ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
-                    var completedMarker = exercise.IsCompleted ? "X" : exercise.BriefingOnlyRequired ? "" : "<input type='checkbox'>";
+                    var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? "X" : "<input type='checkbox'>";
+                    var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? "X" : "<input type='checkbox'>";
                     var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
                     <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise">
                         <td class="@clz lessondetails" data-lessonid="@lesson.Id">@lesson.Name</td>
@@ -94,8 +107,7 @@
     </table>
 </div>
 
-<div id="maneuverscontainer" class="annotationcontainer">
-    <div class="row">
+<div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter">
         <div class="col-xs-2  col-sm-1">Manøvrer</div>
         <select class="col-xs-10  col-sm-11 selectpicker" multiple title="Vælg manøvrer">
             @foreach (var maneuver in Model.Maneuvers)
@@ -103,17 +115,13 @@
                 <option value="@maneuver.Id" data-icon="@maneuver.Icon">@Html.Raw(maneuver.Name)</option>
             }
         </select>
-    </div>
 </div>
 
 
-<div id="annotationscontainer" class="annotationcontainer">
-    <div class="row">
-        <div class="col-xs-2 col-sm-1">
+<div id="annotationscontainer" class="annotationcontainer bordered row no-gutter"> 
+        <div class="col-xs-12 col-sm-12">
             <button class="btn btn-success" id="sfilok">SFIL ok</button>
         </div>
-    </div>
-    <div class="row">
         <div class="col-xs-2 col-sm-1">Start</div>
         <select class="col-xs-10 col-sm-11 selectpicker annotation" multiple title="Kommenter start">
             @foreach (var annotation in Model.Annotations)
@@ -121,8 +129,6 @@
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
-    </div>
-    <div class="row">
         <div class="col-xs-2 col-sm-1">Flyvning</div>
         <select class="col-xs-10 col-sm-11  selectpicker annotation" multiple title="Kommenter flyvning">
             @foreach (var annotation in Model.Annotations)
@@ -130,8 +136,6 @@
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
-    </div>
-    <div class="row">
         <div class="col-xs-2 col-sm-1">Indflyvning</div>
         <select class="col-xs-10  col-sm-11 selectpicker annotation" multiple title="Kommenter indflyvning">
             @foreach (var annotation in Model.Annotations)
@@ -139,8 +143,6 @@
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
-    </div>
-    <div class="row">
         <div class="col-xs-2 col-sm-1">Landing</div>
         <select class="col-xs-10 col-sm-11  selectpicker annotation" multiple title="Kommenter landing">
             @foreach (var annotation in Model.Annotations)
@@ -148,17 +150,13 @@
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
-    </div>
-    <div class="row">
         <div class="col-xs-2 col-sm-1">Note</div>
         <div class="col-xs-10 col-sm-11 ">
             <textarea style="width: 100%; max-width:100%" id="flightnotes" rows="3"></textarea>
         </div>
-    </div>
 </div>
 
-<div id="weathercontainer" class="annotationcontainer">
-    <div class="row">
+<div id="weathercontainer" class="annotationcontainer bordered row no-gutter">
         <div class="col-xs-2  col-sm-1">Vejr</div>
         <select class="col-xs-5 selectpicker" title="Vindretning">
             @foreach (var v in Model.WindDirections)
@@ -172,7 +170,6 @@
                 <option value="@v.Value">@Html.Raw(v.Text)</option>
             }
         </select>
-    </div>
 </div>
 
 
@@ -236,23 +233,22 @@
     </div>
 </div>
 
-@*TODO: replace this with embedded info in the tree above, we're only showing one Program now, so no benefit*@
 
-@*@foreach (var lesson in Model.TrainingLessons)
+@foreach (var lesson in Model.TrainingProgram.Lessons)
 {
     <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@lesson.Description" data-precondition="@lesson.Precondition"></div>
+    foreach (var exercise in lesson.Exercises)
+    {
+        <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@exercise.LongDescription"></div>
+    }
 }
-@foreach (var exercise in Model.TrainingExercises)
-{
-    <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@exercise.Note"></div>
-}*@
 
 @section scripts
 {
     <script type="text/javascript">
         $(document).ready(function() {
             $("#TrainingProgram").change(function() {
-//                showRelevantTrainingProgram($(this)); 
+//                showRelevantTrainingProgram($(this));
 //TODO: reload with new program
             });
 
@@ -261,7 +257,8 @@
             });
 
             $(".exercise").hide();
-            $(".table").hide();
+            $(".lessonsdetailtable").hide();
+            $(".lessonsoverviewtable").hide();
 
             $(".exercisedetails").click(function() {
                 showInfoFromId($(this).data("exerciseid"));
@@ -278,6 +275,7 @@
             $("#annotationscontainer").hide();
             $("#maneuverscontainer").hide();
             $("#weathercontainer").hide();
+            $("#lessonsoverviewcontainer").hide();
 
 
             $("#maneuverstoggle").click(function() {
@@ -299,10 +297,13 @@
                     $("#weathercontainer").show();
             });
             $("#lessonoverviewtoggle").click(function() {
-                if ($(this).find("input").is(":checked"))
+                if ($(this).find("input").is(":checked")) {
                     $("#lessonsoverviewcontainer").hide();
-                else
+                    $(".lessonsoverviewtable").hide();
+                } else {
                     $("#lessonsoverviewcontainer").show();
+                    $(".lessonsoverviewtable").show();
+                }
             });
             $("#lessonstoggle").click(function() {
                 if ($(this).find("input").is(":checked"))
@@ -319,8 +320,8 @@
         });
 
 
-        var showRelevantExercises = function (lesson) {
-            $(".table").show();
+        var showRelevantExercises = function(lesson) {
+            $(".lessonsdetailtable").show();
             var key = "." + lesson.data("lessonclz");
             $(key).each(function() {
                 if (lesson.is(":checked"))
@@ -330,9 +331,9 @@
             });
             var anyLessons = $(".lessontoggle:checked").length;
             if (anyLessons)
-                $(".table").show();
+                $(".lessonsdetailtable").show();
             else
-                $(".table").hide();
+                $(".lessonsdetailtable").hide();
         }
 
         @*var showRelevantTrainingProgram = function(sel) {
@@ -347,10 +348,10 @@
         }*@
 
 
-        var showInfoFromId = function (infoid) {
+        var showInfoFromId = function(infoid) {
             var info = $("#" + infoid);
-            var descr= info.data("description");
-            var precondition= info.data("precondition");
+            var descr = info.data("description");
+            var precondition = info.data("precondition");
             var title = info.data("header");
             if (descr && descr.length) {
                 $("#exercisemodaltitle").html(title);

@@ -4,13 +4,13 @@ namespace FlightJournal.Web.Views
 {
     public class CssHelper
     {
-        public static string CssClassFor(TrainingStatus status, bool isBriefingOnlyRequired)
+        public static string CssClassFor(TrainingStatus status)
         {
             string clz;
             switch (status)
             {
                 case TrainingStatus.Briefed:
-                    clz = isBriefingOnlyRequired ? "btn-success" : "btn-info";
+                    clz = "btn-info";
                     break;
                 case TrainingStatus.Trained:
                     clz = "btn-info";
