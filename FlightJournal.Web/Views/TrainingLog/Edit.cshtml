@@ -89,10 +89,11 @@
             {
                 foreach (var exercise in lesson.Exercises)
                 {
+                    var checkbox = "<input type='checkbox' class='lessoncheckbox'>";
                     var clz = CssHelper.CssClassFor(exercise.Status);
-                    var briefedMarker = exercise.IsBriefed ? "X" : "<input type='checkbox'>";
-                    var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? "X" : "<input type='checkbox'>";
-                    var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? "X" : "<input type='checkbox'>";
+                    var briefedMarker = exercise.IsBriefed ? "X" : checkbox;
+                    var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? "X" : checkbox;
+                    var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? "X" : checkbox;
                     var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
                     <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise">
                         <td class="@clz lessondetails" data-lessonid="@lesson.Id">@lesson.Name</td>
@@ -109,7 +110,7 @@
 
 <div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter">
         <div class="col-xs-2  col-sm-1">Manøvrer</div>
-        <select class="col-xs-10  col-sm-11 selectpicker" multiple title="Vælg manøvrer">
+        <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple title="Vælg manøvrer" id="maneuver-sel">
             @foreach (var maneuver in Model.Maneuvers)
             {
                 <option value="@maneuver.Id" data-icon="@maneuver.Icon">@Html.Raw(maneuver.Name)</option>
@@ -123,28 +124,28 @@
             <button class="btn btn-success" id="sfilok">SFIL ok</button>
         </div>
         <div class="col-xs-2 col-sm-1">Start</div>
-        <select class="col-xs-10 col-sm-11 selectpicker annotation" multiple title="Kommenter start">
+        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title="Kommenter start">
             @foreach (var annotation in Model.Annotations)
             {
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
         <div class="col-xs-2 col-sm-1">Flyvning</div>
-        <select class="col-xs-10 col-sm-11  selectpicker annotation" multiple title="Kommenter flyvning">
+        <select class="col-xs-10 col-sm-11  selectpicker annotation userselection"  id="s-ann" multiple title="Kommenter flyvning">
             @foreach (var annotation in Model.Annotations)
             {
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
         <div class="col-xs-2 col-sm-1">Indflyvning</div>
-        <select class="col-xs-10  col-sm-11 selectpicker annotation" multiple title="Kommenter indflyvning">
+        <select class="col-xs-10  col-sm-11 selectpicker annotation userselection"  id="i-ann" multiple title="Kommenter indflyvning">
             @foreach (var annotation in Model.Annotations)
             {
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
             }
         </select>
         <div class="col-xs-2 col-sm-1">Landing</div>
-        <select class="col-xs-10 col-sm-11  selectpicker annotation" multiple title="Kommenter landing">
+        <select class="col-xs-10 col-sm-11  selectpicker annotation userselection"  id="l-ann" multiple title="Kommenter landing">
             @foreach (var annotation in Model.Annotations)
             {
                 <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
@@ -158,13 +159,13 @@
 
 <div id="weathercontainer" class="annotationcontainer bordered row no-gutter">
         <div class="col-xs-2  col-sm-1">Vejr</div>
-        <select class="col-xs-5 selectpicker" title="Vindretning">
+        <select class="col-xs-5 selectpicker userselection" title="Vindretning" id="winddirection">
             @foreach (var v in Model.WindDirections)
             {
                 <option value="@v.Value">@Html.Raw(v.Text)</option>
             }
         </select>
-        <select class="col-xs-4 selectpicker" title="Vindstyrke">
+        <select class="col-xs-4 selectpicker userselection" title="Vindhastighed" id="windspeed">
             @foreach (var v in Model.WindSpeeds)
             {
                 <option value="@v.Value">@Html.Raw(v.Text)</option>
@@ -177,8 +178,8 @@
 <div class="row" style="margin-top: 30px">
     <div class="col-md-6">
         <div class="btn-group btn-group-lg">
-            <input type="submit" value="@_("Save")" class="btn btn-primary" />
-            <button class="btn btn-default">@_("Back")</button>
+            <button class="btn btn-primary" id="savebtn" >@_("Save")</button>
+            <button class="btn btn-default" id="backbtn">@_("Back")</button>
             <button class="btn btn-default" id="showrecentflights">@_("Show last 15 flights")</button>
         </div>
     </div>
@@ -317,8 +318,30 @@
                     $(this).selectpicker('val', 'Ok');
                 });
             });
+
+            $("#savebtn").click(function() {
+                if (!isDirty())
+                    window.history.back();
+                else {
+                    alert("Saving is not implemented yet");
+                }
+
+            });
+            $("#backbtn").click(function() {
+                if (!isDirty() ||
+                    confirm("Du har data som ikke er gemt - vil du forlade siden og undlade at gemme ændringerne ?")) {
+                    window.history.back();
+                }
+            });
         });
 
+        var isDirty = function() {
+            var hasExerciseData = $(".lessoncheckbox:checked").length > 0;
+            var annotationCount = 0;
+            $(".userselection").each(function() { if ($(this).val()) ++annotationCount; });
+            var hasNote = $("#flightnotes").val().length > 0;
+            return hasExerciseData || hasNote || annotationCount > 0;
+        }
 
         var showRelevantExercises = function(lesson) {
             $(".lessonsdetailtable").show();
