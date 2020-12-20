@@ -498,8 +498,6 @@
     </Content>
     <Content Include="App_Data\mailSettings.config" />
     <Content Include="Content\bootstrap-select.css.map" />
-    <Content Include="ClassDiagram1.cd" />
-    <Content Include="ClassDiagram2.cd" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
