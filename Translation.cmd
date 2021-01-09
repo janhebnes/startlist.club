@@ -4,18 +4,26 @@ rem - REQUIRED - INSTALL NuGet packages\Gettext.Tools.0.19.8.1 (is included in t
 rem -------------------------- 
 
 rem 1) Generate inputfiles list used by xgettext
+echo Building list of files...
 
+goto modelC
+
+:modelA
 rem MODEL A (absolute path)
-rem dir FlightJournal.Web\*.cs /S /B > translation-inputfiles.txt
-rem dir FlightJournal.Web\*.cshtml /S /B >> translation-inputfiles.txt
+dir FlightJournal.Web\*.cs /S /B > translation-inputfiles.txt
+dir FlightJournal.Web\*.cshtml /S /B >> translation-inputfiles.txt
+goto start
 
+:modelB
 rem MODEL B Specific folders - removing obj and the like (absolute path) 
-rem dir FlightJournal.Web\Controllers\*.cs /S /B > translation-inputfiles.txt
-rem dir FlightJournal.Web\Models\*.cs /S /B > translation-inputfiles.txt
-rem dir FlightJournal.Web\Views\*.cs /S /B > translation-inputfiles.txt
-rem dir FlightJournal.Web\Views\*.cshtml /S /B >> translation-inputfiles.txt
+dir FlightJournal.Web\Controllers\*.cs /S /B > translation-inputfiles.txt
+dir FlightJournal.Web\Models\*.cs /S /B >> translation-inputfiles.txt
+dir FlightJournal.Web\Views\*.cs /S /B >> translation-inputfiles.txt
+dir FlightJournal.Web\Views\*.cshtml /S /B >> translation-inputfiles.txt
+goto start
 
-rem MODEL C Relative paths - but with obj folders and package folders (anyone fresh for a fix ?)
+:modelC
+rem MODEL C Relative paths - but without obj folders and package folders
 @echo on>translation-inputfiles.txt
 @echo off 
 setlocal EnableDelayedExpansion
@@ -23,11 +31,17 @@ for /L %%n in (1 1 500) do if "!__cd__:~%%n,1!" neq "" set /a "len=%%n+1"
 setlocal DisableDelayedExpansion
 for /r . %%g in (*.cs,*.cshtml) do (
   set "absPath=%%g"
-  setlocal EnableDelayedExpansion
-  set "relPath=!absPath:~%len%!"
-  echo(!relPath! >> translation-inputfiles.txt
-  endlocal
+
+  echo "%%g" |findstr /i "\obj\ \packages\">nul ||(
+    setlocal EnableDelayedExpansion
+    set "relPath=!absPath:~%len%!"
+    echo(!relPath! >> translation-inputfiles.txt
+    endlocal
+  )
 )
+goto start
+
+:start
 
 rem Create a new .pot from source, place it in the Language folder, and merge with the existing .po file
 echo Regenerating FlightJournal.Web\Translations\messages.pot po Template file
