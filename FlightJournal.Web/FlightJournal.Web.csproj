@@ -351,6 +351,16 @@
     <Content Include="Content\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\introjs\introjs-rtl.css" />
+    <Content Include="Content\introjs\introjs-rtl.min.css" />
+    <Content Include="Content\introjs\introjs.css" />
+    <Content Include="Content\introjs\introjs.min.css" />
+    <Content Include="Content\introjs\themes\introjs-dark.css" />
+    <Content Include="Content\introjs\themes\introjs-flattener.css" />
+    <Content Include="Content\introjs\themes\introjs-modern.css" />
+    <Content Include="Content\introjs\themes\introjs-nassim.css" />
+    <Content Include="Content\introjs\themes\introjs-nazanin.css" />
+    <Content Include="Content\introjs\themes\introjs-royal.css" />
     <Content Include="Content\tablesorter.asc.gif" />
     <Content Include="Content\tablesorter.bg.gif" />
     <Content Include="Content\tablesorter.desc.gif" />
@@ -492,6 +502,8 @@
     <Content Include="Scripts\i18n\defaults-zh_CN.min.js" />
     <Content Include="Scripts\i18n\defaults-zh_TW.js" />
     <Content Include="Scripts\i18n\defaults-zh_TW.min.js" />
+    <Content Include="Scripts\introjs\intro.js" />
+    <Content Include="Scripts\introjs\intro.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="App_Data\ServiceCredentials.config">
       <SubType>Designer</SubType>

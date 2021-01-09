@@ -119,6 +119,7 @@
                     }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_LanguagePartial")
+                <li><a href="#" id="showhelp"><i class="fa fa-question-circle" title="@_("Guided tour")"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -139,6 +140,44 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/intro")
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        var introOptions = {
+            Next : "@_("Next->")",
+            Prev : "@_("<-Previous")",
+            Skip : "@_("Skip")",
+            Done : "@_("Done")"
+        };
+
+    $(document).ready(function() {
+        if ($(".tourable").length > 0) {
+            var intro = introJs();
+            intro.setOption("exitOnEsc", true);
+            intro.setOption("keyboardNavigation", true);
+            intro.setOption("hidePrev", true);
+            intro.setOption("hideNext", true);
+            intro.setOption("scrollToElement", true);
+            intro.setOption("disableInteraction", true);
+            intro.setOption("exitOnOverlayClick", false);
+            intro.setOption("showBullets", false);
+            intro.setOption("showStepNumbers", false);
+            intro.setOption("tooltipPosition", "auto");
+
+            intro.setOption("nextLabel", introOptions.Next);
+            intro.setOption("prevLabel", introOptions.Prev);
+            intro.setOption("skipLabel", introOptions.Skip);
+            intro.setOption("doneLabel", introOptions.Done);
+
+            $("#showhelp").click(function() {
+                intro.start();
+            });
+        } else {
+            $("#showhelp").hide();
+        }
+    });
+    </script>
+
 </body>
 </html>

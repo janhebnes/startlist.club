@@ -7,6 +7,9 @@ namespace FlightJournal.Web
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/intro").Include(
+                        "~/Scripts/introjs/intro.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -40,7 +43,8 @@ namespace FlightJournal.Web
                       "~/Content/themes/base/autocomplete.css",
                       "~/Content/themes/base/datepicker.css",
                       "~/Content/themes/base/theme.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/introjs/introjs.min.css"));
                       //"~/Content/themes/base/resizable.css",
                       //"~/Content/themes/base/selectable.css",
                       //"~/Content/themes/base/accordion.css",
