@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-01-09 13:30+0100\n"
+"POT-Creation-Date: 2021-01-09 23:09+0100\n"
 "PO-Revision-Date: 2015-06-23 22:51+0100\n"
 "Last-Translator: André Ebert <andre@ebert.no>\n"
 "Language-Team: da <da@li.org>\n"
@@ -102,6 +102,7 @@ msgstr "Avgang"
 #: FlightJournal.Web\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:46
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:198
 msgid "Landing"
 msgstr "Landing"
 
@@ -223,6 +224,7 @@ msgstr "Opprettet"
 
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:108
 #: FlightJournal.Web\Models\Pilot.cs:31 FlightJournal.Web\Models\Plane.cs:41
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:205
 msgid "Note"
 msgstr "Merknad"
 
@@ -277,6 +279,7 @@ msgid "Pilot status"
 msgstr "Pilot status"
 
 #: FlightJournal.Web\Models\PilotLogEntry.cs:31
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:106
 msgid "Lesson"
 msgstr "Norm"
 
@@ -495,7 +498,7 @@ msgstr "Opprett flygning"
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:182
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:233
 msgid "Back"
 msgstr "Tilbake"
 
@@ -539,6 +542,7 @@ msgstr "Er du sikker på at du vil slette denne turen?"
 
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:24
 #: FlightJournal.Web\Views\Flight\History.cshtml:20
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:184
 msgid "Flight"
 msgstr "Flygning"
 
@@ -836,9 +840,29 @@ msgstr "Klubber"
 msgid "[Create relation to pilotprofile]"
 msgstr "[Opret relation til pilotprofil]"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:133
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:122
+msgid "Guided tour"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:134
 msgid "About"
 msgstr "Om"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:164
+msgid "Next >"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:165
+msgid "< Prev"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:166
+msgid "Skip"
+msgstr ""
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:167
+msgid "Done"
+msgstr ""
 
 #: FlightJournal.Web\Views\Shared\_LoginPartial.cshtml:39
 msgid "Flight change history"
@@ -855,12 +879,191 @@ msgstr "Logg ut"
 msgid "Back to List"
 msgstr "Tilbake til listen"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:181
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:6
+msgid "example"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:12
+msgid "Selection of training program"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:21
+#, fuzzy
+msgid "Flight info"
+msgstr "Flygning"
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:34
+msgid "Show/hide bar-chart style overview of lessons and their completion"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:34
+msgid "Lesson progress"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:35
+msgid "Show/hide buttons to access exercises for each lesson"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:35
+#, fuzzy
+msgid "Lesson details"
+msgstr "Merknad"
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:37
+msgid "Show/hide selection of maneuvers done during the flight"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:37
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:163
+msgid "Maneuvers"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:38
+msgid "Show/hide options for grading the flight phases"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:38
+msgid "SFIL"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:39
+msgid "Show/hide options for describing the weather during the flight"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:39
+msgid "Weather"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:43
+msgid "Progress for each lesson"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:57
+msgid "Number of completed exercises is shown in this style"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:61
+msgid "Number of exercises in progress is shown in this style"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:65
+msgid "Number of exercises not started yet is shown in this style"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:92
+msgid ""
+"Click a button to see the detailed exercise info and status for the lesson"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:102
+msgid "All lessons and exercises with status"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:107
+msgid "Exercise"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:109
+msgid "Briefed"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:110
+msgid "Trained"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:111
+msgid "Ok"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:135
+msgid "Click the icon to see a description of the exercise"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:141
+msgid "Check this when the exercise has been briefed"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:143
+msgid ""
+"Check this when the exercise has been trained but is not yet at a sufficient "
+"level"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:145
+msgid "Check this when the exercise is completed"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:162
+msgid "Select the maneuvers performed during the flight"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:164
+msgid "Select one or more maneuvers"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:173
+msgid "Here you can grade, annotate, and comment the phases of the flight "
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:175
+msgid "Everything ok"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:177
+msgid "Launch"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:178
+msgid "Grade the launch"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:185
+msgid "Grade the flight phase between launch and approach"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:191
+msgid "Approach"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:192
+msgid "Grade the approach phase"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:199
+#, fuzzy
+msgid "Grade the landing"
+msgstr "Tacho Landing"
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:206
+msgid ""
+"If you have comments beyond the predefined selections above, you can enter "
+"them here"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:211
+msgid ""
+"In case the weather has been a factor (for better or worse), you can "
+"describe it here"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:213
+msgid "Wind direction"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:219
+msgid "Wind speed"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:232
 msgid "Save"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:183
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234
 msgid "Show last 15 flights"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:9
+msgid "tourable"
 msgstr ""
 
 #: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3

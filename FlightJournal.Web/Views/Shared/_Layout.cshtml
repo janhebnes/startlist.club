@@ -119,7 +119,7 @@
                     }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_LanguagePartial")
-                <li><a href="#" id="showhelp"><i class="fa fa-question-circle" title="@_("Guided tour")"></i></a></li>
+                    <li><a href="#" id="showhelp"><i class="fa fa-question-circle" title=@Html.Raw(__("Guided tour"))></i></a></li>
                 </ul>
             </div>
         </div>
@@ -137,19 +137,15 @@
         </footer>
     </div>
 
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/intro")
     @RenderSection("scripts", required: false)
 
-    <script type="text/javascript">
-        var introOptions = {
-            Next : "@_("Next->")",
-            Prev : "@_("<-Previous")",
-            Skip : "@_("Skip")",
-            Done : "@_("Done")"
-        };
+
+<script type="text/javascript">
 
     $(document).ready(function() {
         if ($(".tourable").length > 0) {
@@ -165,10 +161,10 @@
             intro.setOption("showStepNumbers", false);
             intro.setOption("tooltipPosition", "auto");
 
-            intro.setOption("nextLabel", introOptions.Next);
-            intro.setOption("prevLabel", introOptions.Prev);
-            intro.setOption("skipLabel", introOptions.Skip);
-            intro.setOption("doneLabel", introOptions.Done);
+            intro.setOption("nextLabel", @Html.Raw(__("Next >")));
+            intro.setOption("prevLabel", @Html.Raw(__("< Prev")));
+            intro.setOption("skipLabel", @Html.Raw(__("Skip")));
+            intro.setOption("doneLabel", @Html.Raw(__("Done")));
 
             $("#showhelp").click(function() {
                 intro.start();
@@ -177,7 +173,8 @@
             $("#showhelp").hide();
         }
     });
-    </script>
+</script>
+    
 
 </body>
 </html>

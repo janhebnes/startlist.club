@@ -18,6 +18,10 @@ namespace FlightJournal.Web.Translations
         {
             return Internationalization.GetText(en, Internationalization.LanguageCode);
         }
+        public string __(string en)
+        {
+            return "\"" + Internationalization.GetText(en, Internationalization.LanguageCode) + "\"";
+        }
 
         /// <summary>
         /// Localized Translation (i18n) String format
