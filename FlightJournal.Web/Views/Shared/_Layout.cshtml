@@ -167,6 +167,16 @@
             intro.setOption("doneLabel", @Html.Raw(__("Done")));
 
             $("#showhelp").click(function() {
+                // show intro tooltips only for visible elements
+                $("[data-intro]:hidden").each(function(){ 
+                    var $t = $(this);
+                    $t.attr({'data-intro-hidden':$t.attr('data-intro')}).removeAttr('data-intro');
+                });
+                $("[data-intro-hidden]:visible").each(function(){
+                    var $t = $(this);
+                    $t.attr({'data-intro':$t.attr('data-intro-hidden')}).removeAttr('data-intro-hidden');                    
+                });
+                
                 intro.start();
             });
         } else {

@@ -1,10 +1,10 @@
 ﻿@using FlightJournal.Web.Views
 @model FlightJournal.Web.Models.TrainingLogViewModel
 
-<div class="tourable"></div>
+<div class="tourable" data-step="1" data-intro=@Html.Raw(__("On this page, you can plan a training flight based on the current status of the pilot, and you can evaluate and grade the flight. Note that the guide only shows descriptions for currently visible elements, so you may have to open the sections you are interested in"))></div>
 
 <div class="row no-gutter">
-    <div class="col-xs-12" data-step="1" data-intro=@Html.Raw(__("Select the training program for this flight"))>
+    <div class="col-xs-12" data-step="2" data-intro=@Html.Raw(__("Select the training program for this flight. This determines which lessons and exercises you will see below"))>
         <select class="selectpicker" id="TrainingProgram">
             @foreach (var program in Model.TrainingPrograms)
             {
@@ -13,7 +13,7 @@
         </select>
     </div>
 </div>
-<div class="row no-gutter" data-step="2" data-intro=@Html.Raw(__("Flight info"))>
+<div class="row no-gutter" data-step="3" data-intro=@Html.Raw(__("Flight info"))>
     <div class="col-xs-4 col-sm-2">
         @Model.Date
     </div>
@@ -26,56 +26,62 @@
 </div>
 
 <div class="row no-gutter btn-group-toggle" data-toggle="buttons" >
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="3" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of lessons and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide buttons to access exercises for each lesson"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of lessons and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access exercises for each lesson"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
     <div class="col-xs-2"></div>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="6" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox">@_("Grading")</label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide options for describing the weather during the flight"))><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> @_("Weather")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="6" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox">@_("Grading")</label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle" data-step="8" data-intro=@Html.Raw(__("Show/hide options for describing the weather during the flight"))><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> @_("Weather")</span></label>
 </div>
 
 <div id="lessonsoverviewcontainer" class="table-responsive row no-gutter bordered">
     <table class="table table-condensed col-xs-12 lessonsoverviewtable" data-step="10" data-intro=@Html.Raw(__("Progress for each lesson"))>
         <tbody>
-        @{ var lessonNo = 0;}
+        @{
+            var introDefCshown = false;
+            var introDefWshown = false;
+            var introDefNshown = false;
+        }
         @foreach (var lesson in Model.TrainingProgram.Lessons)
         {
             var completedpct = (int) Math.Round(100.0 * lesson.ExercisesCompleted / lesson.ExercisesTotal);
             var wippct = (int) Math.Round(100.0 * lesson.ExercisesInProgress / lesson.ExercisesTotal);
             var nspct = 100 - completedpct - wippct;
-            // Use the 3 first lessons as anchors for the intro texts
-            var introdef = "";
-            var introtxt = "";
-            switch (lessonNo)
+            var introdefC = "";
+            var introdefW = "";
+            var introdefN = "";
+            if (!introDefCshown && completedpct > 0)
             {
-                case 0:
-                    introtxt = Html.Raw(__("Number of completed exercises is shown in this style")).ToString();
-                    introdef = $"data-step=11 data-tooltipClass=btn-success data-intro={introtxt}";
-                    break;
-                case 1:
-                    introtxt = Html.Raw(__("Number of exercises in progress is shown in this style")).ToString();
-                    introdef = $"data-step=12 data-tooltipClass=btn-info data-intro={introtxt}";
-                    break;
-                case 2:
-                    introtxt = Html.Raw(__("Number of exercises not started yet is shown in this style")).ToString();
-                    introdef = $"data-step=13 data-tooltipClass=btn-default data-intro={introtxt}";
-                    break;
+                var introTxt = Html.Raw(__("Number of completed exercises is shown in this style")).ToString();
+                introdefC = $"data-step=11 data-tooltipClass=status-completed data-intro={introTxt}";
+                introDefCshown = true;
             }
-            lessonNo++;
-            <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdef)>
+            if (!introDefWshown && wippct > 0)
+            {
+                var introTxt = Html.Raw(__("Number of exercises in progress is shown in this style")).ToString();
+                introdefW = $"data-step=12 data-tooltipClass=status-in-progress data-intro={introTxt}";
+                introDefWshown = true;
+            }
+            if (!introDefNshown && nspct > 0)
+            {
+                var introTxt = Html.Raw(__("Number of exercises not started yet is shown in this style")).ToString();
+                introdefN = $"data-step=13 data-tooltipClass=status-not-started data-intro={introTxt}";
+                introDefNshown = true;
+            }
+            <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id" >
                 <td style="width: 5%; line-height: 0.7;">@lesson.Name</td>
                 <td class="progress" style="width: 95%; padding: 0px;">
                 @if (completedpct > 0)
                 {
-                    <div class="progress-bar btn-success" role="progressbar" style="width: @completedpct%">@lesson.ExercisesCompleted</div>
+                    <div class="progress-bar status-completed" role="progressbar" style="width: @completedpct%" @Html.Raw(introdefC)>@lesson.ExercisesCompleted</div>
                 }
                 @if (wippct > 0)
                 {
-                    <div class="progress-bar btn-info" role="progressbar" style="width: @wippct%; color: black;">@lesson.ExercisesInProgress</div>
-            }
+                    <div class="progress-bar status-in-progress" role="progressbar" style="width: @wippct%;"  @Html.Raw(introdefW)> @lesson.ExercisesInProgress</div>
+                }
                 @if (nspct > 0)
                 {
-                    <div class="progress-bar btn-default" role="progressbar" style="width: @nspct%; color: black;">@lesson.ExercisesNotStarted</div>
+                    <div class="progress-bar status-not-started" role="progressbar" style="width: @nspct%;"  @Html.Raw(introdefN)>@lesson.ExercisesNotStarted</div>
                 }
                 </td>
             </tr>
@@ -87,15 +93,15 @@
 <div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer bordered" data-toggle="buttons" data-step="20" data-intro=@Html.Raw(__("Click a button to see the detailed exercise info and status for the lesson"))>
     @foreach (var lesson in Model.TrainingProgram.Lessons)
     {
-        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
+        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn btn-default @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
     }
     <div class="col-xs-2 col-sm-1 "></div>
 </div>
 
 
 
-<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered" data-step="30" data-intro=@Html.Raw(__("All lessons and exercises with status"))>
-    <table class="table table-condensed col-xs-12 lessonsdetailtable">
+<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered" >
+    <table class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All lessons and exercises with status"))>
         <thead>
             <tr>
                 <th>@_("Lesson")</th>
@@ -115,27 +121,29 @@
         {
             foreach (var exercise in lesson.Exercises)
             {
-                var checkbox = "<input type='checkbox' class='lessoncheckbox'>";
+                var checkedBox = "<input type='checkbox' class='lessoncheckbox' checked>";
+                var uncheckedBox = "<input type='checkbox' class='lessoncheckbox'>";
                 var clz = CssHelper.CssClassFor(exercise.Status);
-                var briefedMarker = exercise.IsBriefed ? "X" : checkbox;
-                var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? "X" : checkbox;
-                var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? "X" : checkbox;
+                var briefedMarker = exercise.IsBriefed ? checkedBox : uncheckedBox;
+                var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? checkedBox : uncheckedBox;
+                var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? checkedBox : uncheckedBox;
                 var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
                 var introdefL = "";
                 var introdefX = "";
                 var introdefB = "";
                 var introdefT = "";
                 var introdefC = "";
-                if (!helpIntroShown && infoMarker.Any())
+                if (!helpIntroShown && exercise.LongDescription.Any())
                 {
+                    // show lesson/exercise help on first exercise with long description
                     var introtxtL = Html.Raw(__("Click here to see a description of the lesson")).ToString();
                     introdefL = $"data-step=32 data-intro={introtxtL}";
                     var introtxtX = Html.Raw(__("Click here to see a description of the exercise (if available)")).ToString();
                     introdefX = $"data-step=33 data-intro={introtxtX}";
                     helpIntroShown = true;
                 }
-                else if (!statusIntroShown && completedMarker!="." && trainedMarker!=".")
-                {
+                else if (!statusIntroShown && !exercise.BriefingOnlyRequired)
+                {   // show checkbox info on first 'fresh' exercise
                     var introtxtB = Html.Raw(__("Check this when the exercise has been briefed")).ToString();
                     introdefB = $"data-step=34 data-intro={introtxtB}";
                     var introtxtT = Html.Raw(__("Check this when the exercise has been trained but is not yet at a sufficient level")).ToString();
@@ -145,11 +153,11 @@
                     statusIntroShown = true;
                 }
                 <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise">
-                    <td class="@clz lessondetails" data-lessonid="@lesson.Id"  @Html.Raw(introdefL)>@lesson.Name</td>
-                    <td class="@clz exercisedetails" data-exerciseid="@exercise.Id"  @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
-                    <td class="@clz" @Html.Raw(introdefB)>@Html.Raw(briefedMarker)</td>
-                    <td class="@clz" @Html.Raw(introdefT)>@Html.Raw(trainedMarker)</td>
-                    <td class="@clz" @Html.Raw(introdefC)>@Html.Raw(completedMarker)</td>
+                    <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id"  @Html.Raw(introdefL)>@lesson.Name</td>
+                    <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id"  @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
+                    <td class="btn-default statusbutton @clz" @Html.Raw(introdefB)>@Html.Raw(briefedMarker)</td>
+                    <td class="btn-default statusbutton @clz" @Html.Raw(introdefT)>@Html.Raw(trainedMarker)</td>
+                    <td class="btn-default statusbutton @clz" @Html.Raw(introdefC)>@Html.Raw(completedMarker)</td>
                 </tr>
             }
         }
@@ -283,7 +291,6 @@
     </div>
 </div>
 
-
 @foreach (var lesson in Model.TrainingProgram.Lessons)
 {
     <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@lesson.Description" data-precondition="@lesson.Precondition"></div>
@@ -372,13 +379,13 @@
                 if (!isDirty())
                     window.history.back();
                 else {
-                    alert("Saving is not implemented yet");
+                    alert(@Html.Raw(__("Saving is not implemented yet")));
                 }
 
             });
             $("#backbtn").click(function() {
                 if (!isDirty() ||
-                    confirm("Du har data som ikke er gemt - vil du forlade siden og undlade at gemme ændringerne ?")) {
+                    confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and loose the changes?")))) {
                     window.history.back();
                 }
             });

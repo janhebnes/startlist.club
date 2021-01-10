@@ -16,11 +16,14 @@ namespace FlightJournal.Web.Translations
         /// <example>@_("Country")</example>
         public string _(string en)
         {
-            return Internationalization.GetText(en, Internationalization.LanguageCode);
+            var s = Internationalization.GetText(en, Internationalization.LanguageCode);
+            if (s != " ")
+                return s.Trim();
+            return s;
         }
         public string __(string en)
         {
-            return "\"" + Internationalization.GetText(en, Internationalization.LanguageCode) + "\"";
+            return "\"" + _(en) + "\"";
         }
 
         /// <summary>
