@@ -25,6 +25,7 @@ namespace FlightJournal.Web.Models.Training.Flight
         public IEnumerable<FlightPhaseAnnotation> LandingAnnotation { get; set; } = new List<FlightPhaseAnnotation>();
 
         public IEnumerable<FlightManeuver> Maneuvers { get; set; } = new List<FlightManeuver>();
+        public IEnumerable<Predefined.Manouvre> Manouvres { get; set; } = new List<Predefined.Manouvre>();
         public int WindDirection { get; set; } = -1;
         public int WindSpeedInKnots { get; set; } = -1;
     }

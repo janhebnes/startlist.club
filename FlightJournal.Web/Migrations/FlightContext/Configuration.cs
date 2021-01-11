@@ -5,6 +5,7 @@ using FlightJournal.Web.Models.Training.Catalogue;
 
 namespace FlightJournal.Web.Migrations.FlightContext
 {
+    using FlightJournal.Web.Models.Training.Predefined;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,7 +15,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true; 
+            AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
             MigrationsDirectory = @"Migrations\FlightContext";
         }
@@ -33,12 +34,17 @@ namespace FlightJournal.Web.Migrations.FlightContext
             }
 
             //  Only seed if the database is empty
-            if (!context.StartTypes.Any() 
+            if (!context.StartTypes.Any()
                 && (!context.Clubs.Any())
                 && (!context.Pilots.Any())
                 && (!context.Planes.Any()))
             {
                 InitializeDemoFlights(context);
+            }
+
+            if (!context.ManouvreIcons.Any())
+            {
+                InitializeManouvres(context);
             }
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
@@ -65,7 +71,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             // Locations
             var location = new Location { Name = "Kongsted", Country = "DK", ICAO = "EKKL" };
             context.Locations.Add(location);
-            var location2 = new Location { Name = "True", Country = "DK"};
+            var location2 = new Location { Name = "True", Country = "DK" };
             context.Locations.Add(location2);
             var location3 = new Location { Name = "Slaglille", Country = "DK", ICAO = "EKSL" };
             context.Locations.Add(location3);
@@ -73,12 +79,12 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Locations.Add(location4);
             var location5 = new Location { Name = "Martin", Country = "SK", ICAO = "LZMA" };
             context.Locations.Add(location5);
-            
+
             context.Locations.Add(new Location() { Name = "Arnborg", Country = "DK", ICAO = "EK51" });
             context.SaveChanges();
 
             // Clubs
-            var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = location, Website = "http://flyveklubben.dk"};
+            var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = location, Website = "http://flyveklubben.dk" };
             context.Clubs.Add(club);
             var club2 = new Club() { ClubId = 99, ShortName = "AASVK", Name = "Århus Svæveflyveklub", Location = location2, Website = "http://www.aasvk.dk" };
             context.Clubs.Add(club2);
@@ -131,7 +137,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Pilots.Add(pilot1);
             var pilot2 = new Pilot { Name = "Mr Demo Editor", MemberId = "9992", Club = club, MobilNumber = "+4500000002" };
             context.Pilots.Add(pilot2);
-            var pilot3 = new Pilot {Name = "Mr Demo Pilot", MemberId = "9993", Club = club, MobilNumber = "+4500000003"};
+            var pilot3 = new Pilot { Name = "Mr Demo Pilot", MemberId = "9993", Club = club, MobilNumber = "+4500000003" };
             context.Pilots.Add(pilot3);
             var pilot1B = new Pilot { Name = "Mr Demo OtherClub Manager", MemberId = "9995", Club = club3, MobilNumber = "+4500000005" };
             context.Pilots.Add(pilot1B);
@@ -148,7 +154,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             GenerateFlights(pl1, pl2, location, pilot2, start)
                 .ForEach(b => context.Flights.Add(b));
-            
+
             GenerateFlights(pl1, pl2, location, pilot3, start)
                 .ForEach(b => context.Flights.Add(b));
 
@@ -158,12 +164,41 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             GenerateFlights(pl1, pl2, location3, pilot3B, start)
                 .ForEach(b => context.Flights.Add(b));
-            
+
             GenerateFlights(pl1, pl2, location5, pilot3B, start)
                 .ForEach(b => context.Flights.Add(b));
 
             context.SaveChanges();
+        }
 
+        internal static void InitializeManouvres(Models.FlightContext context)
+        {
+
+            // Training ui manouvre icons
+            var iconLeftTurn = new ManouvreIcon { Icon = "fa fa-undo" };
+            context.ManouvreIcons.Add(iconLeftTurn);
+            var iconRightTurn = new ManouvreIcon { Icon = "fa fa-repeat" };
+            context.ManouvreIcons.Add(iconRightTurn);
+            var iconFigEight = new ManouvreIcon { Icon = "&infin;" };
+            context.ManouvreIcons.Add(iconFigEight);
+            var iconBank30 = new ManouvreIcon { Icon = "&ang;30&deg;" };
+            context.ManouvreIcons.Add(iconBank30);
+            var iconBank45 = new ManouvreIcon { Icon = "&ang;45&deg;" };
+            context.ManouvreIcons.Add(iconBank45);
+            var iconBank60 = new ManouvreIcon { Icon = "&ang;60&deg;" };
+            context.ManouvreIcons.Add(iconBank60);
+            var iconAbortedLowAltitude = new ManouvreIcon { Icon = "&#x21B7 Afb start lavt" };
+            context.ManouvreIcons.Add(iconAbortedLowAltitude);
+            var iconAbortedMidAltitude = new ManouvreIcon { Icon = "&#x21B7 Afb start mellem" };
+            context.ManouvreIcons.Add(iconAbortedMidAltitude);
+            var iconAbortedHighAltitude = new ManouvreIcon { Icon = "&#x21B7 Afb start højt" };
+            context.ManouvreIcons.Add(iconAbortedHighAltitude);
+            var iconSTurn = new ManouvreIcon { Icon = "&#x219D S-drej" };
+            context.ManouvreIcons.Add(iconSTurn);
+            var iconLeftCircuit = new ManouvreIcon { Icon = "&#x21B0 Landingsrunde" };
+            context.ManouvreIcons.Add(iconLeftCircuit);
+            var iconRightCircuit = new ManouvreIcon { Icon = "&#x21B1 Landingsrunde" };
+            context.ManouvreIcons.Add(iconRightCircuit);
         }
 
         private static List<Flight> GenerateFlights(Plane pl1, Plane pl2, Location location, Pilot pilot, StartType start)

@@ -134,6 +134,8 @@
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -225,6 +227,10 @@
     <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202101111256522_Added-Manouvre-Table.cs" />
+    <Compile Include="Migrations\FlightContext\202101111256522_Added-Manouvre-Table.Designer.cs">
+      <DependentUpon>202101111256522_Added-Manouvre-Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
@@ -239,6 +245,8 @@
     <Compile Include="Models\Training\Catalogue\Training2Lesson.cs" />
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
+    <Compile Include="Models\Training\Predefined\Manouvre.cs" />
+    <Compile Include="Models\Training\Predefined\ManouvreIcon.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -745,12 +753,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.resx">
       <DependentUpon>201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.resx">
       <DependentUpon>201505062032477_Flight-Deleted-Date.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201505062147469_FlightVersion-Deleted-Date.resx">
       <DependentUpon>201505062147469_FlightVersion-Deleted-Date.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201506232105012_Club-Visibility.resx">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>
@@ -760,6 +770,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.resx">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202101111256522_Added-Manouvre-Table.resx">
+      <DependentUpon>202101111256522_Added-Manouvre-Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

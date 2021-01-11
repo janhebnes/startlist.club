@@ -9,6 +9,7 @@ using FlightJournal.Web.Migrations.FlightContext;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models
 {
@@ -36,6 +37,9 @@ namespace FlightJournal.Web.Models
         public DbSet<Training2Exercise> TrainingExercises{ get; set; }
         public DbSet<AppliedExercise> AppliedExercises { get; set; }
         public DbSet<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
+
+        public DbSet<Manouvre> Manouvres { get; set; }
+        public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -124,6 +128,11 @@ namespace FlightJournal.Web.Models
             modelBuilder.Entity<PilotLogEntry>()
                         .HasOptional(i => i.TrainingLessonApprovedByFlightInstructor)
                         .WithMany()
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Manouvre>()
+                        .HasOptional(i => i.ManouvreIcon)
+                        .WithOptionalDependent()
                         .WillCascadeOnDelete(false);
         }
     }

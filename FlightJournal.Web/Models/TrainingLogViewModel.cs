@@ -59,6 +59,7 @@ namespace FlightJournal.Web.Models
         public DateTime Date { get; }
         public string Notes { get; }
         public string Maneuvers{ get; }
+        public string Manouvres { get; }
         public string StartAnnotations{ get; }
         public string FlightAnnotations{ get; }
         public string ApproachAnnotations{ get; }
@@ -226,6 +227,7 @@ namespace FlightJournal.Web.Models
             // catalogue stuff
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
+            // replace this with manouvers
             Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
 
