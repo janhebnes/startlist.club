@@ -29,24 +29,27 @@ rem MODEL C Relative paths - but without obj folders and package folders
 setlocal EnableDelayedExpansion
 for /L %%n in (1 1 500) do if "!__cd__:~%%n,1!" neq "" set /a "len=%%n+1"
 setlocal DisableDelayedExpansion
-for /r . %%g in (*.cs,*.cshtml) do (
+for /r . %%g in (*.cs, *.cshtml) do (
   set "absPath=%%g"
 
-  echo "%%g" |findstr /i "\obj\ \packages\">nul ||(
+  echo "%%g" |findstr /i "\obj\ \packages\ Samples">nul ||(
     setlocal EnableDelayedExpansion
     set "relPath=!absPath:~%len%!"
     echo(!relPath! >> translation-inputfiles.txt
     endlocal
   )
 )
+
 goto start
+
 
 :start
 
 rem Create a new .pot from source, place it in the Language folder, and merge with the existing .po file
 echo Regenerating FlightJournal.Web\Translations\messages.pot po Template file
 
-packages\Gettext.Tools.0.19.8.1\tools\bin\xgettext.exe -k -k_ -kLocalizedDisplayName --msgid-bugs-address=jan.hebnes@gmail.com --package-name=startlist.club --from-code=UTF-8 -L C# -o FlightJournal.Web\Translations\messages.pot -f translation-inputfiles.txt
+REM _ is for 'regular' use of _("SomeString"), __ is for use in Javascript and html attributes (where an extra enclosing quote is required, as xgettext apparently does not iside strings (which makes sense) )
+packages\Gettext.Tools.0.19.8.1\tools\bin\xgettext.exe -k -k_ -k__  -kLocalizedDisplayName --msgid-bugs-address=jan.hebnes@gmail.com --package-name=startlist.club --from-code=UTF-8 -L C# -o FlightJournal.Web\Translations\messages.pot -f translation-inputfiles.txt
 
 echo Updating Translations\en\LC_MESSAGES\messages.po with po template
 packages\Gettext.Tools.0.19.8.1\tools\bin\msgmerge.exe --backup=none --lang=en -U FlightJournal.Web\Translations\en\LC_MESSAGES\messages.po FlightJournal.Web\Translations\messages.pot 
