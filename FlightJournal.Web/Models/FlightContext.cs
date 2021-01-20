@@ -132,7 +132,7 @@ namespace FlightJournal.Web.Models
 
             modelBuilder.Entity<Manouvre>()
                         .HasOptional(i => i.ManouvreIcon)
-                        .WithOptionalDependent()
+                        .WithMany()
                         .WillCascadeOnDelete(false);
         }
     }

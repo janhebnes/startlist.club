@@ -13,7 +13,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
         
         string IMigrationMetadata.Id
         {
-            get { return "202101111256522_Added-Manouvre-Table"; }
+            get { return "202101202206106_Added-Manouvre-Table"; }
         }
         
         string IMigrationMetadata.Source

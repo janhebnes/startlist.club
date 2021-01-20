@@ -6,6 +6,7 @@ using System.Web.UI;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models
 {
@@ -27,6 +28,8 @@ namespace FlightJournal.Web.Models
             AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y=>x.Date));
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
             TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel{Name = x.ShortName, Id = x.Training2ProgramId}).ToList();
+            //just trying it out
+            Manouvres = db.Manouvres.ToList();
         }
 
         public Training2Program TrainingProgram { get; }
@@ -42,6 +45,7 @@ namespace FlightJournal.Web.Models
         public IEnumerable<Flight> PilotFlights{ get; }
         public IEnumerable<AppliedExercise> AppliedExercises { get; } // across all PilotFlights
         public IEnumerable<TrainingFlightAnnotation> FlightAnnotations{ get; } // across all PilotFlights
+        public IEnumerable<Manouvre> Manouvres { get; } // getting manouvres from the db
     }
 
     public class TrainingProgramSelectorViewModel
@@ -79,7 +83,8 @@ namespace FlightJournal.Web.Models
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
             Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
             //TODO: localize / map to symbols
-            Maneuvers = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
+           // Maneuvers = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
+            Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres)));
             StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));
             FlightAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.FlightAnnotation)));
             ApproachAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.ApproachAnnotation)));
@@ -228,13 +233,14 @@ namespace FlightJournal.Web.Models
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
             // replace this with manouvers
-            Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
+            //Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
+            Manouvres = dbmodel.Manouvres;
             Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
 
             var wd = new List<WindDirectionViewModel>();
             for (int v = 0; v < 360; v += 45)
                 wd.Add(new WindDirectionViewModel(v ));
-            WindDirections = wd;
+            WindDirections = wd;    
 
             var ws = new List<WindSpeedViewModel>();
             for (int v = 0; v < 30; v += 5)
@@ -248,6 +254,8 @@ namespace FlightJournal.Web.Models
 
         public IEnumerable<FlightLogEntryViewModel> FlightLog { get; }
         public TrainingProgramViewModel TrainingProgram;
+
+        public IEnumerable<Manouvre> Manouvres { get; }
 
         public IEnumerable<FlightManeuverViewModel> Maneuvers { get; }
         public IEnumerable<WindDirectionViewModel> WindDirections { get; }

@@ -199,6 +199,34 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.ManouvreIcons.Add(iconLeftCircuit);
             var iconRightCircuit = new ManouvreIcon { Icon = "&#x21B1 Landingsrunde" };
             context.ManouvreIcons.Add(iconRightCircuit);
+
+            var right90 = new Manouvre
+            {
+                ManouvreItem = "90",
+                ManouvreIcon = iconRightTurn
+            };
+            context.Manouvres.Add(right90);
+
+            var left90 = new Manouvre
+            {
+                ManouvreItem = "90",
+                ManouvreIcon = iconLeftTurn
+            };
+            context.Manouvres.Add(left90);
+
+            var left180 = new Manouvre
+            {
+                ManouvreItem = "180",
+                ManouvreIcon = iconLeftTurn
+            };
+            context.Manouvres.Add(left180);
+
+            var right180 = new Manouvre
+            {
+                ManouvreItem = "180",
+                ManouvreIcon = iconRightTurn
+            };
+            context.Manouvres.Add(right180);
         }
 
         private static List<Flight> GenerateFlights(Plane pl1, Plane pl2, Location location, Pilot pilot, StartType start)

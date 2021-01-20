@@ -227,9 +227,9 @@
     <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\FlightContext\202101111256522_Added-Manouvre-Table.cs" />
-    <Compile Include="Migrations\FlightContext\202101111256522_Added-Manouvre-Table.Designer.cs">
-      <DependentUpon>202101111256522_Added-Manouvre-Table.cs</DependentUpon>
+    <Compile Include="Migrations\FlightContext\202101202206106_Added-Manouvre-Table.cs" />
+    <Compile Include="Migrations\FlightContext\202101202206106_Added-Manouvre-Table.Designer.cs">
+      <DependentUpon>202101202206106_Added-Manouvre-Table.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
@@ -771,8 +771,8 @@
     <EmbeddedResource Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.resx">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FlightContext\202101111256522_Added-Manouvre-Table.resx">
-      <DependentUpon>202101111256522_Added-Manouvre-Table.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\FlightContext\202101202206106_Added-Manouvre-Table.resx">
+      <DependentUpon>202101202206106_Added-Manouvre-Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

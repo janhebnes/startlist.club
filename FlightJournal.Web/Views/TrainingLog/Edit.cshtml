@@ -111,9 +111,9 @@
 <div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter">
         <div class="col-xs-2  col-sm-1">Manøvrer</div>
         <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple title="Vælg manøvrer" id="maneuver-sel">
-            @foreach (var maneuver in Model.Maneuvers)
+            @foreach (var maneuver in Model.Manouvres)
             {
-                <option value="@maneuver.Id" data-icon="@maneuver.Icon">@Html.Raw(maneuver.Name)</option>
+                <option value="@maneuver.ManouvreId" data-icon="@maneuver.ManouvreIcon.Icon">@Html.Raw(maneuver.ManouvreItem)</option>
             }
         </select>
 </div>
