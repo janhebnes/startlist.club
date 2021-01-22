@@ -179,25 +179,25 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.ManouvreIcons.Add(iconLeftTurn);
             var iconRightTurn = new ManouvreIcon { Icon = "fa fa-repeat" };
             context.ManouvreIcons.Add(iconRightTurn);
-            var iconFigEight = new ManouvreIcon { Icon = "&infin;" };
+            var iconFigEight = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconFigEight);
-            var iconBank30 = new ManouvreIcon { Icon = "&ang;30&deg;" };
+            var iconBank30 = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconBank30);
-            var iconBank45 = new ManouvreIcon { Icon = "&ang;45&deg;" };
+            var iconBank45 = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconBank45);
-            var iconBank60 = new ManouvreIcon { Icon = "&ang;60&deg;" };
+            var iconBank60 = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconBank60);
-            var iconAbortedLowAltitude = new ManouvreIcon { Icon = "&#x21B7 Afb start lavt" };
+            var iconAbortedLowAltitude = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconAbortedLowAltitude);
-            var iconAbortedMidAltitude = new ManouvreIcon { Icon = "&#x21B7 Afb start mellem" };
+            var iconAbortedMidAltitude = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconAbortedMidAltitude);
-            var iconAbortedHighAltitude = new ManouvreIcon { Icon = "&#x21B7 Afb start højt" };
+            var iconAbortedHighAltitude = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconAbortedHighAltitude);
-            var iconSTurn = new ManouvreIcon { Icon = "&#x219D S-drej" };
+            var iconSTurn = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconSTurn);
-            var iconLeftCircuit = new ManouvreIcon { Icon = "&#x21B0 Landingsrunde" };
+            var iconLeftCircuit = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconLeftCircuit);
-            var iconRightCircuit = new ManouvreIcon { Icon = "&#x21B1 Landingsrunde" };
+            var iconRightCircuit = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconRightCircuit);
 
             var right90 = new Manouvre
@@ -227,6 +227,91 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 ManouvreIcon = iconRightTurn
             };
             context.Manouvres.Add(right180);
+
+            var right360 = new Manouvre
+            {
+                ManouvreItem = "360",
+                ManouvreIcon = iconRightTurn
+            };
+            context.Manouvres.Add(right360);
+
+            var left360 = new Manouvre
+            {
+                ManouvreItem = "360",
+                ManouvreIcon = iconLeftTurn
+            };
+            context.Manouvres.Add(left360);
+
+            var FigureEight = new Manouvre
+            {
+                ManouvreItem = "&infin;",
+                ManouvreIcon = iconFigEight
+            };
+            context.Manouvres.Add(FigureEight);
+
+            var Bank30 = new Manouvre
+            {
+                ManouvreItem = "&ang;30&deg;",
+                ManouvreIcon = iconBank30
+            };
+            context.Manouvres.Add(Bank30);
+
+            var Bank45 = new Manouvre
+            {
+                ManouvreItem = "&ang;45&deg;",
+                ManouvreIcon = iconBank45
+            };
+            context.Manouvres.Add(Bank45);
+
+            var Bank60 = new Manouvre
+            {
+                ManouvreItem = "&ang;60&deg;",
+                ManouvreIcon = iconBank60
+            };
+            context.Manouvres.Add(Bank60);
+
+            var AbortedStartLowAlt = new Manouvre
+            {
+                ManouvreItem = "&#x21B7 Afb start lavt",
+                ManouvreIcon = iconAbortedLowAltitude
+            };
+            context.Manouvres.Add(AbortedStartLowAlt);
+
+            var AbortedStartMedAlt = new Manouvre
+            {
+                ManouvreItem = "&#x21B7 Afb start mellem",
+                ManouvreIcon = iconAbortedMidAltitude
+            };
+            context.Manouvres.Add(AbortedStartMedAlt);
+
+            var AbortedStartHighAlt = new Manouvre
+            {
+                ManouvreItem = "&#x21B7 Afb start højt",
+                ManouvreIcon = iconAbortedHighAltitude
+            };
+            context.Manouvres.Add(AbortedStartHighAlt);
+
+            var Sturn = new Manouvre
+            {
+                ManouvreItem = "&#x219D S-drej",
+                ManouvreIcon = iconSTurn
+            };
+            context.Manouvres.Add(Sturn);
+
+            var LandingLeftCircuit = new Manouvre
+            {
+                ManouvreItem = "&#x21B0 Landingsrunde",
+                ManouvreIcon = iconLeftCircuit
+            };
+            context.Manouvres.Add(LandingLeftCircuit);
+
+            var LandingRightCircuit = new Manouvre
+            {
+                ManouvreItem = "&#x21B1 Landingsrunde",
+                ManouvreIcon = iconRightCircuit
+            };
+            context.Manouvres.Add(LandingRightCircuit);
+
         }
 
         private static List<Flight> GenerateFlights(Plane pl1, Plane pl2, Location location, Pilot pilot, StartType start)

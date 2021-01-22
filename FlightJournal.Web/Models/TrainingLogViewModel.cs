@@ -83,8 +83,8 @@ namespace FlightJournal.Web.Models
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
             Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
             //TODO: localize / map to symbols
-           // Maneuvers = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
-            Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres)));
+            Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
+            //Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres)));
             StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));
             FlightAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.FlightAnnotation)));
             ApproachAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.ApproachAnnotation)));
