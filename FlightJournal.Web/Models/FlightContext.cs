@@ -40,6 +40,9 @@ namespace FlightJournal.Web.Models
 
         public DbSet<Manouvre> Manouvres { get; set; }
         public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
+        public DbSet<Weather> Weathers { get; set; }
+        public DbSet<WindDirection> WindDirections { get; set; }
+        public DbSet<WindSpeed> WindSpeeds { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -132,6 +135,16 @@ namespace FlightJournal.Web.Models
 
             modelBuilder.Entity<Manouvre>()
                         .HasOptional(i => i.ManouvreIcon)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Weather>()
+                        .HasOptional(i => i.WindDirection)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Weather>()
+                        .HasOptional(i => i.WindSpeed)
                         .WithMany()
                         .WillCascadeOnDelete(false);
         }

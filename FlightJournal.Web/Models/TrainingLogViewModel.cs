@@ -23,13 +23,15 @@ namespace FlightJournal.Web.Models
             //TrainingLessons = db.TrainingLessons;
             //TrainingExercises = db.TrainingExercises;
 
-            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x=>x.Date);
+            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Date);
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
-            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y=>x.Date));
+            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
-            TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel{Name = x.ShortName, Id = x.Training2ProgramId}).ToList();
-            //just trying it out
+            TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel { Name = x.ShortName, Id = x.Training2ProgramId }).ToList();
             Manouvres = db.Manouvres.ToList();
+            WindDirections = db.WindDirections.ToList();
+            WindSpeeds = db.WindSpeeds.ToList();
+           
         }
 
         public Training2Program TrainingProgram { get; }
@@ -42,10 +44,14 @@ namespace FlightJournal.Web.Models
 
         // flight specific data
         public Guid FlightId { get; }
-        public IEnumerable<Flight> PilotFlights{ get; }
+        public IEnumerable<Flight> PilotFlights { get; }
         public IEnumerable<AppliedExercise> AppliedExercises { get; } // across all PilotFlights
-        public IEnumerable<TrainingFlightAnnotation> FlightAnnotations{ get; } // across all PilotFlights
+        public IEnumerable<TrainingFlightAnnotation> FlightAnnotations { get; } // across all PilotFlights
         public IEnumerable<Manouvre> Manouvres { get; } // getting manouvres from the db
+        public IEnumerable<WindSpeed> WindSpeeds {get;}
+        public IEnumerable<WindDirection> WindDirections { get; }
+
+
     }
 
     public class TrainingProgramSelectorViewModel
@@ -62,7 +68,6 @@ namespace FlightJournal.Web.Models
     {
         public DateTime Date { get; }
         public string Notes { get; }
-        public string Maneuvers{ get; }
         public string Manouvres { get; }
         public string StartAnnotations{ get; }
         public string FlightAnnotations{ get; }
@@ -83,8 +88,8 @@ namespace FlightJournal.Web.Models
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
             Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
             //TODO: localize / map to symbols
-            Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
-            //Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres)));
+            //Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
+            Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres))); //-> load existing flight manouvres
             StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));
             FlightAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.FlightAnnotation)));
             ApproachAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.ApproachAnnotation)));
@@ -120,80 +125,6 @@ namespace FlightJournal.Web.Models
             }
         }
     }
-    public class FlightManeuverViewModel
-    {
-        public FlightManeuver Id { get; }
-        public string Name { get; }
-        public string Icon { get; }
-        public FlightManeuverViewModel(FlightManeuver id)
-        {
-            Id = id;
-            switch (id)
-            {
-                case FlightManeuver.Left90:
-                case FlightManeuver.Right90:
-                    Name = "90";
-                    break;
-                case FlightManeuver.Left180:
-                case FlightManeuver.Right180:
-                    Name = "180";
-                    break;
-                case FlightManeuver.Left360:
-                case FlightManeuver.Right360:
-                    Name = "360";
-                    break;
-                case FlightManeuver.FigureEight:
-                    Name = "&infin;";
-                    break;
-                case FlightManeuver.Bank30:
-                    Name = "&ang;30&deg;";
-                    break;
-                case FlightManeuver.Bank45:
-                    Name = "&ang;45&deg;";
-                    break;
-                case FlightManeuver.Bank60:
-                    Name = "&ang;60&deg;";
-                    break;
-                case FlightManeuver.AbortedStartLowAltitude:
-                    Name = "&#x21B7 Afb start lavt";
-                    break;
-                case FlightManeuver.AbortedStartMediumAltitude:
-                    Name = "&#x21B7 Afb start mellem";
-                    break;
-                case FlightManeuver.AbortedStartHighAltitude:
-                    Name = "&#x21B7 Afb start højt";
-                    break;
-                case FlightManeuver.STurn:
-                    Name = "&#x219D S-drej";
-                    break;
-                case FlightManeuver.LeftCircuit:
-                    Name = "&#x21B0 Landingsrunde";
-                    break;
-                case FlightManeuver.RightCircuit:
-                    Name = "&#x21B1 Landingsrunde";
-                    break;
-                default:
-                    Name = id.ToString(); // TODO: localize
-                    break;
-            }
-            switch (id)
-            {
-                case FlightManeuver.Left90:
-                case FlightManeuver.Left180:
-                case FlightManeuver.Left360:
-                    Icon = "fa fa-undo";
-                    break;
-                case FlightManeuver.Right90:
-                case FlightManeuver.Right180:
-                case FlightManeuver.Right360:
-                    Icon = " fa fa-repeat";
-                    break;
-
-            }
-        }
-    }
-
-
 
     public class WindSpeedViewModel
     {
@@ -235,17 +166,31 @@ namespace FlightJournal.Web.Models
             // replace this with manouvers
             //Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Manouvres = dbmodel.Manouvres;
+/*            WindDirectionsDb = dbmodel.WindDirections;
+            WindSpeedsDb = dbmodel.WindSpeeds;*/
             Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
 
-            var wd = new List<WindDirectionViewModel>();
-            for (int v = 0; v < 360; v += 45)
-                wd.Add(new WindDirectionViewModel(v ));
-            WindDirections = wd;    
 
-            var ws = new List<WindSpeedViewModel>();
-            for (int v = 0; v < 30; v += 5)
+            //replace this with data from the DB
+            var wds = new List<WindDirectionViewModel>();
+            foreach(var wd in dbmodel.WindDirections){
+                wds.Add(new WindDirectionViewModel(wd.WindDirectionItem));
+            }
+            WindDirections = wds;
+/*            for (int v = 0; v < 360; v += 45)
+                wd.Add(new WindDirectionViewModel(v ));
+            WindDirections = wd;    */
+
+            var wss = new List<WindSpeedViewModel>();
+            foreach(var ws in dbmodel.WindSpeeds)
+            {
+                wss.Add(new WindSpeedViewModel(ws.WindSpeedItem));
+            }
+            WindSpeeds = wss;
+
+       /*     for (int v = 0; v < 30; v += 5)
                 ws.Add(new WindSpeedViewModel(v));
-            WindSpeeds = ws;
+            WindSpeeds = ws;*/
 
         }
         public DateTime Date { get; }
@@ -256,8 +201,6 @@ namespace FlightJournal.Web.Models
         public TrainingProgramViewModel TrainingProgram;
 
         public IEnumerable<Manouvre> Manouvres { get; }
-
-        public IEnumerable<FlightManeuverViewModel> Maneuvers { get; }
         public IEnumerable<WindDirectionViewModel> WindDirections { get; }
         public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
         public IEnumerable<FlightPhaseAnnotationViewModel> Annotations{ get; }

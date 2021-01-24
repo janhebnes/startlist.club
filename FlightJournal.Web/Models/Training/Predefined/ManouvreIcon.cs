@@ -8,6 +8,5 @@ namespace FlightJournal.Web.Models.Training.Predefined
         [Key]
         public int IconId { get; set; }
         public string Icon { get; set; }
-        //public virtual IEnumerable<Manouvre> Manouvres { get; set; } 
     }
 }

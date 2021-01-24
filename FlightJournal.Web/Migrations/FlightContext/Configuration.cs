@@ -47,6 +47,16 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 InitializeManouvres(context);
             }
 
+            if (!context.WindSpeeds.Any())
+            {
+                InitializeWindSpeeds(context);
+            }
+
+            if (!context.WindDirections.Any())
+            {
+                InitializeWindDirections(context);
+            }
+
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
@@ -169,6 +179,25 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 .ForEach(b => context.Flights.Add(b));
 
             context.SaveChanges();
+        }
+
+        internal static void InitializeWindDirections(Models.FlightContext context)
+        {
+            for (int v = 0; v < 360; v += 45)
+            {
+                var direction = new WindDirection { WindDirectionItem = v };
+                context.WindDirections.Add(direction);
+            }
+               
+        }
+
+        internal static void InitializeWindSpeeds(Models.FlightContext context)
+        {
+            for (int v = 0; v < 30; v += 5)
+            {
+                var speed = new WindSpeed { WindSpeedItem = v };
+                context.WindSpeeds.Add(speed);
+            }
         }
 
         internal static void InitializeManouvres(Models.FlightContext context)
