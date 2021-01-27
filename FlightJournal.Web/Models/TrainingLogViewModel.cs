@@ -11,17 +11,15 @@ using FlightJournal.Web.Models.Training.Predefined;
 namespace FlightJournal.Web.Models
 {
     /// <summary>
+    /// Training relevant data for a specific flight (and pilot)
+    /// 
     /// Apparently, we cannot carry the FlightContext around in EF, hence this Entity wrapper
     /// </summary>
     public class TrainingDataWrapper
     {
-        //TODO: split this in a catalogue wrapper and a pilot/flight specific wrapper
         internal TrainingDataWrapper(FlightContext db, int pilotId, Flight flight, int trainingProgramId)
         {
             FlightId = flight.FlightId;
-            // TrainingPrograms = db.TrainingPrograms;
-            //TrainingLessons = db.TrainingLessons;
-            //TrainingExercises = db.TrainingExercises;
 
             PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Date);
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
@@ -34,25 +32,43 @@ namespace FlightJournal.Web.Models
            
         }
 
+        /// <summary>
+        /// The current (latest used) training program for the pilot
+        /// </summary>
         public Training2Program TrainingProgram { get; }
+
+        /// <summary>
+        /// All available training programs
+        /// </summary>
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
 
-        // catalogue stuff
-        //public IEnumerable<Training2Program> TrainingPrograms { get; }
-        //public IEnumerable<Training.Training2Lesson> TrainingLessons { get; }
-        //public IEnumerable<Training.Training2Exercise> TrainingExercises { get; }
 
         // flight specific data
+
+        /// <summary>
+        /// This flight
+        /// </summary>
         public Guid FlightId { get; }
+
+        /// <summary>
+        /// All flights by the pilot
+        /// </summary>
         public IEnumerable<Flight> PilotFlights { get; }
-        public IEnumerable<AppliedExercise> AppliedExercises { get; } // across all PilotFlights
-        public IEnumerable<TrainingFlightAnnotation> FlightAnnotations { get; } // across all PilotFlights
+        /// <summary>
+        /// Exercises flown across all flights by this pilot
+        /// </summary>
+        public IEnumerable<AppliedExercise> AppliedExercises { get; }
+        /// <summary>
+        /// Annotations (gradings/evaluations/comments) across all flights by this pilot
+        /// </summary>
+        public IEnumerable<TrainingFlightAnnotation> FlightAnnotations{ get; } // across all PilotFlights
         public IEnumerable<Manouvre> Manouvres { get; } // getting manouvres from the db
         public IEnumerable<WindSpeed> WindSpeeds {get;}
         public IEnumerable<WindDirection> WindDirections { get; }
 
 
     }
+
 
     public class TrainingProgramSelectorViewModel
     {
@@ -61,6 +77,7 @@ namespace FlightJournal.Web.Models
         public TrainingProgramSelectorViewModel(){}
 
     }
+    
     /// <summary>
     /// Viewmodel for an actual training flight
     /// </summary>
@@ -84,10 +101,14 @@ namespace FlightJournal.Web.Models
         public FlightLogEntryViewModel(Flight flight, TrainingDataWrapper db, DateTime date)
         {
             Date = date;
+            // one note per flight expected
             var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).ToList();
-            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
             Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
-            //TODO: localize / map to symbols
+            // multiple exercises possible per flight
+            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
+            ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
+
+            //TODO: change each of these to a list
             //Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
             Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres))); //-> load existing flight manouvres
             StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));
@@ -150,6 +171,11 @@ namespace FlightJournal.Web.Models
         }
     }
 
+    /// <summary>
+    /// ViewModel for items used to describe a training flight.
+    ///
+    /// The actual input from the instructor ends up in a FlightLogEntryViewModel
+    /// </summary>
     public class TrainingLogViewModel
     {
         public TrainingLogViewModel(DateTime date, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
@@ -158,9 +184,8 @@ namespace FlightJournal.Web.Models
             Pilot = pilot;
             BackseatPilot = backseatPilot;
 
-            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x, dbmodel, date));
+            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x, dbmodel, x.Date));
 
-            // catalogue stuff
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
             // replace this with manouvers
@@ -188,26 +213,32 @@ namespace FlightJournal.Web.Models
             }
             WindSpeeds = wss;
 
-       /*     for (int v = 0; v < 30; v += 5)
-                ws.Add(new WindSpeedViewModel(v));
-            WindSpeeds = ws;*/
+            ThisFlight = new FlightLogEntryViewModel(dbmodel.PilotFlights.Single(x => x.FlightId == dbmodel.FlightId), dbmodel, date);
 
         }
         public DateTime Date { get; }
         public string Pilot { get; }
         public string BackseatPilot { get; }
 
-        public IEnumerable<FlightLogEntryViewModel> FlightLog { get; }
+        public IEnumerable<FlightLogEntryViewModel> FlightLog { get; } // previous flights
         public TrainingProgramViewModel TrainingProgram;
 
+        // Selectable stuff
         public IEnumerable<Manouvre> Manouvres { get; }
         public IEnumerable<WindDirectionViewModel> WindDirections { get; }
         public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
         public IEnumerable<FlightPhaseAnnotationViewModel> Annotations{ get; }
-
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
+
+        // data for this flight
+        public FlightLogEntryViewModel ThisFlight { get; }
+
     }
 
+    /// <summary>
+    /// Viewmodel for a Training program (with lessons -> exercises).
+    /// Used for building UI selections.
+    /// </summary>
     public class TrainingProgramViewModel
     {
         public string Id { get; }
@@ -223,6 +254,9 @@ namespace FlightJournal.Web.Models
         }
     }
 
+    /// <summary>
+    /// ViewModel for a lesson (and its exercises) in the context of a pilot
+    /// </summary>
     public class TrainingLessonWithOverallStatusViewModel
     {
         public string Id { get; }
@@ -233,13 +267,25 @@ namespace FlightJournal.Web.Models
 
         public IEnumerable<TrainingExerciseWithOverallStatusViewModel> Exercises { get; }
 
-        //TODO: for some reason, this calculation is broken. Numbers (and overall status) do not add up.
-        public int ExercisesTotal { get; } 
+        public int ExercisesTotal { get; }
+        /// <summary>
+        /// Exercises completed by this pilot
+        /// </summary>
         public int ExercisesCompleted { get; }
+        /// <summary>
+        /// Exercises in progress by this pilot
+        /// </summary>
         public int ExercisesInProgress { get; }
+        /// <summary>
+        /// Exercises not yet started by this pilot
+        /// </summary>
         public int ExercisesNotStarted { get; }
 
         public string StatusSummary => $"{ExercisesNotStarted}/{ExercisesInProgress}/{ExercisesCompleted} ({ExercisesTotal})";
+
+        /// <summary>
+        /// Overall status of the Lesson
+        /// </summary>
         public TrainingStatus Status { get; }
 
         public TrainingLessonWithOverallStatusViewModel(Training2Lesson lesson, TrainingDataWrapper db)
@@ -261,13 +307,18 @@ namespace FlightJournal.Web.Models
         }
     }
 
-
+    /// <summary>
+    /// ViewModel for an exercise in the context of a pilot - used for overview
+    /// </summary>
     public class TrainingExerciseWithOverallStatusViewModel
     {
         public string Id { get; }
 
         public string Description { get; }
         public string LongDescription { get; }
+        /// <summary>
+        /// Completion status by this pilot
+        /// </summary>
         public TrainingStatus Status { get; }
 
 
@@ -286,6 +337,7 @@ namespace FlightJournal.Web.Models
             LongDescription = exercise.Note;
             BriefingOnlyRequired = exercise.IsBriefingOnly;
 
+            // TODO: use real data
             if (true) // fake it for UI demo purposes
             {
                 var toss = new Random().NextDouble();
@@ -323,17 +375,22 @@ namespace FlightJournal.Web.Models
         }
     }
 
-
+    /// <summary>
+    /// ViewModel for a flown exercise 
+    /// </summary>
     public class AppliedExerciseViewModel
     {
         public string Description { get; }
 
+        /// <summary>
+        /// STatus of the flown exercise
+        /// </summary>
         public ExerciseAction Action { get; set; }
 
         public AppliedExerciseViewModel(TrainingDataWrapper db, AppliedExercise appliedExercise)
         {
             Action = appliedExercise.Action;
-            var program = db.TrainingProgram; // .TrainingPrograms.SingleOrDefault(x=>x == appliedExercise.Program);
+            var program = db.TrainingProgram;
             var lesson = program.Lessons.SingleOrDefault(x=>x == appliedExercise.Lesson);
             var exercise = lesson.Exercises.SingleOrDefault(x => x == appliedExercise.Exercise);
             Description = $"{program?.Name} {lesson?.Name} {exercise?.Name}";

@@ -9,17 +9,20 @@ namespace FlightJournal.Web.Views
             string clz;
             switch (status)
             {
+                case TrainingStatus.NotStarted:
+                    clz = "status-not-started";
+                    break;
                 case TrainingStatus.Briefed:
-                    clz = "btn-info";
+                    clz = "status-in-progress";
                     break;
                 case TrainingStatus.Trained:
-                    clz = "btn-info";
+                    clz = "status-in-progress";
                     break;
                 case TrainingStatus.Completed:
-                    clz = "btn-success";
+                    clz = "status-completed";
                     break;
                 default:
-                    clz = "btn-default";
+                    clz = "status-not-started";
                     break;
             }
 

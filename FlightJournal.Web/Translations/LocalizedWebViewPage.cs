@@ -16,7 +16,20 @@ namespace FlightJournal.Web.Translations
         /// <example>@_("Country")</example>
         public string _(string en)
         {
-            return Internationalization.GetText(en, Internationalization.LanguageCode);
+            var s = Internationalization.GetText(en, Internationalization.LanguageCode);
+            if (s != " ")
+                return s.Trim();
+            return s;
+        }
+        /// <summary>
+        /// Localized Translation (i18n) wrapped in ping for use on razor attributes
+        /// </summary>
+        /// <param name="en"></param>
+        /// <returns></returns>
+        /// <example><div class="col-xs-12" data-intro=@Html.Raw(__("Country") /></example>
+        public string __(string en)
+        {
+            return "\"" + _(en) + "\"";
         }
 
         /// <summary>
