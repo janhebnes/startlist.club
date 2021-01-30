@@ -262,3 +262,7 @@ body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover,
 	cursor: pointer;
 }
 
+td.valign-top {
+	vertical-align: top;
+	margin-top: 2px;
+}

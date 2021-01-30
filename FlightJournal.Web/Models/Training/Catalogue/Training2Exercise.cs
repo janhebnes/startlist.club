@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace FlightJournal.Web.Models.Training.Catalogue
 {
@@ -16,16 +18,21 @@ namespace FlightJournal.Web.Models.Training.Catalogue
         // Example: "Mærkelanding"
         public string Name { get; set; }
 
+        [AllowHtml]
         public string Note { get; set; } = "";
         // Example: "Final position must deviate max 5m sideways and 10m longitudinally from the T"
+        [AllowHtml]
         public string AcceptanceCriteria { get; set; } = "";
 
         // 
         public bool IsBriefingOnly { get; set; }
 
-        public Training2Exercise() { }
+        public Training2Exercise()
+        {
+            Lessons = new HashSet<Training2Lesson>();
+        }
         public virtual ICollection<Training2Lesson> Lessons{ get; set; }
-
+        
         public Training2Exercise(string name, bool briefingOnly = false)
         {
             Name = name;

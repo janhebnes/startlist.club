@@ -23,7 +23,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
         {
             //  This method will be called after migrating to the latest version.
 
-            var forceTrainingProgramRecreation = true;
+            var forceTrainingProgramRecreation = false;
 
             if (forceTrainingProgramRecreation
                 || !context.TrainingPrograms.Any()

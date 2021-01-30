@@ -1,0 +1,51 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+
+@{
+    ViewBag.Title = $"Exercises";
+    int tpi = ViewBag.TrainingProgramId;
+}
+
+<h3>@ViewBag.TrainingProgramName -  @ViewBag.TrainingLessonName</h3>
+
+<h2>@_("Exercises")</h2>
+<hr />
+<p>
+    @Html.ActionLink(_("Create exercise"), "Create", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId}, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+            @_("Name")
+        </th>
+        <th>
+            @_("Note")
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Exercises)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink(_("Edit"), "Edit", new {trainingProgramId=tpi,  trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId}, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Details"), "Details", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Delete"), "Delete", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    @Html.ActionLink(_("Back to list of lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = tpi, id = Model.Training2LessonId }, new { @class = "btn btn-default" })
+</div>

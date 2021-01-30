@@ -211,7 +211,10 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
+    <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
+    <Compile Include="Controllers\TrainingLessonAdminController.cs" />
+    <Compile Include="Controllers\TrainingProgramAdminController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
@@ -230,6 +233,9 @@
     <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Training\AdminViewModels\TrainingLessonInProgramViewModel.cs" />
+    <Compile Include="Models\Training\AdminViewModels\TrainingLessonsInProgramViewModel.cs" />
+    <Compile Include="Models\Training\AdminViewModels\TrainingProgramAdminViewModel.cs" />
     <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
@@ -731,6 +737,33 @@
     <Content Include="Translations\no\LC_MESSAGES\messages.po" />
     <Content Include="Views\StartType\DeleteLocked.cshtml" />
     <Content Include="Views\TrainingLog\Edit.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\Index.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\Create.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\Delete.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\Details.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\Edit.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\Create.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\Delete.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\Details.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\Edit.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\Index.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\_PartialTrainingLessonReadonly.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\_PartialTrainingLesson.cshtml" />
+    <Content Include="Views\TrainingLessonAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\_PartialTrainingProgram.cshtml" />
+    <Content Include="Views\TrainingProgramAdmin\_PartialTrainingProgramReadonly.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\_PartialTrainingExercise.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\_PartialTrainingExerciseReadonly.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\Create.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\Delete.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\Details.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\Edit.cshtml" />
+    <Content Include="Views\TrainingExerciseAdmin\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -762,6 +795,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.resx">
       <DependentUpon>201504261816506_Location-ICAO-Country-And-Timestamp-On-Plane-and-Location.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201505062032477_Flight-Deleted-Date.resx">
       <DependentUpon>201505062032477_Flight-Deleted-Date.cs</DependentUpon>

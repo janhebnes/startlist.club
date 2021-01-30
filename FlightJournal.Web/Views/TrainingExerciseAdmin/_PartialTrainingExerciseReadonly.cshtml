@@ -1,0 +1,28 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Exercise
+<legend>@_("Training exercise")</legend>
+<table>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Name)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Note)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Note)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.IsBriefingOnly)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.IsBriefingOnly)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.AcceptanceCriteria)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.AcceptanceCriteria)</td>
+    </tr>
+</table>
+@{
+    int tpi = ViewBag.TrainingProgramId;
+    int tli = ViewBag.TrainingLessonId;
+}
+@Html.HiddenFor(x => tpi)
+@Html.HiddenFor(x => tli)
+@Html.HiddenFor(model => Model.Training2ExerciseId)
+
