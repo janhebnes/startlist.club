@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-01-10 18:07+0100\n"
-"PO-Revision-Date: 2021-01-10 18:08+0100\n"
+"POT-Creation-Date: 2021-01-30 22:32+0100\n"
+"PO-Revision-Date: 2021-01-30 22:39+0100\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -224,6 +224,7 @@ msgstr "Oprettet"
 
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:108
 #: FlightJournal.Web\Models\Pilot.cs:31 FlightJournal.Web\Models\Plane.cs:41
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:22
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:211
 msgid "Note"
 msgstr "Note"
@@ -347,6 +348,9 @@ msgid "S (Self Launch)"
 msgstr "M (Selvstart)"
 
 #: FlightJournal.Web\Models\StartType.cs:39
+#: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:20
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:19
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:18
 msgid "Name"
 msgstr "Navn"
 
@@ -355,9 +359,8 @@ msgid "Lesson identifier"
 msgstr ""
 
 #: FlightJournal.Web\Models\TrainingLesson.cs:17
-#, fuzzy
 msgid "Lesson description"
-msgstr "Note"
+msgstr "Beskrivelse af lektion"
 
 #: FlightJournal.Web\Models\TrainingLesson.cs:20
 #, fuzzy
@@ -380,6 +383,20 @@ msgstr "Sorter"
 
 #: FlightJournal.Web\Models\TrainingLessonCategory.cs:11
 msgid "Lesson category"
+msgstr ""
+
+#: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:17
+#, fuzzy
+msgid "Short Name"
+msgstr "Korte navn"
+
+#: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:22
+#, fuzzy
+msgid "Notes"
+msgstr "Note"
+
+#: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:26
+msgid "URL"
 msgstr ""
 
 #: FlightJournal.Web\Views\About\Index.cshtml:145
@@ -513,6 +530,15 @@ msgstr "Detaljer"
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:148
 #: FlightJournal.Web\Views\Flight\Index.cshtml:101
 #: FlightJournal.Web\Views\Report\Index.cshtml:248
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:16
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Edit.cshtml:7
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:40
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Edit.cshtml:7
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:39
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:13
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:3
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:6
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:36
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:58
@@ -526,6 +552,15 @@ msgstr "Markeret slettet {0} af {1}"
 
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:4
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Delete.cshtml:4
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Delete.cshtml:8
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:42
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Delete.cshtml:9
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:41
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Delete.cshtml:4
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Delete.cshtml:7
+#: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:4
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:38
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
 msgid "Delete"
@@ -607,6 +642,13 @@ msgstr "Uddannelse"
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:305
 #: FlightJournal.Web\Views\Report\Index.cshtml:251
 #: FlightJournal.Web\Views\Report\Month.cshtml:405
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:41
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:40
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:37
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:59
 msgid "Details"
@@ -715,7 +757,7 @@ msgstr "Benyttes på {0} registreringer"
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:7
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:35
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:66
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:118
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:120
 msgid "Logbook"
 msgstr "Logbog"
 
@@ -834,31 +876,36 @@ msgstr "Startmetoder"
 msgid "Clubs"
 msgstr "Klubber"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:102
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:97
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:7
+msgid "Training programs"
+msgstr "Træningsprogrammer"
+
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:104
 msgid "[Create relation to pilotprofile]"
 msgstr "[Opret relation til pilotprofil]"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:122
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:124
 msgid "Guided tour"
 msgstr "Få en rundtur på siden"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:134
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:136
 msgid "About"
 msgstr "Om"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:164
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:166
 msgid "Next >"
 msgstr "Næste >"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:165
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:167
 msgid "< Prev"
 msgstr "< Forrige"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:166
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:168
 msgid "Skip"
 msgstr "Spring over"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:167
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:169
 msgid "Done"
 msgstr "Færdig"
 
@@ -876,6 +923,96 @@ msgstr "Log ud"
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:51
 msgid "Back to List"
 msgstr "Tilbage til listen"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Create.cshtml:4
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Create.cshtml:5
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Create.cshtml:4
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Create.cshtml:7
+#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
+#, fuzzy
+msgid "Create"
+msgstr "Opret"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Create.cshtml:7
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:13
+msgid "Create exercise"
+msgstr "Opret øvelse"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Delete.cshtml:10
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Delete.cshtml:11
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Delete.cshtml:11
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Delete.cshtml:9
+msgid "Are you sure you want to delete this?"
+msgstr "Er du sikker på at du vil slette dette ?"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\DeleteLocked.cshtml:6
+#: FlightJournal.Web\Views\TrainingLessonAdmin\DeleteLocked.cshtml:6
+#: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:6
+msgid "Deletion not possible"
+msgstr "Kan ikke slette"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\DeleteLocked.cshtml:8
+msgid "The training exercise is in use, and therefore cannot be deleted"
+msgstr "Denne øvelse er i brug, og kan derfor ikke slettes"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:10
+msgid "Exercise Details"
+msgstr "Øvelsesdetaljer"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:10
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Details.cshtml:15
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:42
+msgid "Exercises"
+msgstr "Øvelser"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:50
+msgid "Back to list of lessons"
+msgstr "Tilbage til listen over lektioner"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\_PartialBackToList.cshtml:2
+msgid "Back to List of exercises"
+msgstr "Tilbage til listen over øvelser"
+
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\_PartialTrainingExercise.cshtml:3
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\_PartialTrainingExerciseReadonly.cshtml:2
+msgid "Training exercise"
+msgstr "Øvelse"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Create.cshtml:8
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:12
+msgid "Create lesson"
+msgstr "Opret lektion"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\DeleteLocked.cshtml:8
+msgid "The training lesson is in use, and therefore cannot be deleted"
+msgstr "Denne lektion er i brug, og kan derfor ikke slettes"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Details.cshtml:8
+msgid "Lesson Details"
+msgstr "Lektionsdetaljer"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:9
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:14
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:39
+msgid "Lessons"
+msgstr "Lektioner"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:21
+msgid "Purpose"
+msgstr "Formål"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:50
+msgid "Back to list of training programs"
+msgstr "Tilbage til listen over træningsprogrammer"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\_PartialBackToList.cshtml:2
+msgid "Back to List of lessons"
+msgstr "Tilbage til listen over lektioner"
+
+#: FlightJournal.Web\Views\TrainingLessonAdmin\_PartialTrainingLesson.cshtml:3
+#: FlightJournal.Web\Views\TrainingLessonAdmin\_PartialTrainingLessonReadonly.cshtml:2
+msgid "Training lesson"
+msgstr "Lektion"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:4
 msgid ""
@@ -916,7 +1053,7 @@ msgstr "Vis/Skjul knapper til at vise de enkelte øvelser for hver lektion."
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:30
 msgid "Lesson details"
-msgstr "Lektioner og øvelser"
+msgstr "Lektionsdetaljer"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:32
 msgid "Show/hide selection of maneuvers done during the flight"
@@ -1096,10 +1233,25 @@ msgid ""
 "You have unsaved data - do you want to leave the page and loose the changes?"
 msgstr ""
 
-#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
-#, fuzzy
-msgid "Create"
-msgstr "Opret"
+#: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:8
+msgid "The training program is in use, and therefore cannot be deleted"
+msgstr "Dette træningsprogram er i brug, og kan derfor ikke slettes"
+
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:4
+msgid "Training program administration"
+msgstr "Administration af træningsprogram"
+
+#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:10
+msgid "Create training program"
+msgstr "Opret træningsprogram"
+
+#: FlightJournal.Web\Views\TrainingProgramAdmin\_PartialBackToList.cshtml:2
+msgid "Back to List of trainingprograms"
+msgstr "Tilbage til listen over træningsprogrammer"
+
+#: FlightJournal.Web\Views\TrainingProgramAdmin\_PartialTrainingProgram.cshtml:3
+msgid "Training program"
+msgstr "Træningsprogram"
 
 #: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:11
 msgid "Create a new account."
@@ -1140,9 +1292,6 @@ msgstr "ikke bekræftet"
 
 #~ msgid "Select the training program for this flight"
 #~ msgstr "Vælg det træningsprogram som flyvningen er en del af"
-
-#~ msgid "Selection of training program"
-#~ msgstr "Valg af træningsprogram"
 
 #~ msgid "Glider"
 #~ msgstr "Svævefly"
