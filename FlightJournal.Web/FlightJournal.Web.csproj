@@ -240,6 +240,10 @@
     <Compile Include="Migrations\FlightContext\202101240942593_Added-Weather-Data-Tables.Designer.cs">
       <DependentUpon>202101240942593_Added-Weather-Data-Tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202101301238302_AddedCommentaryWithType.cs" />
+    <Compile Include="Migrations\FlightContext\202101301238302_AddedCommentaryWithType.Designer.cs">
+      <DependentUpon>202101301238302_AddedCommentaryWithType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
@@ -255,6 +259,8 @@
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
     <Compile Include="Models\Training\Flight\Weather.cs" />
+    <Compile Include="Models\Training\Predefined\Commentary.cs" />
+    <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\ManouvreIcon.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
@@ -800,6 +806,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202101240942593_Added-Weather-Data-Tables.resx">
       <DependentUpon>202101240942593_Added-Weather-Data-Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202101301238302_AddedCommentaryWithType.resx">
+      <DependentUpon>202101301238302_AddedCommentaryWithType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

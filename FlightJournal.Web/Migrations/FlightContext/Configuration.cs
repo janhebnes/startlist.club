@@ -20,53 +20,175 @@ namespace FlightJournal.Web.Migrations.FlightContext
             MigrationsDirectory = @"Migrations\FlightContext";
         }
 
-        protected override void Seed(FlightJournal.Web.Models.FlightContext context)
+        internal static void InitializeCommentaries(Models.FlightContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var startCommentary = new CommentaryType { CType = "Start", Commentaries = new List<Commentary>() };
+            var flightCommentary = new CommentaryType { CType = "Flight", Commentaries = new List<Commentary>() };
+            var approachCommentary = new CommentaryType { CType = "Approach", Commentaries = new List<Commentary>() };
+            var landingCommentary = new CommentaryType { CType = "Landing", Commentaries = new List<Commentary>() };
 
-            var forceTrainingProgramRecreation = true;
+            var commentOk = new Commentary { 
+                            Comment = "&#x2713", 
+                            CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                            };
+            startCommentary.Commentaries.Add(commentOk);
+            flightCommentary.Commentaries.Add(commentOk);
+            approachCommentary.Commentaries.Add(commentOk);
+            landingCommentary.Commentaries.Add(commentOk);
 
-            if (forceTrainingProgramRecreation
-                || !context.TrainingPrograms.Any()
-                )
+            var commentAlmostOk = new Commentary
             {
-                TrainingProgramCatalogue.InitializeTrainingPrograms(context);
-            }
+                Comment = "(&#x2713)",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
 
-            //  Only seed if the database is empty
-            if (!context.StartTypes.Any()
-                && (!context.Clubs.Any())
-                && (!context.Pilots.Any())
-                && (!context.Planes.Any()))
+            startCommentary.Commentaries.Add(commentAlmostOk);
+            flightCommentary.Commentaries.Add(commentAlmostOk);
+            approachCommentary.Commentaries.Add(commentAlmostOk);
+            landingCommentary.Commentaries.Add(commentAlmostOk);
+
+            var commentSkull = new Commentary
             {
-                InitializeDemoFlights(context);
-            }
+                Comment = "&#x2620",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
 
-            if (!context.ManouvreIcons.Any())
+            startCommentary.Commentaries.Add(commentSkull);
+            flightCommentary.Commentaries.Add(commentSkull);
+            approachCommentary.Commentaries.Add(commentSkull);
+            landingCommentary.Commentaries.Add(commentSkull);
+
+            var commentInstructorGuidance = new Commentary
             {
-                InitializeManouvres(context);
-            }
+                Comment = "Instructor guidance needed",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
 
-            if (!context.WindSpeeds.Any())
+            startCommentary.Commentaries.Add(commentInstructorGuidance);
+            flightCommentary.Commentaries.Add(commentInstructorGuidance);
+            approachCommentary.Commentaries.Add(commentInstructorGuidance);
+            landingCommentary.Commentaries.Add(commentInstructorGuidance);
+
+            var commentInstructorTakeOver = new Commentary
             {
-                InitializeWindSpeeds(context);
-            }
+                Comment = "Instructor takeover needed",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
 
-            if (!context.WindDirections.Any())
+            startCommentary.Commentaries.Add(commentInstructorTakeOver);
+            flightCommentary.Commentaries.Add(commentInstructorTakeOver);
+            approachCommentary.Commentaries.Add(commentInstructorTakeOver);
+            landingCommentary.Commentaries.Add(commentInstructorTakeOver);
+
+            var commentUnstableDirection = new Commentary
             {
-                InitializeWindDirections(context);
-            }
+                Comment = "Unstable direction",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            startCommentary.Commentaries.Add(commentUnstableDirection);
+            flightCommentary.Commentaries.Add(commentUnstableDirection);
+            approachCommentary.Commentaries.Add(commentUnstableDirection);
+            landingCommentary.Commentaries.Add(commentUnstableDirection);
+
+            var commentUnstableSpeed = new Commentary
+            {
+                Comment = "Unstable speed",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
+
+            startCommentary.Commentaries.Add(commentUnstableSpeed);
+            flightCommentary.Commentaries.Add(commentUnstableSpeed);
+            approachCommentary.Commentaries.Add(commentUnstableSpeed);
+            landingCommentary.Commentaries.Add(commentUnstableSpeed);
+
+            var commentSpeedTooHigh = new Commentary
+            {
+                Comment = "Speed too high",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
+
+            startCommentary.Commentaries.Add(commentSpeedTooHigh);
+            flightCommentary.Commentaries.Add(commentSpeedTooHigh);
+            approachCommentary.Commentaries.Add(commentSpeedTooHigh);
+            landingCommentary.Commentaries.Add(commentSpeedTooHigh);
+
+            var commentSpeedTooLow = new Commentary
+            {
+                Comment = "Speed too low",
+                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+            };
+
+            startCommentary.Commentaries.Add(commentSpeedTooLow);
+            flightCommentary.Commentaries.Add(commentSpeedTooLow);
+            approachCommentary.Commentaries.Add(commentSpeedTooLow);
+            landingCommentary.Commentaries.Add(commentSpeedTooLow);
+
+            var commentUnstablePosition = new Commentary
+            {
+                Comment = "Unstable position",
+                CommentaryTypes = new List<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
+            };
+
+            flightCommentary.Commentaries.Add(commentUnstablePosition);
+            approachCommentary.Commentaries.Add(commentUnstablePosition);
+            landingCommentary.Commentaries.Add(commentUnstablePosition);
+
+            var commentPosTooHigh = new Commentary
+            {
+                Comment = "Position too high",
+                CommentaryTypes = new List<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
+            };
+
+            flightCommentary.Commentaries.Add(commentPosTooHigh);
+            approachCommentary.Commentaries.Add(commentPosTooHigh);
+            landingCommentary.Commentaries.Add(commentPosTooHigh);
+
+            var commentPosTooLow = new Commentary
+            {
+                Comment = "Position too low",
+                CommentaryTypes = new List<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
+            };
+
+            flightCommentary.Commentaries.Add(commentPosTooLow);
+            approachCommentary.Commentaries.Add(commentPosTooLow);
+            landingCommentary.Commentaries.Add(commentPosTooLow);
+
+            var commentFlareTooHigh = new Commentary
+            {
+                Comment = "Flare too high",
+                CommentaryTypes = new List<CommentaryType> { landingCommentary }
+            };
+
+            landingCommentary.Commentaries.Add(commentFlareTooHigh);
+
+            var commentFlareTooLow = new Commentary
+            {
+                Comment = "Flare too low",
+                CommentaryTypes = new List<CommentaryType> { landingCommentary }
+            };
+
+            landingCommentary.Commentaries.Add(commentFlareTooLow);
+
+            context.Commentaries.Add(commentOk);
+            context.Commentaries.Add(commentAlmostOk);
+            context.Commentaries.Add(commentSkull);
+            context.Commentaries.Add(commentInstructorGuidance);
+            context.Commentaries.Add(commentInstructorTakeOver);
+            context.Commentaries.Add(commentUnstableDirection);
+            context.Commentaries.Add(commentUnstableSpeed);
+            context.Commentaries.Add(commentSpeedTooHigh);
+            context.Commentaries.Add(commentSpeedTooLow);
+            context.Commentaries.Add(commentUnstablePosition);
+            context.Commentaries.Add(commentPosTooHigh);
+            context.Commentaries.Add(commentPosTooLow);
+            context.Commentaries.Add(commentFlareTooHigh);
+            context.Commentaries.Add(commentFlareTooLow);
+
+            context.CommentaryTypes.Add(landingCommentary);
+            context.CommentaryTypes.Add(startCommentary);
+            context.CommentaryTypes.Add(approachCommentary);
+            context.CommentaryTypes.Add(flightCommentary);
         }
 
         internal static void InitializeDemoFlights(Models.FlightContext context)
@@ -179,25 +301,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 .ForEach(b => context.Flights.Add(b));
 
             context.SaveChanges();
-        }
-
-        internal static void InitializeWindDirections(Models.FlightContext context)
-        {
-            for (int v = 0; v < 360; v += 45)
-            {
-                var direction = new WindDirection { WindDirectionItem = v };
-                context.WindDirections.Add(direction);
-            }
-               
-        }
-
-        internal static void InitializeWindSpeeds(Models.FlightContext context)
-        {
-            for (int v = 0; v < 30; v += 5)
-            {
-                var speed = new WindSpeed { WindSpeedItem = v };
-                context.WindSpeeds.Add(speed);
-            }
         }
 
         internal static void InitializeManouvres(Models.FlightContext context)
@@ -343,6 +446,78 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
         }
 
+        internal static void InitializeWindDirections(Models.FlightContext context)
+        {
+            for (int v = 0; v < 360; v += 45)
+            {
+                var direction = new WindDirection { WindDirectionItem = v };
+                context.WindDirections.Add(direction);
+            }
+
+        }
+
+        internal static void InitializeWindSpeeds(Models.FlightContext context)
+        {
+            for (int v = 0; v < 30; v += 5)
+            {
+                var speed = new WindSpeed { WindSpeedItem = v };
+                context.WindSpeeds.Add(speed);
+            }
+        }
+
+        protected override void Seed(FlightJournal.Web.Models.FlightContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            var forceTrainingProgramRecreation = true;
+
+            if (forceTrainingProgramRecreation
+                || !context.TrainingPrograms.Any()
+                )
+            {
+                TrainingProgramCatalogue.InitializeTrainingPrograms(context);
+            }
+
+            //  Only seed if the database is empty
+            if (!context.StartTypes.Any()
+                && (!context.Clubs.Any())
+                && (!context.Pilots.Any())
+                && (!context.Planes.Any()))
+            {
+                InitializeDemoFlights(context);
+            }
+
+            if (!context.ManouvreIcons.Any())
+            {
+                InitializeManouvres(context);
+            }
+
+            if (!context.WindSpeeds.Any())
+            {
+                InitializeWindSpeeds(context);
+            }
+
+            if (!context.WindDirections.Any())
+            {
+                InitializeWindDirections(context);
+            }
+
+            if (!context.Commentaries.Any())
+            {
+                InitializeCommentaries(context);
+            }
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
+        }
         private static List<Flight> GenerateFlights(Plane pl1, Plane pl2, Location location, Pilot pilot, StartType start)
         {
             var s = new List<Flight>

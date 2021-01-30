@@ -29,6 +29,7 @@ namespace FlightJournal.Web.Models
             Manouvres = db.Manouvres.ToList();
             WindDirections = db.WindDirections.ToList();
             WindSpeeds = db.WindSpeeds.ToList();
+            //Commentaries = db.Commentaries.ToList();
            
         }
 
@@ -65,6 +66,7 @@ namespace FlightJournal.Web.Models
         public IEnumerable<Manouvre> Manouvres { get; } // getting manouvres from the db
         public IEnumerable<WindSpeed> WindSpeeds {get;}
         public IEnumerable<WindDirection> WindDirections { get; }
+        public IEnumerable<Commentary> Commentaries { get; }
 
 
     }
@@ -111,7 +113,7 @@ namespace FlightJournal.Web.Models
             //TODO: change each of these to a list
             //Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
             Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres))); //-> load existing flight manouvres
-            StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));
+            StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));  /// -> all these will need to be loaded via join
             FlightAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.FlightAnnotation)));
             ApproachAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.ApproachAnnotation)));
             LandingAnnotations= string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.LandingAnnotation)));

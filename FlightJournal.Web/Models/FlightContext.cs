@@ -43,6 +43,8 @@ namespace FlightJournal.Web.Models
         public DbSet<Weather> Weathers { get; set; }
         public DbSet<WindDirection> WindDirections { get; set; }
         public DbSet<WindSpeed> WindSpeeds { get; set; }
+        public DbSet<Commentary> Commentaries { get; set; }
+        public DbSet<CommentaryType> CommentaryTypes { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -147,6 +149,16 @@ namespace FlightJournal.Web.Models
                         .HasOptional(i => i.WindSpeed)
                         .WithMany()
                         .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Commentary>()
+                        .HasMany<CommentaryType>(s => s.CommentaryTypes)
+                        .WithMany(c => c.Commentaries)
+                        .Map(cs =>
+                        {
+                            cs.MapLeftKey("CommentaryRefId");
+                            cs.MapRightKey("CommentaryTypeRefId");
+                            cs.ToTable("CommentaryCommentaryTypes");
+                        });
         }
     }
 }
