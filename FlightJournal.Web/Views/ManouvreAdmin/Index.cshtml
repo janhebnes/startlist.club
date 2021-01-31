@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Manouvre>
 
 @{
-    ViewBag.Title = _("Training program administration");
+    ViewBag.Title = _("Manouvres");
 }
 
 <h2>@_("Training manouvres")</h2>
@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.ManouvreItem)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ManouvreIcon)
+            @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
 
@@ -26,10 +26,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ManouvreItem)
+                <i class="@item.IconCssClass"></i>@Html.Raw(item.ManouvreItem)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ManouvreIcon)
+            @Html.Raw(item.Description)
             </td>
             <td>
                 <div class="btn-group btn-group-sm">

@@ -172,7 +172,7 @@
         {
             var selected = Model.ThisFlight.Manouvres.Contains(maneuver.ManouvreItem.ToString()) ? "selected" : "";
 
-                <option value="@maneuver.ManouvreId" data-icon="@maneuver.Icon">@Html.Raw(maneuver.ManouvreItem)</option>
+                <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass">@Html.Raw(maneuver.ManouvreItem)</option>
         }
     </select>
 </div>
@@ -191,7 +191,7 @@
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Flight")</div>
-    <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
+    <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="f-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
         @foreach (var annotation in Model.Annotations)
         {
             var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.ToString()) ? "selected" : "";

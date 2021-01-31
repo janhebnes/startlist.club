@@ -487,23 +487,29 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 InitializeDemoFlights(context);
             }
 
-            if (!context.ManouvreIcons.Any())
+            if (forceTrainingProgramRecreation || !context.ManouvreIcons.Any())
             {
+                context.Manouvres.RemoveRange(context.Manouvres);
+                context.ManouvreIcons.RemoveRange(context.ManouvreIcons);
                 InitializeManouvres(context);
             }
 
-            if (!context.WindSpeeds.Any())
+            if (forceTrainingProgramRecreation || !context.WindSpeeds.Any())
             {
+                context.WindSpeeds.RemoveRange(context.WindSpeeds);
                 InitializeWindSpeeds(context);
             }
 
-            if (!context.WindDirections.Any())
+            if (forceTrainingProgramRecreation || !context.WindDirections.Any())
             {
+                context.WindDirections.RemoveRange(context.WindDirections);
                 InitializeWindDirections(context);
             }
 
-            if (!context.Commentaries.Any())
+            if (forceTrainingProgramRecreation || !context.Commentaries.Any())
             {
+                context.Commentaries.RemoveRange(context.Commentaries);
+                context.CommentaryTypes.RemoveRange(context.CommentaryTypes);
                 InitializeCommentaries(context);
             }
 

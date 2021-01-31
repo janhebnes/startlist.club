@@ -233,18 +233,6 @@
     <Compile Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.Designer.cs">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\FlightContext\202101202206106_Added-Manouvre-Table.cs" />
-    <Compile Include="Migrations\FlightContext\202101202206106_Added-Manouvre-Table.Designer.cs">
-      <DependentUpon>202101202206106_Added-Manouvre-Table.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\FlightContext\202101240942593_Added-Weather-Data-Tables.cs" />
-    <Compile Include="Migrations\FlightContext\202101240942593_Added-Weather-Data-Tables.Designer.cs">
-      <DependentUpon>202101240942593_Added-Weather-Data-Tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\FlightContext\202101301238302_AddedCommentaryWithType.cs" />
-    <Compile Include="Migrations\FlightContext\202101301238302_AddedCommentaryWithType.Designer.cs">
-      <DependentUpon>202101301238302_AddedCommentaryWithType.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
@@ -810,15 +798,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.resx">
       <DependentUpon>201903242342588_PilotLogEntry-extended-with-TrainingLessons.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FlightContext\202101202206106_Added-Manouvre-Table.resx">
-      <DependentUpon>202101202206106_Added-Manouvre-Table.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FlightContext\202101240942593_Added-Weather-Data-Tables.resx">
-      <DependentUpon>202101240942593_Added-Weather-Data-Tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FlightContext\202101301238302_AddedCommentaryWithType.resx">
-      <DependentUpon>202101301238302_AddedCommentaryWithType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

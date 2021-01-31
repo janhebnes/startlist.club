@@ -2,12 +2,16 @@
 <legend>@_("Manouvre")</legend>
 <table>
     <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.IconCssClass)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.IconCssClass)</td>
+    </tr>
+    <tr>
         <td class="display-label valign-top">@Html.LabelFor(model => model.ManouvreItem)</td>
         <td class="display-field">@Html.DisplayFor(model => model.ManouvreItem)</td>
     </tr>
     <tr>
-        <td class="display-label valign-top">@Html.LabelFor(model => model.ManouvreIcon)</td>
-        <td class="display-field">@Html.DisplayFor(model => model.ManouvreIcon)</td>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Description)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Description)</td>
     </tr>
 </table>
 
