@@ -213,6 +213,7 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
+    <Compile Include="Controllers\ManouvreAdminController.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
@@ -752,6 +753,15 @@
     <Content Include="Translations\no\LC_MESSAGES\messages.po" />
     <Content Include="Views\StartType\DeleteLocked.cshtml" />
     <Content Include="Views\TrainingLog\Edit.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Create.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Delete.cshtml" />
+    <Content Include="Views\ManouvreAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Details.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Edit.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Index.cshtml" />
+    <Content Include="Views\ManouvreAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\ManouvreAdmin\_PartialManouvre.cshtml" />
+    <Content Include="Views\ManouvreAdmin\_PartialManouvreReadonly.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

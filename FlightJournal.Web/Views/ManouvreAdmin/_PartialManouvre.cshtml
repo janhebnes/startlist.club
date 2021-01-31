@@ -1,0 +1,24 @@
+﻿@model FlightJournal.Web.Models.Training.Predefined.Manouvre
+
+<legend>@_("Manouvre")</legend>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ManouvreItem)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ManouvreItem)
+    @Html.ValidationMessageFor(model => model.ManouvreItem)
+    <small>e.g., SPL-S</small>
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ManouvreIcon)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ManouvreIcon)
+    @Html.ValidationMessageFor(model => model.ManouvreIcon)
+    <small>e.g., Sailplane Pilot License - S</small>
+</div>
+
+@Html.HiddenFor(model => model.ManouvreId)
+
+
