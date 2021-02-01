@@ -170,7 +170,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple  id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
             @foreach (var maneuver in Model.Manouvres)
         {
-            var selected = Model.ThisFlight.Manouvres.Contains(maneuver.ManouvreItem.ToString()) ? "selected" : "";
+            var selected = Model.ThisFlight.Manouvres.Contains(maneuver.ManouvreId) ? "selected" : "";
 
                 <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass">@Html.Raw(maneuver.ManouvreItem)</option>
         }
@@ -184,34 +184,34 @@
     </div>
     <div class="col-xs-2 col-sm-1">@_("Launch")</div>
     <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the launch"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForStartPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.ToString()) ? "selected" : "";
-            <option value="@annotation.Id" data-icon="@annotation.Icon" @selected>@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId" @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Flight")</div>
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="f-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForFlightPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.ToString()) ? "selected" : "";
-            <option value="@annotation.Id" data-icon="@annotation.Icon" @selected>@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId"  @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Approach")</div>
     <select class="col-xs-10  col-sm-11 selectpicker annotation userselection" id="i-ann" multiple title=@Html.Raw(__("Grade the approach phase"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForApproachPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.ToString()) ? "selected" : "";
-            <option value="@annotation.Id" data-icon="@annotation.Icon" @selected>@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId"  @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Landing")</div>
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="l-ann" multiple title=@Html.Raw(__("Grade the landing"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForLandingPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.ToString()) ? "selected" : "";
-            <option value="@annotation.Id" data-icon="@annotation.Icon" @selected>@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId" @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Note")</div>

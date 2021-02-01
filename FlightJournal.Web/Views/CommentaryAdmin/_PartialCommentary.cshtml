@@ -1,0 +1,42 @@
+﻿@model FlightJournal.Web.Models.Training.Predefined.Commentary
+
+<legend>@_("Manouvre")</legend>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Comment)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Comment)
+    @Html.ValidationMessageFor(model => model.Comment)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.AppliesToStartPhase)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.AppliesToStartPhase)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.AppliesToFlightPhase)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.AppliesToFlightPhase)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.AppliesToApproachPhase)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.AppliesToApproachPhase)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.AppliesToLandingPhase)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.AppliesToLandingPhase)
+</div>
+
+@Html.HiddenFor(model => model.CommentaryId)
+
+
+

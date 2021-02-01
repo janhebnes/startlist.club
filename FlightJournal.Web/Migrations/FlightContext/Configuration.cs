@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using FlightJournal.Web.Models;
-using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
+using FlightJournal.Web.Models.Training.Predefined;
+using System;
+using System.Data.Entity.Migrations;
+using System.Linq;
 
 namespace FlightJournal.Web.Migrations.FlightContext
 {
-    using FlightJournal.Web.Models.Training.Predefined;
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<FlightJournal.Web.Models.FlightContext>
     {
@@ -169,7 +167,22 @@ namespace FlightJournal.Web.Migrations.FlightContext
             };
 
             landingCommentary.Commentaries.Add(commentFlareTooLow);
-
+            foreach (var c in startCommentary.Commentaries)
+            {
+                c.AppliesToStartPhase = true;
+            }
+            foreach (var c in flightCommentary.Commentaries)
+            {
+                c.AppliesToFlightPhase= true;
+            }
+            foreach (var c in approachCommentary.Commentaries)
+            {
+                c.AppliesToApproachPhase = true;
+            }
+            foreach (var c in landingCommentary.Commentaries)
+            {
+                c.AppliesToLandingPhase = true;
+            }
             context.Commentaries.Add(commentOk);
             context.Commentaries.Add(commentAlmostOk);
             context.Commentaries.Add(commentSkull);
@@ -335,70 +348,86 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var right90 = new Manouvre
             {
                 ManouvreItem = "90",
-                ManouvreIcon = iconRightTurn
+                ManouvreIcon = iconRightTurn,
+                Description = "90 degree right turn",
+                IconCssClass = "fa fa-repeat"
             };
             context.Manouvres.Add(right90);
 
             var left90 = new Manouvre
             {
                 ManouvreItem = "90",
-                ManouvreIcon = iconLeftTurn
+                ManouvreIcon = iconLeftTurn,
+                Description = "90 degree left turn",
+                IconCssClass = "fa fa-undo"
             };
             context.Manouvres.Add(left90);
 
             var left180 = new Manouvre
             {
                 ManouvreItem = "180",
-                ManouvreIcon = iconLeftTurn
+                ManouvreIcon = iconLeftTurn,
+                Description = "180 degree left turn",
+                IconCssClass = "fa fa-undo"
             };
             context.Manouvres.Add(left180);
 
             var right180 = new Manouvre
             {
                 ManouvreItem = "180",
-                ManouvreIcon = iconRightTurn
+                ManouvreIcon = iconRightTurn,
+                Description = "180 degree right turn",
+                IconCssClass = "fa fa-repeat"
             };
             context.Manouvres.Add(right180);
 
             var right360 = new Manouvre
             {
                 ManouvreItem = "360",
-                ManouvreIcon = iconRightTurn
+                ManouvreIcon = iconRightTurn,
+                Description = "360 degree right turn",
+                IconCssClass = "fa fa-repeat"
             };
             context.Manouvres.Add(right360);
 
             var left360 = new Manouvre
             {
                 ManouvreItem = "360",
-                ManouvreIcon = iconLeftTurn
+                ManouvreIcon = iconLeftTurn,
+                Description = "360 degree left turn",
+                IconCssClass = "fa fa-repeat"
             };
             context.Manouvres.Add(left360);
 
             var FigureEight = new Manouvre
             {
                 ManouvreItem = "&infin;",
-                ManouvreIcon = iconFigEight
+                ManouvreIcon = iconFigEight,
+                Description = "Figure-eight"
             };
             context.Manouvres.Add(FigureEight);
 
             var Bank30 = new Manouvre
             {
                 ManouvreItem = "&ang;30&deg;",
-                ManouvreIcon = iconBank30
+                ManouvreIcon = iconBank30,
+                Description = "30 degree bank"
             };
             context.Manouvres.Add(Bank30);
 
             var Bank45 = new Manouvre
             {
                 ManouvreItem = "&ang;45&deg;",
-                ManouvreIcon = iconBank45
+                ManouvreIcon = iconBank45,
+                Description = "45 degree bank"
             };
             context.Manouvres.Add(Bank45);
 
             var Bank60 = new Manouvre
             {
                 ManouvreItem = "&ang;60&deg;",
-                ManouvreIcon = iconBank60
+                ManouvreIcon = iconBank60,
+                Description = "60 degree bank"
             };
             context.Manouvres.Add(Bank60);
 

@@ -29,8 +29,7 @@ namespace FlightJournal.Web.Models
             Manouvres = db.Manouvres.ToList();
             WindDirections = db.WindDirections.ToList();
             WindSpeeds = db.WindSpeeds.ToList();
-            //Commentaries = db.Commentaries.ToList();
-           
+            Commentaries = db.Commentaries.ToList();
         }
 
         /// <summary>
@@ -87,11 +86,11 @@ namespace FlightJournal.Web.Models
     {
         public DateTime Date { get; }
         public string Notes { get; }
-        public string Manouvres { get; }
-        public string StartAnnotations{ get; }
-        public string FlightAnnotations{ get; }
-        public string ApproachAnnotations{ get; }
-        public string LandingAnnotations{ get; }
+        public List<int> Manouvres { get; }
+        public List<int> StartAnnotations { get; }
+        public List<int> FlightAnnotations{ get; }
+        public List<int> ApproachAnnotations { get; }
+        public List<int> LandingAnnotations { get; }
         public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; }
         /// <summary>
         /// 
@@ -107,16 +106,15 @@ namespace FlightJournal.Web.Models
             var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).ToList();
             Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
             // multiple exercises possible per flight
-            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
+            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
 
             //TODO: change each of these to a list
-            //Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
-            Manouvres = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Manouvres))); //-> load existing flight manouvres
-            StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));  /// -> all these will need to be loaded via join
-            FlightAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.FlightAnnotation)));
-            ApproachAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.ApproachAnnotation)));
-            LandingAnnotations= string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.LandingAnnotation)));
+            Manouvres = annotationsForThisFlight.SelectMany(x => x.Manouvres.Select(m=>m.ManouvreId)).ToList(); 
+            StartAnnotations = annotationsForThisFlight.SelectMany(x => x.StartAnnotation.Select(a=>a.CommentaryId)).ToList();  
+            FlightAnnotations = annotationsForThisFlight.SelectMany(x => x.FlightAnnotation.Select(a => a.CommentaryId)).ToList();
+            ApproachAnnotations = annotationsForThisFlight.SelectMany(x => x.ApproachAnnotation.Select(a => a.CommentaryId)).ToList();
+            LandingAnnotations = annotationsForThisFlight.SelectMany(x => x.LandingAnnotation.Select(a => a.CommentaryId)).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db,x));
         }
 
@@ -195,8 +193,11 @@ namespace FlightJournal.Web.Models
             Manouvres = dbmodel.Manouvres;
 /*            WindDirectionsDb = dbmodel.WindDirections;
             WindSpeedsDb = dbmodel.WindSpeeds;*/
-            Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
-
+            //Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
+            AnnotationsForStartPhase = dbmodel.Commentaries.Where(x => x.AppliesToStartPhase);
+            AnnotationsForFlightPhase = dbmodel.Commentaries.Where(x => x.AppliesToFlightPhase);
+            AnnotationsForApproachPhase = dbmodel.Commentaries.Where(x => x.AppliesToApproachPhase);
+            AnnotationsForLandingPhase = dbmodel.Commentaries.Where(x => x.AppliesToLandingPhase);
 
             //replace this with data from the DB
             var wds = new List<WindDirectionViewModel>();
@@ -229,7 +230,10 @@ namespace FlightJournal.Web.Models
         public IEnumerable<Manouvre> Manouvres { get; }
         public IEnumerable<WindDirectionViewModel> WindDirections { get; }
         public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
-        public IEnumerable<FlightPhaseAnnotationViewModel> Annotations{ get; }
+        public IEnumerable<Commentary> AnnotationsForStartPhase{ get; }
+        public IEnumerable<Commentary> AnnotationsForFlightPhase{ get; }
+        public IEnumerable<Commentary> AnnotationsForApproachPhase{ get; }
+        public IEnumerable<Commentary> AnnotationsForLandingPhase{ get; }
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
 
         // data for this flight

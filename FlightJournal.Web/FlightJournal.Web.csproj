@@ -213,6 +213,7 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
+    <Compile Include="Controllers\CommentaryAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
@@ -750,6 +751,15 @@
     <Content Include="Views\ManouvreAdmin\_PartialBackToList.cshtml" />
     <Content Include="Views\ManouvreAdmin\_PartialManouvre.cshtml" />
     <Content Include="Views\ManouvreAdmin\_PartialManouvreReadonly.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialCommentary.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialCommentaryReadonly.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Create.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Delete.cshtml" />
+    <Content Include="Views\CommentaryAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Details.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Edit.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Commentary>
+
+@{
+    ViewBag.Title = _("Commentaries");
+}
+
+<h2>@_("Training phase commentaries")</h2>
+<hr/>
+<p>
+    @Html.ActionLink(_("Create"), "Create", null, new { @class = "btn btn-primary"})
+</p>
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            Applies to Start
+        </th>
+        <th>
+            Applies to Flight
+        </th>
+        <th>
+            Applies to Approach
+        </th>
+        <th>
+            Applies to Landing
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.Raw(item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(x=>item.AppliesToStartPhase)
+            </td>
+            <td>
+                @Html.DisplayFor(x=>item.AppliesToFlightPhase)
+            </td>
+            <td>
+                @Html.DisplayFor(x=>item.AppliesToApproachPhase)
+            </td>
+            <td>
+                @Html.DisplayFor(x=>item.AppliesToLandingPhase)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.CommentaryId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Details"), "Details", new { id = item.CommentaryId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Delete"), "Delete", new { id = item.CommentaryId }, new { @class = "btn btn-default" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
