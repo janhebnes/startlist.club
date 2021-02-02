@@ -141,6 +141,8 @@
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -211,8 +213,10 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
-    <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
+    <Compile Include="Controllers\CommentaryAdminController.cs" />
+    <Compile Include="Controllers\ManouvreAdminController.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
+    <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
     <Compile Include="Controllers\TrainingLessonAdminController.cs" />
     <Compile Include="Controllers\TrainingProgramAdminController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
@@ -250,6 +254,13 @@
     <Compile Include="Models\Training\Catalogue\Training2Lesson.cs" />
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
+    <Compile Include="Models\Training\Flight\Weather.cs" />
+    <Compile Include="Models\Training\Predefined\Commentary.cs" />
+    <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
+    <Compile Include="Models\Training\Predefined\Manouvre.cs" />
+    <Compile Include="Models\Training\Predefined\ManouvreIcon.cs" />
+    <Compile Include="Models\Training\Predefined\WindDirection.cs" />
+    <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -764,6 +775,24 @@
     <Content Include="Views\TrainingExerciseAdmin\Details.cshtml" />
     <Content Include="Views\TrainingExerciseAdmin\Edit.cshtml" />
     <Content Include="Views\TrainingExerciseAdmin\Index.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Create.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Delete.cshtml" />
+    <Content Include="Views\ManouvreAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Details.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Edit.cshtml" />
+    <Content Include="Views\ManouvreAdmin\Index.cshtml" />
+    <Content Include="Views\ManouvreAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\ManouvreAdmin\_PartialManouvre.cshtml" />
+    <Content Include="Views\ManouvreAdmin\_PartialManouvreReadonly.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialCommentary.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialCommentaryReadonly.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Create.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Delete.cshtml" />
+    <Content Include="Views\CommentaryAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Details.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Edit.cshtml" />
+    <Content Include="Views\CommentaryAdmin\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -802,6 +831,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201505062147469_FlightVersion-Deleted-Date.resx">
       <DependentUpon>201505062147469_FlightVersion-Deleted-Date.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\201506232105012_Club-Visibility.resx">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>

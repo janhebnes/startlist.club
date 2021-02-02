@@ -9,6 +9,7 @@ using FlightJournal.Web.Migrations.FlightContext;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models
 {
@@ -36,6 +37,14 @@ namespace FlightJournal.Web.Models
         public DbSet<Training2Exercise> TrainingExercises{ get; set; }
         public DbSet<AppliedExercise> AppliedExercises { get; set; }
         public DbSet<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
+
+        public DbSet<Manouvre> Manouvres { get; set; }
+        public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
+        public DbSet<Weather> Weathers { get; set; }
+        public DbSet<WindDirection> WindDirections { get; set; }
+        public DbSet<WindSpeed> WindSpeeds { get; set; }
+        public DbSet<Commentary> Commentaries { get; set; }
+        public DbSet<CommentaryType> CommentaryTypes { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -125,6 +134,31 @@ namespace FlightJournal.Web.Models
                         .HasOptional(i => i.TrainingLessonApprovedByFlightInstructor)
                         .WithMany()
                         .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Manouvre>()
+                        .HasOptional(i => i.ManouvreIcon)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Weather>()
+                        .HasOptional(i => i.WindDirection)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Weather>()
+                        .HasOptional(i => i.WindSpeed)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Commentary>()
+                        .HasMany<CommentaryType>(s => s.CommentaryTypes)
+                        .WithMany(c => c.Commentaries)
+                        .Map(cs =>
+                        {
+                            cs.MapLeftKey("CommentaryRefId");
+                            cs.MapRightKey("CommentaryTypeRefId");
+                            cs.ToTable("CommentaryCommentaryTypes");
+                        });
         }
     }
 }

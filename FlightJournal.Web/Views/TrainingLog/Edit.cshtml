@@ -168,9 +168,11 @@
 <div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter" data-step="40" data-intro=@Html.Raw(@__("Select the maneuvers performed during the flight"))>
     <div class="col-xs-2  col-sm-1">@_("Maneuvers")</div>
     <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple  id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
-        @foreach (var maneuver in Model.Maneuvers)
+            @foreach (var maneuver in Model.Manouvres)
         {
-            <option value="@maneuver.Id" data-icon="@maneuver.Icon">@Html.Raw(maneuver.Name)</option>
+            var selected = Model.ThisFlight.Manouvres.Contains(maneuver.ManouvreId) ? "selected" : "";
+
+                <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass">@Html.Raw(maneuver.ManouvreItem)</option>
         }
     </select>
 </div>
@@ -182,35 +184,39 @@
     </div>
     <div class="col-xs-2 col-sm-1">@_("Launch")</div>
     <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the launch"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForStartPhase)
         {
-            <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId" @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Flight")</div>
-    <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
-        @foreach (var annotation in Model.Annotations)
+    <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="f-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
+        @foreach (var annotation in Model.AnnotationsForFlightPhase)
         {
-            <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId"  @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Approach")</div>
     <select class="col-xs-10  col-sm-11 selectpicker annotation userselection" id="i-ann" multiple title=@Html.Raw(__("Grade the approach phase"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForApproachPhase)
         {
-            <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId"  @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Landing")</div>
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="l-ann" multiple title=@Html.Raw(__("Grade the landing"))>
-        @foreach (var annotation in Model.Annotations)
+        @foreach (var annotation in Model.AnnotationsForLandingPhase)
         {
-            <option value="@annotation.Id" data-icon="@annotation.Icon">@Html.Raw(annotation.Name)</option>
+            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            <option value="@annotation.CommentaryId" @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
     <div class="col-xs-2 col-sm-1">@_("Note")</div>
     <div class="col-xs-10 col-sm-11 " data-step="55" data-intro=@Html.Raw(__("If you have comments beyond the predefined selections above, you can enter them here"))>
-        <textarea style="width: 100%; max-width:100%" id="flightnotes" rows="3"></textarea>
+        <textarea style="width: 100%; max-width:100%" id="flightnotes" rows="3">@Model.ThisFlight.Notes</textarea>
     </div>
 </div>
 
