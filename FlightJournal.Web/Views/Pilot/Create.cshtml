@@ -10,7 +10,7 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Opret pilot</legend>
+        <legend>@_("Create pilot")</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
@@ -71,7 +71,7 @@
 
         <p style="margin-top: 30px">
             <div class="btn-group">
-                <input type="submit" value="Opret" class="btn btn-primary" />
+                <input type="submit" value="@_("Create")" class="btn btn-primary" />
                 <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
             </div>
         </p>
