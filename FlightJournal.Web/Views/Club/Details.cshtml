@@ -4,10 +4,10 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@_("Details")</h2>
 
 <fieldset>
-    <legend>Club</legend>
+    <legend>@_("Club")</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.ShortName)</div>
     <div class="display-field">
@@ -40,6 +40,10 @@
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.ClubId }) |
+    @if (ViewBag.AllowEdit)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ClubId })
+    }
+
     @Html.ActionLink("Back to List", "Index")
 </p>
