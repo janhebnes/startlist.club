@@ -191,13 +191,13 @@ namespace FlightJournal.Web.Models
             // replace this with manouvers
             //Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Manouvres = dbmodel.Manouvres;
-/*            WindDirectionsDb = dbmodel.WindDirections;
-            WindSpeedsDb = dbmodel.WindSpeeds;*/
+            /*            WindDirectionsDb = dbmodel.WindDirections;
+                        WindSpeedsDb = dbmodel.WindSpeeds;*/
             //Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
-            AnnotationsForStartPhase = dbmodel.Commentaries.Where(x => x.AppliesToStartPhase);
-            AnnotationsForFlightPhase = dbmodel.Commentaries.Where(x => x.AppliesToFlightPhase);
-            AnnotationsForApproachPhase = dbmodel.Commentaries.Where(x => x.AppliesToApproachPhase);
-            AnnotationsForLandingPhase = dbmodel.Commentaries.Where(x => x.AppliesToLandingPhase);
+            AnnotationsForStartPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Start"));
+            AnnotationsForFlightPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Flight"));
+            AnnotationsForApproachPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Approach"));
+            AnnotationsForLandingPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Landing"));
 
             //replace this with data from the DB
             var wds = new List<WindDirectionViewModel>();
