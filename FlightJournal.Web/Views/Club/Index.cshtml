@@ -4,10 +4,10 @@
     ViewBag.Title = "Club administration";
 }
 
-<h2>Club administration</h2>
+<h2>@_("Club administration")</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default", type = "button" })
 </p>
 <table class="table table-striped table-hover table-condensed">
     <tr>
@@ -54,9 +54,15 @@
                 @Html.DisplayFor(modelItem => item.Visible)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ClubId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ClubId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ClubId })
+                @if (ViewBag.AllowEdit) {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ClubId }, new { @class = "btn btn-default", type = "button" })
+                    @Html.ActionLink("Details", "Details", new { id = item.ClubId }, new { @class = "btn btn-default", type = "button" }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ClubId }, new { @class = "btn btn-default", type = "button" })
+                }
+                else
+                { 
+                    @Html.ActionLink("Details", "Details", new { id = item.ClubId }, new { @class = "btn btn-default", type = "button" }) 
+                }
             </td>
         </tr>
     }

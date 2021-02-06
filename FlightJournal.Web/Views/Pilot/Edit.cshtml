@@ -13,7 +13,7 @@
 {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Rediger pilot</legend>
+        <legend>@_("Edit pilot")</legend>
 
         @Html.HiddenFor(model => model.PilotId)
 
@@ -82,8 +82,8 @@
 
         <p style="margin-top: 30px">
             <div class="btn-group">
-                <input type="submit" value="Gem" class="btn btn-primary" />
-                <a href="javascript:window.history.back();" class="btn btn-default">Tilbage</a>
+                <input type="submit" value="@_("Save")" class="btn btn-primary" />
+                <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
             </div>
         </p>
     </fieldset>

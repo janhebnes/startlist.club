@@ -1,6 +1,7 @@
 #: FlightJournal.Web\Models\AccountViewModels.cs:8
 #: FlightJournal.Web\Models\AccountViewModels.cs:47
 #: FlightJournal.Web\Models\AccountViewModels.cs:113
+#: FlightJournal.Web\Models\AdminViewModels.cs:21
 #: FlightJournal.Web\Models\Pilot.cs:24
 #: FlightJournal.Web\Models\PilotViewModels.cs:13
 msgid "Email"
@@ -11,6 +12,7 @@ msgid "Password"
 msgstr ""
 
 #: FlightJournal.Web\Models\AccountViewModels.cs:56
+#: FlightJournal.Web\Models\AccountViewModels.cs:66
 msgid "Remember me?"
 msgstr ""
 
@@ -24,8 +26,13 @@ msgstr ""
 msgid "Security code"
 msgstr ""
 
-#: FlightJournal.Web\Models\AccountViewModels.cs:66
-msgid "Husk mig?"
+#: FlightJournal.Web\Models\AdminViewModels.cs:25
+msgid "Email confirmed"
+msgstr ""
+
+#: FlightJournal.Web\Models\AdminViewModels.cs:28
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:91
+msgid "Roles"
 msgstr ""
 
 #: FlightJournal.Web\Models\Club.cs:14 FlightJournal.Web\Models\Plane.cs:28
@@ -247,6 +254,8 @@ msgstr ""
 #: FlightJournal.Web\Models\Pilot.cs:28
 #: FlightJournal.Web\Models\PilotStatusType.cs:16
 #: FlightJournal.Web\Models\StartType.cs:43
+#: FlightJournal.Web\Views\Club\Details.cshtml:10
+#: FlightJournal.Web\Views\Club\Edit.cshtml:15
 msgid "Club"
 msgstr ""
 
@@ -363,11 +372,11 @@ msgstr ""
 msgid "Lesson category"
 msgstr ""
 
-#: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:17
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\About\Index.cshtml:145
 msgid "Short Name"
 msgstr ""
 
-#: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:22
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\About\Index.cshtml:145
 msgid "Notes"
 msgstr ""
 
@@ -474,6 +483,33 @@ msgstr ""
 msgid "Select a flightclub (unfiltered)"
 msgstr ""
 
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:4
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:158
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Create.cshtml:12
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:13
+#: FlightJournal.Web\Views\Logbook\Index.cshtml:305
+#: FlightJournal.Web\Views\Report\Index.cshtml:251
+#: FlightJournal.Web\Views\Report\Month.cshtml:405
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:68
+msgid "Details"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\Edit.cshtml:7
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:4
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Create.cshtml:12
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Flight\Grid.cshtml:13
+#: FlightJournal.Web\Views\Flight\Index.cshtml:101
+#: FlightJournal.Web\Views\Report\Index.cshtml:248
+#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:67
+msgid "Edit"
+msgstr ""
+
+#: FlightJournal.Web\Views\Club\Index.cshtml:7
+msgid "Club administration"
+msgstr ""
+
 #: FlightJournal.Web\Views\Flight\Create.cshtml:4
 #: FlightJournal.Web\Views\Flight\Create.cshtml:12
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:11
@@ -488,7 +524,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:159
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:239
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:75
 msgid "Back"
 msgstr ""
 
@@ -497,11 +533,8 @@ msgstr ""
 msgid "Flight Details"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Details.cshtml:103
-#: FlightJournal.Web\Views\Flight\Details.cshtml:156
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:148
-#: FlightJournal.Web\Views\Flight\Index.cshtml:101
-#: FlightJournal.Web\Views\Report\Index.cshtml:248
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:150
+#: FlightJournal.Web\Views\Report\Index.cshtml:247
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:16
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Edit.cshtml:7
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:40
@@ -511,12 +544,6 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:6
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:36
-#: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
-#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:4
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:58
-msgid "Edit"
-msgstr ""
-
 #: FlightJournal.Web\Views\Flight\Details.cshtml:138
 #, csharp-format
 msgid "Marked deleted {0} by {1}"
@@ -534,7 +561,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:38
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:69
 msgid "Delete"
 msgstr ""
 
@@ -566,9 +593,9 @@ msgstr ""
 msgid "Delete permanently"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:182
-msgid "TrainingLog"
-msgstr ""
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Flight\Grid.cshtml:6
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Logbook\Index.cshtml:244
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:57
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:4
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:244
@@ -729,6 +756,14 @@ msgstr ""
 msgid "Add a phone number."
 msgstr ""
 
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Report\Index.cshtml:6
+msgid "Create pilot"
+msgstr ""
+
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Report\Index.cshtml:6
+msgid "Edit pilot"
+msgstr ""
+
 #: FlightJournal.Web\Views\Report\Index.cshtml:7
 msgid "Day reports"
 msgstr ""
@@ -819,10 +854,6 @@ msgstr ""
 msgid "Locations"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:91
-msgid "Roles"
-msgstr ""
-
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:92
 msgid "Users"
 msgstr ""
@@ -835,8 +866,8 @@ msgstr ""
 msgid "Clubs"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:97
-#: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:7
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_Layout.cshtml:102
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml:102
 msgid "Training programs"
 msgstr ""
 
@@ -852,7 +883,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:166
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:39
 msgid "Next >"
 msgstr ""
 
@@ -864,7 +895,7 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:169
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\Shared\_LoginPartial.cshtml:39
 msgid "Done"
 msgstr ""
 
@@ -879,14 +910,14 @@ msgstr ""
 #: FlightJournal.Web\Views\StartType\Create.cshtml:48
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:28
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:41
-#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:51
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:82
 msgid "Back to List"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Create.cshtml:4
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Create.cshtml:5
-#: FlightJournal.Web\Views\TrainingProgramAdmin\Create.cshtml:4
-#: FlightJournal.Web\Views\TrainingProgramAdmin\Create.cshtml:7
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Create.cshtml:3
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Create.cshtml:3
 #: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:3
 msgid "Create"
 msgstr ""
@@ -905,7 +936,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\DeleteLocked.cshtml:6
 #: FlightJournal.Web\Views\TrainingLessonAdmin\DeleteLocked.cshtml:6
-#: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:6
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Create.cshtml:11
 msgid "Deletion not possible"
 msgstr ""
 
@@ -1171,7 +1202,7 @@ msgid ""
 "You have unsaved data - do you want to leave the page and loose the changes?"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:8
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Create.cshtml:11
 msgid "The training program is in use, and therefore cannot be deleted"
 msgstr ""
 
@@ -1195,10 +1226,6 @@ msgstr ""
 msgid "Create a new account."
 msgstr ""
 
-#: FlightJournal.Web\Views\UsersAdmin\Create.cshtml:34
-msgid "Select User Role"
-msgstr ""
-
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:9
 msgid "Are you sure you want to delete this User?"
 msgstr ""
@@ -1211,8 +1238,23 @@ msgstr ""
 msgid "No roles found for this user."
 msgstr ""
 
-#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:12
-msgid "Edit User Form"
+#: FlightJournal.Web\obj\Demo\Package\PackageTmp\Views\UsersAdmin\Edit.cshtml:12
+msgid "Edit user"
+msgstr ""
+
+#: FlightJournal.Web\obj\Release\Package\PackageTmp\Views\UsersAdmin\Edit.cshtml:12
+msgid ""
+" can change or delete flights after the 48 hours where the user has a pilot "
+"binding and change locations and planes."
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:60
+msgid ""
+" (Editor+) can manage pilots in the club where the user has a pilot binding."
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:64
+msgid " (Manager+) can manage users, clubs, startmethods and roles."
 msgstr ""
 
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:4
@@ -1225,4 +1267,8 @@ msgstr ""
 
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
 msgid "unconfirmed"
+msgstr ""
+
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
+msgid "User not bound to pilot"
 msgstr ""
