@@ -22,7 +22,6 @@ namespace FlightJournal.Web.Controllers
         }
 
 
-
         private TrainingLogViewModel BuildTrainingLogViewModel(Flight flight, int trainingProgramId)
         {
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";

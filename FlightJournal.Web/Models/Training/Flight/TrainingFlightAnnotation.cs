@@ -25,10 +25,10 @@ namespace FlightJournal.Web.Models.Training.Flight
         public IEnumerable<Commentary> ApproachAnnotation { get; set; } = new List<Commentary>();
         public IEnumerable<Commentary> LandingAnnotation { get; set; } = new List<Commentary>();
 
-        public IEnumerable<FlightManeuver> Maneuvers { get; set; } = new List<FlightManeuver>();
-        public IEnumerable<Predefined.Manouvre> Manouvres { get; set; } = new List<Predefined.Manouvre>();
-        public int WindDirection { get; set; } = -1;
-        public int WindSpeedInKnots { get; set; } = -1;
+        //public IEnumerable<Predefined.Manouvre> Manouvres { get; set; } = new List<Predefined.Manouvre>();
+        public virtual Weather Weather { get; set; }
+        public virtual ICollection<Manouvre> Manouvres { get; set; }
+        public ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
     }
 
     public enum FlightPhaseAnnotation

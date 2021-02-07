@@ -126,25 +126,6 @@ namespace FlightJournal.Web.Models
         public string Name { get; }
         public string Icon { get; }
 
-        public FlightPhaseAnnotationViewModel(FlightPhaseAnnotation id)
-        {
-            Id = id;
-            switch (Id)
-            {
-                case FlightPhaseAnnotation.Ok:
-                    Name = "&#x2713";
-                    break;
-                case FlightPhaseAnnotation.AlmostOk:
-                    Name = "(&#x2713)";
-                    break;
-                case FlightPhaseAnnotation.Skull:
-                    Name = "&#x2620";
-                    break;
-                default:
-                    Name = Id.ToString();
-                    break;
-            }
-        }
     }
 
     public class WindSpeedViewModel
@@ -205,9 +186,6 @@ namespace FlightJournal.Web.Models
                 wds.Add(new WindDirectionViewModel(wd.WindDirectionItem));
             }
             WindDirections = wds;
-/*            for (int v = 0; v < 360; v += 45)
-                wd.Add(new WindDirectionViewModel(v ));
-            WindDirections = wd;    */
 
             var wss = new List<WindSpeedViewModel>();
             foreach(var ws in dbmodel.WindSpeeds)

@@ -320,7 +320,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
         {
 
             // Training ui manouvre icons
-            var iconLeftTurn = new ManouvreIcon { Icon = "fa fa-undo" };
+/*            var iconLeftTurn = new ManouvreIcon { Icon = "fa fa-undo" };
             context.ManouvreIcons.Add(iconLeftTurn);
             var iconRightTurn = new ManouvreIcon { Icon = "fa fa-repeat" };
             context.ManouvreIcons.Add(iconRightTurn);
@@ -343,12 +343,12 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var iconLeftCircuit = new ManouvreIcon { Icon = "" };
             context.ManouvreIcons.Add(iconLeftCircuit);
             var iconRightCircuit = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconRightCircuit);
+            context.ManouvreIcons.Add(iconRightCircuit);*/
 
             var right90 = new Manouvre
             {
                 ManouvreItem = "90",
-                ManouvreIcon = iconRightTurn,
+                //ManouvreIcon = iconRightTurn,
                 Description = "90 degree right turn",
                 IconCssClass = "fa fa-repeat"
             };
@@ -357,7 +357,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var left90 = new Manouvre
             {
                 ManouvreItem = "90",
-                ManouvreIcon = iconLeftTurn,
+                //ManouvreIcon = iconLeftTurn,
                 Description = "90 degree left turn",
                 IconCssClass = "fa fa-undo"
             };
@@ -366,7 +366,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var left180 = new Manouvre
             {
                 ManouvreItem = "180",
-                ManouvreIcon = iconLeftTurn,
+                //ManouvreIcon = iconLeftTurn,
                 Description = "180 degree left turn",
                 IconCssClass = "fa fa-undo"
             };
@@ -375,7 +375,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var right180 = new Manouvre
             {
                 ManouvreItem = "180",
-                ManouvreIcon = iconRightTurn,
+               // ManouvreIcon = iconRightTurn,
                 Description = "180 degree right turn",
                 IconCssClass = "fa fa-repeat"
             };
@@ -384,7 +384,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var right360 = new Manouvre
             {
                 ManouvreItem = "360",
-                ManouvreIcon = iconRightTurn,
+                //ManouvreIcon = iconRightTurn,
                 Description = "360 degree right turn",
                 IconCssClass = "fa fa-repeat"
             };
@@ -393,7 +393,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var left360 = new Manouvre
             {
                 ManouvreItem = "360",
-                ManouvreIcon = iconLeftTurn,
+                //ManouvreIcon = iconLeftTurn,
                 Description = "360 degree left turn",
                 IconCssClass = "fa fa-repeat"
             };
@@ -402,7 +402,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var FigureEight = new Manouvre
             {
                 ManouvreItem = "&infin;",
-                ManouvreIcon = iconFigEight,
+                //ManouvreIcon = iconFigEight,
                 Description = "Figure-eight"
             };
             context.Manouvres.Add(FigureEight);
@@ -410,7 +410,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var Bank30 = new Manouvre
             {
                 ManouvreItem = "&ang;30&deg;",
-                ManouvreIcon = iconBank30,
+                //ManouvreIcon = iconBank30,
                 Description = "30 degree bank"
             };
             context.Manouvres.Add(Bank30);
@@ -418,7 +418,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var Bank45 = new Manouvre
             {
                 ManouvreItem = "&ang;45&deg;",
-                ManouvreIcon = iconBank45,
+                //ManouvreIcon = iconBank45,
                 Description = "45 degree bank"
             };
             context.Manouvres.Add(Bank45);
@@ -426,7 +426,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var Bank60 = new Manouvre
             {
                 ManouvreItem = "&ang;60&deg;",
-                ManouvreIcon = iconBank60,
+                //ManouvreIcon = iconBank60,
                 Description = "60 degree bank"
             };
             context.Manouvres.Add(Bank60);
@@ -434,42 +434,42 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var AbortedStartLowAlt = new Manouvre
             {
                 ManouvreItem = "&#x21B7 Afb start lavt",
-                ManouvreIcon = iconAbortedLowAltitude
+                //ManouvreIcon = iconAbortedLowAltitude
             };
             context.Manouvres.Add(AbortedStartLowAlt);
 
             var AbortedStartMedAlt = new Manouvre
             {
                 ManouvreItem = "&#x21B7 Afb start mellem",
-                ManouvreIcon = iconAbortedMidAltitude
+                //ManouvreIcon = iconAbortedMidAltitude
             };
             context.Manouvres.Add(AbortedStartMedAlt);
 
             var AbortedStartHighAlt = new Manouvre
             {
                 ManouvreItem = "&#x21B7 Afb start højt",
-                ManouvreIcon = iconAbortedHighAltitude
+                //ManouvreIcon = iconAbortedHighAltitude
             };
             context.Manouvres.Add(AbortedStartHighAlt);
 
             var Sturn = new Manouvre
             {
                 ManouvreItem = "&#x219D S-drej",
-                ManouvreIcon = iconSTurn
+                //ManouvreIcon = iconSTurn
             };
             context.Manouvres.Add(Sturn);
 
             var LandingLeftCircuit = new Manouvre
             {
                 ManouvreItem = "&#x21B0 Landingsrunde",
-                ManouvreIcon = iconLeftCircuit
+                //ManouvreIcon = iconLeftCircuit
             };
             context.Manouvres.Add(LandingLeftCircuit);
 
             var LandingRightCircuit = new Manouvre
             {
                 ManouvreItem = "&#x21B1 Landingsrunde",
-                ManouvreIcon = iconRightCircuit
+                //ManouvreIcon = iconRightCircuit
             };
             context.Manouvres.Add(LandingRightCircuit);
 
@@ -516,12 +516,13 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 InitializeDemoFlights(context);
             }
 
-            if (forceTrainingProgramRecreation || !context.ManouvreIcons.Any())
+
+            if (forceTrainingProgramRecreation || !context.Manouvres.Any())
             {
                 context.Manouvres.RemoveRange(context.Manouvres);
-                context.ManouvreIcons.RemoveRange(context.ManouvreIcons);
                 InitializeManouvres(context);
             }
+
 
             if (forceTrainingProgramRecreation || !context.WindSpeeds.Any())
             {

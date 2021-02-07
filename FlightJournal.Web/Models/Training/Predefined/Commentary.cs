@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FlightJournal.Web.Models.Training.Flight;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -19,5 +20,6 @@ namespace FlightJournal.Web.Models.Training.Predefined
 
         public int CommentaryTypeId { get; set; }
         public virtual ICollection<CommentaryType> CommentaryTypes { get; set; }
+        public ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
     }
 }
