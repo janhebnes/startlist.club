@@ -26,10 +26,13 @@ namespace FlightJournal.Web.Models
             AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
             TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel { Name = x.ShortName, Id = x.Training2ProgramId }).ToList();
+         
             Manouvres = db.Manouvres.ToList();
             WindDirections = db.WindDirections.ToList();
             WindSpeeds = db.WindSpeeds.ToList();
             Commentaries = db.Commentaries.ToList();
+            TrainingFlightAnnotationCommentCommentTypes = db.TrainingFlightAnnotationCommentCommentTypes.Include("CommentaryType");
+            
         }
 
         /// <summary>
@@ -66,6 +69,7 @@ namespace FlightJournal.Web.Models
         public IEnumerable<WindSpeed> WindSpeeds {get;}
         public IEnumerable<WindDirection> WindDirections { get; }
         public IEnumerable<Commentary> Commentaries { get; }
+        public IEnumerable<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; }
 
 
     }
@@ -91,6 +95,7 @@ namespace FlightJournal.Web.Models
         public List<int> FlightAnnotations{ get; }
         public List<int> ApproachAnnotations { get; }
         public List<int> LandingAnnotations { get; }
+        public Weather Weather { get; }
         public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; }
         /// <summary>
         /// 
@@ -108,13 +113,19 @@ namespace FlightJournal.Web.Models
             // multiple exercises possible per flight
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
-
+            Weather = annotationsForThisFlight.FirstOrDefault().Weather;
             //TODO: change each of these to a list
-            Manouvres = annotationsForThisFlight.SelectMany(x => x.Manouvres.Select(m=>m.ManouvreId)).ToList(); 
-            StartAnnotations = annotationsForThisFlight.SelectMany(x => x.StartAnnotation.Select(a=>a.CommentaryId)).ToList();  
+            Manouvres = annotationsForThisFlight.SelectMany(x => x.Manouvres.Select(m=>m.ManouvreId)).ToList();
+            //TODO: change this to load data from the many to many relationship
+/*            StartAnnotations = annotationsForThisFlight.SelectMany(x => x.StartAnnotation.Select(a=>a.CommentaryId)).ToList();  
             FlightAnnotations = annotationsForThisFlight.SelectMany(x => x.FlightAnnotation.Select(a => a.CommentaryId)).ToList();
             ApproachAnnotations = annotationsForThisFlight.SelectMany(x => x.ApproachAnnotation.Select(a => a.CommentaryId)).ToList();
-            LandingAnnotations = annotationsForThisFlight.SelectMany(x => x.LandingAnnotation.Select(a => a.CommentaryId)).ToList();
+            LandingAnnotations = annotationsForThisFlight.SelectMany(x => x.LandingAnnotation.Select(a => a.CommentaryId)).ToList();*/
+
+            StartAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Start" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
+            FlightAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Flight" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
+            ApproachAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Approach" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
+            LandingAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Landing" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db,x));
         }
 

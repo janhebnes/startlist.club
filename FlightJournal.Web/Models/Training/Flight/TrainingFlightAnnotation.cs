@@ -48,24 +48,4 @@ namespace FlightJournal.Web.Models.Training.Flight
         FlareTooLow,
         Skull
     }
-
-    public enum FlightManeuver
-    {
-        Left360,
-        Right360,
-        Left180,
-        Right180,
-        Left90,
-        Right90,
-        FigureEight,
-        STurn,
-        Bank30,
-        Bank45,
-        Bank60,
-        AbortedStartLowAltitude,
-        AbortedStartMediumAltitude,
-        AbortedStartHighAltitude,
-        LeftCircuit,
-        RightCircuit
-    }
 }

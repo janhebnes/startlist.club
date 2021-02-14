@@ -17,8 +17,6 @@ namespace FlightJournal.Web.Models.Training.Predefined
         public bool AppliesToFlightPhase { get; set; }
         public bool AppliesToApproachPhase { get; set; }
         public bool AppliesToLandingPhase { get; set; }
-
-        public int CommentaryTypeId { get; set; }
         public virtual ICollection<CommentaryType> CommentaryTypes { get; set; }
         public ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
     }
