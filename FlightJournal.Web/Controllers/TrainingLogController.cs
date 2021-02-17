@@ -24,6 +24,8 @@ namespace FlightJournal.Web.Controllers
 
         private TrainingLogViewModel BuildTrainingLogViewModel(Flight flight, int trainingProgramId)
         {
+
+            //var trainingProgress = db.TrainingFlightAnnotations.Join<Flight>;
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
             var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
 

@@ -172,7 +172,7 @@
         {
             var selected = Model.ThisFlight.Manouvres.Contains(maneuver.ManouvreId) ? "selected" : "";
 
-                <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass">@Html.Raw(maneuver.ManouvreItem)</option>
+                <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass" @selected>@Html.Raw(maneuver.ManouvreItem)</option>
         }
     </select>
 </div>
@@ -186,7 +186,7 @@
     <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the launch"))>
         @foreach (var annotation in Model.AnnotationsForStartPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.StartAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId" @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -202,7 +202,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker annotation userselection" id="i-ann" multiple title=@Html.Raw(__("Grade the approach phase"))>
         @foreach (var annotation in Model.AnnotationsForApproachPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.ApproachAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId"  @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -210,7 +210,7 @@
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="l-ann" multiple title=@Html.Raw(__("Grade the landing"))>
         @foreach (var annotation in Model.AnnotationsForLandingPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.LandingAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId" @selected>@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -225,13 +225,15 @@
     <select class="col-xs-5 selectpicker userselection" title=@Html.Raw(__("Wind direction")) id="winddirection">
         @foreach (var v in Model.WindDirections)
         {
-            <option value="@v.Value">@Html.Raw(v.Text)</option>
+            var selected = (Model.ThisFlight.Weather.WindDirection.WindDirectionItem == v.Value) ? "selected" : "";
+            <option value="@v.Value" @selected>@Html.Raw(v.Text)</option>
         }
     </select>
     <select class="col-xs-4 selectpicker userselection" title=@Html.Raw(__("Wind speed")) id="windspeed">
         @foreach (var v in Model.WindSpeeds)
         {
-            <option value="@v.Value">@Html.Raw(v.Text)</option>
+            var selected = (Model.ThisFlight.Weather.WindSpeed.WindSpeedItem == v.Value) ? "selected" : "";
+            <option value="@v.Value" @selected>@Html.Raw(v.Text)</option>
         }
     </select>
 </div>
@@ -286,8 +288,9 @@
                         foreach (var flight in Model.FlightLog)
                         {
                             <tr><td>@flight.Date</td><td></td><td>Øvet</td><td>Ok - lidt slingrende</td><td></td></tr>
+                             
+                           }
                         }
-                    }
                 </table>
             </div>
             <div class="modal-footer">
