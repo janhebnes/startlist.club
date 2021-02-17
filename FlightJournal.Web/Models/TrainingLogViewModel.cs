@@ -113,7 +113,7 @@ namespace FlightJournal.Web.Models
             // multiple exercises possible per flight
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
-            Weather = annotationsForThisFlight.FirstOrDefault().Weather;
+            Weather = annotationsForThisFlight.FirstOrDefault()?.Weather;
             //TODO: change each of these to a list
             Manouvres = annotationsForThisFlight.SelectMany(x => x.Manouvres.Select(m=>m.ManouvreId)).ToList();
             //TODO: change this to load data from the many to many relationship
@@ -128,14 +128,6 @@ namespace FlightJournal.Web.Models
             LandingAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Landing" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db,x));
         }
-
-    }
-
-    public class FlightPhaseAnnotationViewModel
-    {
-        public FlightPhaseAnnotation Id { get; }
-        public string Name { get; }
-        public string Icon { get; }
 
     }
 
@@ -170,8 +162,9 @@ namespace FlightJournal.Web.Models
     /// </summary>
     public class TrainingLogViewModel
     {
-        public TrainingLogViewModel(DateTime date, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
+        public TrainingLogViewModel(Guid flightId, DateTime date, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
         {
+            FlightId = flightId;
             Date = date;
             Pilot = pilot;
             BackseatPilot = backseatPilot;
@@ -180,34 +173,21 @@ namespace FlightJournal.Web.Models
 
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
-            // replace this with manouvers
-            //Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
             Manouvres = dbmodel.Manouvres;
-            /*            WindDirectionsDb = dbmodel.WindDirections;
-                        WindSpeedsDb = dbmodel.WindSpeeds;*/
-            //Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
             AnnotationsForStartPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Start"));
             AnnotationsForFlightPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Flight"));
             AnnotationsForApproachPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Approach"));
             AnnotationsForLandingPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Landing"));
 
-            //replace this with data from the DB
-            var wds = new List<WindDirectionViewModel>();
-            foreach(var wd in dbmodel.WindDirections){
-                wds.Add(new WindDirectionViewModel(wd.WindDirectionItem));
-            }
-            WindDirections = wds;
-
-            var wss = new List<WindSpeedViewModel>();
-            foreach(var ws in dbmodel.WindSpeeds)
-            {
-                wss.Add(new WindSpeedViewModel(ws.WindSpeedItem));
-            }
-            WindSpeeds = wss;
+            WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem));
+            WindSpeeds = dbmodel.WindSpeeds.Select(ws => new WindSpeedViewModel(ws.WindSpeedItem));
 
             ThisFlight = new FlightLogEntryViewModel(dbmodel.PilotFlights.Single(x => x.FlightId == dbmodel.FlightId), dbmodel, date);
-
+            AnnotationIdForOk = dbmodel.Commentaries.FirstOrDefault(x => x.IsOk)?.CommentaryId;
         }
+
+        public Guid FlightId { get; }
+
         public DateTime Date { get; }
         public string Pilot { get; }
         public string BackseatPilot { get; }
@@ -224,6 +204,8 @@ namespace FlightJournal.Web.Models
         public IEnumerable<Commentary> AnnotationsForApproachPhase{ get; }
         public IEnumerable<Commentary> AnnotationsForLandingPhase{ get; }
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
+
+        public int? AnnotationIdForOk { get; }
 
         // data for this flight
         public FlightLogEntryViewModel ThisFlight { get; }

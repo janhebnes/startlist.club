@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -27,7 +31,7 @@ namespace FlightJournal.Web.Controllers
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
             var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
 
-            var model = new TrainingLogViewModel(flight.Date, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight,trainingProgramId));
+            var model = new TrainingLogViewModel(flight.FlightId, flight.Date, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight,trainingProgramId));
 
             //var programs = new List<TrainingProgramViewModel>();
             //programs.Add(TrainingLogDemo.BuildSplWinchTrainingProgram());
@@ -41,6 +45,82 @@ namespace FlightJournal.Web.Controllers
             //model.TrainingPrograms = programs;
 
             return model;
+        }
+
+        public ActionResult UpdateTrainingFlight(FlightData flightData)
+        {
+            //update data models based on flightData.
+            if (!Guid.TryParse(flightData.flightId, out var flightId))
+                return new JsonResult();
+
+            // Upsert exercise for this flight. Note that flightData.exercises holds data for this flight only  (including any edits)
+            var currentExercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId.Equals(flightId));
+            foreach (var e in flightData.exercises)
+            {
+                var appliedExercise = currentExercisesForThisFlight.FirstOrDefault(x => x.AppliedExerciseId == e.exerciseId) ?? new AppliedExercise()
+                {
+                    FlightId = flightId,
+                    Program = db.TrainingPrograms.FirstOrDefault(p=>p.Training2ProgramId == e.programId),
+                    Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
+                    Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
+                    Action = ExerciseAction.None
+                };
+
+                if (e.ok.HasValue && e.ok.Value)
+                    appliedExercise.Action = ExerciseAction.Completed;
+                else if (e.trained.HasValue && e.trained.Value)
+                    appliedExercise.Action = ExerciseAction.Trained;
+                else if (e.briefed.HasValue && e.briefed.Value)
+                    appliedExercise.Action = ExerciseAction.Briefed;
+
+                db.AppliedExercises.AddOrUpdate(appliedExercise);
+            }
+
+            // Upsert flight annotations for this flight
+            var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
+            
+            //TODO: figure out why Commentary.AppliesToxxxx throws, and this does not. Seems to be the same code ?
+            annotation.Note = flightData.note;
+            annotation.StartAnnotation = flightData.s_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            annotation.FlightAnnotation = flightData.f_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            annotation.ApproachAnnotation = flightData.i_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            annotation.LandingAnnotation = flightData.l_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing")) && c.CommentaryId == id)).Where(x=>x != null).ToList();
+            annotation.Manouvres = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id) ).Where(m => m != null).ToList();
+
+            //TODO weather seems a bit odd - could we simply just pass the numbers instead of representing them in db models ?
+            db.TrainingFlightAnnotations.AddOrUpdate(annotation);
+
+            db.SaveChanges();
+
+            return new JsonResult();
+        }
+
+        public class FlightData
+        {
+            // ref to Flight
+            public string flightId { get; set; }
+            // exercise applied in this flight. Should go into AppliedExercises
+            public Exercise[] exercises { get; set; }
+
+            // the rest go into TrainingFlightAnnotations
+            public int[] manouverIds { get; set; }
+            public string note { get; set; }
+            public int[] s_annotationIds{ get; set; }
+            public int[] f_annotationIds{ get; set; }
+            public int[] i_annotationIds{ get; set; }
+            public int[] l_annotationIds{ get; set; }
+            public int wind_direction { get; set; }
+            public int wind_speed { get; set; }
+        }
+
+        public class Exercise
+        {
+            public int programId { get; set; }
+            public int lessonId { get; set; }
+            public int exerciseId { get; set; }
+            public bool? briefed { get; set; }
+            public bool? trained { get; set; }
+            public bool? ok { get; set; }
         }
 
     }

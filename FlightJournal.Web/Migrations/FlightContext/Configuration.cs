@@ -27,7 +27,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             var commentOk = new Commentary { 
                             Comment = "&#x2713", 
-                            CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                            CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary },
+                            IsOk = true
                             };
             startCommentary.Commentaries.Add(commentOk);
             flightCommentary.Commentaries.Add(commentOk);
@@ -167,22 +168,22 @@ namespace FlightJournal.Web.Migrations.FlightContext
             };
 
             landingCommentary.Commentaries.Add(commentFlareTooLow);
-            foreach (var c in startCommentary.Commentaries)
-            {
-                c.AppliesToStartPhase = true;
-            }
-            foreach (var c in flightCommentary.Commentaries)
-            {
-                c.AppliesToFlightPhase= true;
-            }
-            foreach (var c in approachCommentary.Commentaries)
-            {
-                c.AppliesToApproachPhase = true;
-            }
-            foreach (var c in landingCommentary.Commentaries)
-            {
-                c.AppliesToLandingPhase = true;
-            }
+            //foreach (var c in startCommentary.Commentaries)
+            //{
+            //    c.AppliesToStartPhase = true;
+            //}
+            //foreach (var c in flightCommentary.Commentaries)
+            //{
+            //    c.AppliesToFlightPhase= true;
+            //}
+            //foreach (var c in approachCommentary.Commentaries)
+            //{
+            //    c.AppliesToApproachPhase = true;
+            //}
+            //foreach (var c in landingCommentary.Commentaries)
+            //{
+            //    c.AppliesToLandingPhase = true;
+            //}
             context.Commentaries.Add(commentOk);
             context.Commentaries.Add(commentAlmostOk);
             context.Commentaries.Add(commentSkull);
