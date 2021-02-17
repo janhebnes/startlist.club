@@ -254,11 +254,11 @@
     <Compile Include="Models\Training\Catalogue\Training2Lesson.cs" />
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
+    <Compile Include="Models\Training\Flight\TrainingFlightAnnotationCommentCommentType.cs" />
     <Compile Include="Models\Training\Flight\Weather.cs" />
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
     <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
-    <Compile Include="Models\Training\Predefined\ManouvreIcon.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />

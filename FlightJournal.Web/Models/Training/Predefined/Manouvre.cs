@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Models.Training.Predefined
@@ -19,6 +21,6 @@ namespace FlightJournal.Web.Models.Training.Predefined
         [AllowHtml]
         public string IconCssClass { get; set; }
         public int Icon { get; set; }
-        public virtual ManouvreIcon ManouvreIcon {get; set;}
+        public virtual ICollection<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
     }
 }

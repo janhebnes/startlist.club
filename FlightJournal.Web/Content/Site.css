@@ -204,13 +204,27 @@ body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover,
 .statusbutton{
 	cursor: pointer;
 }
+.hcenter {
+    text-align: center;
+}
 .statusbutton:hover,.btn.statusbutton:focus {
     background-position-y: 0 !important;
 }
 
 .annotationcontainer {
-    background-color:gold;
+	background-color: gold;
+	background-image: -webkit-gradient(linear,left 0,left 100%,from(golden),to(goldenrod));
+	background-image: -webkit-linear-gradient(top,gold 0,goldenrod 100%);
+	background-image: -moz-linear-gradient(top,gold 0,goldenrod 100%);
+	background-image: linear-gradient(to bottom,gold 0,goldenrod 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=goldenrod,endColorstr=gold,GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	color: black;
+	text-shadow: 0 -1px black;
+	background-position-y: 0 !important;
 }
+
 
 .bordered {
     border: 1px solid black;

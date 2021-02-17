@@ -39,12 +39,13 @@ namespace FlightJournal.Web.Models
         public DbSet<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
 
         public DbSet<Manouvre> Manouvres { get; set; }
-        public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
+        //public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
         public DbSet<Weather> Weathers { get; set; }
         public DbSet<WindDirection> WindDirections { get; set; }
         public DbSet<WindSpeed> WindSpeeds { get; set; }
         public DbSet<Commentary> Commentaries { get; set; }
         public DbSet<CommentaryType> CommentaryTypes { get; set; }
+        public DbSet<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -135,10 +136,10 @@ namespace FlightJournal.Web.Models
                         .WithMany()
                         .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Manouvre>()
+ /*           modelBuilder.Entity<Manouvre>()
                         .HasOptional(i => i.ManouvreIcon)
                         .WithMany()
-                        .WillCascadeOnDelete(false);
+                        .WillCascadeOnDelete(false);*/
 
             modelBuilder.Entity<Weather>()
                         .HasOptional(i => i.WindDirection)
@@ -159,6 +160,40 @@ namespace FlightJournal.Web.Models
                             cs.MapRightKey("CommentaryTypeRefId");
                             cs.ToTable("CommentaryCommentaryTypes");
                         });
+
+            modelBuilder.Entity<TrainingFlightAnnotation>()
+                .HasOptional(i => i.Weather)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TrainingFlightAnnotation>()
+                .HasMany<Manouvre>(s => s.Manouvres)
+                .WithMany(c => c.TrainingFlightAnnotations)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("TrainingFlightAnnotationRefId");
+                    cs.MapRightKey("ManouvreRefId");
+                    cs.ToTable("TrainingFlightAnnotationsManouvres");
+                });
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasKey(k => new { k.TrainingFlightAnnotationId, k.CommentaryId, k.CommentaryTypeId });
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasRequired(i => i.TrainingFlightAnnotation)
+                .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
+                .HasForeignKey(i => i.TrainingFlightAnnotationId);
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasRequired(i => i.Commentary)
+                .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
+                .HasForeignKey(i => i.CommentaryId);
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasRequired(i => i.CommentaryType)
+                .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
+                .HasForeignKey(i => i.CommentaryTypeId);
+
         }
     }
 }
