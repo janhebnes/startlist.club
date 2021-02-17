@@ -11,6 +11,15 @@
 </div>
 
 <div class="editor-label">
+    @Html.LabelFor(model => model.IsOk)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.IsOk)
+</div>
+
+
+@*TODO this is no longer valid!*@
+<div class="editor-label">
     @Html.LabelFor(model => model.AppliesToStartPhase)
 </div>
 <div class="editor-field">
