@@ -3,26 +3,33 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using FlightJournal.Web.Translations;
+using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Models.Training.Catalogue
 {
     /// <summary>
     /// A training program. Example: SPL-S (SPL, spilstart)
     /// </summary>
+    [JsonObject(MemberSerialization.OptOut)]
     public class Training2Program
     {
         [Key]
+        [JsonIgnore]
         public int Training2ProgramId { get; set; }
+
         [Required]
         [LocalizedDisplayName("Short Name")]
         public string ShortName { get; set; }
+        
         [Required]
         [LocalizedDisplayName("Name")]
         public string Name { get; set; }
+        
         [LocalizedDisplayName("Notes")]
         [DataType(DataType.MultilineText)]
         [AllowHtml]
         public string Notes{ get; set; }
+        
         [LocalizedDisplayName("URL")]
         public string Url{ get; set; }
 

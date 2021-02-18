@@ -1,6 +1,9 @@
 ﻿@using FlightJournal.Web.Views
+@using MarkdownSharp
 @model FlightJournal.Web.Models.TrainingLogViewModel
-
+@{
+    var mkd = new Markdown();
+}
 <div class="tourable" data-step="1" data-intro=@Html.Raw(__("On this page, you can plan a training flight based on the current status of the pilot, and you can evaluate and grade the flight. Note that the guide only shows descriptions for currently visible elements, so you may have to open the sections you are interested in"))></div>
 
 <div class="row no-gutter">
@@ -42,7 +45,7 @@
             var introDefWshown = false;
             var introDefNshown = false;
         }
-        @foreach (var lesson in Model.TrainingProgram.Lessons)
+        @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x=>x.DisplayOrder))
         {
             var completedpct = (int) Math.Round(100.0 * lesson.ExercisesCompleted / lesson.ExercisesTotal);
             var wippct = (int) Math.Round(100.0 * lesson.ExercisesInProgress / lesson.ExercisesTotal);
@@ -91,7 +94,7 @@
 </div>
 
 <div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer bordered" data-toggle="buttons" data-step="20" data-intro=@Html.Raw(__("Click a button to see the detailed exercise info and status for the lesson"))>
-    @foreach (var lesson in Model.TrainingProgram.Lessons)
+    @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
     {
         <label class="col-xs-2 col-sm-1 traininglogstatebutton btn btn-default @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name</label>
     }
@@ -120,9 +123,9 @@
             var statusIntroShown = false;
         }
         @*//TODO: rename to Exercise/ExercisePart (PartialExercise?)*@
-        @foreach (var lesson in Model.TrainingProgram.Lessons)
+        @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
         {
-            foreach (var exercise in lesson.Exercises)
+            foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
             {
                 var checkedBox = "<input type='checkbox' checked disabled>";
                 var uncheckedBox = "<input type='checkbox' disabled>";
@@ -132,7 +135,7 @@
                 var briefedMarker = exercise.IsBriefed ? checkedBox : uncheckedBox;
                 var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? checkedBox : uncheckedBox;
                 var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? checkedBox : uncheckedBox;
-                var infoMarker = exercise.LongDescription.Any() ? "<span class='fa fa-info-circle'></span>" : "";
+                var infoMarker = exercise.LongDescription?.Any() ?? false ? "<span class='fa fa-info-circle'></span>" : "";
                 var introdefL = "";
                 var introdefX = "";
                 var introdefB0 = "";
@@ -141,7 +144,7 @@
                 var introdefB = "";
                 var introdefT = "";
                 var introdefC = "";
-                if (!helpIntroShown && exercise.LongDescription.Any())
+                if (!helpIntroShown && (exercise.LongDescription?.Any() ?? false))
                 {
                     // show lesson/exercise help on first exercise with long description
                     var introtxtL = Html.Raw(__("Click here to see a description of the lesson")).ToString();
@@ -188,7 +191,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple  id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
         @foreach (var maneuver in Model.Manouvres)
         {
-            var selected = Model.ThisFlight.Manouvres.Contains(maneuver.ManouvreId) ? "selected" : "";
+            var selected = Model.ThisFlight.Manouvres?.Contains(maneuver.ManouvreId) ?? false ? "selected" : "";
 
             <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass" class="manouver" @selected>@Html.Raw(maneuver.ManouvreItem)</option>
         }
@@ -204,7 +207,7 @@
     <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the launch"))>
         @foreach (var annotation in Model.AnnotationsForStartPhase)
         {
-            var selected = Model.ThisFlight.StartAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.StartAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
             <option value="@annotation.CommentaryId" @selected class="s_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -212,7 +215,7 @@
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="f-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
         @foreach (var annotation in Model.AnnotationsForFlightPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.FlightAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
             <option value="@annotation.CommentaryId"  @selected class="f_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -220,7 +223,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker annotation userselection" id="i-ann" multiple title=@Html.Raw(__("Grade the approach phase"))>
         @foreach (var annotation in Model.AnnotationsForApproachPhase)
         {
-            var selected = Model.ThisFlight.ApproachAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.ApproachAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
             <option value="@annotation.CommentaryId"  @selected class="f_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -228,7 +231,7 @@
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="l-ann" multiple title=@Html.Raw(__("Grade the landing"))>
         @foreach (var annotation in Model.AnnotationsForLandingPhase)
         {
-            var selected = Model.ThisFlight.LandingAnnotations.Contains(annotation.CommentaryId) ? "selected" : "";
+            var selected = Model.ThisFlight.LandingAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
             <option value="@annotation.CommentaryId" @selected class="l_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -244,14 +247,14 @@
     <select class="col-xs-5 selectpicker userselection" title=@Html.Raw(__("Wind direction")) id="wind_direction">
         @foreach (var v in Model.WindDirections)
         {
-            var selected = Model.ThisFlight.Weather.WindDirection.WindDirectionItem == v.Value ? "selected" : "";
+            var selected = Model.ThisFlight.Weather?.WindDirection.WindDirectionItem == v.Value ? "selected" : "";
             <option value="@v.Value" class="wind_direction" @selected>@Html.Raw(v.Text)</option>
         }
     </select>
     <select class="col-xs-4 selectpicker userselection" title=@Html.Raw(__("Wind speed")) id="wind_speed">
         @foreach (var v in Model.WindSpeeds)
         {
-            var selected = Model.ThisFlight.Weather.WindSpeed.WindSpeedItem == v.Value ? "selected" : "";
+            var selected = Model.ThisFlight.Weather?.WindSpeed.WindSpeedItem == v.Value ? "selected" : "";
             <option value="@v.Value" class="wind_speed"@selected>@Html.Raw(v.Text)</option>
         }
     </select>
@@ -322,10 +325,10 @@
 
 @foreach (var lesson in Model.TrainingProgram.Lessons)
 {
-    <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@lesson.Description" data-precondition="@lesson.Precondition"></div>
+    <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@Html.Raw(mkd.Transform(lesson.Description))" data-precondition="@Html.Raw(mkd.Transform(lesson.Precondition))"></div>
     foreach (var exercise in lesson.Exercises)
     {
-        <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@exercise.LongDescription"></div>
+        <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@Html.Raw(mkd.Transform(exercise.LongDescription))"></div>
     }
 }
 

@@ -22,8 +22,8 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Notes)
 </div>
-<div class="editor-field">
-    @Html.TextAreaFor(model => model.Notes, new{cols=80, rows=5})
+<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.Notes, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.Notes)
 </div>
 
@@ -36,6 +36,6 @@
     <small>reference to the official definition for this training program</small>
 </div>
 
-@Html.HiddenFor(model => model.Lessons)
+@Html.HiddenFor(model => model.Training2ProgramId)
 
 

@@ -1,5 +1,8 @@
-﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
-
+﻿@using MarkdownSharp
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+@{
+    var mkd = new Markdown();
+}
 <legend>Training program</legend>
 <table>
     <tr>
@@ -12,11 +15,11 @@
     </tr>
     <tr>
         <td class="display-label valign-top">@Html.LabelFor(model => model.Notes)</td>
-        <td class="display-field">@Html.DisplayFor(model => model.Notes)</td>
+        <td class="display-field">@Html.Raw(@mkd.Transform(Model.Notes))</td>
     </tr>
     <tr>
         <td class="display-label valign-top">@Html.LabelFor(model => model.Url)</td>
-        <td class="display-field">@Html.DisplayFor(model => model.Url)</td>
+        <td class="display-field"><a href="@Model.Url">@Model.Url</a></td>
     </tr>
 </table>
 

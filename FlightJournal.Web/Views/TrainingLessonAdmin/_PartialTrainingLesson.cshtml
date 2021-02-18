@@ -13,7 +13,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Purpose)
 </div>
-<div class="editor-field">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.Purpose, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.Purpose)
 </div>
@@ -21,7 +21,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Precondition)
 </div>
-<div class="editor-field">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.Precondition, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.Precondition)
 </div>
@@ -29,7 +29,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.AcceptanceCriteria)
 </div>
-<div class="editor-field">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.AcceptanceCriteria, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.AcceptanceCriteria)
 </div>
@@ -39,3 +39,5 @@
 }
 @Html.HiddenFor(x => tpi)
 @Html.HiddenFor(model => model.Training2LessonId)
+@Html.HiddenFor(model => Model.DisplayOrder)
+

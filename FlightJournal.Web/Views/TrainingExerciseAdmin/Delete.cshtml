@@ -8,14 +8,22 @@
 <h2>@_("Delete")</h2>
 
 <h3>@_("Are you sure you want to delete this?")</h3>
-<h3>@_("Are you sure you want to delete this?")</h3>
 <fieldset>
     @Html.Partial("_PartialTrainingExerciseReadonly", Model)
 </fieldset>
+
+@{
+    int tpi = ViewBag.TrainingProgramId;
+    int tli = ViewBag.TrainingLessonId;
+}
+
 @using (Html.BeginForm())
 {
     <p>
         <input type="submit" value="Delete" /> |
         @Html.Partial("_PartialBackToList", Model)
     </p>
+    @Html.HiddenFor(x => tpi)
+    @Html.HiddenFor(x => tli)
+    @Html.HiddenFor(model => Model.Training2ExerciseId)
 }

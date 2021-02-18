@@ -13,10 +13,16 @@
 <fieldset>
     @Html.Partial("_PartialTrainingLessonReadonly", Model)
 </fieldset>
+@{
+    int tpi = ViewBag.TrainingProgramId;
+}
+
 @using (Html.BeginForm())
 {
     <p>
         <input type="submit" value="Delete" /> |
         @Html.Partial("_PartialBackToList", Model)
     </p>
+    @Html.HiddenFor(x => tpi)
+    @Html.HiddenFor(model => Model.Training2LessonId)
 }

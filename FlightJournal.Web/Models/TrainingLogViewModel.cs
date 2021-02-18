@@ -267,13 +267,16 @@ namespace FlightJournal.Web.Models
         /// </summary>
         public TrainingStatus Status { get; }
 
+        public int DisplayOrder { get;  }
+
         public TrainingLessonWithOverallStatusViewModel(Training2Lesson lesson, TrainingDataWrapper db)
         {
             Id = lesson.Training2LessonId.ToString();
             Name = lesson.Name;
             Description = lesson.Purpose;
             Precondition = lesson.Precondition;
-            Debug.WriteLine($"{Id} {Name}");
+            DisplayOrder = lesson.DisplayOrder;
+//            Debug.WriteLine($"{Id} {Name}");
             Exercises = lesson.Exercises.Select(ex => new TrainingExerciseWithOverallStatusViewModel(ex, db)).ToList();
             ExercisesTotal = Exercises.Count();
             ExercisesCompleted = Exercises.Count(x => x.Status == TrainingStatus.Completed);
@@ -307,7 +310,8 @@ namespace FlightJournal.Web.Models
         public bool IsTrained => Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
         public bool IsCompleted => Status == TrainingStatus.Completed;
-        public bool BriefingOnlyRequired { get; } 
+        public bool BriefingOnlyRequired { get; }
+        public int DisplayOrder { get; }
 
         public TrainingExerciseWithOverallStatusViewModel(Training2Exercise exercise, TrainingDataWrapper db)
         {
@@ -315,6 +319,7 @@ namespace FlightJournal.Web.Models
             Description = exercise.Name;
             LongDescription = exercise.Note;
             BriefingOnlyRequired = exercise.IsBriefingOnly;
+            DisplayOrder = exercise.DisplayOrder;
 
             // TODO: use real data
             if (true) // fake it for UI demo purposes

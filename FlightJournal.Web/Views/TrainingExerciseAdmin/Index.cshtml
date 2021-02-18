@@ -1,8 +1,10 @@
-﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+﻿@using MarkdownSharp
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
 
 @{
     ViewBag.Title = $"Exercises";
     int tpi = ViewBag.TrainingProgramId;
+    var mkd = new Markdown();
 }
 
 <h3>@ViewBag.TrainingProgramName -  @ViewBag.TrainingLessonName</h3>
@@ -22,27 +24,43 @@
             @_("Note")
         </th>
         <th>
-
+            @_("Brifing Only?")
         </th>
+        <th></th>
+        <th></th>
     </tr>
 
-    @foreach (var item in Model.Exercises)
-    {
+    @{
+        var ordered = Model.Exercises.OrderBy(x => x.DisplayOrder).ToList();
+        for (var n = 0; n < ordered.Count; n++)
+        {
+            var item = ordered[n];
+
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td class="display-field">@Html.Raw(@mkd.Transform(item.Note))</td>
+            <td class="display-field">@Html.DisplayFor(modelItem => item.IsBriefingOnly)</td>
             <td>
                 <div class="btn-group btn-group-sm">
-                    @Html.ActionLink(_("Edit"), "Edit", new {trainingProgramId=tpi,  trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId}, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Edit"), "Edit", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
                     @Html.ActionLink(_("Details"), "Details", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
                     @Html.ActionLink(_("Delete"), "Delete", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
                 </div>
             </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @if (n > 0)
+                    {
+                        @Html.ActionLink(_("^"), "SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n - 1].Training2ExerciseId }, new { @class = "btn btn-default" });
+                    }
+                    @if (n < ordered.Count - 1)
+                    {
+                        @Html.ActionLink(_("v"), "SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n + 1].Training2ExerciseId }, new { @class = "btn btn-default" });
+                    }
+                </div>
+            </td>
         </tr>
+        }
     }
 
 </table>

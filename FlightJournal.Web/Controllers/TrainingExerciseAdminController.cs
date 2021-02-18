@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
@@ -15,7 +16,42 @@ namespace FlightJournal.Web.Controllers
             FillViewBag(trainingProgramId,trainingLessonId);
 
             var lesson = db.TrainingLessons.Find(trainingLessonId);
+
+            if (lesson.Exercises.Count(x => x.DisplayOrder == 0) > 1)
+            {
+                // not yet defined, set order according to current implicit order. You could argue that this should be done elsewhere...
+                var order = 0;
+                foreach (var exercise in lesson.Exercises)
+                {
+                    exercise.DisplayOrder = order++;
+                    db.Entry(exercise).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
+
+
             return View(lesson);
+        }
+
+
+        public ActionResult SwapExerciseOrder(int trainingProgramId, int trainingLessonId, int exerciseId1, int exerciseId2)
+        {
+            var lesson = db.TrainingLessons.Find(trainingLessonId);
+
+            var exercise1 = lesson.Exercises.FirstOrDefault(x => x.Training2ExerciseId == exerciseId1);
+            var exercise2 = lesson.Exercises.FirstOrDefault(x => x.Training2ExerciseId == exerciseId2);
+            if (exercise1!= null && exercise2 != null)
+            {
+                var tmp = exercise1.DisplayOrder;
+                exercise1.DisplayOrder = exercise2.DisplayOrder;
+                exercise2.DisplayOrder = tmp;
+                db.Entry(exercise1).State = EntityState.Modified;
+                db.Entry(exercise2).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", new { trainingProgramId, trainingLessonId});
         }
 
         public ViewResult Details(int trainingProgramId, int trainingLessonId, int id)
@@ -29,6 +65,7 @@ namespace FlightJournal.Web.Controllers
         {
             FillViewBag(trainingProgramId, trainingLessonId);
             var exercise = new Training2Exercise();
+
             return View(exercise);
         }
         [HttpPost]
@@ -41,7 +78,11 @@ namespace FlightJournal.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                exercise.Lessons.Add(lesson);
+                var lastOrder = lesson?.Exercises.Select(e => e.DisplayOrder).Max();
+                if (lastOrder.HasValue)
+                    exercise.DisplayOrder = lastOrder.Value + 1;
+
+                exercise.Lessons.Add(lesson); // backwards ?
                 db.TrainingExercises.Add(exercise);
                 db.SaveChanges();
                 return RedirectToAction("Index", new {trainingProgramId = tpi, trainingLessonId=tli });

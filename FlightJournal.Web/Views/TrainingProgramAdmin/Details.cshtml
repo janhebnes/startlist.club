@@ -11,6 +11,7 @@
 </fieldset>
 <p>
     @Html.ActionLink(_("Edit"), "Edit", new { id = Model.Training2ProgramId }, new { @class = "btn btn-default" })
+    @Html.ActionLink(_("Export"), "Export", new { id = Model.Training2ProgramId }, new { @class = "btn btn-default" })
     @Html.ActionLink(_("Lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = Model.Training2ProgramId }, new { @class = "btn btn-default" }) 
     @Html.Partial("_PartialBackToList")
 </p>
