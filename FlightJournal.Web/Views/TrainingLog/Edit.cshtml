@@ -1,4 +1,5 @@
-﻿@using FlightJournal.Web.Views
+﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Views
 @using MarkdownSharp
 @model FlightJournal.Web.Models.TrainingLogViewModel
 @{
@@ -191,7 +192,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple  id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
         @foreach (var maneuver in Model.Manouvres)
         {
-            var selected = Model.ThisFlight.Manouvres?.Contains(maneuver.ManouvreId) ?? false ? "selected" : "";
+            var selected = Model.ThisFlight.Manouvres?.SafeContains(maneuver.ManouvreId) ? "selected" : "";
 
             <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass" class="manouver" @selected>@Html.Raw(maneuver.ManouvreItem)</option>
         }
@@ -207,7 +208,7 @@
     <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the launch"))>
         @foreach (var annotation in Model.AnnotationsForStartPhase)
         {
-            var selected = Model.ThisFlight.StartAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
+            var selected = Model.ThisFlight.StartAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId" @selected class="s_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -215,7 +216,7 @@
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="f-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
         @foreach (var annotation in Model.AnnotationsForFlightPhase)
         {
-            var selected = Model.ThisFlight.FlightAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
+            var selected = Model.ThisFlight.FlightAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId"  @selected class="f_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -223,7 +224,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker annotation userselection" id="i-ann" multiple title=@Html.Raw(__("Grade the approach phase"))>
         @foreach (var annotation in Model.AnnotationsForApproachPhase)
         {
-            var selected = Model.ThisFlight.ApproachAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
+            var selected = Model.ThisFlight.ApproachAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId"  @selected class="f_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>
@@ -231,7 +232,7 @@
     <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="l-ann" multiple title=@Html.Raw(__("Grade the landing"))>
         @foreach (var annotation in Model.AnnotationsForLandingPhase)
         {
-            var selected = Model.ThisFlight.LandingAnnotations?.Contains(annotation.CommentaryId) ?? false ? "selected" : "";
+            var selected = Model.ThisFlight.LandingAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
             <option value="@annotation.CommentaryId" @selected class="l_annotation">@Html.Raw(annotation.Comment)</option>
         }
     </select>

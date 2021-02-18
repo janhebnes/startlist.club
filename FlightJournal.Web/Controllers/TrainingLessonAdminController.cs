@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
 
@@ -75,7 +76,7 @@ namespace FlightJournal.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var lastOrder = program?.Lessons.Select(e => e.DisplayOrder).Max();
+                var lastOrder = program?.Lessons?.Select(e => e.DisplayOrder).MaxOrDefault(0);
                 if (lastOrder.HasValue)
                     lesson.DisplayOrder = lastOrder.Value + 1;
 

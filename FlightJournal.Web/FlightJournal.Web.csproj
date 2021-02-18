@@ -223,6 +223,7 @@
     <Compile Include="Controllers\TrainingLessonAdminController.cs" />
     <Compile Include="Controllers\TrainingProgramAdminController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
