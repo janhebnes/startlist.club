@@ -83,13 +83,40 @@ namespace FlightJournal.Web.Controllers
             
             //TODO: figure out why Commentary.AppliesToxxxx throws, and this does not. Seems to be the same code ?
             annotation.Note = flightData.note;
-            annotation.StartAnnotation = flightData.s_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            annotation.FlightAnnotation = flightData.f_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            annotation.ApproachAnnotation = flightData.i_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            annotation.LandingAnnotation = flightData.l_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing")) && c.CommentaryId == id)).Where(x=>x != null).ToList();
+            var StartAnnotation = new List<Commentary>();
+            var FlightAnnotation = new List<Commentary>();
+            var ApproachAnnotation = new List<Commentary>();
+            var LandingAnnotation = new List<Commentary>();
+            StartAnnotation = flightData.s_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            FlightAnnotation = flightData.f_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            ApproachAnnotation = flightData.i_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            LandingAnnotation = flightData.l_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing")) && c.CommentaryId == id)).Where(x=>x != null).ToList();
             annotation.Manouvres = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id) ).Where(m => m != null).ToList();
 
+            var commentcommentypeannotations = new List<TrainingFlightAnnotationCommentCommentType>();
+            
+            foreach (var s_annotation in StartAnnotation)
+            {
+                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = s_annotation, CommentaryType = s_annotation.CommentaryTypes.Where(x=>x.CType.ToLower().Equals("start")).FirstOrDefault()});
+            }
+            foreach (var f_annotation in FlightAnnotation)
+            {
+                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = f_annotation, CommentaryType = f_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("flight")).FirstOrDefault()});
+            }
+            foreach(var a_annotation in ApproachAnnotation)
+            {
+                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = a_annotation, CommentaryType = a_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("approach")).FirstOrDefault()});
+            }
+            foreach (var l_annotation in LandingAnnotation)
+            {
+                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = l_annotation, CommentaryType = l_annotation.CommentaryTypes.Where(x=>x.CType.ToLower().Equals("landing")).FirstOrDefault()});
+            }
+
+            annotation.TrainingFlightAnnotationCommentCommentTypes = commentcommentypeannotations;
+            annotation.Weather = new Weather { WindDirection = new WindDirection { WindDirectionItem = flightData.wind_direction }, WindSpeed = new WindSpeed { WindSpeedItem = flightData.wind_speed }};
+
             //TODO weather seems a bit odd - could we simply just pass the numbers instead of representing them in db models ?
+
             db.TrainingFlightAnnotations.AddOrUpdate(annotation);
 
             db.SaveChanges();
