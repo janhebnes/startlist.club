@@ -14,11 +14,6 @@ namespace FlightJournal.Web.Models.Training.Predefined
         [AllowHtml]
         public string Comment { get; set; }
         public bool IsOk{ get; set; }
-
-        public bool AppliesToStartPhase => CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start"));
-        public bool AppliesToFlightPhase => CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight"));
-        public bool AppliesToApproachPhase => CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach"));
-        public bool AppliesToLandingPhase => CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing"));
         public virtual ICollection<CommentaryType> CommentaryTypes { get; set; }
         public virtual ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
     }

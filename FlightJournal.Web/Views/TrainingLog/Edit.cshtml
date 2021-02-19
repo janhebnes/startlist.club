@@ -248,14 +248,22 @@
     <select class="col-xs-5 selectpicker userselection" title=@Html.Raw(__("Wind direction")) id="wind_direction">
         @foreach (var v in Model.WindDirections)
         {
-            var selected = Model.ThisFlight.Weather?.WindDirection.WindDirectionItem == v.Value ? "selected" : "";
+            var selected = "";
+            if (Model.ThisFlight.Weather != null)
+            {
+                selected = Model.ThisFlight.Weather.WindDirection.WindDirectionItem == v.Value ? "selected" : "";
+            }
             <option value="@v.Value" class="wind_direction" @selected>@Html.Raw(v.Text)</option>
         }
     </select>
     <select class="col-xs-4 selectpicker userselection" title=@Html.Raw(__("Wind speed")) id="wind_speed">
         @foreach (var v in Model.WindSpeeds)
         {
-            var selected = Model.ThisFlight.Weather?.WindSpeed.WindSpeedItem == v.Value ? "selected" : "";
+            var selected = "";
+            if (Model.ThisFlight.Weather != null)
+            {
+                selected = Model.ThisFlight.Weather.WindSpeed.WindSpeedItem == v.Value ? "selected" : "";
+            }
             <option value="@v.Value" class="wind_speed"@selected>@Html.Raw(v.Text)</option>
         }
     </select>
