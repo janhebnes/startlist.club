@@ -37,6 +37,8 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Pilot status")]
         public PilotStatusType PilotStatus { get; set; }
 
+        public bool IsInstructor => false; // true; //TODO: change to lookup somewhere
+
         /// <summary>
         /// Required by SelectList logic in FlightController
         /// </summary>

@@ -1,0 +1,11 @@
+﻿@using MarkdownSharp
+@model  FlightJournal.Web.Controllers.ExerciseDetailsViewModel
+@{
+    var mkd = new Markdown();
+}
+
+<h3>@Model.LessonName</h3>
+<p>@Html.Raw(mkd.Transform(Model.LessonDescription))</p>
+
+<h4>@Model.ExerciseName</h4>
+<p>@Html.Raw(mkd.Transform(Model.ExerciseDescription))</p>
