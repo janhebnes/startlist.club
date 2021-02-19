@@ -65,6 +65,7 @@
                     {
                         <li>@Html.MenuLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
                     }
+                    <li>@Html.MenuLink(_("Training flights"), "Index", "TrainingLogHistory")</li>
                     @if (Request.IsClub() && !string.IsNullOrWhiteSpace(Request.Club().Website) && !User.IsEditor())
                     {
                         <li><a href="@Request.Club().Website" class="hidden-sm">@Request.Club().Website.Replace("http://", string.Empty).Replace("www.", string.Empty)</a></li>
@@ -146,10 +147,11 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/intro")
+    @Scripts.Render("~/bundles/datatables")
     @RenderSection("scripts", required: false)
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     $(document).ready(function() {
         if ($(".tourable").length > 0) {
@@ -172,23 +174,23 @@
 
             $("#showhelp").click(function() {
                 // show intro tooltips only for visible elements
-                $("[data-intro]:hidden").each(function(){ 
+                $("[data-intro]:hidden").each(function(){
                     var $t = $(this);
                     $t.attr({'data-intro-hidden':$t.attr('data-intro')}).removeAttr('data-intro');
                 });
                 $("[data-intro-hidden]:visible").each(function(){
                     var $t = $(this);
-                    $t.attr({'data-intro':$t.attr('data-intro-hidden')}).removeAttr('data-intro-hidden');                    
+                    $t.attr({'data-intro':$t.attr('data-intro-hidden')}).removeAttr('data-intro-hidden');
                 });
-                
+
                 intro.start();
             });
         } else {
             $("#showhelp").hide();
         }
     });
-</script>
-    
+    </script>
+
 
 </body>
 </html>

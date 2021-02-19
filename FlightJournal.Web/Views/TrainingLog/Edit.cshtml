@@ -192,7 +192,7 @@
     <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple  id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
         @foreach (var maneuver in Model.Manouvres)
         {
-            var selected = Model.ThisFlight.Manouvres?.SafeContains(maneuver.ManouvreId) ? "selected" : "";
+            var selected = Model.ThisFlight.Manouvres.SafeContains(maneuver.ManouvreId) ? "selected" : "";
 
             <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass" class="manouver" @selected>@Html.Raw(maneuver.ManouvreItem)</option>
         }
