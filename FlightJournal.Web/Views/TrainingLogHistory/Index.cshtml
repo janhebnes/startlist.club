@@ -12,20 +12,24 @@
     <b>@Model.Message</b>
 }
 
+<div class="btn-group" style="margin-left: 20px">
+    @{
+        var thisYear = Html.Raw($"<span class='glyphicon glyphicon-stats'></span> <strong>{Model.Year}</strong>");
+    }
+
+    @Html.ActionLink((Model.Year - 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year - 1 }, new { Class = "btn btn-default" })
+    @Html.ActionLink(Model.Year.ToString(), "Index", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-stats")
+    @if (DateTime.Now.Year > Model.Year)
+    {
+        @Html.ActionLink((Model.Year + 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year + 1 }, new { Class = "btn btn-default" })
+    }
+    &nbsp;    
+    @Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
+
+</div>
+
 @if (Model.Flights.Any())
 {
-        <div class="btn-group" style="margin-left: 20px">
-            @{
-                var thisYear = Html.Raw($"<span class='glyphicon glyphicon-stats'></span> <strong>{Model.Year}</strong>");
-            }
-
-            @Html.ActionLink((Model.Year - 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year - 1 }, new { Class = "btn btn-default" })
-            @Html.ActionLink(Model.Year.ToString(), "Index", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-stats")
-            @if (DateTime.Now.Year > Model.Year)
-            {
-                @Html.ActionLink((Model.Year + 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year + 1 }, new { Class = "btn btn-default" })
-            }
-        </div>
 
     <table class="table table-striped table-hover table-condensed" id="flightstable">
         <thead>

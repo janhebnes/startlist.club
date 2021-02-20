@@ -156,10 +156,10 @@ namespace FlightJournal.Web.Models
     /// </summary>
     public class TrainingLogViewModel
     {
-        public TrainingLogViewModel(Guid flightId, DateTime date, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
+        public TrainingLogViewModel(Guid flightId, DateTime date, DateTime? started, DateTime? landed, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
         {
             FlightId = flightId;
-            Date = date;
+            TimeInfo = $"{date.ToShortDateString()} ({started?.ToShortTimeString()} - {landed?.ToShortTimeString()})";
             Pilot = pilot;
             BackseatPilot = backseatPilot;
 
@@ -180,9 +180,9 @@ namespace FlightJournal.Web.Models
             AnnotationIdForOk = dbmodel.Commentaries.FirstOrDefault(x => x.IsOk)?.CommentaryId;
         }
 
+
         public Guid FlightId { get; }
 
-        public DateTime Date { get; }
         public string Pilot { get; }
         public string BackseatPilot { get; }
 
@@ -201,7 +201,7 @@ namespace FlightJournal.Web.Models
 
         // data for this flight
         public FlightLogEntryViewModel ThisFlight { get; }
-
+        public string TimeInfo { get; }
     }
 
     public class  FlightPhaseAnnotationViewModel{

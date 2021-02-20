@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Xml.Serialization;
+using FlightJournal.Web.Extensions;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using FlightJournal.Web.Translations;
@@ -37,7 +38,10 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Pilot status")]
         public PilotStatusType PilotStatus { get; set; }
 
-        public bool IsInstructor => false; // true; //TODO: change to lookup somewhere
+        [LocalizedDisplayName("FI(S) number")]
+        public string InstructorId { get; set; }
+
+        public bool IsInstructor => !InstructorId.IsNullOrEmpty();
 
         /// <summary>
         /// Required by SelectList logic in FlightController

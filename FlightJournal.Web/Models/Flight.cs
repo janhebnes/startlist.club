@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Serialization;
 using FlightJournal.Web.Controllers;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Translations;
@@ -192,6 +189,7 @@ namespace FlightJournal.Web.Models
         public string LastUpdatedBy { get; set; }
 
         public int RecordKey { get; set; }
+        public bool IsTrainingFlight => true; //TODO: figure out how to derive this from db
 
         public static string CsvHeaders
         {

@@ -90,22 +90,7 @@ namespace FlightJournal.Web.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Export(int id)
-        {
-            var item = db.TrainingPrograms.Find(id);
 
-            var sb = new StringBuilder();
-            var serializer = new JsonSerializer { NullValueHandling = NullValueHandling.Ignore };
-
-            using (var sw = new StringWriter(sb))
-            using(var writer = new JsonTextWriter(sw) {Formatting = Formatting.Indented})
-            {
-                serializer.Serialize(writer, item);
-            }
-
-
-            return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"{item.Name}.json");
-        }
 
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file)

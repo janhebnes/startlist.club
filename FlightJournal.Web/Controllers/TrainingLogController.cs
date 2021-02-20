@@ -33,7 +33,7 @@ namespace FlightJournal.Web.Controllers
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
             var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
 
-            var model = new TrainingLogViewModel(flight.FlightId, flight.Date, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight,trainingProgramId));
+            var model = new TrainingLogViewModel(flight.FlightId, flight.Date, flight.Departure, flight.Landing,  pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight,trainingProgramId));
             return model;
         }
 

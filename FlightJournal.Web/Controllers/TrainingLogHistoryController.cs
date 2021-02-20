@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using CsvHelper;
+using CsvHelper.Configuration;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
@@ -91,6 +95,45 @@ namespace FlightJournal.Web.Controllers
             return PartialView("_PartialTrainingFlightDetails", null);
         }
 
+        public ActionResult ExportToCsv(int year = -1)
+        {
+            if (year == -1) year = DateTime.Now.Year;
+
+            TrainingFlightHistoryExportViewModel viewModel;
+            if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
+            {
+                // allow access to all flights, filters on front seat / back seat pilot
+                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
+                var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId));
+                viewModel = CreateExportModel(flights, year);
+            }
+            else if (Request.IsPilot())
+            {
+                // access to own flights (front or back)
+                var pilotId = Request.Pilot().PilotId;
+                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
+                var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
+
+                viewModel = CreateExportModel(flights, year);
+            }
+            else
+            {
+                viewModel = new TrainingFlightHistoryExportViewModel();
+            }
+
+            var sb = new StringBuilder();
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";"
+            };
+            using (var writer = new StringWriter(sb))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.WriteRecords(viewModel.Flights);
+            }
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.csv");
+        }
+
         private TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
         {
             var flightModels = new List<TrainingFlightViewModel>();
@@ -105,7 +148,7 @@ namespace FlightJournal.Web.Controllers
                     Timestamp = f.Date.ToString("yyyy-MM-dd"),
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
-                    BackSeatOccupant = f.PilotBackseat != null  ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
+                    BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString(),
                     TrainingProgramName = programName,
@@ -113,7 +156,40 @@ namespace FlightJournal.Web.Controllers
                 };
                 flightModels.Add(m);
             }
-            return new TrainingFlightHistoryViewModel { Flights = flightModels, Message = flightModels.Any() ? "" : _("No flights")};
+            return new TrainingFlightHistoryViewModel { Flights = flightModels, Message = flightModels.Any() ? "" : _("No flights") };
+        }
+
+
+        private TrainingFlightHistoryExportViewModel CreateExportModel(IEnumerable<Flight> flights, int year)
+        {
+            var flightModels = new List<TrainingFlightExportViewModel>();
+            foreach (var f in flights)
+            {
+                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Action != ExerciseAction.None);
+                var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
+                var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var m = new TrainingFlightExportViewModel
+                {
+                    Timestamp = f.Date.ToString("yyyy-MM-dd"),
+                    Registration = f.Plane.Registration,
+                    CompetitionId = f.Plane.CompetitionId,
+                    FrontSeatOccupantName = f.Pilot.Name,
+                    FrontSeatOccupantClubId = f.Pilot.MemberId,
+                    FrontSeatOccupantUnionId = f.Pilot.UnionId,
+                    FrontSeatOccupantInstructorId = f.Pilot.InstructorId,
+                    BackSeatOccupantName = f.PilotBackseat?.Name,
+                    BackSeatOccupantClubId = f.PilotBackseat?.MemberId,
+                    BackSeatOccupantUnionId = f.PilotBackseat?.UnionId,
+                    BackSeatOccupantInstructorId = f.PilotBackseat?.InstructorId,
+                    Airfield = f.StartedFrom.Name,
+                    Duration = f.Duration.ToString(),
+                    DurationInMinutes = f.Duration.TotalMinutes,
+                    TrainingProgramName = programName,
+                    PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
+                };
+                flightModels.Add(m);
+            }
+            return new TrainingFlightHistoryExportViewModel { Flights = flightModels};
         }
 
         private string _(string resourceId)
@@ -186,4 +262,29 @@ namespace FlightJournal.Web.Controllers
         public HtmlString Weather { get; set; }
     }
 
+
+    internal class TrainingFlightHistoryExportViewModel
+    {
+        public List<TrainingFlightExportViewModel> Flights { get; set; } = new List<TrainingFlightExportViewModel>();
+    }
+
+    internal class TrainingFlightExportViewModel
+    {
+        public string Timestamp { get; set; }
+        public string Registration { get; set; }
+        public string CompetitionId { get; set; }
+        public string FrontSeatOccupantName { get; set; }
+        public string FrontSeatOccupantClubId { get; set; }
+        public string FrontSeatOccupantUnionId { get; set; }
+        public string FrontSeatOccupantInstructorId { get; set; }
+        public string BackSeatOccupantName { get; set; }
+        public string BackSeatOccupantClubId { get; set; }
+        public string BackSeatOccupantUnionId { get; set; }
+        public string BackSeatOccupantInstructorId { get; set; }
+        public string Airfield { get; set; }
+        public string Duration { get; set; }
+        public double DurationInMinutes { get; set; }
+        public string TrainingProgramName { get; set; }
+        public string PrimaryLessonName { get; set; }
+    }
 }

@@ -12,79 +12,88 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@_("Edit pilot")</legend>
+<fieldset>
+    <legend>@_("Edit pilot")</legend>
 
-        @Html.HiddenFor(model => model.PilotId)
+    @Html.HiddenFor(model => model.PilotId)
 
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Email)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.Email, new { @type = "email", placeholder = "email@email.com" })
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MobilNumber)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(model => model.MobilNumber, new { placeholder = mobilePlaceholder })
+        @Html.ValidationMessageFor(model => model.MobilNumber)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MemberId)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.MemberId)
+        @Html.ValidationMessageFor(model => model.MemberId)
+    </div>
+
+    @if (User.IsAdministrator())
+    {
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.ClubId, "Club")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+            @Html.DropDownList("ClubId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ClubId)
         </div>
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.ClubId)
+    }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Email)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Email, new { @type = "email", placeholder = "email@email.com" })
-            @Html.ValidationMessageFor(model => model.Email)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.UnionId)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.UnionId)
+        @Html.ValidationMessageFor(model => model.UnionId)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MobilNumber)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.MobilNumber, new { placeholder = mobilePlaceholder })
-            @Html.ValidationMessageFor(model => model.MobilNumber)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MemberId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.MemberId)
-            @Html.ValidationMessageFor(model => model.MemberId)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.InstructorId)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.InstructorId)
+        @Html.ValidationMessageFor(model => model.InstructorId)
+    </div>
 
-        @if (User.IsAdministrator())
-        {
-            <div class="editor-label">
-                @Html.LabelFor(model => model.ClubId, "Club")
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("ClubId", String.Empty)
-                @Html.ValidationMessageFor(model => model.ClubId)
-            </div>
-        }
-        else
-        {
-            @Html.HiddenFor(model => model.ClubId)
-        }
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UnionId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UnionId)
-            @Html.ValidationMessageFor(model => model.UnionId)
-        </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ExitDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ExitDate)
-            @Html.ValidationMessageFor(model => model.ExitDate)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ExitDate)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ExitDate)
+        @Html.ValidationMessageFor(model => model.ExitDate)
+    </div>
 
-        <p style="margin-top: 30px">
-            <div class="btn-group">
-                <input type="submit" value="@_("Save")" class="btn btn-primary" />
-                <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
-            </div>
-        </p>
-    </fieldset>
+    <p style="margin-top: 30px">
+        <div class="btn-group">
+            <input type="submit" value="@_("Save")" class="btn btn-primary" />
+            <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
+        </div>
+    </p>
+</fieldset>
 }
