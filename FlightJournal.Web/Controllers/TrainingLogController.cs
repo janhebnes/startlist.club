@@ -79,39 +79,60 @@ namespace FlightJournal.Web.Controllers
             }
 
             // Upsert flight annotations for this flight
-            var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
+            var annotation = db.TrainingFlightAnnotations.Include("TrainingFlightAnnotationCommentCommentTypes").FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
             
             //TODO: figure out why Commentary.AppliesToxxxx throws, and this does not. Seems to be the same code ?
             annotation.Note = flightData.note;
-            var StartAnnotation = new List<Commentary>();
-            var FlightAnnotation = new List<Commentary>();
-            var ApproachAnnotation = new List<Commentary>();
-            var LandingAnnotation = new List<Commentary>();
-            StartAnnotation = flightData.s_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            FlightAnnotation = flightData.f_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            ApproachAnnotation = flightData.i_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            LandingAnnotation = flightData.l_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing")) && c.CommentaryId == id)).Where(x=>x != null).ToList();
-            annotation.Manouvres = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id) ).Where(m => m != null).ToList();
+/*          var currentTrainingFlightAnnotationCommentCommentTypes = annotation.TrainingFlightAnnotationCommentCommentTypes;
+            var currentManouvres = annotation.Manouvres;
+            var currentWeather = annotation.Weather;*/
+
+            var StartAnnotation = flightData.s_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            var FlightAnnotation = flightData.f_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            var ApproachAnnotation = flightData.i_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach")) && c.CommentaryId == id)).Where(x => x != null).ToList();
+            var LandingAnnotation = flightData.l_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing")) && c.CommentaryId == id)).Where(x => x != null).ToList();
 
             var commentcommentypeannotations = new List<TrainingFlightAnnotationCommentCommentType>();
-            
-            foreach (var s_annotation in StartAnnotation)
-            {
-                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = s_annotation, CommentaryType = s_annotation.CommentaryTypes.Where(x=>x.CType.ToLower().Equals("start")).FirstOrDefault()});
-            }
-            foreach (var f_annotation in FlightAnnotation)
-            {
-                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = f_annotation, CommentaryType = f_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("flight")).FirstOrDefault()});
-            }
-            foreach(var a_annotation in ApproachAnnotation)
-            {
-                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = a_annotation, CommentaryType = a_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("approach")).FirstOrDefault()});
-            }
-            foreach (var l_annotation in LandingAnnotation)
-            {
-                commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = l_annotation, CommentaryType = l_annotation.CommentaryTypes.Where(x=>x.CType.ToLower().Equals("landing")).FirstOrDefault()});
-            }
 
+            if (StartAnnotation != null)
+            {
+                foreach (var s_annotation in StartAnnotation)
+                {
+                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = s_annotation, CommentaryType = s_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("start")).FirstOrDefault() });
+                }
+            }
+            if (FlightAnnotation != null)
+            {
+                foreach (var f_annotation in FlightAnnotation)
+                {
+                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = f_annotation, CommentaryType = f_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("flight")).FirstOrDefault() });
+                }
+            }
+            if (ApproachAnnotation != null)
+            {
+                foreach (var a_annotation in ApproachAnnotation)
+                {
+                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = a_annotation, CommentaryType = a_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("approach")).FirstOrDefault() });
+                }
+            }
+            if (LandingAnnotation != null)
+            {
+                foreach (var l_annotation in LandingAnnotation)
+                {
+                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = l_annotation, CommentaryType = l_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("landing")).FirstOrDefault() });
+                }
+            }
+           /* var ManouvresToAdd = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id)).Where(m => m != null).ToList().Except(currentManouvres).ToList();
+            var TrainingFlightAnnotationCommentCommentTypesToAdd = commentcommentypeannotations.Except(currentTrainingFlightAnnotationCommentCommentTypes).ToList();
+            commentcommentypeannotations.AddRange(currentTrainingFlightAnnotationCommentCommentTypes);
+            var removed = commentcommentypeannotations.Where(x=>x.Commentary == null).ToList();
+            foreach(var rem in removed)
+            {
+                commentcommentypeannotations.Remove(rem);
+            }
+            var a = commentcommentypeannotations.GroupBy(x => new { x.CommentaryType.CType, x.Commentary.Comment }).Where(g => g.Count() == 1).Select(y=>y.Key).ToList();*/
+
+            annotation.Manouvres = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id)).Where(m => m != null).ToList();
             annotation.TrainingFlightAnnotationCommentCommentTypes = commentcommentypeannotations;
             annotation.Weather = new Weather { WindDirection = new WindDirection { WindDirectionItem = flightData.wind_direction }, WindSpeed = new WindSpeed { WindSpeedItem = flightData.wind_speed }};
 
