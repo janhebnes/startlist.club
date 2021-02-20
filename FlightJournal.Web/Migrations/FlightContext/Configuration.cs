@@ -4,7 +4,9 @@ using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Predefined;
 using System;
 using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Migrations.FlightContext
 {
@@ -20,170 +22,92 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
         internal static void InitializeCommentaries(Models.FlightContext context)
         {
-            var startCommentary = new CommentaryType { CType = "Start", Commentaries = new List<Commentary>() };
-            var flightCommentary = new CommentaryType { CType = "Flight", Commentaries = new List<Commentary>() };
-            var approachCommentary = new CommentaryType { CType = "Approach", Commentaries = new List<Commentary>() };
-            var landingCommentary = new CommentaryType { CType = "Landing", Commentaries = new List<Commentary>() };
+
+            var startCommentary = new CommentaryType { CType = "Start", Commentaries = new HashSet<Commentary>(), DisplayOrder = 0};
+            var flightCommentary = new CommentaryType { CType = "Flight", Commentaries = new HashSet<Commentary>(), DisplayOrder = 1 };
+            var approachCommentary = new CommentaryType { CType = "Approach", Commentaries = new HashSet<Commentary>(), DisplayOrder = 2 };
+            var landingCommentary = new CommentaryType { CType = "Landing", Commentaries = new HashSet<Commentary>(), DisplayOrder = 3 };
 
             var commentOk = new Commentary { 
-                            Comment = "&#x2713", 
-                            CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary },
-                            IsOk = true
-                            };
-            startCommentary.Commentaries.Add(commentOk);
-            flightCommentary.Commentaries.Add(commentOk);
-            approachCommentary.Commentaries.Add(commentOk);
-            landingCommentary.Commentaries.Add(commentOk);
+                Comment = "&#x2713",
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary },
+                IsOk = true
+            };
 
             var commentAlmostOk = new Commentary
             {
                 Comment = "(&#x2713)",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
 
-            startCommentary.Commentaries.Add(commentAlmostOk);
-            flightCommentary.Commentaries.Add(commentAlmostOk);
-            approachCommentary.Commentaries.Add(commentAlmostOk);
-            landingCommentary.Commentaries.Add(commentAlmostOk);
 
             var commentSkull = new Commentary
             {
                 Comment = "&#x2620",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentSkull);
-            flightCommentary.Commentaries.Add(commentSkull);
-            approachCommentary.Commentaries.Add(commentSkull);
-            landingCommentary.Commentaries.Add(commentSkull);
 
             var commentInstructorGuidance = new Commentary
             {
                 Comment = "Instructor guidance needed",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentInstructorGuidance);
-            flightCommentary.Commentaries.Add(commentInstructorGuidance);
-            approachCommentary.Commentaries.Add(commentInstructorGuidance);
-            landingCommentary.Commentaries.Add(commentInstructorGuidance);
 
             var commentInstructorTakeOver = new Commentary
             {
                 Comment = "Instructor takeover needed",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentInstructorTakeOver);
-            flightCommentary.Commentaries.Add(commentInstructorTakeOver);
-            approachCommentary.Commentaries.Add(commentInstructorTakeOver);
-            landingCommentary.Commentaries.Add(commentInstructorTakeOver);
 
             var commentUnstableDirection = new Commentary
             {
                 Comment = "Unstable direction",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentUnstableDirection);
-            flightCommentary.Commentaries.Add(commentUnstableDirection);
-            approachCommentary.Commentaries.Add(commentUnstableDirection);
-            landingCommentary.Commentaries.Add(commentUnstableDirection);
 
             var commentUnstableSpeed = new Commentary
             {
                 Comment = "Unstable speed",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentUnstableSpeed);
-            flightCommentary.Commentaries.Add(commentUnstableSpeed);
-            approachCommentary.Commentaries.Add(commentUnstableSpeed);
-            landingCommentary.Commentaries.Add(commentUnstableSpeed);
-
             var commentSpeedTooHigh = new Commentary
             {
                 Comment = "Speed too high",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentSpeedTooHigh);
-            flightCommentary.Commentaries.Add(commentSpeedTooHigh);
-            approachCommentary.Commentaries.Add(commentSpeedTooHigh);
-            landingCommentary.Commentaries.Add(commentSpeedTooHigh);
 
             var commentSpeedTooLow = new Commentary
             {
                 Comment = "Speed too low",
-                CommentaryTypes = new List<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
             };
-
-            startCommentary.Commentaries.Add(commentSpeedTooLow);
-            flightCommentary.Commentaries.Add(commentSpeedTooLow);
-            approachCommentary.Commentaries.Add(commentSpeedTooLow);
-            landingCommentary.Commentaries.Add(commentSpeedTooLow);
 
             var commentUnstablePosition = new Commentary
             {
                 Comment = "Unstable position",
-                CommentaryTypes = new List<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
             };
-
-            flightCommentary.Commentaries.Add(commentUnstablePosition);
-            approachCommentary.Commentaries.Add(commentUnstablePosition);
-            landingCommentary.Commentaries.Add(commentUnstablePosition);
-
             var commentPosTooHigh = new Commentary
             {
                 Comment = "Position too high",
-                CommentaryTypes = new List<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
             };
-
-            flightCommentary.Commentaries.Add(commentPosTooHigh);
-            approachCommentary.Commentaries.Add(commentPosTooHigh);
-            landingCommentary.Commentaries.Add(commentPosTooHigh);
-
             var commentPosTooLow = new Commentary
             {
                 Comment = "Position too low",
-                CommentaryTypes = new List<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
             };
-
-            flightCommentary.Commentaries.Add(commentPosTooLow);
-            approachCommentary.Commentaries.Add(commentPosTooLow);
-            landingCommentary.Commentaries.Add(commentPosTooLow);
-
             var commentFlareTooHigh = new Commentary
             {
                 Comment = "Flare too high",
-                CommentaryTypes = new List<CommentaryType> { landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { landingCommentary }
             };
-
-            landingCommentary.Commentaries.Add(commentFlareTooHigh);
-
             var commentFlareTooLow = new Commentary
             {
                 Comment = "Flare too low",
-                CommentaryTypes = new List<CommentaryType> { landingCommentary }
+                CommentaryTypes = new HashSet<CommentaryType> { landingCommentary }
             };
 
-            landingCommentary.Commentaries.Add(commentFlareTooLow);
-            //foreach (var c in startCommentary.Commentaries)
-            //{
-            //    c.AppliesToStartPhase = true;
-            //}
-            //foreach (var c in flightCommentary.Commentaries)
-            //{
-            //    c.AppliesToFlightPhase= true;
-            //}
-            //foreach (var c in approachCommentary.Commentaries)
-            //{
-            //    c.AppliesToApproachPhase = true;
-            //}
-            //foreach (var c in landingCommentary.Commentaries)
-            //{
-            //    c.AppliesToLandingPhase = true;
-            //}
             context.Commentaries.Add(commentOk);
             context.Commentaries.Add(commentAlmostOk);
             context.Commentaries.Add(commentSkull);
@@ -203,6 +127,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.CommentaryTypes.Add(startCommentary);
             context.CommentaryTypes.Add(approachCommentary);
             context.CommentaryTypes.Add(flightCommentary);
+
+            context.SaveChanges();
         }
 
         internal static void InitializeDemoFlights(Models.FlightContext context)

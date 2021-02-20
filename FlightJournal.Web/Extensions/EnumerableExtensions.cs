@@ -19,5 +19,10 @@ namespace FlightJournal.Web.Extensions
         {
             return !x.IsNullOrEmpty() && x.Contains(target);
         }
+
+        public static V GetOrDefault<K,V>(this Dictionary<K,V> x, K k, V defaultValue = default)
+        {
+            return x.TryGetValue(k, out var v) ? v : defaultValue;
+        }
     }
 }

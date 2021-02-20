@@ -29,7 +29,7 @@ namespace FlightJournal.Web.Controllers
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
             {
                 // allow access to all flights, filters on front seat / back seat pilot
-                var flightIds = db.AppliedExercises.Select(x=>x.FlightId).ToList();
+                var flightIds = db.AppliedExercises.Select(x=>x.FlightId).Union(db.TrainingFlightAnnotations.Select(y=>y.FlightId)).Distinct().ToList();
                 var flights = db.Flights.Where(x => x.Date.Year == year &&  flightIds.Contains(x.FlightId));
                 model = CreateModel(flights);
                 model.Year = year;
@@ -39,7 +39,7 @@ namespace FlightJournal.Web.Controllers
             {
                 // access to own flights (front or back)
                 var pilotId = Request.Pilot().PilotId;
-                var flightIds = db.AppliedExercises.Select(x => x.FlightId).ToList();
+                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
                 var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
 
                 model = CreateModel(flights);
@@ -62,17 +62,28 @@ namespace FlightJournal.Web.Controllers
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x=>x.Action != ExerciseAction.None);
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
-                var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
+                var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
+                var commentsForPhasesInThisFlight = annotation
+                    .TrainingFlightAnnotationCommentCommentTypes?
+                    .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })
+                    .ToDictionary(
+                        x => x.phase,
+                        x => x.comments.Select(t=>new HtmlString(t.Comment))) 
+                                                    ?? new Dictionary<string, IEnumerable<HtmlString>>();
+
+                var commentsForAllPhases = 
+                    db.CommentaryTypes
+                        .OrderBy(c => c.DisplayOrder)
+                        .Select( c=> c.CType)
+                        .ToDictionary(x=>x, x=> commentsForPhasesInThisFlight.GetOrDefault(x, Enumerable.Empty<HtmlString>()));
+
                 var details = new TrainingFlightDetailsViewModel
                 {
                     Exercises = ae.OrderBy(x => x.Lesson.DisplayOrder).ToList().Select(x => 
                         new Tuple<string, string, string, int, int>(x.Lesson.Name, x.Exercise.Name, x.Action.ToString(), x.Lesson.Training2LessonId, x.Exercise.Training2ExerciseId)),   //TODO: localize enum
                     Note = annotation?.Note ?? "",
                     Manouvres = new HtmlString(string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{x.ManouvreItem}") ?? Enumerable.Empty<string>())),
-                    StartAnnotations = new HtmlString(string.Join(", ", annotation?.StartAnnotation.Select(x => $"{x.Comment}") ?? Enumerable.Empty<string>())),
-                    FlightAnnotations = new HtmlString(string.Join(", ", annotation?.FlightAnnotation.Select(x => $"{x.Comment}") ?? Enumerable.Empty<string>())),
-                    ApproachAnnotations = new HtmlString(string.Join(", ", annotation?.ApproachAnnotation.Select(x => $"{x.Comment}") ?? Enumerable.Empty<string>())),
-                    LandingAnnotations = new HtmlString(string.Join(", ", annotation?.LandingAnnotation.Select(x => $"{x.Comment}") ?? Enumerable.Empty<string>())),
+                    FlightPhaseAnnotations = commentsForAllPhases,
                     Weather = new HtmlString(weather)
                 };
                 return PartialView("_PartialTrainingFlightDetails", details);
@@ -171,10 +182,7 @@ namespace FlightJournal.Web.Controllers
         public IEnumerable<Tuple<string,string,string, int, int>> Exercises { get; set; }
         public string Note { get; set; }
         public HtmlString Manouvres { get; set; }
-        public HtmlString StartAnnotations { get; set; }
-        public HtmlString FlightAnnotations { get; set; }
-        public HtmlString ApproachAnnotations { get; set; }
-        public HtmlString LandingAnnotations { get; set; }
+        public Dictionary<string, IEnumerable<HtmlString>> FlightPhaseAnnotations { get; set; }
         public HtmlString Weather { get; set; }
     }
 

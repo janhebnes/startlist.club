@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using FlightJournal.Web.Models.Training.Catalogue;
-using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models.Training.Flight
 {

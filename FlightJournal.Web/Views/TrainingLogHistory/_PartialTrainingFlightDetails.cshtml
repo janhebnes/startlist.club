@@ -14,10 +14,10 @@ else
             <tr class="exerciselink clickable" data-id1="@e.Item4" data-id2="@e.Item5"><td>@e.Item1</td><td>@e.Item2</td><td>@e.Item3</td></tr>
         }
         <tr><th>@_("Manouvers")</th><td>@Model.Manouvres</td><td></td></tr>
-        <tr><th>@_("Start")</th><td>@Model.StartAnnotations</td><td></td></tr>
-        <tr><th>@_("Flight")</th><td>@Model.FlightAnnotations</td><td></td></tr>
-        <tr><th>@_("Approach")</th><td>@Model.ApproachAnnotations</td><td></td></tr>
-        <tr><th>@_("Landing")</th><td>@Model.LandingAnnotations</td><td></td></tr>
+        @foreach (var e in Model.FlightPhaseAnnotations)
+        {
+            <tr><th>@e.Key</th><td>@Html.Raw(string.Join(", ", e.Value))</td><td></td></tr>
+        }
         <tr><th>@_("Note")</th><td>@Model.Note</td><td></td></tr>
         <tr><th>@_("Weather")</th><td>@Model.Weather</td><td></td></tr>
     </table>

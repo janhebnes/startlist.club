@@ -2,14 +2,14 @@
 
 namespace FlightJournal.Web.Models.Training.Flight
 {
-    public class TrainingFlightAnnotationCommentCommentType
+    public class TrainingFlightAnnotationCommentCommentType // TODO: rename according to renamed references ?
     {
         public int TrainingFlightAnnotationId { get; set; }
         public int CommentaryId { get; set; }
         public int CommentaryTypeId { get; set; }
 
-        public TrainingFlightAnnotation TrainingFlightAnnotation { get; set; }
-        public Commentary Commentary { get; set; } 
-        public CommentaryType CommentaryType { get; set; }
+        public virtual TrainingFlightAnnotation TrainingFlightAnnotation { get; set; }
+        public virtual Commentary Commentary { get; set; } 
+        public virtual CommentaryType CommentaryType { get; set; }
     }
 }

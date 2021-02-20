@@ -34,18 +34,6 @@ namespace FlightJournal.Web.Controllers
             var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
 
             var model = new TrainingLogViewModel(flight.FlightId, flight.Date, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight,trainingProgramId));
-
-            //var programs = new List<TrainingProgramViewModel>();
-            //programs.Add(TrainingLogDemo.BuildSplWinchTrainingProgram());
-            //programs.Add(TrainingLogDemo.BuildSplTowTrainingProgram());
-            //programs.Add(TrainingLogDemo.BuildSplTmgTrainingProgram());
-            //programs.Add(TrainingLogDemo.BuildStartMethodWinchTrainingProgram());
-            //programs.Add(TrainingLogDemo.BuildStartMethodTowTrainingProgram());
-            //programs.Add(TrainingLogDemo.BuildTypeRatingSingleTrainingProgram());
-            //programs.Add(TrainingLogDemo.BuildTypeRatingDualTrainingProgram());
-
-            //model.TrainingPrograms = programs;
-
             return model;
         }
 
@@ -57,83 +45,62 @@ namespace FlightJournal.Web.Controllers
 
             // Upsert exercise for this flight. Note that flightData.exercises holds data for this flight only  (including any edits)
             var currentExercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId.Equals(flightId));
-            foreach (var e in flightData.exercises)
+            // just retain latest edit
+            db.AppliedExercises.RemoveRange(currentExercisesForThisFlight);
+            if (flightData.exercises != null)
             {
-                var appliedExercise = currentExercisesForThisFlight.FirstOrDefault(x => x.AppliedExerciseId == e.exerciseId) ?? new AppliedExercise()
+                foreach (var e in flightData.exercises)
                 {
-                    FlightId = flightId,
-                    Program = db.TrainingPrograms.FirstOrDefault(p=>p.Training2ProgramId == e.programId),
-                    Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
-                    Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
-                    Action = ExerciseAction.None
-                };
+                    var appliedExercise = new AppliedExercise
+                    {
+                        FlightId = flightId,
+                        Program = db.TrainingPrograms.FirstOrDefault(p => p.Training2ProgramId == e.programId),
+                        Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
+                        Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
+                        Action = ExerciseAction.None
+                    };
 
-                if (e.ok.HasValue && e.ok.Value)
-                    appliedExercise.Action = ExerciseAction.Completed;
-                else if (e.trained.HasValue && e.trained.Value)
-                    appliedExercise.Action = ExerciseAction.Trained;
-                else if (e.briefed.HasValue && e.briefed.Value)
-                    appliedExercise.Action = ExerciseAction.Briefed;
+                    if (e.ok.HasValue && e.ok.Value)
+                        appliedExercise.Action = ExerciseAction.Completed;
+                    else if (e.trained.HasValue && e.trained.Value)
+                        appliedExercise.Action = ExerciseAction.Trained;
+                    else if (e.briefed.HasValue && e.briefed.Value)
+                        appliedExercise.Action = ExerciseAction.Briefed;
 
-                db.AppliedExercises.AddOrUpdate(appliedExercise);
+                    db.AppliedExercises.AddOrUpdate(appliedExercise);
+                }
             }
 
             // Upsert flight annotations for this flight
-            var annotation = db.TrainingFlightAnnotations.Include("TrainingFlightAnnotationCommentCommentTypes").FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
+            var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
             
-            //TODO: figure out why Commentary.AppliesToxxxx throws, and this does not. Seems to be the same code ?
             annotation.Note = flightData.note;
-/*          var currentTrainingFlightAnnotationCommentCommentTypes = annotation.TrainingFlightAnnotationCommentCommentTypes;
-            var currentManouvres = annotation.Manouvres;
-            var currentWeather = annotation.Weather;*/
-
-            var StartAnnotation = flightData.s_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("start")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            var FlightAnnotation = flightData.f_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("flight")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            var ApproachAnnotation = flightData.i_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("approach")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-            var LandingAnnotation = flightData.l_annotationIds?.Select(id => db.Commentaries.FirstOrDefault(c => c.CommentaryTypes.ToList().Any(x => x.CType.ToLower().Equals("landing")) && c.CommentaryId == id)).Where(x => x != null).ToList();
-
-            var commentcommentypeannotations = new List<TrainingFlightAnnotationCommentCommentType>();
-
-            if (StartAnnotation != null)
+            // ... flight phase comments
+            annotation.TrainingFlightAnnotationCommentCommentTypes.Clear();
+            if (flightData.phaseComments != null)
             {
-                foreach (var s_annotation in StartAnnotation)
+                foreach (var item in flightData.phaseComments.Select(x => new TrainingFlightAnnotationCommentCommentType
                 {
-                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = s_annotation, CommentaryType = s_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("start")).FirstOrDefault() });
+                    CommentaryTypeId = x.phaseId,
+                    CommentaryId = x.commentId
+                }))
+                {
+                    annotation.TrainingFlightAnnotationCommentCommentTypes.Add(item);
                 }
             }
-            if (FlightAnnotation != null)
-            {
-                foreach (var f_annotation in FlightAnnotation)
-                {
-                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = f_annotation, CommentaryType = f_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("flight")).FirstOrDefault() });
-                }
-            }
-            if (ApproachAnnotation != null)
-            {
-                foreach (var a_annotation in ApproachAnnotation)
-                {
-                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = a_annotation, CommentaryType = a_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("approach")).FirstOrDefault() });
-                }
-            }
-            if (LandingAnnotation != null)
-            {
-                foreach (var l_annotation in LandingAnnotation)
-                {
-                    commentcommentypeannotations.Add(new TrainingFlightAnnotationCommentCommentType { TrainingFlightAnnotation = annotation, Commentary = l_annotation, CommentaryType = l_annotation.CommentaryTypes.Where(x => x.CType.ToLower().Equals("landing")).FirstOrDefault() });
-                }
-            }
-           /* var ManouvresToAdd = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id)).Where(m => m != null).ToList().Except(currentManouvres).ToList();
-            var TrainingFlightAnnotationCommentCommentTypesToAdd = commentcommentypeannotations.Except(currentTrainingFlightAnnotationCommentCommentTypes).ToList();
-            commentcommentypeannotations.AddRange(currentTrainingFlightAnnotationCommentCommentTypes);
-            var removed = commentcommentypeannotations.Where(x=>x.Commentary == null).ToList();
-            foreach(var rem in removed)
-            {
-                commentcommentypeannotations.Remove(rem);
-            }
-            var a = commentcommentypeannotations.GroupBy(x => new { x.CommentaryType.CType, x.Commentary.Comment }).Where(g => g.Count() == 1).Select(y=>y.Key).ToList();*/
 
-            annotation.Manouvres = flightData.manouverIds?.Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id)).Where(m => m != null).ToList();
-            annotation.TrainingFlightAnnotationCommentCommentTypes = commentcommentypeannotations;
+            // ... flight manouvres
+            annotation.Manouvres.Clear();
+            if (flightData.manouverIds != null)
+            {
+                foreach (var m in flightData.manouverIds
+                    .Select(id => db.Manouvres.FirstOrDefault(m => m.ManouvreId == id)).Where(m => m != null))
+                {
+                    annotation.Manouvres.Add(m);
+                }
+            }
+
+            // ... weather
             annotation.Weather = new Weather { WindDirection = new WindDirection { WindDirectionItem = flightData.wind_direction }, WindSpeed = new WindSpeed { WindSpeedItem = flightData.wind_speed }};
 
             //TODO weather seems a bit odd - could we simply just pass the numbers instead of representing them in db models ?
@@ -155,14 +122,16 @@ namespace FlightJournal.Web.Controllers
             // the rest go into TrainingFlightAnnotations
             public int[] manouverIds { get; set; }
             public string note { get; set; }
-            public int[] s_annotationIds{ get; set; }
-            public int[] f_annotationIds{ get; set; }
-            public int[] i_annotationIds{ get; set; }
-            public int[] l_annotationIds{ get; set; }
+            public PhaseComment[] phaseComments{ get; set; }
             public int wind_direction { get; set; }
             public int wind_speed { get; set; }
         }
 
+        public class PhaseComment
+        {
+            public int phaseId { get; set; }
+            public int commentId { get; set; }
+        }
         public class Exercise
         {
             public int programId { get; set; }

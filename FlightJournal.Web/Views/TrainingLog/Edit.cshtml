@@ -1,4 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
 @using FlightJournal.Web.Views
 @using MarkdownSharp
 @model FlightJournal.Web.Models.TrainingLogViewModel
@@ -128,14 +129,25 @@
         {
             foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
             {
-                var checkedBox = "<input type='checkbox' checked disabled>";
-                var uncheckedBox = "<input type='checkbox' disabled>";
-                var newcheckBoxOrPlaceholder = exercise.BriefingOnlyRequired ? "." : "<input type='checkbox' class='lessoncheckbox'>";
-                var newcheckBox = "<input type='checkbox' class='lessoncheckbox'>";
+                string CheckboxType(TrainingExerciseWithOverallStatusViewModel.CheckBoxType t)
+                {
+                    switch (t)
+                    {
+                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.PlaceHolder:
+                            return "";
+                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledChecked:
+                            return "<input type='checkbox' checked disabled>";
+                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledUnchecked:
+                            return "<input type='checkbox' disabled>";
+                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledChecked:
+                            return "<input type='checkbox' checked class='lessoncheckbox'>";
+                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledUnchecked:
+                            return "<input type='checkbox' class='lessoncheckbox' >";
+                    }
+                    return "";
+                }
+
                 var clz = CssHelper.CssClassFor(exercise.Status);
-                var briefedMarker = exercise.IsBriefed ? checkedBox : uncheckedBox;
-                var trainedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsTrained ? checkedBox : uncheckedBox;
-                var completedMarker = exercise.BriefingOnlyRequired ? "." : exercise.IsCompleted ? checkedBox : uncheckedBox;
                 var infoMarker = exercise.LongDescription?.Any() ?? false ? "<span class='fa fa-info-circle'></span>" : "";
                 var introdefL = "";
                 var introdefX = "";
@@ -174,12 +186,12 @@
                 <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
                     <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id"  @Html.Raw(introdefL)>@lesson.Name</td>
                     <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id"  @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefB0)>@Html.Raw(briefedMarker)</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefT0)>@Html.Raw(trainedMarker)</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefC0)>@Html.Raw(completedMarker)</td>
-                    <td class="btn-default hcenter statusbutton chk_briefed annotationcontainer" @Html.Raw(introdefB)>@Html.Raw(newcheckBox)</td>
-                    <td class="btn-default hcenter statusbutton chk_trained annotationcontainer" @Html.Raw(introdefT)>@Html.Raw(newcheckBoxOrPlaceholder)</td>
-                    <td class="btn-default hcenter statusbutton chk_ok annotationcontainer" @Html.Raw(introdefC)>@Html.Raw(newcheckBoxOrPlaceholder)</td>
+                    <td class="btn-default hcenter @clz" @Html.Raw(introdefB0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallBriefed))</td>
+                    <td class="btn-default hcenter @clz" @Html.Raw(introdefT0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallTrained))</td>
+                    <td class="btn-default hcenter @clz" @Html.Raw(introdefC0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallCompleted))</td>
+                    <td class="btn-default hcenter statusbutton chk_briefed annotationcontainer" @Html.Raw(introdefB)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightBriefed))</td>
+                    <td class="btn-default hcenter statusbutton chk_trained annotationcontainer" @Html.Raw(introdefT)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightTrained))</td>
+                    <td class="btn-default hcenter statusbutton chk_ok annotationcontainer" @Html.Raw(introdefC)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightCompleted))</td>
                 </tr>
             }
         }
@@ -204,66 +216,39 @@
     <div class="col-xs-12 col-sm-12">
         <button class="btn btn-success" id="sfilok">@_("Everything ok")</button>
     </div>
-    <div class="col-xs-2 col-sm-1">@_("Launch")</div>
-    <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" id="s-ann" multiple title=@Html.Raw(__("Grade the launch"))>
-        @foreach (var annotation in Model.AnnotationsForStartPhase)
-        {
-            var selected = Model.ThisFlight.StartAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
-            <option value="@annotation.CommentaryId" @selected class="s_annotation">@Html.Raw(annotation.Comment)</option>
-        }
-    </select>
-    <div class="col-xs-2 col-sm-1">@_("Flight")</div>
-    <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="f-ann" multiple title=@Html.Raw(__("Grade the flight phase between launch and approach"))>
-        @foreach (var annotation in Model.AnnotationsForFlightPhase)
-        {
-            var selected = Model.ThisFlight.FlightAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
-            <option value="@annotation.CommentaryId"  @selected class="f_annotation">@Html.Raw(annotation.Comment)</option>
-        }
-    </select>
-    <div class="col-xs-2 col-sm-1">@_("Approach")</div>
-    <select class="col-xs-10  col-sm-11 selectpicker annotation userselection" id="i-ann" multiple title=@Html.Raw(__("Grade the approach phase"))>
-        @foreach (var annotation in Model.AnnotationsForApproachPhase)
-        {
-            var selected = Model.ThisFlight.ApproachAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
-            <option value="@annotation.CommentaryId"  @selected class="f_annotation">@Html.Raw(annotation.Comment)</option>
-        }
-    </select>
-    <div class="col-xs-2 col-sm-1">@_("Landing")</div>
-    <select class="col-xs-10 col-sm-11  selectpicker annotation userselection" id="l-ann" multiple title=@Html.Raw(__("Grade the landing"))>
-        @foreach (var annotation in Model.AnnotationsForLandingPhase)
-        {
-            var selected = Model.ThisFlight.LandingAnnotations.SafeContains(annotation.CommentaryId) ? "selected" : "";
-            <option value="@annotation.CommentaryId" @selected class="l_annotation">@Html.Raw(annotation.Comment)</option>
-        }
-    </select>
+    @foreach (var p in Model.AnnotationsForFlightPhases)
+    {
+        var id = $"comment-id-{p.Phase.CommentaryTypeId}";
+
+        <div class="col-xs-2 col-sm-1">@p.Phase.CType</div>
+        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" multiple id="@id")>
+            @foreach (var comment in p.Options)
+            {
+                var selected = Model.ThisFlight.CommentIdsByPhase.GetOrDefault(p.Phase.CommentaryTypeId).SafeContains(comment.CommentaryId) ? "selected" : "";
+                <option value="@comment.CommentaryId" @selected class="phaseannotation" data-phaseid="@p.Phase.CommentaryTypeId">@Html.Raw(comment.Comment)</option>
+            }
+        </select>
+    }
     <div class="col-xs-2 col-sm-1">@_("Note")</div>
     <div class="col-xs-10 col-sm-11 " data-step="55" data-intro=@Html.Raw(__("If you have comments beyond the predefined selections above, you can enter them here"))>
         <textarea style="width: 100%; max-width:100%" id="flightnotes" rows="3">@Model.ThisFlight.Notes</textarea>
     </div>
 </div>
 
-@*TODO: set this according to current data in Model.ThisFlight, and indicate value at entry (for use by change detection) *@
+
 <div id="weathercontainer" class="annotationcontainer bordered row no-gutter" data-step="60" data-intro=@Html.Raw(__("In case the weather has been a factor (for better or worse), you can describe it here"))>
     <div class="col-xs-2  col-sm-1">@_("Weather")</div>
     <select class="col-xs-5 selectpicker userselection" title=@Html.Raw(__("Wind direction")) id="wind_direction">
         @foreach (var v in Model.WindDirections)
         {
-            var selected = "";
-            if (Model.ThisFlight.Weather != null)
-            {
-                selected = Model.ThisFlight.Weather.WindDirection.WindDirectionItem == v.Value ? "selected" : "";
-            }
+            var selected = Model.ThisFlight.Weather?.WindDirection?.WindDirectionItem == v.Value ? "selected" : "";
             <option value="@v.Value" class="wind_direction" @selected>@Html.Raw(v.Text)</option>
         }
     </select>
     <select class="col-xs-4 selectpicker userselection" title=@Html.Raw(__("Wind speed")) id="wind_speed">
         @foreach (var v in Model.WindSpeeds)
         {
-            var selected = "";
-            if (Model.ThisFlight.Weather != null)
-            {
-                selected = Model.ThisFlight.Weather.WindSpeed.WindSpeedItem == v.Value ? "selected" : "";
-            }
+            var selected = Model.ThisFlight.Weather?.WindSpeed?.WindSpeedItem == v.Value ? "selected" : "";
             <option value="@v.Value" class="wind_speed"@selected>@Html.Raw(v.Text)</option>
         }
     </select>
@@ -413,7 +398,7 @@
                     $(".lessonscontainer").show();
             });
 
-            $("#sfilok").click(function () {
+            $("#sfilok").click(function() {
                 var id = $("#annotationscontainer").data("id_for_ok")
                 $(".selectpicker.annotation").each(function() {
                     $(this).selectpicker('val', id); //TODO: repair
@@ -440,6 +425,7 @@
 
         var isDirty = function() {
             var exerciseDataChanged = $(".lessoncheckbox:checked").length > 0;
+            //TODO: detect change, not just presence
             var annotationCount = 0;
             $(".userselection").each(function() { if ($(this).val()) ++annotationCount; });
             var hasNote = $("#flightnotes").val().length > 0;
@@ -506,7 +492,8 @@
                     trained: $(this).find(".chk_trained").find(".lessoncheckbox").prop("checked"),
                     ok: $(this).find(".chk_ok").find(".lessoncheckbox").prop("checked"),
                 };
-                exercises.push(ex);
+                if(ex.briefed || ex.trained || ex.ok)
+                    exercises.push(ex);
             });
 
             // manouvers 
@@ -514,14 +501,13 @@
             $("option.manouver:selected").each(function() { manouverIds.push($(this).val()); });
 
             // annotations
-            var s_annotations = [];
-            var f_annotations = [];
-            var i_annotations = [];
-            var l_annotations = [];
-            $("option.s_annotation:selected").each(function () { s_annotations.push($(this).val()); });
-            $("option.f_annotation:selected").each(function () { f_annotations.push($(this).val()); });
-            $("option.i_annotation:selected").each(function () { i_annotations.push($(this).val()); });
-            $("option.l_annotation:selected").each(function () { l_annotations.push($(this).val()); });
+            var phaseComments = [];
+            $("option.phaseannotation:selected").each(function() {
+                phaseComments.push({
+                    phaseId: $(this).data("phaseid"),
+                    commentId : $(this).val()
+                });
+            });
 
             // entire flight
             var flightData = JSON.stringify({
@@ -529,10 +515,7 @@
                 exercises: exercises,
                 manouverIds: manouverIds,
                 note: $("#flightnotes").val(),
-                s_annotationIds: s_annotations,
-                f_annotationIds: f_annotations,
-                i_annotationIds: i_annotations,
-                l_annotationIds: l_annotations,
+                phaseComments: phaseComments,
                 wind_direction: $("option.wind_direction:selected").val(),
                 wind_speed: $("option.wind_speed:selected").val()
             });

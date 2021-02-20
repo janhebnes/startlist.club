@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web.UI;
-using FlightJournal.Web.Models.Training;
+using System.Web;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
@@ -26,11 +25,12 @@ namespace FlightJournal.Web.Models
             AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
             TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel { Name = x.ShortName, Id = x.Training2ProgramId }).ToList();
-         
+            
             Manouvres = db.Manouvres.ToList();
             WindDirections = db.WindDirections.ToList();
             WindSpeeds = db.WindSpeeds.ToList();
             Commentaries = db.Commentaries.ToList();
+            CommentaryTypes = db.CommentaryTypes.ToList();
             TrainingFlightAnnotationCommentCommentTypes = db.TrainingFlightAnnotationCommentCommentTypes.Include("CommentaryType");
             
         }
@@ -69,6 +69,7 @@ namespace FlightJournal.Web.Models
         public IEnumerable<WindSpeed> WindSpeeds {get;}
         public IEnumerable<WindDirection> WindDirections { get; }
         public IEnumerable<Commentary> Commentaries { get; }
+        public IEnumerable<CommentaryType> CommentaryTypes { get; }
         public IEnumerable<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; }
 
 
@@ -90,44 +91,35 @@ namespace FlightJournal.Web.Models
     {
         public DateTime Date { get; }
         public string Notes { get; }
-        public List<int> Manouvres { get; }
-        public List<int> StartAnnotations { get; }
-        public List<int> FlightAnnotations{ get; }
-        public List<int> ApproachAnnotations { get; }
-        public List<int> LandingAnnotations { get; }
-        public Weather Weather { get; }
-        public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; }
+        public List<int> Manouvres { get; } = new List<int>();
+        public Dictionary<int, IEnumerable<int>> CommentIdsByPhase { get; } = new Dictionary<int, IEnumerable<int>>();
+        public Weather Weather { get; } = new Weather();
+
+        public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; } = Enumerable.Empty<AppliedExerciseViewModel>();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="db"></param>
         /// <param name="date"></param>
-        /// <param name="exercises">Exercises applied in this flight</param> 
-        /// <param name="annotations">Annotations for this flight</param>
         public FlightLogEntryViewModel(Flight flight, TrainingDataWrapper db, DateTime date)
         {
             Date = date;
-            // one note per flight expected
-            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).ToList();
-            if (annotationsForThisFlight.Count != 0) {
-                Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
-                // multiple exercises possible per flight
-                var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
-                ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
-                Weather = annotationsForThisFlight.FirstOrDefault().Weather;
-                //TODO: change each of these to a list
-                Manouvres = annotationsForThisFlight.SelectMany(x => x.Manouvres.Select(m => m.ManouvreId)).ToList();
-                //TODO: change this to load data from the many to many relationship
-                /*            StartAnnotations = annotationsForThisFlight.SelectMany(x => x.StartAnnotation.Select(a=>a.CommentaryId)).ToList();  
-                            FlightAnnotations = annotationsForThisFlight.SelectMany(x => x.FlightAnnotation.Select(a => a.CommentaryId)).ToList();
-                            ApproachAnnotations = annotationsForThisFlight.SelectMany(x => x.ApproachAnnotation.Select(a => a.CommentaryId)).ToList();
-                            LandingAnnotations = annotationsForThisFlight.SelectMany(x => x.LandingAnnotation.Select(a => a.CommentaryId)).ToList();*/
-
-                StartAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Start" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
-                FlightAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Flight" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
-                ApproachAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Approach" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
-                LandingAnnotations = db.TrainingFlightAnnotationCommentCommentTypes.Where(x => x.CommentaryType.CType == "Landing" && x.TrainingFlightAnnotation.TrainingFlightAnnotationId == annotationsForThisFlight.FirstOrDefault().TrainingFlightAnnotationId).Select(c => c.Commentary.CommentaryId).ToList();
-                ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
+            // multiple exercises possible per flight
+            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
+            ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
+            // zero or one per flight expected
+            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).FirstOrDefault();
+            if (annotationsForThisFlight != null) {
+                Notes = string.Join("; ", annotationsForThisFlight.Note);
+                Weather = annotationsForThisFlight.Weather ?? new Weather();
+                Manouvres = annotationsForThisFlight.Manouvres?.Select(m => m.ManouvreId).ToList() ?? new List<int>();
+                CommentIdsByPhase = annotationsForThisFlight
+                    .TrainingFlightAnnotationCommentCommentTypes?
+                    .GroupBy(e => e.CommentaryType.CommentaryTypeId, e=>e.CommentaryId, (phaseId, commentIds) => new{phaseId, commentIds})
+                    .ToDictionary(
+                        x => x.phaseId, 
+                        x=> x.commentIds) 
+                                    ?? new Dictionary<int, IEnumerable<int>>();
             }
         }
 
@@ -176,10 +168,10 @@ namespace FlightJournal.Web.Models
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
             Manouvres = dbmodel.Manouvres;
-            AnnotationsForStartPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Start"));
-            AnnotationsForFlightPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Flight"));
-            AnnotationsForApproachPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Approach"));
-            AnnotationsForLandingPhase = dbmodel.Commentaries.Where(x => x.CommentaryTypes.Any(c => c.CType == "Landing"));
+            AnnotationsForFlightPhases =
+                dbmodel.CommentaryTypes
+                    .OrderBy(c => c.DisplayOrder)
+                    .Select(x => new FlightPhaseAnnotationViewModel() {Phase = x, Options = x.Commentaries});
 
             WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem));
             WindSpeeds = dbmodel.WindSpeeds.Select(ws => new WindSpeedViewModel(ws.WindSpeedItem));
@@ -201,10 +193,8 @@ namespace FlightJournal.Web.Models
         public IEnumerable<Manouvre> Manouvres { get; }
         public IEnumerable<WindDirectionViewModel> WindDirections { get; }
         public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
-        public IEnumerable<Commentary> AnnotationsForStartPhase{ get; }
-        public IEnumerable<Commentary> AnnotationsForFlightPhase{ get; }
-        public IEnumerable<Commentary> AnnotationsForApproachPhase{ get; }
-        public IEnumerable<Commentary> AnnotationsForLandingPhase{ get; }
+        
+        public IEnumerable<FlightPhaseAnnotationViewModel> AnnotationsForFlightPhases{ get; }
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
 
         public int? AnnotationIdForOk { get; }
@@ -214,11 +204,16 @@ namespace FlightJournal.Web.Models
 
     }
 
-    /// <summary>
-    /// Viewmodel for a Training program (with lessons -> exercises).
-    /// Used for building UI selections.
-    /// </summary>
-    public class TrainingProgramViewModel
+    public class  FlightPhaseAnnotationViewModel{
+        public CommentaryType Phase{ get; set; } 
+        public IEnumerable<Commentary> Options { get; set; }
+    }
+
+/// <summary>
+/// Viewmodel for a Training program (with lessons -> exercises).
+/// Used for building UI selections.
+/// </summary>
+public class TrainingProgramViewModel
     {
         public string Id { get; }
 
@@ -276,7 +271,6 @@ namespace FlightJournal.Web.Models
             Description = lesson.Purpose;
             Precondition = lesson.Precondition;
             DisplayOrder = lesson.DisplayOrder;
-//            Debug.WriteLine($"{Id} {Name}");
             Exercises = lesson.Exercises.Select(ex => new TrainingExerciseWithOverallStatusViewModel(ex, db)).ToList();
             ExercisesTotal = Exercises.Count();
             ExercisesCompleted = Exercises.Count(x => x.Status == TrainingStatus.Completed);
@@ -294,24 +288,52 @@ namespace FlightJournal.Web.Models
     /// </summary>
     public class TrainingExerciseWithOverallStatusViewModel
     {
+        public enum CheckBoxType{
+            PlaceHolder,
+            DisabledUnchecked,
+            DisabledChecked,
+            EnabledUnchecked,
+            EnabledChecked
+        };
+
         public string Id { get; }
 
         public string Description { get; }
         public string LongDescription { get; }
+
         /// <summary>
         /// Completion status by this pilot
         /// </summary>
         public TrainingStatus Status { get; }
 
+        public ExerciseAction ActionInThisFlight { get; set; }
 
-        public bool IsBriefed => Status == TrainingStatus.Briefed 
+        public bool IsBriefed => Status == TrainingStatus.Briefed
                                  || Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
+
+        public bool IsBriefedInThisFlight => ActionInThisFlight == ExerciseAction.Briefed
+                                           || ActionInThisFlight == ExerciseAction.Trained
+                                           || ActionInThisFlight == ExerciseAction.Completed;
+
+
         public bool IsTrained => Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
+
+        public bool IsTrainedInThisFlight => ActionInThisFlight == ExerciseAction.Briefed
+                                             || ActionInThisFlight == ExerciseAction.Trained;
+
         public bool IsCompleted => Status == TrainingStatus.Completed;
+        public bool IsCompletedInThisFlight => ActionInThisFlight == ExerciseAction.Trained;
         public bool BriefingOnlyRequired { get; }
         public int DisplayOrder { get; }
+
+        public CheckBoxType CheckBoxForOverallBriefed =>  IsBriefed ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
+        public CheckBoxType CheckBoxForOverallTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder :  IsTrained ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
+        public CheckBoxType CheckBoxForOverallCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompleted ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
+        public CheckBoxType CheckBoxForThisFlightBriefed =>  IsBriefedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
+        public CheckBoxType CheckBoxForThisFlightTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsTrainedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
+        public CheckBoxType CheckBoxForThisFlightCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompletedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
 
         public TrainingExerciseWithOverallStatusViewModel(Training2Exercise exercise, TrainingDataWrapper db)
         {
@@ -322,7 +344,7 @@ namespace FlightJournal.Web.Models
             DisplayOrder = exercise.DisplayOrder;
 
             // TODO: use real data
-            if (true) // fake it for UI demo purposes
+            if (false) // fake it for UI demo purposes
             {
                 var toss = new Random().NextDouble();
                 if (toss > 0.8)
@@ -351,12 +373,16 @@ namespace FlightJournal.Web.Models
                     isTrained ? TrainingStatus.Trained :
                     isBriefed ? TrainingStatus.Briefed :
                     TrainingStatus.NotStarted;
+
+                var appliedInThisFlight = totalApplied.Where(x => x.FlightId == db.FlightId).FirstOrDefault(); // should be only one
+                ActionInThisFlight = appliedInThisFlight?.Action ?? ExerciseAction.None;
             }
 
             if (BriefingOnlyRequired && (Status == TrainingStatus.Briefed || Status == TrainingStatus.Trained))
                 Status = TrainingStatus.Completed;
 
         }
+
     }
 
     /// <summary>

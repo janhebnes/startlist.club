@@ -19,14 +19,8 @@ namespace FlightJournal.Web.Models.Training.Flight
         [Required]
         public Guid FlightId{ get; set; } 
         public string Note { get; set; }
-
-/*        public virtual ICollection<Commentary> StartAnnotation { get; set; } = new List<Commentary>();
-        public virtual ICollection<Commentary> FlightAnnotation { get; set; } = new List<Commentary>(); // applies to the flight in general, as well as the maneuvers
-        public virtual ICollection<Commentary> ApproachAnnotation { get; set; } = new List<Commentary>();
-        public virtual ICollection<Commentary> LandingAnnotation { get; set; } = new List<Commentary>();*/
-
         public virtual Weather Weather { get; set; }
-        public virtual ICollection<Manouvre> Manouvres { get; set; }
-        public ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
+        public virtual ICollection<Manouvre> Manouvres { get; set; } = new HashSet<Manouvre>();
+        public virtual ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; } = new HashSet<TrainingFlightAnnotationCommentCommentType>();
     }
 }
