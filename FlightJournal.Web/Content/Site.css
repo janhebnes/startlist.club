@@ -195,6 +195,9 @@ body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover,
 }
 
 
+.btn.traininglogtopbutton {
+	border-width: 2px;
+}
 .btn.traininglogstatebutton {
 	border-width: 2px;
 }
@@ -210,6 +213,7 @@ body, output, .form-control, .btn, .dropdown-menu, .input-group-addon, .popover,
 .statusbutton:hover,.btn.statusbutton:focus {
     background-position-y: 0 !important;
 }
+
 
 .annotationcontainer {
 	background-color: gold;

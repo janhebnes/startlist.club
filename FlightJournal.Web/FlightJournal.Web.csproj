@@ -1066,6 +1066,8 @@
     <Content Include="Views\TrainingLogHistory\Index.cshtml" />
     <Content Include="Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml" />
     <Content Include="Views\TrainingLogHistory\_PartialExerciseDetailsView.cshtml" />
+    <Content Include="Views\TrainingLog\_PartialTrainingLogView.cshtml" />
+    <Content Include="Views\TrainingLog\_PartialTrainingFlightDetails.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

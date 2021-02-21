@@ -64,32 +64,7 @@ namespace FlightJournal.Web.Controllers
         {
             if (Guid.TryParse(flightId, out var id))
             {
-                var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x=>x.Action != ExerciseAction.None);
-                var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
-                var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
-                var commentsForPhasesInThisFlight = annotation
-                    .TrainingFlightAnnotationCommentCommentTypes?
-                    .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })
-                    .ToDictionary(
-                        x => x.phase,
-                        x => x.comments.Select(t=>new HtmlString(t.Comment))) 
-                                                    ?? new Dictionary<string, IEnumerable<HtmlString>>();
-
-                var commentsForAllPhases = 
-                    db.CommentaryTypes
-                        .OrderBy(c => c.DisplayOrder)
-                        .Select( c=> c.CType)
-                        .ToDictionary(x=>x, x=> commentsForPhasesInThisFlight.GetOrDefault(x, Enumerable.Empty<HtmlString>()));
-
-                var details = new TrainingFlightDetailsViewModel
-                {
-                    Exercises = ae.OrderBy(x => x.Lesson.DisplayOrder).ToList().Select(x => 
-                        new Tuple<string, string, string, int, int>(x.Lesson.Name, x.Exercise.Name, x.Action.ToString(), x.Lesson.Training2LessonId, x.Exercise.Training2ExerciseId)),   //TODO: localize enum
-                    Note = annotation?.Note ?? "",
-                    Manouvres = new HtmlString(string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{x.ManouvreItem}") ?? Enumerable.Empty<string>())),
-                    FlightPhaseAnnotations = commentsForAllPhases,
-                    Weather = new HtmlString(weather)
-                };
+                var details = CreateDetailsViewModel(id);
                 return PartialView("_PartialTrainingFlightDetails", details);
             }
             return PartialView("_PartialTrainingFlightDetails", null);
@@ -105,7 +80,7 @@ namespace FlightJournal.Web.Controllers
                 // allow access to all flights, filters on front seat / back seat pilot
                 var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
                 var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId));
-                viewModel = CreateExportModel(flights, year);
+                viewModel = CreateExportModel(db, flights, year);
             }
             else if (Request.IsPilot())
             {
@@ -114,7 +89,7 @@ namespace FlightJournal.Web.Controllers
                 var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
                 var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
 
-                viewModel = CreateExportModel(flights, year);
+                viewModel = CreateExportModel(db, flights, year);
             }
             else
             {
@@ -134,7 +109,7 @@ namespace FlightJournal.Web.Controllers
             return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.csv");
         }
 
-        private TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
+        public TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
         {
             var flightModels = new List<TrainingFlightViewModel>();
             foreach (var f in flights)
@@ -150,7 +125,7 @@ namespace FlightJournal.Web.Controllers
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
                     BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
                     Airfield = f.StartedFrom.Name,
-                    Duration = f.Duration.ToString(),
+                    Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
                     PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
                 };
@@ -159,8 +134,45 @@ namespace FlightJournal.Web.Controllers
             return new TrainingFlightHistoryViewModel { Flights = flightModels, Message = flightModels.Any() ? "" : _("No flights") };
         }
 
+        public TrainingFlightDetailsViewModel CreateDetailsViewModel(Guid id)
+        {
+            var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x => x.Action != ExerciseAction.None);
+            var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
+            var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
+            var commentsForPhasesInThisFlight = annotation
+                .TrainingFlightAnnotationCommentCommentTypes?
+                .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })
+                .ToDictionary(
+                    x => x.phase,
+                    x => x.comments.Select(t => new HtmlString(t.Comment)))
+                                                ?? new Dictionary<string, IEnumerable<HtmlString>>();
 
-        private TrainingFlightHistoryExportViewModel CreateExportModel(IEnumerable<Flight> flights, int year)
+            var commentsForAllPhases =
+                db.CommentaryTypes
+                    .OrderBy(c => c.DisplayOrder)
+                    .Select(c => c.CType)
+                    .ToDictionary(x => x, x => commentsForPhasesInThisFlight.GetOrDefault(x, Enumerable.Empty<HtmlString>()));
+
+            var details = new TrainingFlightDetailsViewModel
+            {
+                Exercises = ae.OrderBy(x => x.Lesson.DisplayOrder).ToList().Select(x =>
+                    new TrainingFlightDetailsExerciseViewModel
+                    {
+                        LessonName = x.Lesson.Name,
+                        ExerciseName = x.Exercise.Name,
+                        ActionName = x.Action.ToString(),  //TODO: localize enum
+                            LessonId = x.Lesson.Training2LessonId,
+                        ExerciseId = x.Exercise.Training2ExerciseId
+                    }),
+                Note = annotation?.Note ?? "",
+                Manouvres = new HtmlString(string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{x.ManouvreItem}") ?? Enumerable.Empty<string>())),
+                FlightPhaseAnnotations = commentsForAllPhases,
+                Weather = new HtmlString(weather)
+            };
+            return details;
+        }
+
+        private TrainingFlightHistoryExportViewModel CreateExportModel(FlightContext db, IEnumerable<Flight> flights, int year)
         {
             var flightModels = new List<TrainingFlightExportViewModel>();
             foreach (var f in flights)
@@ -182,7 +194,7 @@ namespace FlightJournal.Web.Controllers
                     BackSeatOccupantUnionId = f.PilotBackseat?.UnionId,
                     BackSeatOccupantInstructorId = f.PilotBackseat?.InstructorId,
                     Airfield = f.StartedFrom.Name,
-                    Duration = f.Duration.ToString(),
+                    Duration = f.Duration.ToString("hh\\:mm"),
                     DurationInMinutes = f.Duration.TotalMinutes,
                     TrainingProgramName = programName,
                     PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
@@ -192,7 +204,7 @@ namespace FlightJournal.Web.Controllers
             return new TrainingFlightHistoryExportViewModel { Flights = flightModels};
         }
 
-        private string _(string resourceId)
+        private static string _(string resourceId)
         {
             return Internationalization.GetText(resourceId, Internationalization.LanguageCode);
         }
@@ -230,7 +242,9 @@ namespace FlightJournal.Web.Controllers
         public string LessonName { get; set; }
     }
 
-
+    /// <summary>
+    /// All training flights for a particular year
+    /// </summary>
     public class TrainingFlightHistoryViewModel
     {
         public IEnumerable<TrainingFlightViewModel> Flights { get; set; }
@@ -238,6 +252,9 @@ namespace FlightJournal.Web.Controllers
         public int Year { get; set; }
     }
 
+    /// <summary>
+    /// A specific training flight, overview
+    /// </summary>
     public class TrainingFlightViewModel
     {
         public string FlightId { get; set; }
@@ -253,21 +270,41 @@ namespace FlightJournal.Web.Controllers
         public string Airfield { get; set; }
     }
 
+    /// <summary>
+    /// A specific training flight, details
+    /// </summary>
     public class TrainingFlightDetailsViewModel
     {
-        public IEnumerable<Tuple<string,string,string, int, int>> Exercises { get; set; }
+        public IEnumerable<TrainingFlightDetailsExerciseViewModel> Exercises { get; set; }
         public string Note { get; set; }
         public HtmlString Manouvres { get; set; }
         public Dictionary<string, IEnumerable<HtmlString>> FlightPhaseAnnotations { get; set; }
         public HtmlString Weather { get; set; }
     }
 
+    /// <summary>
+    /// A specific exercise in a specific training flight
+    /// </summary>
+    public class TrainingFlightDetailsExerciseViewModel
+    {
+        public string LessonName { get; set; }
+        public string ExerciseName{ get; set; }
+        public string ActionName { get; set; }
+        public int LessonId { get; set; }
+        public int ExerciseId { get; set; }
+    }
 
+    /// <summary>
+    /// Export of all flights (used for a specific year)
+    /// </summary>
     internal class TrainingFlightHistoryExportViewModel
     {
         public List<TrainingFlightExportViewModel> Flights { get; set; } = new List<TrainingFlightExportViewModel>();
     }
 
+    /// <summary>
+    /// Export of a specific flight
+    /// </summary>
     internal class TrainingFlightExportViewModel
     {
         public string Timestamp { get; set; }

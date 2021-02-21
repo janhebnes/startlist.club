@@ -20,7 +20,7 @@ namespace FlightJournal.Web.Models
         {
             FlightId = flight.FlightId;
 
-            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Date);
+            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Landing ?? x.Date);
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
             AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
@@ -301,9 +301,6 @@ public class TrainingProgramViewModel
         public string Description { get; }
         public string LongDescription { get; }
 
-        /// <summary>
-        /// Completion status by this pilot
-        /// </summary>
         public TrainingStatus Status { get; }
 
         public ExerciseAction ActionInThisFlight { get; set; }
@@ -320,14 +317,14 @@ public class TrainingProgramViewModel
         public bool IsTrained => Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
 
-        public bool IsTrainedInThisFlight => ActionInThisFlight == ExerciseAction.Briefed
-                                             || ActionInThisFlight == ExerciseAction.Trained;
+        public bool IsTrainedInThisFlight => ActionInThisFlight == ExerciseAction.Trained
+                                             || ActionInThisFlight == ExerciseAction.Completed;
 
         public bool IsCompleted => Status == TrainingStatus.Completed;
-        public bool IsCompletedInThisFlight => ActionInThisFlight == ExerciseAction.Trained;
+        public bool IsCompletedInThisFlight => ActionInThisFlight == ExerciseAction.Completed;
         public bool BriefingOnlyRequired { get; }
         public int DisplayOrder { get; }
-
+        public bool Regression { get; }
         public CheckBoxType CheckBoxForOverallBriefed =>  IsBriefed ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
         public CheckBoxType CheckBoxForOverallTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder :  IsTrained ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
         public CheckBoxType CheckBoxForOverallCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompleted ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
@@ -343,46 +340,37 @@ public class TrainingProgramViewModel
             BriefingOnlyRequired = exercise.IsBriefingOnly;
             DisplayOrder = exercise.DisplayOrder;
 
-            // TODO: use real data
-            if (false) // fake it for UI demo purposes
-            {
-                var toss = new Random().NextDouble();
-                if (toss > 0.8)
-                    Status = TrainingStatus.Completed;
-                else if (toss > 0.6)
-                    Status = TrainingStatus.Trained;
-                else if (toss > 0.4)
-                    Status = TrainingStatus.Briefed;
-                else
-                    Status = TrainingStatus.NotStarted;
+            var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
+            var flightsWhereThisExerciseWasAtLeastBriefed = totalApplied.Where(x => x.Action == ExerciseAction.Briefed).Select(f=>f.FlightId);
+            var flightsWhereThisExerciseWasAtLeastTrained = totalApplied.Where(x => x.Action == ExerciseAction.Trained).Select(f => f.FlightId);
+            var flightsWhereThisExerciseWasCompleted = totalApplied.Where(x => x.Action == ExerciseAction.Completed).Select(f => f.FlightId);
+            // check if we have a Trained or Briefed later than a Completed => regression, which should be highlighted.
+            var latestBriefedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasAtLeastBriefed.Contains(f.FlightId));
+            var latestTrainedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasAtLeastTrained.Contains(f.FlightId));
+            var latestCompletedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasCompleted.Contains(f.FlightId));
+            Regression = latestCompletedFlight != null 
+                         && (LandingTimeOf(latestTrainedFlight) > LandingTimeOf(latestCompletedFlight) 
+                         || LandingTimeOf(latestBriefedFlight) > LandingTimeOf(latestCompletedFlight));
 
-                if(BriefingOnlyRequired)
-                    Status = toss > 0.4 ? TrainingStatus.Briefed : TrainingStatus.NotStarted;
+            Status =
+                flightsWhereThisExerciseWasCompleted.Any() ? TrainingStatus.Completed :
+                flightsWhereThisExerciseWasAtLeastTrained.Any() ? TrainingStatus.Trained :
+                flightsWhereThisExerciseWasAtLeastBriefed.Any() ? TrainingStatus.Briefed :
+                TrainingStatus.NotStarted;
 
-                Debug.WriteLine($"{Description}:{Status}  {IsBriefed}/{IsTrained}/{IsCompleted}");
-            }
-            else
-            {
-                var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
-                var isBriefed = totalApplied.Any(y => y.Action == ExerciseAction.Briefed);
-                var isTrained = totalApplied.Any(y => y.Action == ExerciseAction.Trained);
-                var isCompleted = totalApplied.Any(y => y.Action == ExerciseAction.Completed);
-
-                Status =
-                    isCompleted ? TrainingStatus.Completed :
-                    isTrained ? TrainingStatus.Trained :
-                    isBriefed ? TrainingStatus.Briefed :
-                    TrainingStatus.NotStarted;
-
-                var appliedInThisFlight = totalApplied.Where(x => x.FlightId == db.FlightId).FirstOrDefault(); // should be only one
-                ActionInThisFlight = appliedInThisFlight?.Action ?? ExerciseAction.None;
-            }
+            var appliedInThisFlight = totalApplied.FirstOrDefault(x => x.FlightId == db.FlightId); // should be only one
+            ActionInThisFlight = appliedInThisFlight?.Action ?? ExerciseAction.None;
 
             if (BriefingOnlyRequired && (Status == TrainingStatus.Briefed || Status == TrainingStatus.Trained))
                 Status = TrainingStatus.Completed;
 
         }
 
+
+        private DateTime LandingTimeOf(Flight flight)
+        {
+            return flight?.Landing ?? DateTime.MinValue;
+        }
     }
 
     /// <summary>
