@@ -284,3 +284,7 @@ td.valign-top {
 	vertical-align: top;
 	margin-top: 2px;
 }
+
+.modal-full {
+    width: 90%;
+}

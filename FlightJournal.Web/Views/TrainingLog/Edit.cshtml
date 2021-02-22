@@ -280,7 +280,7 @@
 
 
 <div class="modal" tabindex="-1" role="dialog" id="exercisemodal">
-    <div class="modal-dialog  modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exercisemodaltitle">@_("Exercise")</h5>
@@ -302,7 +302,7 @@
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="recentflightsmodal">
-    <div class="modal-dialog  modal-xl">
+    <div class="modal-dialog modal-full ">
         <div class="modal-content" >
             <div class="modal-header">
                 <h5 class="modal-title">@_("Recent flights")</h5>
@@ -558,6 +558,8 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (v) {
                     $("#recentflightsmodal").find(".modal-body").html(v);
+
+                    $("#recentflightsmodal").modal();
                     $('#flightstable').DataTable({
                         deferRender: true,
                         scrollY: true,
@@ -568,8 +570,6 @@
                         pageLength: 5,
                         pagingType: "full_numbers"
                     });
-
-                    $("#recentflightsmodal").modal();
                 },
                 error: function(a, b, c) {
 
