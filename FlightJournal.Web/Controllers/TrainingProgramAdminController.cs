@@ -2,13 +2,11 @@
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
 using Newtonsoft.Json;
-using RestSharp.Deserializers;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -20,6 +18,8 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Index(int dtoId=-1)
         {
             var items = db.TrainingPrograms;
+            ViewBag.CanDelete = items.ToDictionary(x => x.Training2ProgramId, x => !IsInUse(x.Training2ProgramId));
+
             return View(items);
         }
 
@@ -50,6 +50,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Edit(int id)
         {
             var item = db.TrainingPrograms.Find(id);
+            ViewBag.IsInUse = IsInUse(id);
             return View(item);
         }
 
@@ -112,6 +113,12 @@ namespace FlightJournal.Web.Controllers
             {
             }
             return RedirectToAction("Index");
+        }
+
+        private bool IsInUse(int id)
+        {
+            var isInUse = db.AppliedExercises.Any(x => x.Program.Training2ProgramId == id);
+            return isInUse;
         }
     }
 }

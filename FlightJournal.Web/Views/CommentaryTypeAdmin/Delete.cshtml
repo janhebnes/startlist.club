@@ -1,4 +1,4 @@
-﻿@model FlightJournal.Web.Models.Training.Predefined.Commentary
+﻿@model FlightJournal.Web.Models.Training.Predefined.CommentaryType
 @{
     ViewBag.Title = _("Delete");
 }
@@ -7,7 +7,7 @@
 
 <h3>@_("Are you sure you want to delete this?")</h3>
 <fieldset>
-    @Html.Partial("_PartialItemReadOnly", Model);
+    @Html.Partial("_PartialItemReadonly", Model);
 </fieldset>
 @using (Html.BeginForm())
 {

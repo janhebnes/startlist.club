@@ -7,40 +7,39 @@ using FlightJournal.Web.Models.Training.Predefined;
 namespace FlightJournal.Web.Controllers
 {
     [Authorize(Roles = "Administrator,Manager")]
-    public class CommentaryAdminController : Controller
+    public class CommentaryTypeAdminController : Controller
     {
         private FlightContext db = new FlightContext();
         public ActionResult Index()
         {
-            var model = db.Commentaries;
-            ViewBag.CanDelete = model.ToDictionary(x => x.CommentaryId, x => !IsCommentaryInUse(x.CommentaryId));
+            var model = db.CommentaryTypes;
+            ViewBag.CanDelete = model.ToDictionary(x => x.CommentaryTypeId, x => !IsCommentaryTypeInUse(x.CommentaryTypeId));
             return View(model);
         }
 
-
         public ActionResult Create()
         {
-            var commentary= new Commentary();
+            var commentary= new CommentaryType();
             return View(commentary);
         }
         [HttpPost]
-        public ActionResult Create(Commentary commentary)
+        public ActionResult Create(CommentaryType item)
         {
             if (ModelState.IsValid)
             {
-                db.Commentaries.Add(commentary);
+                db.CommentaryTypes.Add(item);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(commentary);
+            return View(item);
         }
 
         public ActionResult Edit(int id)
         {
-            var commentary = db.Commentaries.Find(id);
-            ViewBag.IsInUse = IsCommentaryInUse(id);
-            return View(commentary);
+            var item = db.CommentaryTypes.Find(id);
+            ViewBag.IsInUse = IsCommentaryTypeInUse(id);
+            return View(item);
         }
 
         [HttpPost]
@@ -67,8 +66,8 @@ namespace FlightJournal.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var commentary = db.Commentaries.Find(id);
-            db.Commentaries.Remove(commentary);
+            var item = db.CommentaryTypes.Find(id);
+            db.CommentaryTypes.Remove(item);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -80,10 +79,10 @@ namespace FlightJournal.Web.Controllers
         }
 
 
-        private bool IsCommentaryInUse(int commentaryId)
+        private bool IsCommentaryTypeInUse(int id)
         {
             var inUse = db.TrainingFlightAnnotations.SelectMany(x => x.TrainingFlightAnnotationCommentCommentTypes)
-                .Any(y => y.CommentaryId == commentaryId);
+                .Any(y => y.CommentaryTypeId == id);
 
             return inUse;
         }

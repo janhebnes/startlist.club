@@ -31,6 +31,7 @@ namespace FlightJournal.Web.Controllers
                 db.SaveChanges();
             }
 
+            ViewBag.CanDelete = lesson.Exercises.ToDictionary(x => x.Training2ExerciseId, x => !IsInUse(x.Training2ExerciseId));
 
             return View(lesson);
         }
@@ -97,6 +98,7 @@ namespace FlightJournal.Web.Controllers
         {
             FillViewBag(trainingProgramId, trainingLessonId);
             var exercise = db.TrainingExercises.Find(id);
+            ViewBag.IsInUse = IsInUse(id);
             return View(exercise);
         }
 
@@ -153,6 +155,14 @@ namespace FlightJournal.Web.Controllers
             ViewBag.TrainingLessonId = trainingLessonId;
             ViewBag.TrainingProgramName = program.ShortName;
             ViewBag.TrainingLessonName = lesson.Name;
+        }
+
+
+
+        private bool IsInUse(int id)
+        {
+            var isInUse = db.AppliedExercises.Any(x => x.Exercise.Training2ExerciseId == id);
+            return isInUse;
         }
     }
 }

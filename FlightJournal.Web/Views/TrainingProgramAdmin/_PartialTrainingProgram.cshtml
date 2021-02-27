@@ -2,6 +2,11 @@
 
 <legend>@_("Training program")</legend>
 
+@if (ViewBag.IsInUse)
+{
+    <div class="alert alert-danger">@_("Do not change the semantics or meaning of this item - it is already in use in training flights")</div>
+}
+
 <div class="editor-label">
     @Html.LabelFor(model => model.ShortName)
 </div>
@@ -22,7 +27,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Notes)
 </div>
-<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.Notes, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.Notes)
 </div>

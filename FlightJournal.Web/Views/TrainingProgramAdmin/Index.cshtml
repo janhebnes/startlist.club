@@ -32,7 +32,14 @@
                 <div class="btn-group btn-group-sm">
                     @Html.ActionLink(_("Edit"), "Edit", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
                     @Html.ActionLink(_("Details"), "Details", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Delete"), "Delete", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+                    @if (ViewBag.CanDelete[item.Training2ProgramId])
+                    {
+                        @Html.ActionLink(_("Delete"), "Delete", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+                        _("This item is in use and cannot be deleted");
+                    }
                     @Html.ActionLink(_("Lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = item.Training2ProgramId }, new { @class = "btn btn-default" })
                 </div>
             </td>

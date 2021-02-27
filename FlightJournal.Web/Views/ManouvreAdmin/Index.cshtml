@@ -35,7 +35,14 @@
                 <div class="btn-group btn-group-sm">
                     @Html.ActionLink(_("Edit"), "Edit", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
                     @Html.ActionLink(_("Details"), "Details", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Delete"), "Delete", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
+                    @if (ViewBag.CanDelete[item.ManouvreId])
+                    {
+                        @Html.ActionLink(_("Delete"), "Delete", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+                        _("This item is in use and cannot be deleted");
+                    }
                 </div>
             </td>
         </tr>

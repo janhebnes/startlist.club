@@ -239,6 +239,7 @@
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
+    <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
     <Compile Include="Controllers\CommentaryAdminController.cs" />
@@ -1055,12 +1056,11 @@
     <Content Include="Views\ManouvreAdmin\_PartialManouvre.cshtml" />
     <Content Include="Views\ManouvreAdmin\_PartialManouvreReadonly.cshtml" />
     <Content Include="Views\CommentaryAdmin\_PartialBackToList.cshtml" />
-    <Content Include="Views\CommentaryAdmin\_PartialCommentary.cshtml" />
-    <Content Include="Views\CommentaryAdmin\_PartialCommentaryReadonly.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialItem.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialItemReadonly.cshtml" />
     <Content Include="Views\CommentaryAdmin\Create.cshtml" />
     <Content Include="Views\CommentaryAdmin\Delete.cshtml" />
     <Content Include="Views\CommentaryAdmin\DeleteLocked.cshtml" />
-    <Content Include="Views\CommentaryAdmin\Details.cshtml" />
     <Content Include="Views\CommentaryAdmin\Edit.cshtml" />
     <Content Include="Views\CommentaryAdmin\Index.cshtml" />
     <Content Include="Views\TrainingLogHistory\Index.cshtml" />
@@ -1068,6 +1068,14 @@
     <Content Include="Views\TrainingLogHistory\_PartialExerciseDetailsView.cshtml" />
     <Content Include="Views\TrainingLog\_PartialTrainingLogView.cshtml" />
     <Content Include="Views\TrainingLog\_PartialTrainingFlightDetails.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\_PartialItem.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\_PartialItemReadonly.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Create.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Delete.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Edit.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -2,6 +2,11 @@
 
 <legend>@_("Training lesson")</legend>
 
+@if (ViewBag.IsInUse)
+{
+    <div class="alert alert-danger">@_("Do not change the semantics or meaning of this item - it is already in use in training flights")</div>
+}
+
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
 </div>

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Models;
-using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
@@ -17,6 +13,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Index()
         {
             var model = db.Manouvres;
+            ViewBag.CanDelete = model.ToDictionary(x => x.ManouvreId, x => !IsInUse(x.ManouvreId));
             return View(model);
         }
 
@@ -48,6 +45,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Edit(int id)
         {
             var manouvre = db.Manouvres.Find(id);
+            ViewBag.IsInUse = IsInUse(id);
             return View(manouvre);
         }
 
@@ -87,6 +85,11 @@ namespace FlightJournal.Web.Controllers
             base.Dispose(disposing);
         }
 
+        private bool IsInUse(int id)
+        {
+            var isInUse = db.TrainingFlightAnnotations.SelectMany(x=>x.Manouvres).Any(y=>y.ManouvreId == id);
+            return isInUse;
+        }
 
 
     }

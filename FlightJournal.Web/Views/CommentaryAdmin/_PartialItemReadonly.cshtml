@@ -1,0 +1,13 @@
+﻿@model FlightJournal.Web.Models.Training.Predefined.Commentary
+<legend>@_("Manouvre")</legend>
+<table>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Comment)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Comment)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.IsOk)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.IsOk)</td>
+    </tr>
+</table>
+
