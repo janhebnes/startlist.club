@@ -93,7 +93,8 @@ namespace FlightJournal.Web.Models
         public string Notes { get; }
         public List<int> Manouvres { get; } = new List<int>();
         public Dictionary<int, IEnumerable<int>> CommentIdsByPhase { get; } = new Dictionary<int, IEnumerable<int>>();
-        public Weather Weather { get; } = new Weather();
+        public int WindSpeed { get; }
+        public int WindDirection { get; }
 
         public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; } = Enumerable.Empty<AppliedExerciseViewModel>();
         /// <summary>
@@ -111,7 +112,8 @@ namespace FlightJournal.Web.Models
             var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).FirstOrDefault();
             if (annotationsForThisFlight != null) {
                 Notes = string.Join("; ", annotationsForThisFlight.Note);
-                Weather = annotationsForThisFlight.Weather ?? new Weather();
+                WindSpeed = annotationsForThisFlight.WindSpeed;
+                WindDirection = annotationsForThisFlight.WindDirection;
                 Manouvres = annotationsForThisFlight.Manouvres?.Select(m => m.ManouvreId).ToList() ?? new List<int>();
                 CommentIdsByPhase = annotationsForThisFlight
                     .TrainingFlightAnnotationCommentCommentTypes?
@@ -173,10 +175,20 @@ namespace FlightJournal.Web.Models
                     .OrderBy(c => c.DisplayOrder)
                     .Select(x => new FlightPhaseAnnotationViewModel() {Phase = x, Options = x.Commentaries.OrderBy(y=>y.DisplayOrder)});
 
-            WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem));
-            WindSpeeds = dbmodel.WindSpeeds.Select(ws => new WindSpeedViewModel(ws.WindSpeedItem));
-
             ThisFlight = new FlightLogEntryViewModel(dbmodel.PilotFlights.Single(x => x.FlightId == dbmodel.FlightId), dbmodel, date);
+            WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem)).ToList();
+            if (!WindDirections.Exists(x => x.Value == ThisFlight.WindDirection))
+            {
+                WindDirections.Add(new WindDirectionViewModel(ThisFlight.WindDirection));
+            }
+            WindDirections = WindDirections.OrderBy(x => x.Value).ToList();
+            
+            WindSpeeds = dbmodel.WindSpeeds.Select(ws => new WindSpeedViewModel(ws.WindSpeedItem)).ToList();
+            if(!WindSpeeds.Exists(x=>x.Value == ThisFlight.WindSpeed))
+            {
+                WindSpeeds.Add(new WindSpeedViewModel(ThisFlight.WindSpeed));
+            }
+            WindSpeeds = WindSpeeds.OrderBy(x => x.Value).ToList();
             AnnotationIdForOk = dbmodel.Commentaries.FirstOrDefault(x => x.IsOk)?.CommentaryId;
         }
 
@@ -191,8 +203,8 @@ namespace FlightJournal.Web.Models
 
         // Selectable stuff
         public IEnumerable<Manouvre> Manouvres { get; }
-        public IEnumerable<WindDirectionViewModel> WindDirections { get; }
-        public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
+        public List<WindDirectionViewModel> WindDirections { get; }
+        public List<WindSpeedViewModel> WindSpeeds { get; }
         
         public IEnumerable<FlightPhaseAnnotationViewModel> AnnotationsForFlightPhases{ get; }
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }

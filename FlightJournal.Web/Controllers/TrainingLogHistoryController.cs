@@ -138,7 +138,8 @@ namespace FlightJournal.Web.Controllers
         {
             var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x => x.Action != ExerciseAction.None);
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
-            var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
+            var weather = annotation?.WindDirection != null && annotation?.WindSpeed != null ? $"{annotation.WindDirection}­&deg; {annotation.WindSpeed}kn " : "";
+           
             var commentsForPhasesInThisFlight = annotation
                 .TrainingFlightAnnotationCommentCommentTypes?
                 .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })

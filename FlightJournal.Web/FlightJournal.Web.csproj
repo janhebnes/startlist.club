@@ -287,7 +287,6 @@
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotationCommentCommentType.cs" />
-    <Compile Include="Models\Training\Flight\Weather.cs" />
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
     <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
     <Compile Include="Models\Training\Predefined\CommentsInFlightPhasesViewModel.cs" />
