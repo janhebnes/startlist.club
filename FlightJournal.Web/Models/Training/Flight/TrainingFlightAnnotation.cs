@@ -19,7 +19,8 @@ namespace FlightJournal.Web.Models.Training.Flight
         [Required]
         public Guid FlightId{ get; set; } 
         public string Note { get; set; }
-        public virtual Weather Weather { get; set; }
+        public int WindSpeed { get; set; }
+        public int WindDirection { get; set; }
         public virtual ICollection<Manouvre> Manouvres { get; set; } = new HashSet<Manouvre>();
         public virtual ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; } = new HashSet<TrainingFlightAnnotationCommentCommentType>();
     }

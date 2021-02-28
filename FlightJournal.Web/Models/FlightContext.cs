@@ -40,7 +40,6 @@ namespace FlightJournal.Web.Models
 
         public DbSet<Manouvre> Manouvres { get; set; }
         //public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
-        public DbSet<Weather> Weathers { get; set; }
         public DbSet<WindDirection> WindDirections { get; set; }
         public DbSet<WindSpeed> WindSpeeds { get; set; }
         public DbSet<Commentary> Commentaries { get; set; }
@@ -141,16 +140,6 @@ namespace FlightJournal.Web.Models
                         .WithMany()
                         .WillCascadeOnDelete(false);*/
 
-            modelBuilder.Entity<Weather>()
-                        .HasOptional(i => i.WindDirection)
-                        .WithMany()
-                        .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Weather>()
-                        .HasOptional(i => i.WindSpeed)
-                        .WithMany()
-                        .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Commentary>()
                         .HasMany<CommentaryType>(s => s.CommentaryTypes)
                         .WithMany(c => c.Commentaries)
@@ -160,11 +149,6 @@ namespace FlightJournal.Web.Models
                             cs.MapRightKey("CommentaryTypeRefId");
                             cs.ToTable("CommentaryCommentaryTypes");
                         });
-
-            modelBuilder.Entity<TrainingFlightAnnotation>()
-                .HasOptional(i => i.Weather)
-                .WithMany()
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TrainingFlightAnnotation>()
                 .HasMany<Manouvre>(s => s.Manouvres)

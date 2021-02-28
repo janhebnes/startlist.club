@@ -92,9 +92,8 @@ namespace FlightJournal.Web.Controllers
             }
 
             // ... weather
-            annotation.Weather = new Weather { WindDirection = new WindDirection { WindDirectionItem = flightData.wind_direction }, WindSpeed = new WindSpeed { WindSpeedItem = flightData.wind_speed }};
-
-            //TODO weather seems a bit odd - could we simply just pass the numbers instead of representing them in db models ?
+            annotation.WindSpeed = flightData.wind_speed;
+            annotation.WindDirection = flightData.wind_direction;
 
             db.TrainingFlightAnnotations.AddOrUpdate(annotation);
 
@@ -132,7 +131,7 @@ namespace FlightJournal.Web.Controllers
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
-                var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
+               // var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
                 var commentsForPhasesInThisFlight = annotation
                                                         .TrainingFlightAnnotationCommentCommentTypes?
                                                         .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })
