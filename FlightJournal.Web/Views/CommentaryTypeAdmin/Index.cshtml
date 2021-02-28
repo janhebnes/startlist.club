@@ -16,29 +16,44 @@
             @Html.DisplayNameFor(model => model.CType)
         </th>
         <th></th>
+        <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @item.CType
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm">
-                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.CommentaryTypeId }, new { @class = "btn btn-default" })
-                    @*@Html.ActionLink(_("Details"), "Details", new { id = item.CommentaryId }, new { @class = "btn btn-default" })*@
-                    @if (ViewBag.CanDelete[item.CommentaryTypeId])
-                    {
-                        @Html.ActionLink(_("Delete"), "Delete", new {id = item.CommentaryTypeId}, new {@class = "btn btn-default"})
-                    }
-                    else
-                    {
-                        @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
-                    }
-                </div>
-            </td>
-        </tr>
+    @{
+        var ordered = Model.OrderBy(x => x.DisplayOrder).ToList();
+        for (var n = 0; n < ordered.Count; n++)
+        {
+            var item = ordered[n];
+            <tr>
+                <td>
+                    @item.CType
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @Html.ActionLink(_("Edit"), "Edit", new {id = item.CommentaryTypeId}, new {@class = "btn btn-default"})
+                        @if (ViewBag.CanDelete[item.CommentaryTypeId])
+                        {
+                            @Html.ActionLink(_("Delete"), "Delete", new {id = item.CommentaryTypeId}, new {@class = "btn btn-default"})
+                        }
+                        else
+                        {
+                            @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @if (n > 0)
+                        {
+                            <a href="@Url.Action("SwapOrder", new {itemId1 = ordered[n].CommentaryTypeId, itemId2 = ordered[n - 1].CommentaryTypeId})" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
+                        }
+                        @if (n < ordered.Count - 1)
+                        {
+                            <a href="@Url.Action("SwapOrder", new {itemId1 = ordered[n].CommentaryTypeId, itemId2 = ordered[n + 1].CommentaryTypeId})" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
     }
-
 </table>

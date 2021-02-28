@@ -6,7 +6,7 @@ using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator")]
     public class ManouvreAdminController : Controller
     {
         private FlightContext db = new FlightContext();

@@ -167,11 +167,11 @@ namespace FlightJournal.Web.Models
 
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
-            Manouvres = dbmodel.Manouvres;
+            Manouvres = dbmodel.Manouvres.OrderBy(x=>x.DisplayOrder);
             AnnotationsForFlightPhases =
                 dbmodel.CommentaryTypes
                     .OrderBy(c => c.DisplayOrder)
-                    .Select(x => new FlightPhaseAnnotationViewModel() {Phase = x, Options = x.Commentaries});
+                    .Select(x => new FlightPhaseAnnotationViewModel() {Phase = x, Options = x.Commentaries.OrderBy(y=>y.DisplayOrder)});
 
             WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem));
             WindSpeeds = dbmodel.WindSpeeds.Select(ws => new WindSpeedViewModel(ws.WindSpeedItem));

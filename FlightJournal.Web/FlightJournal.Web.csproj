@@ -290,6 +290,7 @@
     <Compile Include="Models\Training\Flight\Weather.cs" />
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
     <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
+    <Compile Include="Models\Training\Predefined\CommentsInFlightPhasesViewModel.cs" />
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
@@ -1077,6 +1078,7 @@
     <Content Include="Views\CommentaryTypeAdmin\DeleteLocked.cshtml" />
     <Content Include="Views\CommentaryTypeAdmin\Edit.cshtml" />
     <Content Include="Views\CommentaryTypeAdmin\Index.cshtml" />
+    <Content Include="Views\CommentaryAdmin\CommentInFlightPhase.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

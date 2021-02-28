@@ -6,13 +6,25 @@ using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
 {
-    [Authorize(Roles = "Administrator,Manager")]
+    [Authorize(Roles = "Administrator")]
     public class CommentaryTypeAdminController : Controller
     {
-        private FlightContext db = new FlightContext();
+        private readonly FlightContext db = new FlightContext();
         public ActionResult Index()
         {
             var model = db.CommentaryTypes;
+            if (model.Count(x => x.DisplayOrder == 0) > 1)
+            {
+                // not yet defined, set order according to current implicit order. You could argue that this should be done elsewhere...
+                var order = 0;
+                foreach (var m in model)
+                {
+                    m.DisplayOrder = order++;
+                    db.Entry(m).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
             ViewBag.CanDelete = model.ToDictionary(x => x.CommentaryTypeId, x => !IsCommentaryTypeInUse(x.CommentaryTypeId));
             return View(model);
         }
@@ -43,23 +55,23 @@ namespace FlightJournal.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Commentary commentary)
+        public ActionResult Edit(CommentaryType item)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(commentary).State = EntityState.Modified;
+                db.Entry(item).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
-            return View(commentary);
+            return View(item);
         }
 
 
         public ActionResult Delete(int id)
         {
-            var commentary = db.Commentaries.Find(id);
-            return View(commentary);
+            var item = db.CommentaryTypes.Find(id);
+            return View(item);
         }
 
 
@@ -69,6 +81,23 @@ namespace FlightJournal.Web.Controllers
             var item = db.CommentaryTypes.Find(id);
             db.CommentaryTypes.Remove(item);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SwapOrder(int itemId1, int itemId2)
+        {
+            var item1 = db.CommentaryTypes.FirstOrDefault(x => x.CommentaryTypeId == itemId1);
+            var item2 = db.CommentaryTypes.FirstOrDefault(x => x.CommentaryTypeId == itemId2);
+            if (item1 != null && item2 != null)
+            {
+                var tmp = item1.DisplayOrder;
+                item1.DisplayOrder = item2.DisplayOrder;
+                item2.DisplayOrder = tmp;
+                db.Entry(item1).State = EntityState.Modified;
+                db.Entry(item2).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
 

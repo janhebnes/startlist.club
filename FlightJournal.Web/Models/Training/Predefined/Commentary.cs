@@ -16,6 +16,7 @@ namespace FlightJournal.Web.Models.Training.Predefined
         public string Comment { get; set; }
         [LocalizedDisplayName("Is this the 'OK' comment?")]
         public bool IsOk{ get; set; }
+        public int DisplayOrder { get; set; }
         public virtual ICollection<CommentaryType> CommentaryTypes { get; set; } // TODO: rename to FlightPhases (these are the flight phases that this commentapplies to)
         public virtual ICollection<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; } //TODO: rename ?
     }
