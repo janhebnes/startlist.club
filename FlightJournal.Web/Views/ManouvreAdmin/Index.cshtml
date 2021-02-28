@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Manouvre>
+﻿@using FlightJournal.Web.Helpers
+@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Manouvre>
 
 @{
     ViewBag.Title = _("Manouvres");
@@ -43,7 +44,7 @@
                         }
                         else
                         {
-                            _("This item is in use and cannot be deleted");
+                            @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
                         }
                     </div>
                 </td>

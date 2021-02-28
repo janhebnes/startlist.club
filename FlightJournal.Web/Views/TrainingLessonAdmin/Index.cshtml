@@ -1,4 +1,5 @@
-﻿@using MarkdownSharp
+﻿@using FlightJournal.Web.Helpers
+@using MarkdownSharp
 @model FlightJournal.Web.Models.Training.Catalogue.Training2Program
 
 @{
@@ -22,12 +23,8 @@
         <th>
             @_("Purpose")
         </th>
-        <th>
-
-        </th>
-        <th>
-
-        </th>
+        <th></th>
+        <th></th>
     </tr>
     
     @{
@@ -49,7 +46,7 @@
                         }
                         else
                         {
-                            _("This item is in use and cannot be deleted");
+                            @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
                         }
                         @Html.ActionLink(_("Exercises"), "Index", "TrainingExerciseAdmin", new { trainingProgramId = Model.Training2ProgramId, trainingLessonId = item.Training2LessonId }, new { @class = "btn btn-default" })
                     </div>

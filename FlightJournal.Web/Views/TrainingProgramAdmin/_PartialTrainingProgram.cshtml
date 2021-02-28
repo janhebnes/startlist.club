@@ -1,10 +1,11 @@
-﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+﻿@using FlightJournal.Web.Helpers
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
 
 <legend>@_("Training program")</legend>
 
 @if (ViewBag.IsInUse)
 {
-    <div class="alert alert-danger">@_("Do not change the semantics or meaning of this item - it is already in use in training flights")</div>
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
 }
 
 <div class="editor-label">

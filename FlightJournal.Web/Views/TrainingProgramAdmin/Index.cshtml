@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.Training.Catalogue.Training2Program>
+﻿@using FlightJournal.Web.Helpers
+@model IEnumerable<FlightJournal.Web.Models.Training.Catalogue.Training2Program>
 
 @{
     ViewBag.Title = _("Training program administration");
@@ -14,36 +15,34 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        <th>
-
-        </th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm">
-                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Details"), "Details", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
-                    @if (ViewBag.CanDelete[item.Training2ProgramId])
-                    {
-                        @Html.ActionLink(_("Delete"), "Delete", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
-                    }
-                    else
-                    {
-                        _("This item is in use and cannot be deleted");
-                    }
-                    @Html.ActionLink(_("Lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = item.Training2ProgramId }, new { @class = "btn btn-default" })
-                </div>
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ShortName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        <div class="btn-group btn-group-sm">
+            @Html.ActionLink(_("Edit"), "Edit", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+            @Html.ActionLink(_("Details"), "Details", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+            @if (ViewBag.CanDelete[item.Training2ProgramId])
+            {
+                @Html.ActionLink(_("Delete"), "Delete", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+            }
+            else
+            {
+                @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+            }
+            @Html.ActionLink(_("Lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = item.Training2ProgramId }, new { @class = "btn btn-default" })
+        </div>
+    </td>
+</tr>
     }
 
 </table>
