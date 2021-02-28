@@ -21,8 +21,12 @@ namespace FlightJournal.Web.Models
             FlightId = flight.FlightId;
 
             PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Landing ?? x.Date);
-            FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
-            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
+            FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Departure ?? x.Date));
+            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Departure ?? x.Date));
+            if (trainingProgramId == -1)
+            {  // attempt to find the most recetnt training flight, use same training program
+                trainingProgramId = AppliedExercises.LastOrDefault()?.Program.Training2ProgramId ?? -1;
+            }
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
             TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel { Name = x.ShortName, Id = x.Training2ProgramId }).ToList();
             
@@ -215,14 +219,14 @@ namespace FlightJournal.Web.Models
 /// </summary>
 public class TrainingProgramViewModel
     {
-        public string Id { get; }
+        public int  Id { get; }
 
         public string Name { get; } 
         public IEnumerable<TrainingLessonWithOverallStatusViewModel> Lessons { get; }
 
         public TrainingProgramViewModel(Training2Program program, TrainingDataWrapper db)
         {
-            Id = program.Training2ProgramId.ToString();
+            Id = program.Training2ProgramId;
             Name = program.Name;
             Lessons = program.Lessons.Select(less => new TrainingLessonWithOverallStatusViewModel(less, db)).ToList();
         }
