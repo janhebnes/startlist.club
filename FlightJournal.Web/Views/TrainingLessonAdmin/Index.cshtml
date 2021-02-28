@@ -58,11 +58,11 @@
                     <div class="btn-group btn-group-sm">
                         @if (n > 0)
                         {
-                            @Html.ActionLink(_("^"), "SwapLessonOrder", new { trainingProgramId = Model.Training2ProgramId, lessonId1 = ordered[n].Training2LessonId, lessonId2 = ordered[n - 1].Training2LessonId }, new { @class = "btn btn-default" });
+                            <a href="@Url.Action("SwapLessonOrder", new { trainingProgramId = Model.Training2ProgramId, lessonId1 = ordered[n].Training2LessonId, lessonId2 = ordered[n - 1].Training2LessonId })" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
                         }
                         @if (n < ordered.Count - 1)
                         {
-                            @Html.ActionLink(_("v"), "SwapLessonOrder", new { trainingProgramId = Model.Training2ProgramId, lessonId1 = ordered[n].Training2LessonId, lessonId2 = ordered[n + 1].Training2LessonId }, new { @class = "btn btn-default" });
+                            <a href="@Url.Action("SwapLessonOrder", new { trainingProgramId = Model.Training2ProgramId, lessonId1 = ordered[n].Training2LessonId, lessonId2 = ordered[n + 1].Training2LessonId })" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
                         }
                     </div>
                 </td>

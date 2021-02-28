@@ -13,6 +13,18 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Index()
         {
             var model = db.Manouvres;
+            if (model.Count(x => x.DisplayOrder == 0) > 1)
+            {
+                // not yet defined, set order according to current implicit order. You could argue that this should be done elsewhere...
+                var order = 0;
+                foreach (var m in model)
+                {
+                    m.DisplayOrder = order++;
+                    db.Entry(m).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
             ViewBag.CanDelete = model.ToDictionary(x => x.ManouvreId, x => !IsInUse(x.ManouvreId));
             return View(model);
         }
@@ -76,6 +88,24 @@ namespace FlightJournal.Web.Controllers
             var manouvre = db.Manouvres.Find(id);
             db.Manouvres.Remove(manouvre);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult SwapOrder(int itemId1, int itemId2)
+        {
+            var item1 = db.Manouvres.FirstOrDefault(x => x.ManouvreId == itemId1);
+            var item2 = db.Manouvres.FirstOrDefault(x => x.ManouvreId == itemId2);
+            if (item1 != null && item2!= null)
+            {
+                var tmp = item1.DisplayOrder;
+                item1.DisplayOrder = item2.DisplayOrder;
+                item2.DisplayOrder = tmp;
+                db.Entry(item1).State = EntityState.Modified;
+                db.Entry(item2).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
 

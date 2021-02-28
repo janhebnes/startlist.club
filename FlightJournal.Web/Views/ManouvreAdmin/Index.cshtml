@@ -17,35 +17,50 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th>
-
-        </th>
+        <th></th>
+        <th></th>
     </tr>
+    @{
+        var ordered = Model.OrderBy(x => x.DisplayOrder).ToList();
+        for (var n = 0; n < ordered.Count; n++)
+        {
+            var item = ordered[n];
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                <i class="@item.IconCssClass"></i>@Html.Raw(item.ManouvreItem)
-            </td>
-            <td>
-            @Html.Raw(item.Description)
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm">
-                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Details"), "Details", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
-                    @if (ViewBag.CanDelete[item.ManouvreId])
-                    {
-                        @Html.ActionLink(_("Delete"), "Delete", new { id = item.ManouvreId }, new { @class = "btn btn-default" })
-                    }
-                    else
-                    {
-                        _("This item is in use and cannot be deleted");
-                    }
-                </div>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <i class="@item.IconCssClass"></i>@Html.Raw(item.ManouvreItem)
+                </td>
+                <td>
+                    @Html.Raw(item.Description)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @Html.ActionLink(_("Edit"), "Edit", new {id = item.ManouvreId}, new {@class = "btn btn-default"})
+                        @Html.ActionLink(_("Details"), "Details", new {id = item.ManouvreId}, new {@class = "btn btn-default"})
+                        @if (ViewBag.CanDelete[item.ManouvreId])
+                        {
+                            @Html.ActionLink(_("Delete"), "Delete", new {id = item.ManouvreId}, new {@class = "btn btn-default"})
+                        }
+                        else
+                        {
+                            _("This item is in use and cannot be deleted");
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @if (n > 0)
+                        {
+                            <a href="@Url.Action("SwapOrder", new { itemId1 = ordered[n].ManouvreId, itemId2 = ordered[n - 1].ManouvreId })" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
+                        }
+                        @if (n < ordered.Count - 1)
+                        {
+                            <a href="@Url.Action("SwapOrder", new { itemId1 = ordered[n].ManouvreId, itemId2 = ordered[n + 1].ManouvreId })" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
     }
 
 </table>

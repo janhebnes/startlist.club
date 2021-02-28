@@ -24,7 +24,7 @@
             @_("Note")
         </th>
         <th>
-            @_("Brifing Only?")
+            @_("Briefing Only?")
         </th>
         <th></th>
         <th></th>
@@ -58,11 +58,11 @@
                 <div class="btn-group btn-group-sm">
                     @if (n > 0)
                     {
-                        @Html.ActionLink(_("^"), "SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n - 1].Training2ExerciseId }, new { @class = "btn btn-default" });
+                        <a href="@Url.Action("SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n - 1].Training2ExerciseId })" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
                     }
                     @if (n < ordered.Count - 1)
                     {
-                        @Html.ActionLink(_("v"), "SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n + 1].Training2ExerciseId }, new { @class = "btn btn-default" });
+                        <a href="@Url.Action("SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n + 1].Training2ExerciseId })" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
                     }
                 </div>
             </td>

@@ -21,6 +21,8 @@ namespace FlightJournal.Web.Models.Training.Predefined
         [AllowHtml]
         public string IconCssClass { get; set; }
         public int Icon { get; set; }
+        public int DisplayOrder { get; set; }
+
         public virtual ICollection<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
     }
 }
