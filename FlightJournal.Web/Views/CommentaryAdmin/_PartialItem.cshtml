@@ -3,7 +3,7 @@
 
 <legend>@_("Comment")</legend>
 
-@if (ViewBag.IsInUse)
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
 {
     @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
 }
