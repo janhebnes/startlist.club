@@ -1,6 +1,6 @@
 ﻿using FlightJournal.Web.Translations;
 
-namespace FlightJournal.Web.Helpers
+namespace FlightJournal.Web.Extensions
 {
     public static class HtmlHelpers
     {

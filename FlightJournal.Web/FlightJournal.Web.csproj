@@ -256,7 +256,7 @@
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\OGNFlightExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
-    <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.Designer.cs">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>

@@ -18,7 +18,8 @@
         <select class="selectpicker" id="TrainingProgram">
             @foreach (var program in Model.TrainingPrograms)
             {
-                <option value="@program.Id">@program.Name</option>
+                var selected = Model.TrainingProgram.Id == program.Id ? "selected" : "";
+                <option value="@program.Id" @selected>@program.Name</option>
             }
         </select>
     </div>
@@ -340,8 +341,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#TrainingProgram").change(function() {
-//                showRelevantTrainingProgram($(this));
-//TODO: reload with new program
+                reloadWithTrainingProgram($(this));
             });
 
             $(".lessontoggle").change(function() {
@@ -454,16 +454,13 @@
                 $(".lessonsdetailtable").hide();
         }
 
-        @*var showRelevantTrainingProgram = function(sel) {
-                <text>
-                    if (sel.find(":selected").val() == "@Model.TrainingProgram.Id")
-                        $(".@Model.TrainingProgram.Id").show();
-                    else
-                        $(".@Model.TrainingProgram.Id").hide();
-                </text>
-            $(".active").removeClass("active");
-            $(".exercise").hide();
-        }*@
+        var reloadWithTrainingProgram = function (sel) {
+            var selected = sel.find(":selected").val();
+            if (selected != "@Model.TrainingProgram.Id") {
+                var url = '@Url.Action("Edit", new {flightId = @Model.FlightId})' + '&trainingProgramId=' + selected;
+                window.location.href = url;
+            }
+        }
 
 
         var showInfoFromId = function(infoid) {
@@ -502,7 +499,7 @@
                     exercises.push(ex);
             });
 
-            // manouvers 
+            // manouvers
             var manouverIds = [];
             $("option.manouver:selected").each(function() { manouverIds.push($(this).val()); });
 
