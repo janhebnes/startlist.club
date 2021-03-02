@@ -95,7 +95,7 @@ namespace FlightJournal.Web.Controllers
 
             db.SaveChanges();
 
-            return new JsonResult();
+            return new JsonResult() { @Data = new { Success = true } };
         }
 
 
