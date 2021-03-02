@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div class="row no-gutter btn-group-toggle" data-toggle="buttons" >
+<div class="row no-gutter btn-group-toggle" data-toggle="buttons">
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of lessons and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access exercises for each lesson"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
     <label class="col-xs-2 btn btn-default traininglogtopbutton" id="showrecentflights"><i class="fa fa-history"></i><span class="hidden-xs hidden-sm"> @_("Show recent flights")</span></label>
@@ -48,56 +48,56 @@
 <div id="lessonsoverviewcontainer" class="table-responsive row no-gutter bordered">
     <table class="table table-condensed col-xs-12 lessonsoverviewtable" data-step="10" data-intro=@Html.Raw(__("Progress for each lesson"))>
         <tbody>
-        @{
-            var introDefCshown = false;
-            var introDefWshown = false;
-            var introDefNshown = false;
-        }
-        @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x=>x.DisplayOrder))
-        {
-            var completedpct = (int) Math.Round(100.0 * lesson.ExercisesCompleted / lesson.ExercisesTotal);
-            var wippct = (int) Math.Round(100.0 * lesson.ExercisesInProgress / lesson.ExercisesTotal);
-            var nspct = 100 - completedpct - wippct;
-            var introdefC = "";
-            var introdefW = "";
-            var introdefN = "";
-            if (!introDefCshown && completedpct > 0)
-            {
-                var introTxt = Html.Raw(__("Number of completed exercises is shown in this style")).ToString();
-                introdefC = $"data-step=11 data-tooltipClass=status-completed data-intro={introTxt}";
-                introDefCshown = true;
+            @{
+                var introDefCshown = false;
+                var introDefWshown = false;
+                var introDefNshown = false;
             }
-            if (!introDefWshown && wippct > 0)
+            @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
             {
-                var introTxt = Html.Raw(__("Number of exercises in progress is shown in this style")).ToString();
-                introdefW = $"data-step=12 data-tooltipClass=status-in-progress data-intro={introTxt}";
-                introDefWshown = true;
+                var completedpct = (int)Math.Round(100.0 * lesson.ExercisesCompleted / lesson.ExercisesTotal);
+                var wippct = (int)Math.Round(100.0 * lesson.ExercisesInProgress / lesson.ExercisesTotal);
+                var nspct = 100 - completedpct - wippct;
+                var introdefC = "";
+                var introdefW = "";
+                var introdefN = "";
+                if (!introDefCshown && completedpct > 0)
+                {
+                    var introTxt = Html.Raw(__("Number of completed exercises is shown in this style")).ToString();
+                    introdefC = $"data-step=11 data-tooltipClass=status-completed data-intro={introTxt}";
+                    introDefCshown = true;
+                }
+                if (!introDefWshown && wippct > 0)
+                {
+                    var introTxt = Html.Raw(__("Number of exercises in progress is shown in this style")).ToString();
+                    introdefW = $"data-step=12 data-tooltipClass=status-in-progress data-intro={introTxt}";
+                    introDefWshown = true;
+                }
+                if (!introDefNshown && nspct > 0)
+                {
+                    var introTxt = Html.Raw(__("Number of exercises not started yet is shown in this style")).ToString();
+                    introdefN = $"data-step=13 data-tooltipClass=status-not-started data-intro={introTxt}";
+                    introDefNshown = true;
+                }
+                var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
+                <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id">
+                    <td style="width: 5%; line-height: 0.7;">@lesson.Name</td>
+                    <td class="progress" style="width: 95%; padding: 0px;">
+                        @if (completedpct > 0)
+                        {
+                            <div class="progress-bar status-completed" role="progressbar" style="width: @completedpct%" @Html.Raw(introdefC)>@lesson.ExercisesCompleted@regressionMarker</div>
+                        }
+                        @if (wippct > 0)
+                        {
+                            <div class="progress-bar status-in-progress" role="progressbar" style="width: @wippct%;" @Html.Raw(introdefW)> @lesson.ExercisesInProgress</div>
+                        }
+                        @if (nspct > 0)
+                        {
+                            <div class="progress-bar status-not-started" role="progressbar" style="width: @nspct%;" @Html.Raw(introdefN)>@lesson.ExercisesNotStarted</div>
+                        }
+                    </td>
+                </tr>
             }
-            if (!introDefNshown && nspct > 0)
-            {
-                var introTxt = Html.Raw(__("Number of exercises not started yet is shown in this style")).ToString();
-                introdefN = $"data-step=13 data-tooltipClass=status-not-started data-intro={introTxt}";
-                introDefNshown = true;
-            }
-            var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
-            <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id" >
-                <td style="width: 5%; line-height: 0.7;">@lesson.Name</td>
-                <td class="progress" style="width: 95%; padding: 0px;">
-                @if (completedpct > 0)
-                {
-                    <div class="progress-bar status-completed" role="progressbar" style="width: @completedpct%" @Html.Raw(introdefC)>@lesson.ExercisesCompleted@regressionMarker</div>
-                }
-                @if (wippct > 0)
-                {
-                    <div class="progress-bar status-in-progress" role="progressbar" style="width: @wippct%;"  @Html.Raw(introdefW)> @lesson.ExercisesInProgress</div>
-                }
-                @if (nspct > 0)
-                {
-                    <div class="progress-bar status-not-started" role="progressbar" style="width: @nspct%;"  @Html.Raw(introdefN)>@lesson.ExercisesNotStarted</div>
-                }
-                </td>
-            </tr>
-        }
         </tbody>
     </table>
 </div>
@@ -113,7 +113,7 @@
 
 
 
-<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered" >
+<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered">
     <table class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All lessons and exercises with status"))>
         <thead>
             <tr>
@@ -129,93 +129,93 @@
             </tr>
         </thead>
         <tbody>
-        @{
-            var helpIntroShown = false;
-            var statusIntroShown = false;
-        }
-        @*//TODO: rename to Exercise/ExercisePart (PartialExercise?)*@
-        @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
-        {
-            foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
-            {
-                string CheckboxType(TrainingExerciseWithOverallStatusViewModel.CheckBoxType t)
-                {
-                    switch (t)
-                    {
-                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.PlaceHolder:
-                            return "";
-                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledChecked:
-                            return "<input type='checkbox' checked disabled>";
-                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledUnchecked:
-                            return "<input type='checkbox' disabled>";
-                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledChecked:
-                            return "<input type='checkbox' checked class='lessoncheckbox'>";
-                        case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledUnchecked:
-                            return "<input type='checkbox' class='lessoncheckbox' >";
-                    }
-                    return "";
-                }
-
-                var clz = CssHelper.CssClassFor(exercise.Status);
-                var regressionMarker = regressionMarkerIcon(exercise.Regression);
-                var infoMarker = exercise.LongDescription?.Any() ?? false ? "<span class='fa fa-info-circle'></span>" : "";
-                var introdefL = "";
-                var introdefX = "";
-                var introdefB0 = "";
-                var introdefT0 = "";
-                var introdefC0 = "";
-                var introdefR0 = "";
-                var introdefB = "";
-                var introdefT = "";
-                var introdefC = "";
-                if (!helpIntroShown && (exercise.LongDescription?.Any() ?? false))
-                {
-                    // show lesson/exercise help on first exercise with long description
-                    var introtxtL = Html.Raw(__("Click here to see a description of the lesson")).ToString();
-                    introdefL = $"data-step=31 data-intro={introtxtL}";
-                    var introtxtX = Html.Raw(__("Click here to see a description of the exercise (if available)")).ToString();
-                    introdefX = $"data-step=32 data-intro={introtxtX}";
-                    helpIntroShown = true;
-                }
-                else if (!statusIntroShown && !exercise.BriefingOnlyRequired)
-                {
-                    var introtxtB0 = Html.Raw(__("Checked if exercise has previously been briefed")).ToString();
-                    introdefB0 = $"data-step=33 data-intro={introtxtB0}";
-                    var introtxtT0 = Html.Raw(__("Checked if exercise has previously been trained but is not yet at a sufficient level")).ToString();
-                    introdefT0 = $"data-step=34 data-intro={introtxtT0}";
-                    var introtxtC0 = Html.Raw(__("Checked if exercise has previously been completed")).ToString();
-                    introdefC0 = $"data-step=35 data-intro={introtxtC0}";
-                    var introtxtR0 = Html.Raw(__("Marker here if exercise has previously been completed, but later marked as (just) Trained or Briefed, i.e. a regression")).ToString();
-                    introdefR0 = $"data-step=36 data-intro={introtxtC0}";
-
-                    var introtxtB = Html.Raw(__("Check this when the exercise has been briefed on this flight")).ToString();
-                    introdefB = $"data-step=37 data-intro={introtxtB}";
-                    var introtxtT = Html.Raw(__("Check this when the exercise has been trained on this flight but is not yet at a sufficient level")).ToString();
-                    introdefT = $"data-step=38 data-intro={introtxtT}";
-                    var introtxtC = Html.Raw(__("Check this when the exercise is completed on this flight")).ToString();
-                    introdefC = $"data-step=39 data-intro={introtxtC}";
-                    statusIntroShown = true;
-                }
-                <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
-                    <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id"  @Html.Raw(introdefL)>@lesson.Name</td>
-                    <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id"  @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefB0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallBriefed))</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefT0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallTrained))</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefC0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallCompleted))</td>
-                    <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
-                    <td class="btn-default hcenter statusbutton chk_briefed annotationcontainer" @Html.Raw(introdefB)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightBriefed))</td>
-                    <td class="btn-default hcenter statusbutton chk_trained annotationcontainer" @Html.Raw(introdefT)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightTrained))</td>
-                    <td class="btn-default hcenter statusbutton chk_ok annotationcontainer" @Html.Raw(introdefC)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightCompleted))</td>
-                </tr>
+            @{
+                var helpIntroShown = false;
+                var statusIntroShown = false;
             }
-        }
+            @*//TODO: rename to Exercise/ExercisePart (PartialExercise?)*@
+            @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
+            {
+                foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
+                {
+                    string CheckboxType(TrainingExerciseWithOverallStatusViewModel.CheckBoxType t)
+                    {
+                        switch (t)
+                        {
+                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.PlaceHolder:
+                                return "";
+                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledChecked:
+                                return "<input type='checkbox' checked disabled>";
+                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledUnchecked:
+                                return "<input type='checkbox' disabled>";
+                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledChecked:
+                                return "<input type='checkbox' checked class='lessoncheckbox'>";
+                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledUnchecked:
+                                return "<input type='checkbox' class='lessoncheckbox' >";
+                        }
+                        return "";
+                    }
+
+                    var clz = CssHelper.CssClassFor(exercise.Status);
+                    var regressionMarker = regressionMarkerIcon(exercise.Regression);
+                    var infoMarker = exercise.LongDescription?.Any() ?? false ? "<span class='fa fa-info-circle'></span>" : "";
+                    var introdefL = "";
+                    var introdefX = "";
+                    var introdefB0 = "";
+                    var introdefT0 = "";
+                    var introdefC0 = "";
+                    var introdefR0 = "";
+                    var introdefB = "";
+                    var introdefT = "";
+                    var introdefC = "";
+                    if (!helpIntroShown && (exercise.LongDescription?.Any() ?? false))
+                    {
+                        // show lesson/exercise help on first exercise with long description
+                        var introtxtL = Html.Raw(__("Click here to see a description of the lesson")).ToString();
+                        introdefL = $"data-step=31 data-intro={introtxtL}";
+                        var introtxtX = Html.Raw(__("Click here to see a description of the exercise (if available)")).ToString();
+                        introdefX = $"data-step=32 data-intro={introtxtX}";
+                        helpIntroShown = true;
+                    }
+                    else if (!statusIntroShown && !exercise.BriefingOnlyRequired)
+                    {
+                        var introtxtB0 = Html.Raw(__("Checked if exercise has previously been briefed")).ToString();
+                        introdefB0 = $"data-step=33 data-intro={introtxtB0}";
+                        var introtxtT0 = Html.Raw(__("Checked if exercise has previously been trained but is not yet at a sufficient level")).ToString();
+                        introdefT0 = $"data-step=34 data-intro={introtxtT0}";
+                        var introtxtC0 = Html.Raw(__("Checked if exercise has previously been completed")).ToString();
+                        introdefC0 = $"data-step=35 data-intro={introtxtC0}";
+                        var introtxtR0 = Html.Raw(__("Marker here if exercise has previously been completed, but later marked as (just) Trained or Briefed, i.e. a regression")).ToString();
+                        introdefR0 = $"data-step=36 data-intro={introtxtC0}";
+
+                        var introtxtB = Html.Raw(__("Check this when the exercise has been briefed on this flight")).ToString();
+                        introdefB = $"data-step=37 data-intro={introtxtB}";
+                        var introtxtT = Html.Raw(__("Check this when the exercise has been trained on this flight but is not yet at a sufficient level")).ToString();
+                        introdefT = $"data-step=38 data-intro={introtxtT}";
+                        var introtxtC = Html.Raw(__("Check this when the exercise is completed on this flight")).ToString();
+                        introdefC = $"data-step=39 data-intro={introtxtC}";
+                        statusIntroShown = true;
+                    }
+                    <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
+                        <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)>@lesson.Name</td>
+                        <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id" @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
+                        <td class="btn-default hcenter @clz" @Html.Raw(introdefB0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallBriefed))</td>
+                        <td class="btn-default hcenter @clz" @Html.Raw(introdefT0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallTrained))</td>
+                        <td class="btn-default hcenter @clz" @Html.Raw(introdefC0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallCompleted))</td>
+                        <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
+                        <td class="btn-default hcenter statusbutton chk_briefed annotationcontainer" @Html.Raw(introdefB)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightBriefed))</td>
+                        <td class="btn-default hcenter statusbutton chk_trained annotationcontainer" @Html.Raw(introdefT)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightTrained))</td>
+                        <td class="btn-default hcenter statusbutton chk_ok annotationcontainer" @Html.Raw(introdefC)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightCompleted))</td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>
 
 <div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter" data-step="40" data-intro=@Html.Raw(@__("Select the maneuvers performed during the flight"))>
     <div class="col-xs-2  col-sm-1">@_("Maneuvers")</div>
-    <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple  id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
+    <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
         @foreach (var maneuver in Model.Manouvres)
         {
             var selected = Model.ThisFlight.Manouvres.SafeContains(maneuver.ManouvreId) ? "selected" : "";
@@ -235,7 +235,7 @@
         var id = $"comment-id-{p.Phase.CommentaryTypeId}";
 
         <div class="col-xs-2 col-sm-1">@p.Phase.CType</div>
-        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" multiple id="@id")>
+        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" multiple id="@id" )>
             @foreach (var comment in p.Options)
             {
                 var selected = Model.ThisFlight.CommentIdsByPhase.GetOrDefault(p.Phase.CommentaryTypeId).SafeContains(comment.CommentaryId) ? "selected" : "";
@@ -245,7 +245,7 @@
     }
     <div class="col-xs-2 col-sm-1">@_("Note")</div>
     <div class="col-xs-10 col-sm-11 " data-step="55" data-intro=@Html.Raw(__("If you have comments beyond the predefined selections above, you can enter them here"))>
-        <textarea style="width: 100%; max-width:100%" id="flightnotes" rows="3">@Model.ThisFlight.Notes</textarea>
+        <textarea class="userselection" style="width: 100%; max-width:100%" id="flightnotes" rows="3">@Model.ThisFlight.Notes</textarea>
     </div>
 </div>
 
@@ -263,7 +263,7 @@
         @foreach (var v in Model.WindSpeeds)
         {
             var selected = Model.ThisFlight.WindSpeed == v.Value ? "selected" : "";
-            <option value="@v.Value" class="wind_speed"@selected>@Html.Raw(v.Text)</option>
+            <option value="@v.Value" class="wind_speed" @selected>@Html.Raw(v.Text)</option>
         }
     </select>
 </div>
@@ -304,7 +304,7 @@
 
 <div class="modal" tabindex="-1" role="dialog" id="recentflightsmodal">
     <div class="modal-dialog modal-full ">
-        <div class="modal-content" >
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">@_("Recent flights")</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -331,14 +331,17 @@
 
 <div id="urls"
      data-saveflight="@Url.Action("UpdateTrainingFlight", "TrainingLog")"
-     data-recentflights="@Url.Action("GetRecentFlights", "TrainingLog")"
-     >
+     data-recentflights="@Url.Action("GetRecentFlights", "TrainingLog")">
 </div>
 
 
 @section scripts
 {
+
+
     <script type="text/javascript">
+        var initialStateOfInput = {};
+
         $(document).ready(function() {
             $("#TrainingProgram").change(function() {
                 reloadWithTrainingProgram($(this));
@@ -415,21 +418,61 @@
                 if (!isDirty())
                     window.history.back();
                 else {
-                    saveFlightData();
-                    window.history.back();
+                    saveFlightData(
+                        function () {
+                            initialStateOfInput = getStateOfInput(); // don't prompt again
+                            window.history.back();
+                        },
+                        function() {
+                            alert("@_("Unable to save data")");
+                        });
+                    
                 }
 
             });
-            //TODO: also detect simple tab close, and react similarly
             $("#backbtn").click(function() {
-                if (!isDirty() ||
-                    confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and loose the changes?")))) {
+                if (!isDirty() || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and loose the changes?")))) {
+                    initialStateOfInput = getStateOfInput(); // don't prompt twice
                     window.history.back();
                 }
             });
+
+            window.addEventListener("beforeunload",
+                function(event) {
+                    if (isDirty()) {
+                        event.preventDefault();
+                        event.returnValue = "";
+                    } else {
+                        return undefined;
+                    }
+                });
+
+            initialStateOfInput = getStateOfInput();
         });
 
+        var getStateOfInput = function() {
+            var state = {
+                checkboxes: [],
+                userselection: []
+            };
+
+            $("input.lessoncheckbox").each(function() {
+                state.checkboxes.push($(this).prop("checked"));
+            });
+            $("select.userselection").each(function() {
+                state.userselection.push($(this).val());
+            });
+            $("textarea.userselection").each(function() {
+                state.userselection.push($(this).val());
+            });
+            return JSON.stringify(state);
+        }
+
         var isDirty = function() {
+            var current = getStateOfInput();
+            var dirty =  (initialStateOfInput != current);
+            return dirty;
+
             var exerciseDataChanged = $(".lessoncheckbox:checked").length > 0;
             //TODO: detect change, not just presence
             var annotationCount = 0;
@@ -454,7 +497,7 @@
                 $(".lessonsdetailtable").hide();
         }
 
-        var reloadWithTrainingProgram = function (sel) {
+        var reloadWithTrainingProgram = function(sel) {
             var selected = sel.find(":selected").val();
             if (selected != "@Model.TrainingProgram.Id") {
                 var url = '@Url.Action("Edit", new {flightId = @Model.FlightId})' + '&trainingProgramId=' + selected;
@@ -481,7 +524,7 @@
         }
 
 
-        var saveFlightData = function() {
+        var saveFlightData = function(onSuccess, onFailure) {
             // collect changed data from UI and post back
 
             // status for all exercises
@@ -531,11 +574,11 @@
                 contentType: "application/json; charset=utf-8",
                 type: "POST",
                 dataType: "json",
-                success: function(d) {
-
+                success: function (d) {
+                    onSuccess();
                 },
                 error: function(a, b, c) {
-
+                    onFailure();
                 },
             });
         }
@@ -551,9 +594,9 @@
             // Post
             $.ajax({
                 url: url,
-                data: { flightId: flightId},
+                data: { flightId: flightId },
                 contentType: "application/json; charset=utf-8",
-                success: function (v) {
+                success: function(v) {
                     $("#recentflightsmodal").find(".modal-body").html(v);
 
                     $("#recentflightsmodal").modal();
