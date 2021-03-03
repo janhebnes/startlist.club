@@ -8,6 +8,7 @@ namespace FlightJournal.Web
         {
             ConfigureAuth(app);
             ConfigureOpenGliderNetworkFlightLogMonitor(app);
+            app.MapSignalR();
         }
     }
 }
