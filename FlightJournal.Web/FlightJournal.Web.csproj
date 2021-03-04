@@ -249,6 +249,7 @@
     <Compile Include="Controllers\TrainingLessonAdminController.cs" />
     <Compile Include="Controllers\TrainingLogHistoryController.cs" />
     <Compile Include="Controllers\TrainingProgramAdminController.cs" />
+    <Compile Include="Controllers\TrainingStatusController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
@@ -1078,6 +1079,7 @@
     <Content Include="Views\CommentaryTypeAdmin\Edit.cshtml" />
     <Content Include="Views\CommentaryTypeAdmin\Index.cshtml" />
     <Content Include="Views\CommentaryAdmin\CommentInFlightPhase.cshtml" />
+    <Content Include="Views\TrainingStatus\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
