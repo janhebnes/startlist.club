@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -48,23 +49,33 @@ namespace FlightJournal.Web.Controllers
                 .OrderByDescending(f => f.Landing ?? f.Date);
 
             var flightIds = flightsByPilot.Select(x => x.FlightId).ToList();
+            
             foreach (var program in db.TrainingPrograms)
             {
-                var flightsForThisProgram = db.AppliedExercises.Where(x => flightIds.Contains(x.FlightId) && x.Program.Training2ProgramId == program.Training2ProgramId).Select(f=>f.FlightId).ToList();
+                var exercisesInThisProgram = db.AppliedExercises.Where(x => flightIds.Contains(x.FlightId) && x.Program.Training2ProgramId == program.Training2ProgramId).Select(f=>f.FlightId).ToList();
+
+                if (!exercisesInThisProgram.Any())
+                    continue;
+
                 var lessonStatus = new List<LessonWithStatus>();
                 foreach (var lesson in program.Lessons)
                 {
-                    var flownExercisesForThisLesson = db.AppliedExercises.Where(x => flightIds.Contains(x.FlightId) && x.Lesson.Training2LessonId == lesson.Training2LessonId);
+                    var flownExercisesForThisLesson = db.AppliedExercises.Where(x => flightIds.Contains(x.FlightId) && x.Lesson.Training2LessonId == lesson.Training2LessonId).Select(x=>new{ExId = x.Exercise.Training2ExerciseId, Action = x.Action}).ToList();
+                        
                     TrainingStatus status = TrainingStatus.NotStarted;
-                    foreach (var e in lesson.Exercises)
+                    if (flownExercisesForThisLesson.Any())
                     {
-                        var flownExercisesForThisExercise = flownExercisesForThisLesson.Where(y => y.Exercise.Training2ExerciseId == e.Training2ExerciseId);
-                        if (flownExercisesForThisExercise.Any(y=> y.Action == ExerciseAction.Completed))
-                            status = TrainingStatus.Completed;
-                        else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Trained))
-                            status = TrainingStatus.Trained;
-                        else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Briefed))
-                            status = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.Briefed;
+                        foreach (var e in lesson.Exercises)
+                        {
+                            var flownExercisesForThisExercise = flownExercisesForThisLesson.Where(y =>
+                                y.ExId == e.Training2ExerciseId).ToList();
+                            if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Completed))
+                                status = TrainingStatus.Completed;
+                            else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Trained))
+                                status = TrainingStatus.Trained;
+                            else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Briefed))
+                                status = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.Briefed;
+                        }
                     }
 
                     lessonStatus.Add(new LessonWithStatus(lesson, status ));
@@ -73,7 +84,7 @@ namespace FlightJournal.Web.Controllers
                 if (lessonStatus.Any(x=>x.Status != TrainingStatus.NotStarted))
                 {
                     var firstDate = DateTime.Now - TimeSpan.FromDays(60);
-                    var recentFlightsInThisProgram = flightsByPilot.Where(x => x.Date > firstDate && flightsForThisProgram.Contains(x.FlightId));
+                    var recentFlightsInThisProgram = flightsByPilot.Where(x => x.Date > firstDate && exercisesInThisProgram.Contains(x.FlightId));
 
                     var recentTime = recentFlightsInThisProgram.ToList().Select(y => y.Duration).Select(x => x.TotalHours).Sum();
                     var programStatus = new TrainingProgramStatus(
