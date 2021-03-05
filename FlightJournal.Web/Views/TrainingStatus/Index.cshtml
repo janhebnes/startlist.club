@@ -36,8 +36,8 @@
                     @foreach (var x in f.LessonsWithStatus)
                     {
                         var clz = CssHelper.CssClassFor(x.Status);
-
-                        <label class="bordered @clz" style="padding:2px">@x.LessonName</label>
+                        var regressionmarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
+                        <label class="bordered @clz" style="padding:2px">@x.LessonName@Html.Raw(@regressionmarker)</label>
                     }
                 </td>
             </tr>
