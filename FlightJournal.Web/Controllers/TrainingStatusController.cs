@@ -65,17 +65,26 @@ namespace FlightJournal.Web.Controllers
                     TrainingStatus status = TrainingStatus.NotStarted;
                     if (flownExercisesForThisLesson.Any())
                     {
+                        var statusForExercises = new List<TrainingStatus>();
                         foreach (var e in lesson.Exercises)
                         {
-                            var flownExercisesForThisExercise = flownExercisesForThisLesson.Where(y =>
-                                y.ExId == e.Training2ExerciseId).ToList();
+                            var statusForThisExercise = TrainingStatus.NotStarted;
+                            var flownExercisesForThisExercise = flownExercisesForThisLesson.Where(y => y.ExId == e.Training2ExerciseId).ToList();
                             if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Completed))
-                                status = TrainingStatus.Completed;
+                                statusForThisExercise = TrainingStatus.Completed;
                             else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Trained))
-                                status = TrainingStatus.Trained;
+                                statusForThisExercise = TrainingStatus.Trained;
                             else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Briefed))
-                                status = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.Briefed;
+                                statusForThisExercise = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.Briefed;
+                            statusForExercises.Add(statusForThisExercise);
                         }
+
+                        if (statusForExercises.All(x => x == TrainingStatus.Completed))
+                            status = TrainingStatus.Completed;
+                        else if (statusForExercises.Any(x => x == TrainingStatus.Trained))
+                            status = TrainingStatus.Trained;
+                        else if (statusForExercises.Any(x => x == TrainingStatus.Briefed))
+                            status = TrainingStatus.Briefed;
                     }
 
                     lessonStatus.Add(new LessonWithStatus(lesson, status ));
