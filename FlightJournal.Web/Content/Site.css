@@ -288,3 +288,9 @@ td.valign-top {
 .modal-full {
     width: 90%;
 }
+
+
+.nonreleaseversion {
+    background-color: darkmagenta !important;
+}
+
