@@ -32,5 +32,4 @@ jobs:
         app-name: 'startlist'
         slot-name: 'dev'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_00D1453696874AAF8DB120D5D5A777EA }}
-        package: $(System.DefaultWorkingDirectory)/**.zip
-        #package: \obj\Dev\Package\FlightJournal.Web.zip
+        package: FlightJournal.Web\obj\Dev\Package\FlightJournal.Web.zip
