@@ -23,7 +23,6 @@ jobs:
       run: nuget restore
 
     - name: Publish to folder
-      #run: msbuild /nologo /verbosity:m /t:Build /t:Package /p:Configuration=Dev
       run: msbuild /nologo /verbosity:m /t:Build /t:Package /p:Configuration=Dev /p:_PackageTempDir=published
 
     - name: Deploy to Azure Web App
