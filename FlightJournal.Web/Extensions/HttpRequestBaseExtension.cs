@@ -25,10 +25,10 @@ namespace FlightJournal.Web.Extensions
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        /// <example>in razor you can simply ask Request.IsPilot</example>
+        /// <example>in razor you can simply ask Request.IsInstructor</example>
         public static bool IsInstructor(this HttpRequestBase request)
         {
-            return request?.IsPilot() ?? false; // TODO: implement
+            return request != null && (PilotController.CurrentUserPilot?.IsInstructor ?? false);
         }
 
         /// <summary>

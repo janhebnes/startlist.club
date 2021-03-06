@@ -1,0 +1,44 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Exercise
+
+<legend>@_("Training exercise")</legend>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Note)
+</div>
+<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.Note, new { cols = 80, rows = 5 })
+    @Html.ValidationMessageFor(model => model.Note)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.IsBriefingOnly)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.IsBriefingOnly)
+    @Html.ValidationMessageFor(model => model.IsBriefingOnly)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.AcceptanceCriteria)
+</div>
+<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.AcceptanceCriteria, new { cols = 80, rows = 5 })
+    @Html.ValidationMessageFor(model => model.AcceptanceCriteria)
+</div>
+
+@{
+    int tpi = ViewBag.TrainingProgramId;
+    int tli = ViewBag.TrainingLessonId;
+}
+@Html.HiddenFor(x => tpi)
+@Html.HiddenFor(x => tli)
+@Html.HiddenFor(model => Model.Training2ExerciseId)
+@Html.HiddenFor(model => Model.DisplayOrder)

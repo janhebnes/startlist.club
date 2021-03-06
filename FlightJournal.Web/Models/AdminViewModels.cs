@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FlightJournal.Web.Translations;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -17,13 +18,14 @@ namespace FlightJournal.Web.Models
         public string Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [Display(Name = "Email")]
+        [LocalizedDisplayName("Email")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Display(Name = "EmailConfirmed")]
+        [LocalizedDisplayName("Email confirmed")]
         public bool EmailConfirmed { get; set; }
 
+        [LocalizedDisplayName("Roles")]
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }

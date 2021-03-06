@@ -63,7 +63,7 @@ namespace FlightJournal.Web.Models {
         [LocalizedDisplayName("Security code")]
         public string VerifyCode { get; set; }
 
-        [LocalizedDisplayName("Husk mig?")]
+        [LocalizedDisplayName("Remember me?")]
         public bool RememberBrowser { get; set; }
 
         public bool MobilNumberValidated { get; set; }

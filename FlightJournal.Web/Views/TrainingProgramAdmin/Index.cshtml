@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FlightJournal.Web.Models.Training.Catalogue.Training2Program>
+
+@{
+    ViewBag.Title = _("Training program administration");
+}
+
+<h2>@_("Training programs")</h2>
+<hr />
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Details"), "Details", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Delete"), "Delete", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = item.Training2ProgramId }, new { @class = "btn btn-default" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink(_("Create training program"), "Create", null, new { @class = "btn btn-primary" })
+</p>
+<p>
+    <hr />
+    @using (Html.BeginForm("Import", "TrainingProgramAdmin", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    {
+        @_("Import training program from JSON file")
+        <table>
+            <tr>
+                <td>@Html.TextBox("file", "", new {type = "file"})</td>
+                <td><input type="submit" value="@_("Upload")"/></td>
+            </tr>
+        </table>
+
+    }
+</p>

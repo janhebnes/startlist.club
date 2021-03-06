@@ -183,6 +183,7 @@ namespace FlightJournal.Web.Controllers
         // GET: /Club/
         public ViewResult Index()
         {
+            ViewBag.AllowEdit = string.IsNullOrWhiteSpace(GetCurrentClub().ShortName) && string.IsNullOrWhiteSpace(GetCurrentClub().Name);
             return View(db.Clubs.ToList());
         }
 
@@ -190,6 +191,7 @@ namespace FlightJournal.Web.Controllers
         // GET: /Club/Details/5
         public ViewResult Details(int id)
         {
+            ViewBag.AllowEdit = string.IsNullOrWhiteSpace(GetCurrentClub().ShortName) && string.IsNullOrWhiteSpace(GetCurrentClub().Name);
             Club club = db.Clubs.Find(id);
             return View(club);
         }

@@ -2,47 +2,79 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web.UI;
-using FlightJournal.Web.Models.Training;
+using System.Web;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models
 {
     /// <summary>
+    /// Training relevant data for a specific flight (and pilot)
+    /// 
     /// Apparently, we cannot carry the FlightContext around in EF, hence this Entity wrapper
     /// </summary>
     public class TrainingDataWrapper
     {
-        //TODO: split this in a catalogue wrapper and a pilot/flight specific wrapper
         internal TrainingDataWrapper(FlightContext db, int pilotId, Flight flight, int trainingProgramId)
         {
             FlightId = flight.FlightId;
-            // TrainingPrograms = db.TrainingPrograms;
-            //TrainingLessons = db.TrainingLessons;
-            //TrainingExercises = db.TrainingExercises;
 
-            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x=>x.Date);
+            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Landing ?? x.Date);
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
-            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y=>x.Date));
+            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Date));
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
-            TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel{Name = x.ShortName, Id = x.Training2ProgramId}).ToList();
+            TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel { Name = x.ShortName, Id = x.Training2ProgramId }).ToList();
+            
+            Manouvres = db.Manouvres.ToList();
+            WindDirections = db.WindDirections.ToList();
+            WindSpeeds = db.WindSpeeds.ToList();
+            Commentaries = db.Commentaries.ToList();
+            CommentaryTypes = db.CommentaryTypes.ToList();
+            TrainingFlightAnnotationCommentCommentTypes = db.TrainingFlightAnnotationCommentCommentTypes.Include("CommentaryType");
+            
         }
 
+        /// <summary>
+        /// The current (latest used) training program for the pilot
+        /// </summary>
         public Training2Program TrainingProgram { get; }
+
+        /// <summary>
+        /// All available training programs
+        /// </summary>
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
 
-        // catalogue stuff
-        //public IEnumerable<Training2Program> TrainingPrograms { get; }
-        //public IEnumerable<Training.Training2Lesson> TrainingLessons { get; }
-        //public IEnumerable<Training.Training2Exercise> TrainingExercises { get; }
 
         // flight specific data
+
+        /// <summary>
+        /// This flight
+        /// </summary>
         public Guid FlightId { get; }
-        public IEnumerable<Flight> PilotFlights{ get; }
-        public IEnumerable<AppliedExercise> AppliedExercises { get; } // across all PilotFlights
+
+        /// <summary>
+        /// All flights by the pilot
+        /// </summary>
+        public IEnumerable<Flight> PilotFlights { get; }
+        /// <summary>
+        /// Exercises flown across all flights by this pilot
+        /// </summary>
+        public IEnumerable<AppliedExercise> AppliedExercises { get; }
+        /// <summary>
+        /// Annotations (gradings/evaluations/comments) across all flights by this pilot
+        /// </summary>
         public IEnumerable<TrainingFlightAnnotation> FlightAnnotations{ get; } // across all PilotFlights
+        public IEnumerable<Manouvre> Manouvres { get; } // getting manouvres from the db
+        public IEnumerable<WindSpeed> WindSpeeds {get;}
+        public IEnumerable<WindDirection> WindDirections { get; }
+        public IEnumerable<Commentary> Commentaries { get; }
+        public IEnumerable<CommentaryType> CommentaryTypes { get; }
+        public IEnumerable<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; }
+
+
     }
+
 
     public class TrainingProgramSelectorViewModel
     {
@@ -51,6 +83,7 @@ namespace FlightJournal.Web.Models
         public TrainingProgramSelectorViewModel(){}
 
     }
+    
     /// <summary>
     /// Viewmodel for an actual training flight
     /// </summary>
@@ -58,136 +91,41 @@ namespace FlightJournal.Web.Models
     {
         public DateTime Date { get; }
         public string Notes { get; }
-        public string Maneuvers{ get; }
-        public string StartAnnotations{ get; }
-        public string FlightAnnotations{ get; }
-        public string ApproachAnnotations{ get; }
-        public string LandingAnnotations{ get; }
-        public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; }
+        public List<int> Manouvres { get; } = new List<int>();
+        public Dictionary<int, IEnumerable<int>> CommentIdsByPhase { get; } = new Dictionary<int, IEnumerable<int>>();
+        public int WindSpeed { get; }
+        public int WindDirection { get; }
+
+        public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; } = Enumerable.Empty<AppliedExerciseViewModel>();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="db"></param>
         /// <param name="date"></param>
-        /// <param name="exercises">Exercises applied in this flight</param> 
-        /// <param name="annotations">Annotations for this flight</param>
         public FlightLogEntryViewModel(Flight flight, TrainingDataWrapper db, DateTime date)
         {
             Date = date;
-            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).ToList();
-            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId);
-            Notes = string.Join("; ", annotationsForThisFlight.Select(x => x.Note));
-            //TODO: localize / map to symbols
-            Maneuvers = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.Maneuvers)));
-            StartAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.StartAnnotation)));
-            FlightAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.FlightAnnotation)));
-            ApproachAnnotations = string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.ApproachAnnotation)));
-            LandingAnnotations= string.Join(",", annotationsForThisFlight.Select(x => string.Join(", ", x.LandingAnnotation)));
-            ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db,x));
+            // multiple exercises possible per flight
+            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
+            ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
+            // zero or one per flight expected
+            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).FirstOrDefault();
+            if (annotationsForThisFlight != null) {
+                Notes = string.Join("; ", annotationsForThisFlight.Note);
+                WindSpeed = annotationsForThisFlight.WindSpeed;
+                WindDirection = annotationsForThisFlight.WindDirection;
+                Manouvres = annotationsForThisFlight.Manouvres?.Select(m => m.ManouvreId).ToList() ?? new List<int>();
+                CommentIdsByPhase = annotationsForThisFlight
+                    .TrainingFlightAnnotationCommentCommentTypes?
+                    .GroupBy(e => e.CommentaryType.CommentaryTypeId, e=>e.CommentaryId, (phaseId, commentIds) => new{phaseId, commentIds})
+                    .ToDictionary(
+                        x => x.phaseId, 
+                        x=> x.commentIds) 
+                                    ?? new Dictionary<int, IEnumerable<int>>();
+            }
         }
 
     }
-
-    public class FlightPhaseAnnotationViewModel
-    {
-        public FlightPhaseAnnotation Id { get; }
-        public string Name { get; }
-        public string Icon { get; }
-
-        public FlightPhaseAnnotationViewModel(FlightPhaseAnnotation id)
-        {
-            Id = id;
-            switch (Id)
-            {
-                case FlightPhaseAnnotation.Ok:
-                    Name = "&#x2713";
-                    break;
-                case FlightPhaseAnnotation.AlmostOk:
-                    Name = "(&#x2713)";
-                    break;
-                case FlightPhaseAnnotation.Skull:
-                    Name = "&#x2620";
-                    break;
-                default:
-                    Name = Id.ToString();
-                    break;
-            }
-        }
-    }
-    public class FlightManeuverViewModel
-    {
-        public FlightManeuver Id { get; }
-        public string Name { get; }
-        public string Icon { get; }
-        public FlightManeuverViewModel(FlightManeuver id)
-        {
-            Id = id;
-            switch (id)
-            {
-                case FlightManeuver.Left90:
-                case FlightManeuver.Right90:
-                    Name = "90";
-                    break;
-                case FlightManeuver.Left180:
-                case FlightManeuver.Right180:
-                    Name = "180";
-                    break;
-                case FlightManeuver.Left360:
-                case FlightManeuver.Right360:
-                    Name = "360";
-                    break;
-                case FlightManeuver.FigureEight:
-                    Name = "&infin;";
-                    break;
-                case FlightManeuver.Bank30:
-                    Name = "&ang;30&deg;";
-                    break;
-                case FlightManeuver.Bank45:
-                    Name = "&ang;45&deg;";
-                    break;
-                case FlightManeuver.Bank60:
-                    Name = "&ang;60&deg;";
-                    break;
-                case FlightManeuver.AbortedStartLowAltitude:
-                    Name = "&#x21B7 Afb start lavt";
-                    break;
-                case FlightManeuver.AbortedStartMediumAltitude:
-                    Name = "&#x21B7 Afb start mellem";
-                    break;
-                case FlightManeuver.AbortedStartHighAltitude:
-                    Name = "&#x21B7 Afb start højt";
-                    break;
-                case FlightManeuver.STurn:
-                    Name = "&#x219D S-drej";
-                    break;
-                case FlightManeuver.LeftCircuit:
-                    Name = "&#x21B0 Landingsrunde";
-                    break;
-                case FlightManeuver.RightCircuit:
-                    Name = "&#x21B1 Landingsrunde";
-                    break;
-                default:
-                    Name = id.ToString(); // TODO: localize
-                    break;
-            }
-            switch (id)
-            {
-                case FlightManeuver.Left90:
-                case FlightManeuver.Left180:
-                case FlightManeuver.Left360:
-                    Icon = "fa fa-undo";
-                    break;
-                case FlightManeuver.Right90:
-                case FlightManeuver.Right180:
-                case FlightManeuver.Right360:
-                    Icon = " fa fa-repeat";
-                    break;
-
-            }
-        }
-    }
-
-
 
     public class WindSpeedViewModel
     {
@@ -213,49 +151,81 @@ namespace FlightJournal.Web.Models
         }
     }
 
+    /// <summary>
+    /// ViewModel for items used to describe a training flight.
+    ///
+    /// The actual input from the instructor ends up in a FlightLogEntryViewModel
+    /// </summary>
     public class TrainingLogViewModel
     {
-        public TrainingLogViewModel(DateTime date, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
+        public TrainingLogViewModel(Guid flightId, DateTime date, DateTime? started, DateTime? landed, string pilot, string backseatPilot, TrainingDataWrapper dbmodel)
         {
-            Date = date;
+            FlightId = flightId;
+            TimeInfo = $"{date.ToShortDateString()} ({started?.ToShortTimeString()} - {landed?.ToShortTimeString()})";
             Pilot = pilot;
             BackseatPilot = backseatPilot;
 
-            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x, dbmodel, date));
+            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x, dbmodel, x.Date));
 
-            // catalogue stuff
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
-            Maneuvers = ((FlightManeuver[])Enum.GetValues(typeof(FlightManeuver))).Select(x=>new FlightManeuverViewModel(x));
-            Annotations  = ((FlightPhaseAnnotation[])Enum.GetValues(typeof(FlightPhaseAnnotation))).Select(x=>new FlightPhaseAnnotationViewModel(x));
+            Manouvres = dbmodel.Manouvres;
+            AnnotationsForFlightPhases =
+                dbmodel.CommentaryTypes
+                    .OrderBy(c => c.DisplayOrder)
+                    .Select(x => new FlightPhaseAnnotationViewModel() {Phase = x, Options = x.Commentaries});
 
-            var wd = new List<WindDirectionViewModel>();
-            for (int v = 0; v < 360; v += 45)
-                wd.Add(new WindDirectionViewModel(v ));
-            WindDirections = wd;
-
-            var ws = new List<WindSpeedViewModel>();
-            for (int v = 0; v < 30; v += 5)
-                ws.Add(new WindSpeedViewModel(v));
-            WindSpeeds = ws;
-
+            ThisFlight = new FlightLogEntryViewModel(dbmodel.PilotFlights.Single(x => x.FlightId == dbmodel.FlightId), dbmodel, date);
+            WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem)).ToList();
+            if (!WindDirections.Exists(x => x.Value == ThisFlight.WindDirection))
+            {
+                WindDirections.Add(new WindDirectionViewModel(ThisFlight.WindDirection));
+            }
+            WindDirections = WindDirections.OrderBy(x => x.Value).ToList();
+            
+            WindSpeeds = dbmodel.WindSpeeds.Select(ws => new WindSpeedViewModel(ws.WindSpeedItem)).ToList();
+            if(!WindSpeeds.Exists(x=>x.Value == ThisFlight.WindSpeed))
+            {
+                WindSpeeds.Add(new WindSpeedViewModel(ThisFlight.WindSpeed));
+            }
+            WindSpeeds = WindSpeeds.OrderBy(x => x.Value).ToList();
+            AnnotationIdForOk = dbmodel.Commentaries.FirstOrDefault(x => x.IsOk)?.CommentaryId;
         }
-        public DateTime Date { get; }
+
+
+        public Guid FlightId { get; }
+
         public string Pilot { get; }
         public string BackseatPilot { get; }
 
-        public IEnumerable<FlightLogEntryViewModel> FlightLog { get; }
+        public IEnumerable<FlightLogEntryViewModel> FlightLog { get; } // previous flights
         public TrainingProgramViewModel TrainingProgram;
 
-        public IEnumerable<FlightManeuverViewModel> Maneuvers { get; }
-        public IEnumerable<WindDirectionViewModel> WindDirections { get; }
-        public IEnumerable<WindSpeedViewModel> WindSpeeds { get; }
-        public IEnumerable<FlightPhaseAnnotationViewModel> Annotations{ get; }
-
+        // Selectable stuff
+        public IEnumerable<Manouvre> Manouvres { get; }
+        public List<WindDirectionViewModel> WindDirections { get; }
+        public List<WindSpeedViewModel> WindSpeeds { get; }
+        
+        public IEnumerable<FlightPhaseAnnotationViewModel> AnnotationsForFlightPhases{ get; }
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
+
+        public int? AnnotationIdForOk { get; }
+
+        // data for this flight
+        public FlightLogEntryViewModel ThisFlight { get; }
+        public string TimeInfo { get; }
     }
 
-    public class TrainingProgramViewModel
+    public class  FlightPhaseAnnotationViewModel{
+        public CommentaryType Phase{ get; set; } 
+        public IEnumerable<Commentary> Options { get; set; }
+    }
+
+/// <summary>
+/// Viewmodel for a Training program (with lessons -> exercises).
+/// Used for building UI selections.
+/// </summary>
+public class TrainingProgramViewModel
     {
         public string Id { get; }
 
@@ -270,6 +240,9 @@ namespace FlightJournal.Web.Models
         }
     }
 
+    /// <summary>
+    /// ViewModel for a lesson (and its exercises) in the context of a pilot
+    /// </summary>
     public class TrainingLessonWithOverallStatusViewModel
     {
         public string Id { get; }
@@ -280,14 +253,28 @@ namespace FlightJournal.Web.Models
 
         public IEnumerable<TrainingExerciseWithOverallStatusViewModel> Exercises { get; }
 
-        //TODO: for some reason, this calculation is broken. Numbers (and overall status) do not add up.
-        public int ExercisesTotal { get; } 
+        public int ExercisesTotal { get; }
+        /// <summary>
+        /// Exercises completed by this pilot
+        /// </summary>
         public int ExercisesCompleted { get; }
+        /// <summary>
+        /// Exercises in progress by this pilot
+        /// </summary>
         public int ExercisesInProgress { get; }
+        /// <summary>
+        /// Exercises not yet started by this pilot
+        /// </summary>
         public int ExercisesNotStarted { get; }
 
         public string StatusSummary => $"{ExercisesNotStarted}/{ExercisesInProgress}/{ExercisesCompleted} ({ExercisesTotal})";
+
+        /// <summary>
+        /// Overall status of the Lesson
+        /// </summary>
         public TrainingStatus Status { get; }
+
+        public int DisplayOrder { get;  }
 
         public TrainingLessonWithOverallStatusViewModel(Training2Lesson lesson, TrainingDataWrapper db)
         {
@@ -295,7 +282,7 @@ namespace FlightJournal.Web.Models
             Name = lesson.Name;
             Description = lesson.Purpose;
             Precondition = lesson.Precondition;
-            Debug.WriteLine($"{Id} {Name}");
+            DisplayOrder = lesson.DisplayOrder;
             Exercises = lesson.Exercises.Select(ex => new TrainingExerciseWithOverallStatusViewModel(ex, db)).ToList();
             ExercisesTotal = Exercises.Count();
             ExercisesCompleted = Exercises.Count(x => x.Status == TrainingStatus.Completed);
@@ -308,23 +295,54 @@ namespace FlightJournal.Web.Models
         }
     }
 
-
+    /// <summary>
+    /// ViewModel for an exercise in the context of a pilot - used for overview
+    /// </summary>
     public class TrainingExerciseWithOverallStatusViewModel
     {
+        public enum CheckBoxType{
+            PlaceHolder,
+            DisabledUnchecked,
+            DisabledChecked,
+            EnabledUnchecked,
+            EnabledChecked
+        };
+
         public string Id { get; }
 
         public string Description { get; }
         public string LongDescription { get; }
+
         public TrainingStatus Status { get; }
 
+        public ExerciseAction ActionInThisFlight { get; set; }
 
-        public bool IsBriefed => Status == TrainingStatus.Briefed 
+        public bool IsBriefed => Status == TrainingStatus.Briefed
                                  || Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
+
+        public bool IsBriefedInThisFlight => ActionInThisFlight == ExerciseAction.Briefed
+                                           || ActionInThisFlight == ExerciseAction.Trained
+                                           || ActionInThisFlight == ExerciseAction.Completed;
+
+
         public bool IsTrained => Status == TrainingStatus.Trained
                                  || Status == TrainingStatus.Completed;
+
+        public bool IsTrainedInThisFlight => ActionInThisFlight == ExerciseAction.Trained
+                                             || ActionInThisFlight == ExerciseAction.Completed;
+
         public bool IsCompleted => Status == TrainingStatus.Completed;
-        public bool BriefingOnlyRequired { get; } 
+        public bool IsCompletedInThisFlight => ActionInThisFlight == ExerciseAction.Completed;
+        public bool BriefingOnlyRequired { get; }
+        public int DisplayOrder { get; }
+        public bool Regression { get; }
+        public CheckBoxType CheckBoxForOverallBriefed =>  IsBriefed ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
+        public CheckBoxType CheckBoxForOverallTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder :  IsTrained ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
+        public CheckBoxType CheckBoxForOverallCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompleted ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
+        public CheckBoxType CheckBoxForThisFlightBriefed =>  IsBriefedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
+        public CheckBoxType CheckBoxForThisFlightTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsTrainedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
+        public CheckBoxType CheckBoxForThisFlightCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompletedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
 
         public TrainingExerciseWithOverallStatusViewModel(Training2Exercise exercise, TrainingDataWrapper db)
         {
@@ -332,55 +350,57 @@ namespace FlightJournal.Web.Models
             Description = exercise.Name;
             LongDescription = exercise.Note;
             BriefingOnlyRequired = exercise.IsBriefingOnly;
+            DisplayOrder = exercise.DisplayOrder;
 
-            if (true) // fake it for UI demo purposes
-            {
-                var toss = new Random().NextDouble();
-                if (toss > 0.8)
-                    Status = TrainingStatus.Completed;
-                else if (toss > 0.6)
-                    Status = TrainingStatus.Trained;
-                else if (toss > 0.4)
-                    Status = TrainingStatus.Briefed;
-                else
-                    Status = TrainingStatus.NotStarted;
+            var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
+            var flightsWhereThisExerciseWasAtLeastBriefed = totalApplied.Where(x => x.Action == ExerciseAction.Briefed).Select(f=>f.FlightId);
+            var flightsWhereThisExerciseWasAtLeastTrained = totalApplied.Where(x => x.Action == ExerciseAction.Trained).Select(f => f.FlightId);
+            var flightsWhereThisExerciseWasCompleted = totalApplied.Where(x => x.Action == ExerciseAction.Completed).Select(f => f.FlightId);
+            // check if we have a Trained or Briefed later than a Completed => regression, which should be highlighted.
+            var latestBriefedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasAtLeastBriefed.Contains(f.FlightId));
+            var latestTrainedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasAtLeastTrained.Contains(f.FlightId));
+            var latestCompletedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasCompleted.Contains(f.FlightId));
+            Regression = latestCompletedFlight != null 
+                         && (LandingTimeOf(latestTrainedFlight) > LandingTimeOf(latestCompletedFlight) 
+                         || LandingTimeOf(latestBriefedFlight) > LandingTimeOf(latestCompletedFlight));
 
-                if(BriefingOnlyRequired)
-                    Status = toss > 0.4 ? TrainingStatus.Briefed : TrainingStatus.NotStarted;
+            Status =
+                flightsWhereThisExerciseWasCompleted.Any() ? TrainingStatus.Completed :
+                flightsWhereThisExerciseWasAtLeastTrained.Any() ? TrainingStatus.Trained :
+                flightsWhereThisExerciseWasAtLeastBriefed.Any() ? TrainingStatus.Briefed :
+                TrainingStatus.NotStarted;
 
-                Debug.WriteLine($"{Description}:{Status}  {IsBriefed}/{IsTrained}/{IsCompleted}");
-            }
-            else
-            {
-                var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
-                var isBriefed = totalApplied.Any(y => y.Action == ExerciseAction.Briefed);
-                var isTrained = totalApplied.Any(y => y.Action == ExerciseAction.Trained);
-                var isCompleted = totalApplied.Any(y => y.Action == ExerciseAction.Completed);
-
-                Status =
-                    isCompleted ? TrainingStatus.Completed :
-                    isTrained ? TrainingStatus.Trained :
-                    isBriefed ? TrainingStatus.Briefed :
-                    TrainingStatus.NotStarted;
-            }
+            var appliedInThisFlight = totalApplied.FirstOrDefault(x => x.FlightId == db.FlightId); // should be only one
+            ActionInThisFlight = appliedInThisFlight?.Action ?? ExerciseAction.None;
 
             if (BriefingOnlyRequired && (Status == TrainingStatus.Briefed || Status == TrainingStatus.Trained))
                 Status = TrainingStatus.Completed;
 
         }
+
+
+        private DateTime LandingTimeOf(Flight flight)
+        {
+            return flight?.Landing ?? DateTime.MinValue;
+        }
     }
 
-
+    /// <summary>
+    /// ViewModel for a flown exercise 
+    /// </summary>
     public class AppliedExerciseViewModel
     {
         public string Description { get; }
 
+        /// <summary>
+        /// STatus of the flown exercise
+        /// </summary>
         public ExerciseAction Action { get; set; }
 
         public AppliedExerciseViewModel(TrainingDataWrapper db, AppliedExercise appliedExercise)
         {
             Action = appliedExercise.Action;
-            var program = db.TrainingProgram; // .TrainingPrograms.SingleOrDefault(x=>x == appliedExercise.Program);
+            var program = db.TrainingProgram;
             var lesson = program.Lessons.SingleOrDefault(x=>x == appliedExercise.Lesson);
             var exercise = lesson.Exercises.SingleOrDefault(x => x == appliedExercise.Exercise);
             Description = $"{program?.Name} {lesson?.Name} {exercise?.Name}";

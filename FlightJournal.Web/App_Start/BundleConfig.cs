@@ -7,6 +7,9 @@ namespace FlightJournal.Web
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/intro").Include(
+                        "~/Scripts/introjs/intro.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -31,6 +34,10 @@ namespace FlightJournal.Web
                       "~/Scripts/respond.js",
                       "~/Scripts/bootstrap-select.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
+                      "~/Scripts/DataTables/jQuery.dataTables.min.js"
+                      ));
+
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
@@ -40,17 +47,20 @@ namespace FlightJournal.Web
                       "~/Content/themes/base/autocomplete.css",
                       "~/Content/themes/base/datepicker.css",
                       "~/Content/themes/base/theme.css",
-                      "~/Content/site.css"));
-                      //"~/Content/themes/base/resizable.css",
-                      //"~/Content/themes/base/selectable.css",
-                      //"~/Content/themes/base/accordion.css",
-                      //"~/Content/themes/base/button.css",
-                      //"~/Content/themes/base/dialog.css",
-                      //"~/Content/themes/base/slider.css",
-                      //"~/Content/themes/base/tabs.css",                      
-                      //"~/Content/themes/base/progressbar.css",
-                      //"~/Content/themes/base/theme.css"
-            
+                      "~/Content/site.css",
+                      "~/Content/introjs/introjs.min.css",
+                      "~/Content/dataTables/css/jQuery.dataTables.min.css"
+                      ));
+            //"~/Content/themes/base/resizable.css",
+            //"~/Content/themes/base/selectable.css",
+            //"~/Content/themes/base/accordion.css",
+            //"~/Content/themes/base/button.css",
+            //"~/Content/themes/base/dialog.css",
+            //"~/Content/themes/base/slider.css",
+            //"~/Content/themes/base/tabs.css",                      
+            //"~/Content/themes/base/progressbar.css",
+            //"~/Content/themes/base/theme.css"
+
             //// When running release it is expected that the bundling automatically takes place
             //// BundleTable.EnableOptimizations = true;
 

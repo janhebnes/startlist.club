@@ -1,50 +1,81 @@
-﻿@model FlightJournal.Web.Models.EditUserViewModel
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.EditUserViewModel
 
 @{
-    ViewBag.Title = _("Edit");
+    ViewBag.Title = "Edit";
 }
-<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>@_("Edit User Form")</h4>
-        <hr />
-        @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@_("Edit user")</legend>
         @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.Email)
-            </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmailConfirmed, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.CheckBoxFor(m => m.EmailConfirmed, new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.EmailConfirmed)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("Roles", new { @class = "control-label col-md-2" })
-            <span class=" col-md-10">
-                @foreach (var item in Model.RolesList)
-                {
-                    <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                    @Html.Label(item.Value, new { @class = "control-label" })
-                }
-            </span>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Email, new { @type = "email", placeholder = "email@email.com", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@_("Save")" class="btn btn-default" />
-            </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EmailConfirmed)
         </div>
-    </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(m => m.EmailConfirmed)
+            @Html.ValidationMessageFor(model => model.EmailConfirmed)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RolesList)
+        </div>
+        <div class="editor-field">
+            &nbsp;
+        </div>
+
+        @foreach (var item in Model.RolesList)
+        {
+            <div class="editor-label">
+                &nbsp;
+            </div>
+            <div class="editor-field">
+                <blockquote class="blockquote" style="display:inline-block">
+                    <p class="mb-0">
+                        <input class="form-check-input" type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" id="@item.Value" />
+                        @item.Value
+                    </p>
+                    <footer class="blockquote-footer">
+                        @if (item.Value == "Editor")
+                        {
+                            @_(" can change or delete flights after the 48 hours where the user has a pilot binding and change locations and planes.")
+                        }
+                        else if (item.Value == "Manager")
+                        {
+                            @_(" (Editor+) can manage pilots in the club where the user has a pilot binding.")
+                        }
+                        else if (item.Value == "Administrator")
+                        {
+                            @_(" (Manager+) can manage users, clubs, startmethods and roles.")
+                        }
+                    </footer>
+                </blockquote>
+            </div>
+        }
+
+
+        <p style="margin-top: 30px">
+            <div class="btn-group">
+                <input type="submit" value="@_("Save")" class="btn btn-primary" />
+                <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
+            </div>
+        </p>
+    </fieldset>
 }
 
 <div>

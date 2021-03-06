@@ -101,32 +101,15 @@ namespace FlightJournal.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, EmailConfirmed = true };
-                var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
+                var result = await UserManager.CreateAsync(user, userViewModel.Password);
 
-                //Add User to the selected Roles 
-                if (adminresult.Succeeded)
+                if (!result.Succeeded)
                 {
-                    if (selectedRoles != null)
-                    {
-                        var result = await UserManager.AddUserToRolesAsync(user.Id, selectedRoles);
-                        if (!result.Succeeded)
-                        {
-                            ModelState.AddModelError("", result.Errors.First());
-                            ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
-                            return View();
-                        }
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", adminresult.Errors.First());
-                    ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+                                       ModelState.AddModelError("", result.Errors.First());
                     return View();
-
                 }
                 return RedirectToAction("Index");
             }
-            ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
             return View();
         }
 
@@ -151,7 +134,7 @@ namespace FlightJournal.Web.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 EmailConfirmed = user.EmailConfirmed,
-                RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+                RolesList = RoleManager.Roles.ToList().OrderBy(r=>r.Name.Length).Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
                     Text = x.Name,

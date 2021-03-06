@@ -175,11 +175,13 @@
                     }
                 </div>
             </div>
-            @if (Request.IsInstructor())
+            @if (Model.IsTrainingFlight)
             {
+                var btnclass = $"btn btn-default {(Request.IsInstructor() ? "" : "disabled")}";
+
                 <div class="col-md-3">
-                    <div class="btn-group btn-group-lg">
-                        @Html.ActionLink(_("TrainingLog"), "Edit", "TrainingLog", new {flightId = Model.FlightId }, new {@class = "btn btn-default"}, "fa fa-graduation-cap")
+                    <div class="btn-group btn-group-lg ">
+                        @Html.ActionLink(_("TrainingLog"), "Edit", "TrainingLog", new {flightId = Model.FlightId }, new {@class = btnclass }, "fa fa-graduation-cap")
                     </div>
                 </div>
             }
