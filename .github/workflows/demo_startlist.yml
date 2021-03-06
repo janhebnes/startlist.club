@@ -4,9 +4,6 @@
 name: Build and deploy ASP app to Azure Web App - startlist(demo)
 
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
