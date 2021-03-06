@@ -93,7 +93,6 @@ namespace FlightJournal.Web.Controllers
             var comments = db.Commentaries.OrderBy(x=>x.DisplayOrder);
             model.FlightPhaseNames = phases.Select(x => x.CType);
             model.Comments = new Dictionary<string, IEnumerable<CommentInFlightPhaseViewModel>>();
-            int n = 0;
             foreach (var p in phases)
             {
                 var cinp = comments.Select(c => new CommentInFlightPhaseViewModel

@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNet.SignalR;
+using System;
 
 namespace FlightJournal.Web.Hubs
 {
     public class FlightHub : Hub
     {
-        public void InformClientsStaleData()
+        public void StaleData(Guid flightId)
         {
-            Clients.All.staleData();
+            var id = flightId;
+            Clients.All.DataIsStale();
         }
     }
 }
