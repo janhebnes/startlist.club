@@ -289,12 +289,11 @@ td.valign-top {
     width: 90%;
 }
 
-
-.nonreleaseversion {
-	background-color: darkmagenta !important;
-	color: white;
-	padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 5px;
+.floatingalert {
+	position: fixed;
+    bottom: 50px;
+    left: 0px;
+    width: 100%;
+    z-index: 9999;
 }
 
