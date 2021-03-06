@@ -26,7 +26,8 @@ jobs:
       run: nuget restore
 
     - name: Publish to folder
-      run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+      #run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+      run: msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:_PackageTempDir="\published\"
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
