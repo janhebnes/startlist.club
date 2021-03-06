@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
@@ -99,7 +96,7 @@ namespace FlightJournal.Web.Controllers
 
             db.SaveChanges();
 
-            return new JsonResult();
+            return new JsonResult() { @Data = new { Success = true } };
         }
 
 
@@ -132,14 +129,17 @@ namespace FlightJournal.Web.Controllers
                 var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
                // var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
-                var commentsForPhasesInThisFlight = annotation
-                                                        .TrainingFlightAnnotationCommentCommentTypes?
-                                                        .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })
-                                                        .ToDictionary(
-                                                            x => x.phase,
-                                                            x => x.comments.Select(t => new HtmlString(t.Comment)))
-                                                    ?? new Dictionary<string, IEnumerable<HtmlString>>();
-
+                var phases = db.CommentaryTypes.OrderBy(x => x.DisplayOrder).ToList();
+                var phaseComments = new Dictionary<string, IEnumerable<HtmlString>>();
+                foreach (var p in phases)
+                {
+                    var annotationsForThisPhase = 
+                        annotation?.TrainingFlightAnnotationCommentCommentTypes
+                        .Where(x => x.CommentaryTypeId == p.CommentaryTypeId)
+                        .Select(y => new HtmlString(y.Commentary.Comment)).ToList();
+                    if(!annotationsForThisPhase.IsNullOrEmpty())
+                        phaseComments.Add(p.CType, annotationsForThisPhase);   
+                }
                 var m = new TrainingFlightWithSomeDetailsViewModel
                 {
                     FlightId = f.FlightId.ToString(),
@@ -151,9 +151,9 @@ namespace FlightJournal.Web.Controllers
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
                     PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
-                    Annotations = string.Join(", ",  commentsForPhasesInThisFlight.Select(x=>$"{x.Key}: {string.Join(",", x.Value)}")),
+                    Annotations = string.Join(", ", phaseComments.Select(x=>$"{x.Key}: {string.Join(",", x.Value)}")),
                     Manouvres = string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
-                    Note = annotation.Note
+                    Note = annotation?.Note
                 };
                 model.Add(m);
             }

@@ -7,12 +7,12 @@ using FlightJournal.Web.Models.Training.Predefined;
 namespace FlightJournal.Web.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class ManouvreAdminController : Controller
+    public class CommentaryTypeAdminController : Controller
     {
-        private FlightContext db = new FlightContext();
+        private readonly FlightContext db = new FlightContext();
         public ActionResult Index()
         {
-            var model = db.Manouvres;
+            var model = db.CommentaryTypes;
             if (model.Count(x => x.DisplayOrder == 0) > 1)
             {
                 // not yet defined, set order according to current implicit order. You could argue that this should be done elsewhere...
@@ -25,78 +25,70 @@ namespace FlightJournal.Web.Controllers
 
                 db.SaveChanges();
             }
-            ViewBag.CanDelete = model.ToDictionary(x => x.ManouvreId, x => !IsInUse(x.ManouvreId));
+            ViewBag.CanDelete = model.ToDictionary(x => x.CommentaryTypeId, x => !IsCommentaryTypeInUse(x.CommentaryTypeId));
             return View(model);
-        }
-
-
-        public ViewResult Details(int id)
-        {
-            var manouvre = db.Manouvres.Find(id);
-            return View(manouvre);
         }
 
         public ActionResult Create()
         {
-            var manouvre= new Manouvre();
-            return View(manouvre);
+            var commentary= new CommentaryType();
+            return View(commentary);
         }
         [HttpPost]
-        public ActionResult Create(Manouvre manouvre)
+        public ActionResult Create(CommentaryType item)
         {
             if (ModelState.IsValid)
             {
-                db.Manouvres.Add(manouvre);
+                db.CommentaryTypes.Add(item);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(manouvre);
+            return View(item);
         }
 
         public ActionResult Edit(int id)
         {
-            var manouvre = db.Manouvres.Find(id);
-            ViewBag.IsInUse = IsInUse(id);
-            return View(manouvre);
+            var item = db.CommentaryTypes.Find(id);
+            ViewBag.IsInUse = IsCommentaryTypeInUse(id);
+            return View(item);
         }
 
         [HttpPost]
-        public ActionResult Edit(Manouvre manouvre)
+        public ActionResult Edit(CommentaryType item)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(manouvre).State = EntityState.Modified;
+                db.Entry(item).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
-            return View(manouvre);
+            return View(item);
         }
 
 
         public ActionResult Delete(int id)
         {
-            var manouvre = db.Manouvres.Find(id);
-            return View(manouvre);
+            var item = db.CommentaryTypes.Find(id);
+            return View(item);
         }
 
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var manouvre = db.Manouvres.Find(id);
-            db.Manouvres.Remove(manouvre);
+            var item = db.CommentaryTypes.Find(id);
+            db.CommentaryTypes.Remove(item);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-
         public ActionResult SwapOrder(int itemId1, int itemId2)
         {
-            var item1 = db.Manouvres.FirstOrDefault(x => x.ManouvreId == itemId1);
-            var item2 = db.Manouvres.FirstOrDefault(x => x.ManouvreId == itemId2);
-            if (item1 != null && item2!= null)
+            var item1 = db.CommentaryTypes.FirstOrDefault(x => x.CommentaryTypeId == itemId1);
+            var item2 = db.CommentaryTypes.FirstOrDefault(x => x.CommentaryTypeId == itemId2);
+            if (item1 != null && item2 != null)
             {
                 var tmp = item1.DisplayOrder;
                 item1.DisplayOrder = item2.DisplayOrder;
@@ -115,12 +107,13 @@ namespace FlightJournal.Web.Controllers
             base.Dispose(disposing);
         }
 
-        private bool IsInUse(int id)
+
+        private bool IsCommentaryTypeInUse(int id)
         {
-            var isInUse = db.TrainingFlightAnnotations.SelectMany(x=>x.Manouvres).Any(y=>y.ManouvreId == id);
-            return isInUse;
+            var inUse = db.TrainingFlightAnnotations.SelectMany(x => x.TrainingFlightAnnotationCommentCommentTypes)
+                .Any(y => y.CommentaryTypeId == id);
+
+            return inUse;
         }
-
-
     }
 }

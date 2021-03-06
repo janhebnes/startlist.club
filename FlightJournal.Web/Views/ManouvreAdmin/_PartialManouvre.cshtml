@@ -1,6 +1,12 @@
-﻿@model FlightJournal.Web.Models.Training.Predefined.Manouvre
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Predefined.Manouvre
 
 <legend>@_("Manouvre")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
 
 <div class="editor-label">
     @Html.LabelFor(model => model.IconCssClass)

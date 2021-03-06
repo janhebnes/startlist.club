@@ -3,6 +3,7 @@
 @using FlightJournal.Web.Controllers
 @using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Models
+@using Microsoft.Ajax.Utilities
 
 <!DOCTYPE html>
 <html>
@@ -18,6 +19,13 @@
     @Html.Action("GoogleAnalyticsPartial", "About")
 </head>
 <body>
+@if (ApplicationConfiguration.Config != AppConfig.CFG_RELEASE)
+{
+    <div class="alert alert-danger alert-dismissable show text-center floatingalert">Dette er en demo- eller udviklingsversion - <b>må IKKE bruges til virkelige flyvninger</b>, da data kan forsvinde uden varsel
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button></div>
+}
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -28,7 +36,7 @@
                 </button>
                 <a class="navbar-brand" href="@Url.Action("Index", "About")">
                     <span class="fa-stack">
-                        <i class="fa fa-square-o fa-stack-2x" style="color:#008eda"></i>
+                        <i class="fa fa-square-o fa-stack-2x" style="color: #008eda"></i>
                         <i class="fa fa-plane fa-stack-1x"></i>
                     </span>
                     @if (Request.IsClub())
@@ -61,11 +69,24 @@
                             <li>@Html.ActionLink(_("Startlist ({0})", Request.Pilot().Club.ShortName), "Grid", "Flight", new { club = Request.Pilot().Club.ShortName }, null)</li>
                         }
                     }
-                    @if (User.IsPilot() && Request.Club().ClubId == User.Pilot().Club.ClubId)
+                    @if (User.IsPilot())
                     {
-                        <li>@Html.MenuLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@_("Logbook") <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                @if (Request.Club().ClubId == User.Pilot().Club.ClubId)
+                                {
+                                    <li>@Html.MenuLink(_("Logbook", Request.Pilot().Club.ShortName), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
+                                }
+                                else
+                                {
+                                    <li>@Html.MenuLink(_("Logbook"), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
+                                }
+                                <li>@Html.MenuLink(_("Training flights"), "Index", "TrainingLogHistory")</li>
+                                <li>@Html.MenuLink(_("Training status"), "Index", "TrainingStatus")</li>
+                            </ul>
+                        </li>
                     }
-                    <li>@Html.MenuLink(_("Training flights"), "Index", "TrainingLogHistory")</li>
                     @if (Request.IsClub() && !string.IsNullOrWhiteSpace(Request.Club().Website) && !User.IsEditor())
                     {
                         <li><a href="@Request.Club().Website" class="hidden-sm">@Request.Club().Website.Replace("http://", string.Empty).Replace("www.", string.Empty)</a></li>
@@ -98,6 +119,7 @@
                                     <li>@Html.MenuLink(_("Training programs"), "Index", "TrainingProgramAdmin")</li>
                                     <li>@Html.MenuLink(_("Flight manouvres"), "Index", "ManouvreAdmin")</li>
                                     <li>@Html.MenuLink(_("Flight comments"), "Index", "CommentaryAdmin")</li>
+                                    <li>@Html.MenuLink(_("Flight phases"), "Index", "CommentaryTypeAdmin")</li>
                                 }
                             </ul>
                         </li>
@@ -118,10 +140,6 @@
                             }
                         </li>
                     }
-                    @if (User.IsPilot() && Request.Club().ClubId != User.Pilot().Club.ClubId)
-                    {
-                        <li>@Html.MenuLink(_("Logbook"), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
-                    }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_LanguagePartial")
                     <li><a href="#" id="showhelp"><i class="fa fa-question-circle" title=@Html.Raw(__("Guided tour"))></i></a></li>
@@ -129,29 +147,29 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderSection("featured", required: false)
-        @RenderBody()
-    </div>
-    <div class="container footer-content">
-        <footer>
-            <p class="pull-right btn-xs">
-                &copy; <a href="@Url.Action("Index","About")">@_("About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
-            </p>
-            @Html.Action("ClubSelector", "Club")
-        </footer>
-    </div>
+<div class="container body-content">
+    @RenderSection("featured", required: false)
+    @RenderBody()
+</div>
+<div class="container footer-content">
+    <footer>
+        <p class="pull-right btn-xs">
+            &copy; <a href="@Url.Action("Index", "About")">@_("About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
+        </p>
+        @Html.Action("ClubSelector", "Club")
+    </footer>
+</div>
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/intro")
-    @Scripts.Render("~/bundles/datatables")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/intro")
+@Scripts.Render("~/bundles/datatables")
+@RenderSection("scripts", required: false)
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     $(document).ready(function() {
         if ($(".tourable").length > 0) {
@@ -174,13 +192,13 @@
 
             $("#showhelp").click(function() {
                 // show intro tooltips only for visible elements
-                $("[data-intro]:hidden").each(function(){
+                $("[data-intro]:hidden").each(function() {
                     var $t = $(this);
-                    $t.attr({'data-intro-hidden':$t.attr('data-intro')}).removeAttr('data-intro');
+                    $t.attr({ 'data-intro-hidden': $t.attr('data-intro') }).removeAttr('data-intro');
                 });
-                $("[data-intro-hidden]:visible").each(function(){
+                $("[data-intro-hidden]:visible").each(function() {
                     var $t = $(this);
-                    $t.attr({'data-intro':$t.attr('data-intro-hidden')}).removeAttr('data-intro-hidden');
+                    $t.attr({ 'data-intro': $t.attr('data-intro-hidden') }).removeAttr('data-intro-hidden');
                 });
 
                 intro.start();
@@ -189,7 +207,7 @@
             $("#showhelp").hide();
         }
     });
-    </script>
+</script>
 
 
 </body>

@@ -288,3 +288,12 @@ td.valign-top {
 .modal-full {
     width: 90%;
 }
+
+.floatingalert {
+	position: fixed;
+    bottom: 50px;
+    left: 0px;
+    width: 100%;
+    z-index: 9999;
+}
+

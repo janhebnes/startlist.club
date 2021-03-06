@@ -1,6 +1,12 @@
-﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
 
 <legend>@_("Training lesson")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)

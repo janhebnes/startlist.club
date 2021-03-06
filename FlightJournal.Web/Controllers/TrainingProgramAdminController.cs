@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
 using Newtonsoft.Json;
-using RestSharp.Deserializers;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -20,6 +19,8 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Index(int dtoId=-1)
         {
             var items = db.TrainingPrograms;
+            ViewBag.CanDelete = items.ToDictionary(x => x.Training2ProgramId, x => !IsInUse(x.Training2ProgramId));
+
             return View(items);
         }
 
@@ -31,7 +32,7 @@ namespace FlightJournal.Web.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new Training2Program());
         }
 
         [HttpPost]
@@ -50,6 +51,7 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Edit(int id)
         {
             var item = db.TrainingPrograms.Find(id);
+            ViewBag.IsInUse = IsInUse(id);
             return View(item);
         }
 
@@ -90,7 +92,22 @@ namespace FlightJournal.Web.Controllers
             base.Dispose(disposing);
         }
 
+        public ActionResult Export(int id)
+        {
+            var item = db.TrainingPrograms.Find(id);
 
+            var sb = new StringBuilder();
+            var serializer = new JsonSerializer { NullValueHandling = NullValueHandling.Ignore };
+
+            using (var sw = new StringWriter(sb))
+            using (var writer = new JsonTextWriter(sw) { Formatting = Formatting.Indented })
+            {
+                serializer.Serialize(writer, item);
+            }
+
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"{item.Name}.json");
+        }
 
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase file)
@@ -112,6 +129,12 @@ namespace FlightJournal.Web.Controllers
             {
             }
             return RedirectToAction("Index");
+        }
+
+        private bool IsInUse(int id)
+        {
+            var isInUse = db.AppliedExercises.Any(x => x.Program.Training2ProgramId == id);
+            return isInUse;
         }
     }
 }

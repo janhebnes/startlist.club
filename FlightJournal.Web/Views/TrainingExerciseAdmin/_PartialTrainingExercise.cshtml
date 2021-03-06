@@ -1,6 +1,12 @@
-﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Exercise
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Exercise
 
 <legend>@_("Training exercise")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
@@ -13,7 +19,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Note)
 </div>
-<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.Note, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.Note)
 </div>
@@ -29,7 +35,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.AcceptanceCriteria)
 </div>
-<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.AcceptanceCriteria, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.AcceptanceCriteria)
 </div>

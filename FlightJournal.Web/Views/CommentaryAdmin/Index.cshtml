@@ -1,13 +1,15 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Commentary>
+﻿@using FlightJournal.Web.Extensions
+@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Commentary>
 
 @{
-    ViewBag.Title = _("Commentaries");
+    ViewBag.Title = _("Comments");
 }
 
-<h2>@_("Training phase commentaries")</h2>
+<h2>@_("Flight phase comments")</h2>
 <hr/>
 <p>
     @Html.ActionLink(_("Create"), "Create", null, new { @class = "btn btn-primary"})
+    @Html.ActionLink(_("Comments in flight phases"), "CommentsInFlightPhases", null, new { @class = "btn btn-default"})
 </p>
 <table class="table table-striped table-hover table-condensed">
     <tr>
@@ -15,45 +17,50 @@
             @Html.DisplayNameFor(model => model.Comment)
         </th>
         <th>
-            Applies to Start
+            @Html.DisplayNameFor(model => model.IsOk)
         </th>
-        <th>
-            Applies to Flight
-        </th>
-        <th>
-            Applies to Approach
-        </th>
-        <th>
-            Applies to Landing
-        </th>
+        <th></th>
+        <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.Raw(item.Comment)
-            </td>
-            <td>
-                @Html.DisplayFor(x=>item.AppliesToStartPhase)
-            </td>
-            <td>
-                @Html.DisplayFor(x=>item.AppliesToFlightPhase)
-            </td>
-            <td>
-                @Html.DisplayFor(x=>item.AppliesToApproachPhase)
-            </td>
-            <td>
-                @Html.DisplayFor(x=>item.AppliesToLandingPhase)
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm">
-                    @Html.ActionLink(_("Edit"), "Edit", new { id = item.CommentaryId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Details"), "Details", new { id = item.CommentaryId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Delete"), "Delete", new { id = item.CommentaryId }, new { @class = "btn btn-default" })
-                </div>
-            </td>
-        </tr>
+    @{
+        var ordered = Model.OrderBy(x => x.DisplayOrder).ToList();
+        for (var n = 0; n < ordered.Count; n++)
+        {
+            var item = ordered[n];
+            <tr>
+                <td>
+                    @Html.Raw(item.Comment)
+                </td>
+                <td>
+                    @Html.Raw(item.IsOk)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @Html.ActionLink(_("Edit"), "Edit", new {id = item.CommentaryId}, new {@class = "btn btn-default"})
+                        @if (ViewBag.CanDelete[item.CommentaryId])
+                        {
+                            @Html.ActionLink(_("Delete"), "Delete", new {id = item.CommentaryId}, new {@class = "btn btn-default"})
+                        }
+                        else
+                        {
+                            @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @if (n > 0)
+                        {
+                            <a href="@Url.Action("SwapOrder", new {itemId1 = ordered[n].CommentaryId, itemId2 = ordered[n - 1].CommentaryId})" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
+                        }
+                        @if (n < ordered.Count - 1)
+                        {
+                            <a href="@Url.Action("SwapOrder", new {itemId1 = ordered[n].CommentaryId, itemId2 = ordered[n + 1].CommentaryId})" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
     }
-
 </table>

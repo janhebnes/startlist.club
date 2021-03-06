@@ -1,4 +1,5 @@
-﻿@using MarkdownSharp
+﻿@using FlightJournal.Web.Extensions
+@using MarkdownSharp
 @model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
 
 @{
@@ -24,7 +25,7 @@
             @_("Note")
         </th>
         <th>
-            @_("Brifing Only?")
+            @_("Briefing Only?")
         </th>
         <th></th>
         <th></th>
@@ -44,18 +45,26 @@
                 <div class="btn-group btn-group-sm">
                     @Html.ActionLink(_("Edit"), "Edit", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
                     @Html.ActionLink(_("Details"), "Details", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
-                    @Html.ActionLink(_("Delete"), "Delete", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                    @if (
+                        ViewBag.CanDelete[item.Training2ExerciseId])
+                    {
+                        @Html.ActionLink(_("Delete"), "Delete", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+                        @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+                    }
                 </div>
             </td>
             <td>
                 <div class="btn-group btn-group-sm">
                     @if (n > 0)
                     {
-                        @Html.ActionLink(_("^"), "SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n - 1].Training2ExerciseId }, new { @class = "btn btn-default" });
+                        <a href="@Url.Action("SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n - 1].Training2ExerciseId })" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
                     }
                     @if (n < ordered.Count - 1)
                     {
-                        @Html.ActionLink(_("v"), "SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n + 1].Training2ExerciseId }, new { @class = "btn btn-default" });
+                        <a href="@Url.Action("SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n + 1].Training2ExerciseId })" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
                     }
                 </div>
             </td>

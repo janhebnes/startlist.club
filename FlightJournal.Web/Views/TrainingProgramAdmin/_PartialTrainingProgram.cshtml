@@ -1,6 +1,12 @@
-﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
 
 <legend>@_("Training program")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
 
 <div class="editor-label">
     @Html.LabelFor(model => model.ShortName)
@@ -22,7 +28,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Notes)
 </div>
-<div class="editor-field"  title="@__("HTML and MarkDown accepted")">
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
     @Html.TextAreaFor(model => model.Notes, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.Notes)
 </div>

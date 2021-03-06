@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CFG_DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -44,7 +44,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CFG_RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -245,6 +245,7 @@
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
+    <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
     <Compile Include="Controllers\CommentaryAdminController.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Controllers\TrainingLessonAdminController.cs" />
     <Compile Include="Controllers\TrainingLogHistoryController.cs" />
     <Compile Include="Controllers\TrainingProgramAdminController.cs" />
+    <Compile Include="Controllers\TrainingStatusController.cs" />
     <Compile Include="Extensions\DateTimeOffsetExtension.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\OGNFlightExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
+    <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Hubs\FlightHub.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.Designer.cs">
@@ -294,6 +297,7 @@
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotationCommentCommentType.cs" />
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
     <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
+    <Compile Include="Models\Training\Predefined\CommentsInFlightPhasesViewModel.cs" />
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
@@ -1063,12 +1067,11 @@
     <Content Include="Views\ManouvreAdmin\_PartialManouvre.cshtml" />
     <Content Include="Views\ManouvreAdmin\_PartialManouvreReadonly.cshtml" />
     <Content Include="Views\CommentaryAdmin\_PartialBackToList.cshtml" />
-    <Content Include="Views\CommentaryAdmin\_PartialCommentary.cshtml" />
-    <Content Include="Views\CommentaryAdmin\_PartialCommentaryReadonly.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialItem.cshtml" />
+    <Content Include="Views\CommentaryAdmin\_PartialItemReadonly.cshtml" />
     <Content Include="Views\CommentaryAdmin\Create.cshtml" />
     <Content Include="Views\CommentaryAdmin\Delete.cshtml" />
     <Content Include="Views\CommentaryAdmin\DeleteLocked.cshtml" />
-    <Content Include="Views\CommentaryAdmin\Details.cshtml" />
     <Content Include="Views\CommentaryAdmin\Edit.cshtml" />
     <Content Include="Views\CommentaryAdmin\Index.cshtml" />
     <Content Include="Views\TrainingLogHistory\Index.cshtml" />
@@ -1076,6 +1079,16 @@
     <Content Include="Views\TrainingLogHistory\_PartialExerciseDetailsView.cshtml" />
     <Content Include="Views\TrainingLog\_PartialTrainingLogView.cshtml" />
     <Content Include="Views\TrainingLog\_PartialTrainingFlightDetails.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\_PartialItem.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\_PartialItemReadonly.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Create.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Delete.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Edit.cshtml" />
+    <Content Include="Views\CommentaryTypeAdmin\Index.cshtml" />
+    <Content Include="Views\CommentaryAdmin\CommentInFlightPhase.cshtml" />
+    <Content Include="Views\TrainingStatus\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1133,7 +1146,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Demo|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CFG_DEMO</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -1142,7 +1155,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CFG_DEV</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

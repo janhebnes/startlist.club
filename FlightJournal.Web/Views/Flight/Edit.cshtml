@@ -177,7 +177,7 @@
             </div>
             @if (Model.IsTrainingFlight)
             {
-                var btnclass = $"btn btn-default {(Request.IsInstructor() ? "" : "disabled")}";
+                var btnclass = $"btn btn-default {(Request.IsInstructor() || User.IsAdministrator() ? "" : "disabled")}";
 
                 <div class="col-md-3">
                     <div class="btn-group btn-group-lg ">
