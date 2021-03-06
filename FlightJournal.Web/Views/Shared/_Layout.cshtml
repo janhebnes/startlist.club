@@ -19,21 +19,12 @@
     @Html.Action("GoogleAnalyticsPartial", "About")
 </head>
 <body>
-@{
-    var navbarclass = "";
-    var navbartooltip = "";
-            switch (ApplicationConfiguration.Config)
+<div class="navbar navbar-inverse navbar-fixed-top">
+    @if (ApplicationConfiguration.Config != AppConfig.CFG_RELEASE)
     {
-        case AppConfig.RELEASE:
-            break;
-        default:
-            navbarclass = "nonreleaseversion";
-            navbartooltip = "Dette er en demo- eller udviklingsversion - må IKKE bruges til virkelige flyvninger, da data kan forsvinde uden varsel";
-            break;
+        <div class="nonreleaseversion"><b>Dette er en demo- eller udviklingsversion - må IKKE bruges til virkelige flyvninger, da data kan forsvinde uden varsel</b></div>
     }
-        }
-<div class="navbar navbar-inverse navbar-fixed-top" title ="@navbartooltip">
-    <div class="container  @navbarclass">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-bar"></span>
@@ -46,14 +37,14 @@
                     <i class="fa fa-plane fa-stack-1x"></i>
                 </span>
                 @if (Request.IsClub())
-        {
+                {
                     <span class="hidden-sm">@Request.Club().Name</span>
                     <span class="hidden-xs hidden-md hidden-lg">@Request.Club().ShortName</span>
-    }
+                }
                 else
                 {
                     @:Startlist.club
-}
+                }
             </a>
         </div>
         <div class="navbar-collapse collapse">

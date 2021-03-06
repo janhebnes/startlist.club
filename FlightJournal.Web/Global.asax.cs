@@ -8,14 +8,14 @@ namespace FlightJournal.Web
     {
         protected void Application_Start()
         {
-#if RELEASE
-            ApplicationConfiguration.Config = AppConfig.RELEASE;
-#elif DEMO
-            ApplicationConfiguration.Config = AppConfig.DEMO;
-#elif DEV
-            ApplicationConfiguration.Config = AppConfig.DEV;
-#elif DEBUG
-            ApplicationConfiguration.Config = AppConfig.DEBUG;
+#if CFG_RELEASE
+            ApplicationConfiguration.Config = AppConfig.CFG_RELEASE;
+#elif CFG_DEMO
+            ApplicationConfiguration.Config = AppConfig.CFG_DEMO;
+#elif CFG_DEV
+            ApplicationConfiguration.Config = AppConfig.CFG_DEV;
+#elif CFG_DEBUG
+            ApplicationConfiguration.Config = AppConfig.CFG_DEBUG;
 #endif
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -26,15 +26,15 @@ namespace FlightJournal.Web
 
     public static class ApplicationConfiguration
     {
-        public static AppConfig Config { get; set; } = AppConfig.UNKNOWN;
+        public static AppConfig Config { get; set; } = AppConfig.CFG_UNKNOWN;
     }
 
     public enum AppConfig
     {
-        UNKNOWN,
-        RELEASE,
-        DEBUG,
-        DEMO,
-        DEV,
+        CFG_UNKNOWN,
+        CFG_RELEASE,
+        CFG_DEBUG,
+        CFG_DEMO,
+        CFG_DEV,
     }
 }

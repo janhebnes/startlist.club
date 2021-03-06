@@ -291,6 +291,10 @@ td.valign-top {
 
 
 .nonreleaseversion {
-    background-color: darkmagenta !important;
+	background-color: darkmagenta !important;
+	color: white;
+	padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 5px;
 }
 
