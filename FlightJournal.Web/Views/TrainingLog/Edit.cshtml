@@ -341,9 +341,8 @@
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
         var initialStateOfInput = {};
-
+        var notifier = $.connection.flightHub;
         $(document).ready(function () {
-
             $("#TrainingProgram").change(function() {
                 reloadWithTrainingProgram($(this));
             });
@@ -415,7 +414,6 @@
                 });
             });
 
-            var notifier = $.connection.flightHub;
             $.connection.hub.start(function () {
                 console.log("connected");
                 console.log($.connection);
@@ -454,6 +452,12 @@
                 });
 
             initialStateOfInput = getStateOfInput();
+            notifier.client.dataIsStale = function (flightId) {
+                if (flightId === "@Model.FlightId") {
+                    alert("Training data for this flight have been edited, please reload!");
+                }
+                console.log(flightId);
+            };
         });
 
         var getStateOfInput = function() {

@@ -7,8 +7,7 @@ namespace FlightJournal.Web.Hubs
     {
         public void StaleData(Guid flightId)
         {
-            var id = flightId;
-            Clients.All.DataIsStale();
+            Clients.All.dataIsStale(flightId);
         }
     }
 }
