@@ -8,11 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using CsvHelper;
 using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Translations;
+using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -29,33 +31,21 @@ namespace FlightJournal.Web.Controllers
         {
             if (year == -1) year = DateTime.Now.Year;
 
-            TrainingFlightHistoryViewModel model;
-            if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
+            var flights = SelectFlightsForExport(year);
+            var model = CreateModel(flights);
+            model.Year = year;
+            switch (UsersAccessScope())
             {
-                // allow access to all flights, filters on front seat / back seat pilot
-                var flightIds = db.AppliedExercises.Select(x=>x.FlightId).Union(db.TrainingFlightAnnotations.Select(y=>y.FlightId)).Distinct().ToList();
-                var flights = db.Flights.Where(x => x.Date.Year == year &&  flightIds.Contains(x.FlightId));
-                model = CreateModel(flights);
-                model.Year = year;
-                model.Message = _("All training flights");
+                case AccessScope.AllFlights:
+                    model.Message = _("All training flights");
+                    break;
+                case AccessScope.OwnFlights:
+                    model.Message = _("Your training flights");
+                    break;
+                default:
+                    model.Message = _("You do not have access to training flight logs");
+                    break;
             }
-            else if (Request.IsPilot())
-            {
-                // access to own flights (front or back)
-                var pilotId = Request.Pilot().PilotId;
-                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
-                var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
-
-                model = CreateModel(flights);
-                model.Year = year;
-                model.Message = _("Your training flights");
-            }
-            else
-            {
-                // no access
-                model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("You do not have access to training flight logs")};
-            }
-
 
             return View(model);
         }
@@ -74,27 +64,8 @@ namespace FlightJournal.Web.Controllers
         {
             if (year == -1) year = DateTime.Now.Year;
 
-            TrainingFlightHistoryExportViewModel viewModel;
-            if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
-            {
-                // allow access to all flights, filters on front seat / back seat pilot
-                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
-                var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId));
-                viewModel = CreateExportModel(db, flights, year);
-            }
-            else if (Request.IsPilot())
-            {
-                // access to own flights (front or back)
-                var pilotId = Request.Pilot().PilotId;
-                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
-                var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
-
-                viewModel = CreateExportModel(db, flights, year);
-            }
-            else
-            {
-                viewModel = new TrainingFlightHistoryExportViewModel();
-            }
+            var flights = SelectFlightsForExport(year);
+            var viewModel = CreateExportModel(db, flights, year);
 
             var sb = new StringBuilder();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -109,6 +80,16 @@ namespace FlightJournal.Web.Controllers
             return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.csv");
         }
 
+        public ActionResult ExportToJson(int year = -1)
+        {
+            if (year == -1) year = DateTime.Now.Year;
+
+            var flights = SelectFlightsForExport(year);
+            var viewModel = CreateExportModel(db, flights, year);
+            
+            return File(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModel, Formatting.Indented)), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.json");
+
+        }
         public TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
         {
             var flightModels = new List<TrainingFlightViewModel>();
@@ -173,14 +154,66 @@ namespace FlightJournal.Web.Controllers
             return details;
         }
 
+        private enum AccessScope
+        {
+            None,
+            OwnFlights,
+            AllFlights
+        }
+
+        private AccessScope UsersAccessScope()
+        {
+            if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
+                return AccessScope.AllFlights;
+            if (Request.IsPilot())
+                return AccessScope.OwnFlights;
+            return AccessScope.None;
+        }
+
+        private IEnumerable<Flight> SelectFlightsForExport(int year)
+        {
+            IEnumerable<Flight> flights;
+            var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
+            switch (UsersAccessScope())
+            {
+                case AccessScope.AllFlights:
+                    flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId));
+                    break;
+                case AccessScope.OwnFlights:
+                    var pilotId = Request.Pilot().PilotId;
+                    flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
+                    break;
+                default:
+                    flights = Enumerable.Empty<Flight>();
+                    break;
+            }
+            return flights;
+        }
+
         private TrainingFlightHistoryExportViewModel CreateExportModel(FlightContext db, IEnumerable<Flight> flights, int year)
         {
             var flightModels = new List<TrainingFlightExportViewModel>();
             foreach (var f in flights)
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Action != ExerciseAction.None);
+                var tfa = db.TrainingFlightAnnotations.SingleOrDefault(x => x.FlightId == f.FlightId);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var phaseComments = new List<GradedItemViewModel>();
+                if (tfa != null)
+                {
+                    var phases = db.CommentaryTypes.OrderBy(x => x.DisplayOrder).ToList();
+                    foreach (var p in phases)
+                    {
+                        var annotationsForThisPhase =
+                            tfa.TrainingFlightAnnotationCommentCommentTypes
+                                .Where(x => x.CommentaryTypeId == p.CommentaryTypeId)
+                                .Select(y => y.Commentary.Comment).ToList();
+                        if (!annotationsForThisPhase.IsNullOrEmpty())
+                            phaseComments.Add(new GradedItemViewModel{Name=p.CType, Grading = string.Join(", ", annotationsForThisPhase)});
+                    }
+
+                }
                 var m = new TrainingFlightExportViewModel
                 {
                     Timestamp = f.Date.ToString("yyyy-MM-dd"),
@@ -198,7 +231,10 @@ namespace FlightJournal.Web.Controllers
                     Duration = f.Duration.ToString("hh\\:mm"),
                     DurationInMinutes = f.Duration.TotalMinutes,
                     TrainingProgramName = programName,
-                    PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
+                    PrimaryExerciseName = appliedLessons.FirstOrDefault().Key ?? "",
+                    PartialExerciseGradings = ae.Select(x=>new GradedItemViewModel{Name = x.Exercise.Name, Grading = x.Action.ToString()}).ToList(),
+                    FlightPhaseComments = phaseComments,
+                    Note = tfa?.Note,
                 };
                 flightModels.Add(m);
             }
@@ -323,6 +359,23 @@ namespace FlightJournal.Web.Controllers
         public string Duration { get; set; }
         public double DurationInMinutes { get; set; }
         public string TrainingProgramName { get; set; }
-        public string PrimaryLessonName { get; set; }
+        public string PrimaryExerciseName { get; set; }
+
+        [Ignore]
+        public IEnumerable<GradedItemViewModel> PartialExerciseGradings { get; set; }
+        [Ignore]
+        public IEnumerable<GradedItemViewModel> FlightPhaseComments { get; set; }
+
+        [JsonIgnore]
+        public string FlattenedPartialExerciseGradings => string.Join("|", PartialExerciseGradings?.Select(x => $"{x.Name}:{x.Grading}"));
+        [JsonIgnore]
+        public string FlattenedFlightPhaseComments => string.Join("|", FlightPhaseComments?.Select(x => $"{x.Name}:{x.Grading}"));
+        public string Note { get; set; }
+    }
+
+    internal class GradedItemViewModel
+    {
+        public string Name { get; set; }
+        public string Grading { get; set; }
     }
 }

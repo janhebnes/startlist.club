@@ -24,9 +24,10 @@
         @Html.ActionLink((Model.Year + 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year + 1 }, new { Class = "btn btn-default" })
     }
     &nbsp;    
-    @Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
 
 </div>
+@Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
+@Html.ActionLink("Export JSON", "ExportToJson", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
 
 @if (Model.Flights.Any())
 {
