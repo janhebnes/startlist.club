@@ -30,6 +30,6 @@ jobs:
       with:
         app-name: 'startlist'
         slot-name: 'production'
-        #publish-profile: ${{ secrets.AzureAppService_PublishProfile_07a028f6e9bf4312bbf6be4057997477 }}
-        package: \obj\release\Package\
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5C42699DAA2D410E9CAF53D679E885C2 }}
+        package: FlightJournal.Web\Published\
         
