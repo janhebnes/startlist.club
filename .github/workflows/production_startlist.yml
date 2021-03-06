@@ -4,7 +4,6 @@
 name: Build and deploy startlist(production)
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
