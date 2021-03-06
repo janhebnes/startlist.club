@@ -1,12 +1,10 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP app to Azure Web App - startlist
+name: Build and deploy startlist(production)
 
 on:
   push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
@@ -26,13 +24,13 @@ jobs:
       run: nuget restore
 
     - name: Publish to folder
-      #run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
-      run: msbuild /nologo /verbosity:m /t:Build /p:Configuration=Release /p:DeployOnBuild=true /p:_PackageTempDir="\published\"
+      run: msbuild /nologo /verbosity:m /t:Build /t:Package /p:Configuration=Release /p:_PackageTempDir=published
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'startlist'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_07a028f6e9bf4312bbf6be4057997477 }}
-        package: \published\
+        #publish-profile: ${{ secrets.AzureAppService_PublishProfile_07a028f6e9bf4312bbf6be4057997477 }}
+        package: \obj\release\Package\
+        
