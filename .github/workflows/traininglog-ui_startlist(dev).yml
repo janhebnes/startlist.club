@@ -31,4 +31,4 @@ jobs:
         app-name: 'startlist'
         slot-name: 'dev'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_07a028f6e9bf4312bbf6be4057997477 }}
-        package: \published\
+        package: \obj\Dev\Package\
