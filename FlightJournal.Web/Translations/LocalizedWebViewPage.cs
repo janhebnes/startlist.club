@@ -6,7 +6,7 @@ namespace FlightJournal.Web.Translations
     /// <summary>
     /// Insert into Views\Web.config section system.web.webPages.razor override pages pageBaseType with FlightJournal.Web.Translations.LocalizedWebViewPage
     /// </summary>
-    public abstract class LocalizedWebViewPage<TModel> : WebViewPage<TModel>  
+    public abstract class LocalizedWebViewPage<TModel> : WebViewPage<TModel>
     {
         /// <summary>
         /// Localized Translation (i18n)
@@ -21,6 +21,7 @@ namespace FlightJournal.Web.Translations
                 return s.Trim();
             return s;
         }
+
         /// <summary>
         /// Localized Translation (i18n) wrapped in ping for use on razor attributes
         /// </summary>
@@ -46,5 +47,18 @@ namespace FlightJournal.Web.Translations
 
             return string.Format(Internationalization.GetText(format, Internationalization.LanguageCode), args);
         }
-    }
+
+
+        public string DataTableLocalizationUrl()
+        {
+            switch (Internationalization.LanguageCode)
+            {
+                case "da": return "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Danish.json";
+                case "no": return "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Norwegian-Bokmal.json";
+                case "se": return "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Swedish.json";
+            }
+
+            return null;
+        }
+}
 }

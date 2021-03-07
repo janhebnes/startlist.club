@@ -39,7 +39,7 @@
             {
                 @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
             }
-            @Html.ActionLink(_("Lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = item.Training2ProgramId }, new { @class = "btn btn-default" })
+            @Html.ActionLink(_("Exercises"), "Index", "TrainingLessonAdmin", new { trainingProgramId = item.Training2ProgramId }, new { @class = "btn btn-default" })
         </div>
     </td>
 </tr>
