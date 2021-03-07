@@ -155,8 +155,12 @@ namespace FlightJournal.Web.Models
             {
                 using (SmtpClient smtpClient = new SmtpClient())
                 {
+                    smtpClient.Host = Settings.MailSmtpHost;
+                    smtpClient.Credentials = new System.Net.NetworkCredential(Settings.MailSmtpUserName, Settings.MailSmtpPassword);
                     using (MailMessage mail = new MailMessage())
                     {
+                        //mail.From = new MailAddress("no-reply@startlist.club", "Startlist.club");
+                        mail.From = new MailAddress(Settings.MailFrom);
                         mail.To.Add(new MailAddress(message.Destination));
                         mail.Subject = message.Subject;
                         mail.Body = message.Body;
@@ -180,19 +184,15 @@ namespace FlightJournal.Web.Models
         {
             // Plug in your sms service here to send a text message.
             
-            var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
-            if (settings == null)
-                throw new ConfigurationErrorsException("Missing ServiceCredentials section");
-
-            if (!string.IsNullOrWhiteSpace(settings.TwilioAccountSid)
-                && !string.IsNullOrWhiteSpace(settings.TwilioAuthToken)
-                && !string.IsNullOrWhiteSpace(settings.TwilioFromNumber))
+            if (!string.IsNullOrWhiteSpace(Settings.TwilioAccountSid)
+                && !string.IsNullOrWhiteSpace(Settings.TwilioAuthToken)
+                && !string.IsNullOrWhiteSpace(Settings.TwilioFromNumber))
             {
 
                 // Find your Account Sid and Auth Token at twilio.com/user/account 
-                var twilio = new TwilioRestClient(settings.TwilioAccountSid, settings.TwilioAuthToken);
+                var twilio = new TwilioRestClient(Settings.TwilioAccountSid, Settings.TwilioAuthToken);
 
-                var smsmessage = twilio.SendMessage(settings.TwilioFromNumber, message.Destination, message.Body);
+                var smsmessage = twilio.SendMessage(Settings.TwilioFromNumber, message.Destination, message.Body);
                 if (smsmessage.Sid == null)
                 {
                     Task.FromResult(1);

@@ -203,6 +203,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Configuration\Demo.cs" />
+    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
