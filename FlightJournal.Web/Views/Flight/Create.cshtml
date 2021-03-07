@@ -1,4 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Hubs
 @model FlightJournal.Web.Models.Flight
 @{
     ViewBag.Title = _("Create flight");
@@ -154,6 +155,8 @@
 
 @section scripts
 {
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
     @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">

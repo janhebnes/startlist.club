@@ -337,12 +337,12 @@
 
 @section scripts
 {
-
-
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
         var initialStateOfInput = {};
-
-        $(document).ready(function() {
+        var notifier = $.connection.flightHub;
+        $(document).ready(function () {
             $("#TrainingProgram").change(function() {
                 reloadWithTrainingProgram($(this));
             });
@@ -414,21 +414,25 @@
                 });
             });
 
+            $.connection.hub.start(function () {
+                console.log("connected");
+                console.log($.connection);
             $("#savebtn").click(function() {
                 if (!isDirty())
                     window.history.back();
                 else {
                     saveFlightData(
                         function () {
+                            console.debug("saving data");
                             initialStateOfInput = getStateOfInput(); // don't prompt again
+                            notifier.server.staleData("@Model.FlightId");
                             window.history.back();
                         },
                         function() {
                             alert("@_("Unable to save data")");
                         });
-                    
-                }
-
+                    }
+                });
             });
             $("#backbtn").click(function() {
                 if (!isDirty() || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and loose the changes?")))) {
@@ -448,6 +452,12 @@
                 });
 
             initialStateOfInput = getStateOfInput();
+            notifier.client.dataIsStale = function (flightId) {
+                if (flightId === "@Model.FlightId") {
+                    alert("Training data for this flight have been edited, please reload!");
+                }
+                console.log(flightId);
+            };
         });
 
         var getStateOfInput = function() {
