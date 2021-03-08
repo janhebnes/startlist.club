@@ -538,7 +538,7 @@ namespace FlightJournal.Web.Controllers
                 this.ViewBag.BetalerId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
                 this.ViewBag.PilotId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
                 this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
-                this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null).OrderBy(p => p.LocalizedDisplayName), "StartTypeId", "LocalizedDispalyName", (flight == null) ? (object)null : flight.StartTypeId);
+                this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null).OrderBy(p => p.LocalizedDisplayName), "StartTypeId", "LocalizedDisplayName", (flight == null) ? (object)null : flight.StartTypeId);
             }
 
             // TODO: Add any pilotid or starttypeid that is actually present in the flight but not present in the selectlist !
