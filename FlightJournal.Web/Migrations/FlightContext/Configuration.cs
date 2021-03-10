@@ -421,6 +421,50 @@ namespace FlightJournal.Web.Migrations.FlightContext
             }
         }
 
+        internal static void InitializeGradings(Models.FlightContext context)
+        {
+            context.Gradings.Add(new Grading
+            {
+                GradingIdForExport = Guid.NewGuid(),
+                Name = "Briefet",
+                IsOk = true,
+                DisplayOrder = 1,
+                Value = 3,
+                AppliesToBriefingOnlyPartialExercises = true,
+                AppliesToPracticalPartialExercises = false
+            });
+            context.Gradings.Add(new Grading
+            {
+                GradingIdForExport = Guid.NewGuid(),
+                Name = "Kan kun udføres med hjælp fra instruktøren",
+                IsOk = false,
+                DisplayOrder = 1, 
+                Value = 1,
+                AppliesToBriefingOnlyPartialExercises = false,
+                AppliesToPracticalPartialExercises = true
+            });
+            context.Gradings.Add(new Grading
+            {
+                GradingIdForExport = Guid.NewGuid(),
+                Name = "Kan udføres med mundtlige korrektioner fra instruktøren",
+                IsOk = false,
+                DisplayOrder = 2, 
+                Value = 2,
+                AppliesToBriefingOnlyPartialExercises = false,
+                AppliesToPracticalPartialExercises = true
+            });
+            context.Gradings.Add(new Grading
+            {
+                GradingIdForExport = Guid.NewGuid(),
+                Name = "Udføres selvstændigt og tilfredsstillende",
+                IsOk = true,
+                DisplayOrder = 3, 
+                Value = 3,
+                AppliesToBriefingOnlyPartialExercises = false,
+                AppliesToPracticalPartialExercises = true
+            });
+        }
+
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
         {
             //  This method will be called after migrating to the latest version.
@@ -470,6 +514,11 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 InitializeCommentaries(context);
             }
 
+            if (true || forceTrainingProgramRecreation || !context.Gradings.Any())
+            {
+                context.Gradings.RemoveRange(context.Gradings);
+                InitializeGradings(context);
+            }
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
