@@ -231,3 +231,7 @@ _Pvt_Extensions
 FlightJournal.Web/App_Data/ServiceCredentials.Demo.config
 FlightJournal.Web/App_Data/ServiceCredentials.Release.config
 Translation-inputfiles.txt
+/FlightJournal.Web/Properties/ServiceDependencies/startlist/profile.arm.json
+/FlightJournal.Web/Properties/ServiceDependencies/startlist-demo/profile.arm.json
+/FlightJournal.Web/Properties/ServiceDependencies/startlist-dev/profile.arm.json
+/FlightJournal.Web/Properties/serviceDependencies.json

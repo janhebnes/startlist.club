@@ -496,6 +496,9 @@
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
+    <None Include="Properties\PublishProfiles\startlist-demo.pubxml" />
+    <None Include="Properties\PublishProfiles\startlist-dev.pubxml" />
+    <None Include="Properties\PublishProfiles\startlist.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
