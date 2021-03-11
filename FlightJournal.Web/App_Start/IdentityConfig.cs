@@ -160,6 +160,11 @@ namespace FlightJournal.Web.Models
                 {
                     smtpClient.Host = Settings.MailSmtpHost;
                     smtpClient.Port = Settings.MailSmtpPort;
+                    if (Settings.MailSmtpPort == 587)
+                    {
+                        smtpClient.EnableSsl = true;
+                        smtpClient.UseDefaultCredentials = false;
+                    }
                     smtpClient.Credentials = new System.Net.NetworkCredential(Settings.MailSmtpUserName, Settings.MailSmtpPassword);
                     using (MailMessage mail = new MailMessage())
                     {
@@ -177,7 +182,7 @@ namespace FlightJournal.Web.Models
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception($"Failed to send to {message.Destination} from {Settings.MailFrom}" , e);
                 return Task.FromResult(1);
             }
         }
