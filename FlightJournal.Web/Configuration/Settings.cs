@@ -109,6 +109,22 @@ namespace FlightJournal.Web.Configuration
                 return smtpSection.Network.Host;
             }
         }
+        public static int MailSmtpPort
+        {
+            get
+            {
+                // Azure Configured Environment AppSettings or fallback to the App_Data folder 
+                if (ConfigurationManager.AppSettings["MailSmtpPort"] != null)
+                {
+                    if (int.TryParse(ConfigurationManager.AppSettings["MailSmtpPort"], out int port))
+                        return port;
+                }
+
+                var smtpSection = (System.Net.Configuration.SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+                return smtpSection.Network.Port;
+            }
+        }
+
         public static string MailSmtpUserName
         {
             get

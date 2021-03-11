@@ -153,9 +153,13 @@ namespace FlightJournal.Web.Models
 
             try
             {
+                // Local testing of email send operation can be done with e.g. Papercut (we lover papercut)
+                // https://github.com/ChangemakerStudios/Papercut-SMTP/releases
+
                 using (SmtpClient smtpClient = new SmtpClient())
                 {
                     smtpClient.Host = Settings.MailSmtpHost;
+                    smtpClient.Port = Settings.MailSmtpPort;
                     smtpClient.Credentials = new System.Net.NetworkCredential(Settings.MailSmtpUserName, Settings.MailSmtpPassword);
                     using (MailMessage mail = new MailMessage())
                     {
