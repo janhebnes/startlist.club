@@ -175,8 +175,9 @@ namespace FlightJournal.Web.Models
 
                 return Task.FromResult(0);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                throw e;
                 return Task.FromResult(1);
             }
         }
