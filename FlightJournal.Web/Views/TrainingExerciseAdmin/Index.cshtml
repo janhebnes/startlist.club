@@ -3,17 +3,17 @@
 @model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
 
 @{
-    ViewBag.Title = $"Exercises";
+    ViewBag.Title = $"Partial Exercises";
     int tpi = ViewBag.TrainingProgramId;
     var mkd = new Markdown();
 }
 
 <h3>@ViewBag.TrainingProgramName -  @ViewBag.TrainingLessonName</h3>
 
-<h2>@_("Exercises")</h2>
+<h2>@_("Partial Exercises")</h2>
 <hr />
 <p>
-    @Html.ActionLink(_("Create exercise"), "Create", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId}, new { @class = "btn btn-primary" })
+    @Html.ActionLink(_("Create partial exercise"), "Create", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId}, new { @class = "btn btn-primary" })
 </p>
 
 <table class="table table-striped table-hover table-condensed">
@@ -74,5 +74,5 @@
 
 </table>
 <div>
-    @Html.ActionLink(_("Back to list of lessons"), "Index", "TrainingLessonAdmin", new { trainingProgramId = tpi, id = Model.Training2LessonId }, new { @class = "btn btn-default" })
+    @Html.ActionLink(_("Back to list of exercises"), "Index", "TrainingLessonAdmin", new { trainingProgramId = tpi, id = Model.Training2LessonId }, new { @class = "btn btn-default" })
 </div>

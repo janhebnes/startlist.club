@@ -41,7 +41,7 @@
                 <th>@_("Airfield")</th>
                 <th>@_("Duration")</th>
                 <th>@_("Program")</th>
-                <th>@_("Lesson")</th>
+                <th>@_("Exercise")</th>
             </tr>
         </thead>
         <tbody>
@@ -138,7 +138,8 @@
                 ordering: true,
                 searching: true,
                 pageLength: 50,
-                pagingType: "full_numbers"
+                pagingType: "full_numbers",
+                language: { url: '@DataTableLocalizationUrl()'}
             });
         });
 

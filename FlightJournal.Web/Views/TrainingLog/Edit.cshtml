@@ -14,7 +14,7 @@
 <div class="tourable" data-step="1" data-intro=@Html.Raw(__("On this page, you can plan a training flight based on the current status of the pilot, and you can evaluate and grade the flight. Note that the guide only shows descriptions for currently visible elements, so you may have to open the sections you are interested in"))></div>
 
 <div class="row no-gutter">
-    <div class="col-xs-12" data-step="2" data-intro=@Html.Raw(__("Select the training program for this flight. This determines which lessons and exercises you will see below"))>
+    <div class="col-xs-12" data-step="2" data-intro=@Html.Raw(__("Select the training program for this flight. This determines which exercises and partial exercises you will see below"))>
         <select class="selectpicker" id="TrainingProgram">
             @foreach (var program in Model.TrainingPrograms)
             {
@@ -37,8 +37,8 @@
 </div>
 
 <div class="row no-gutter btn-group-toggle" data-toggle="buttons">
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of lessons and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access exercises for each lesson"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of exercises and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access partial exercises for each exercise"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
     <label class="col-xs-2 btn btn-default traininglogtopbutton" id="showrecentflights"><i class="fa fa-history"></i><span class="hidden-xs hidden-sm"> @_("Show recent flights")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="6" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox">@_("Grading")</label>
@@ -46,7 +46,7 @@
 </div>
 
 <div id="lessonsoverviewcontainer" class="table-responsive row no-gutter bordered">
-    <table class="table table-condensed col-xs-12 lessonsoverviewtable" data-step="10" data-intro=@Html.Raw(__("Progress for each lesson"))>
+    <table class="table table-condensed col-xs-12 lessonsoverviewtable" data-step="10" data-intro=@Html.Raw(__("Progress for each exercise"))>
         <tbody>
             @{
                 var introDefCshown = false;
@@ -63,19 +63,19 @@
                 var introdefN = "";
                 if (!introDefCshown && completedpct > 0)
                 {
-                    var introTxt = Html.Raw(__("Number of completed exercises is shown in this style")).ToString();
+                    var introTxt = Html.Raw(__("Number of completed partial exercises is shown in this style")).ToString();
                     introdefC = $"data-step=11 data-tooltipClass=status-completed data-intro={introTxt}";
                     introDefCshown = true;
                 }
                 if (!introDefWshown && wippct > 0)
                 {
-                    var introTxt = Html.Raw(__("Number of exercises in progress is shown in this style")).ToString();
+                    var introTxt = Html.Raw(__("Number of partial exercises in progress is shown in this style")).ToString();
                     introdefW = $"data-step=12 data-tooltipClass=status-in-progress data-intro={introTxt}";
                     introDefWshown = true;
                 }
                 if (!introDefNshown && nspct > 0)
                 {
-                    var introTxt = Html.Raw(__("Number of exercises not started yet is shown in this style")).ToString();
+                    var introTxt = Html.Raw(__("Number of partial exercises not started yet is shown in this style")).ToString();
                     introdefN = $"data-step=13 data-tooltipClass=status-not-started data-intro={introTxt}";
                     introDefNshown = true;
                 }
@@ -102,7 +102,7 @@
     </table>
 </div>
 
-<div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer bordered" data-toggle="buttons" data-step="20" data-intro=@Html.Raw(__("Click a button to see the detailed exercise info and status for the lesson"))>
+<div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer bordered" data-toggle="buttons" data-step="20" data-intro=@Html.Raw(__("Click a button to see the detailed partial exercise info and status for the exercise"))>
     @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
     {
         var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
@@ -114,11 +114,11 @@
 
 
 <div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered">
-    <table class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All lessons and exercises with status"))>
+    <table class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All exercises and partial exercises with status"))>
         <thead>
             <tr>
-                <th>@_("Lesson")</th>
                 <th>@_("Exercise")</th>
+                <th>@_("Partial Exercise")</th>
                 <th class="hcenter ">@_("Briefed")</th>
                 <th class="hcenter ">@_("Trained")</th>
                 <th class="hcenter ">@_("Ok")</th>
@@ -171,28 +171,28 @@
                     if (!helpIntroShown && (exercise.LongDescription?.Any() ?? false))
                     {
                         // show lesson/exercise help on first exercise with long description
-                        var introtxtL = Html.Raw(__("Click here to see a description of the lesson")).ToString();
+                        var introtxtL = Html.Raw(__("Click here to see a description of the exercise")).ToString();
                         introdefL = $"data-step=31 data-intro={introtxtL}";
-                        var introtxtX = Html.Raw(__("Click here to see a description of the exercise (if available)")).ToString();
+                        var introtxtX = Html.Raw(__("Click here to see a description of the partial exercise (if available)")).ToString();
                         introdefX = $"data-step=32 data-intro={introtxtX}";
                         helpIntroShown = true;
                     }
                     else if (!statusIntroShown && !exercise.BriefingOnlyRequired)
                     {
-                        var introtxtB0 = Html.Raw(__("Checked if exercise has previously been briefed")).ToString();
+                        var introtxtB0 = Html.Raw(__("Checked if the partial exercise has previously been briefed")).ToString();
                         introdefB0 = $"data-step=33 data-intro={introtxtB0}";
-                        var introtxtT0 = Html.Raw(__("Checked if exercise has previously been trained but is not yet at a sufficient level")).ToString();
+                        var introtxtT0 = Html.Raw(__("Checked if the partial exercise has previously been trained but is not yet at a sufficient level")).ToString();
                         introdefT0 = $"data-step=34 data-intro={introtxtT0}";
-                        var introtxtC0 = Html.Raw(__("Checked if exercise has previously been completed")).ToString();
+                        var introtxtC0 = Html.Raw(__("Checked if the partial exercise has previously been completed")).ToString();
                         introdefC0 = $"data-step=35 data-intro={introtxtC0}";
-                        var introtxtR0 = Html.Raw(__("Marker here if exercise has previously been completed, but later marked as (just) Trained or Briefed, i.e. a regression")).ToString();
-                        introdefR0 = $"data-step=36 data-intro={introtxtC0}";
+                        var introtxtR0 = Html.Raw(__("Marker here if the partial exercise has previously been completed, but later marked as (just) Trained or Briefed, i.e. a regression")).ToString();
+                        introdefR0 = $"data-step=36 data-intro={introtxtR0}";
 
-                        var introtxtB = Html.Raw(__("Check this when the exercise has been briefed on this flight")).ToString();
+                        var introtxtB = Html.Raw(__("Check this when the partial exercise has been briefed on this flight")).ToString();
                         introdefB = $"data-step=37 data-intro={introtxtB}";
-                        var introtxtT = Html.Raw(__("Check this when the exercise has been trained on this flight but is not yet at a sufficient level")).ToString();
+                        var introtxtT = Html.Raw(__("Check this when the partial exercise has been trained on this flight but is not yet at a sufficient level")).ToString();
                         introdefT = $"data-step=38 data-intro={introtxtT}";
-                        var introtxtC = Html.Raw(__("Check this when the exercise is completed on this flight")).ToString();
+                        var introtxtC = Html.Raw(__("Check this when the partial exercise is completed on this flight")).ToString();
                         introdefC = $"data-step=39 data-intro={introtxtC}";
                         statusIntroShown = true;
                     }
@@ -618,7 +618,8 @@
                         ordering: false,
                         searching: false,
                         pageLength: 5,
-                        pagingType: "full_numbers"
+                        pagingType: "full_numbers",
+                        language: { url: '@DataTableLocalizationUrl()'}
                     });
                 },
                 error: function(a, b, c) {
