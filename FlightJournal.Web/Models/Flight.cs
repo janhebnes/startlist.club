@@ -25,8 +25,11 @@ namespace FlightJournal.Web.Models
         }
         [Key]
         public Guid FlightId { get; set; }
+        
+        
         [LocalizedDisplayName("Date")]
         [DataType(DataType.Date)]
+        [Index("IX_Flights_Date_StartedFromId_Deleted", IsClustered = false, IsUnique = false, Order = 1)]
         public DateTime Date
         {
             get
@@ -146,6 +149,7 @@ namespace FlightJournal.Web.Models
         public virtual StartType StartType { get; set; }
 
         [LocalizedDisplayName("Take-off")]
+        [Index("IX_Flights_Date_StartedFromId_Deleted", IsClustered = false, IsUnique = false, Order = 2)]
         public int StartedFromId { get; set; }
         [LocalizedDisplayName("Take-off")]
         [ForeignKey("StartedFromId")]
@@ -183,6 +187,7 @@ namespace FlightJournal.Web.Models
         public double TachoCost { get; set; }
 
         [LocalizedDisplayName("Deleted")]
+        [Index("IX_Flights_Date_StartedFromId_Deleted", IsClustered = false, IsUnique = false, Order = 3)]
         public DateTime? Deleted { get; set; }
 
         [Required]
