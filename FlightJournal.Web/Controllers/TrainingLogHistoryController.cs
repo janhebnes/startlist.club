@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Razor;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FlightJournal.Web.Extensions;
@@ -56,8 +57,44 @@ namespace FlightJournal.Web.Controllers
                 model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("You do not have access to training flight logs")};
             }
 
-
             return View(model);
+        }
+
+        /// <summary>
+        /// SHow flights for a pilot on a particular exercise
+        /// </summary>
+        /// <param name="pilotId"></param>
+        /// <param name="lessonId"></param>
+        /// <returns></returns>
+        public ActionResult PilotLessons(int pilotId, int lessonId)
+        {
+            TrainingFlightHistoryViewModel model;
+            
+
+            if (User.IsAdministrator() || Request.IsPilot() && (Request.Pilot().IsInstructor || Request.Pilot().PilotId == pilotId))
+            {
+                var pilot = db.Pilots.SingleOrDefault(p => p.PilotId == pilotId);
+                var lesson = db.TrainingLessons.SingleOrDefault(x => x.Training2LessonId == lessonId);
+                if (pilot == null || lesson == null)
+                {
+                    model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("Unknown pilot or lesson id") };
+                }
+                else
+                {
+                    var flightIds = db.AppliedExercises.Where(x => x.Lesson.Training2LessonId == lessonId).Select(x => x.FlightId).Distinct().ToList();
+                    var flights = db.Flights.Where(x => flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
+                    model = CreateModel(flights);
+                    var template = _("Flights of pilot {0} on exercise {1}");
+                    model.Message = string.Format(template, pilot.Name, lesson.Name);
+                }
+            }
+            else
+            {
+                // no access
+                model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("You do not have access to training flight logs") };
+            }
+
+            return View("Index", model);
         }
 
         public PartialViewResult GetDetails(string flightId)
@@ -109,18 +146,18 @@ namespace FlightJournal.Web.Controllers
             return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.csv");
         }
 
-        public TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
+        private TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
         {
             var flightModels = new List<TrainingFlightViewModel>();
             foreach (var f in flights)
             {
-                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Action != ExerciseAction.None);
+                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
                 var m = new TrainingFlightViewModel
                 {
                     FlightId = f.FlightId.ToString(),
-                    Timestamp = f.Date.ToString("yyyy-MM-dd"),
+                    Timestamp = (f.Landing ?? f.Date).ToString("yyyy-MM-dd HH:mm"),
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
                     BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
@@ -134,9 +171,9 @@ namespace FlightJournal.Web.Controllers
             return new TrainingFlightHistoryViewModel { Flights = flightModels, Message = flightModels.Any() ? "" : _("No flights") };
         }
 
-        public TrainingFlightDetailsViewModel CreateDetailsViewModel(Guid id)
+        private TrainingFlightDetailsViewModel CreateDetailsViewModel(Guid id)
         {
-            var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x => x.Action != ExerciseAction.None);
+            var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x => x.Grading != null && x.Grading.Value > 0);
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
             var weather = annotation?.WindDirection != null && annotation?.WindSpeed != null ? $"{annotation.WindDirection}­&deg; {annotation.WindSpeed}kn " : "";
            
@@ -161,8 +198,8 @@ namespace FlightJournal.Web.Controllers
                     {
                         LessonName = x.Lesson.Name,
                         ExerciseName = x.Exercise.Name,
-                        ActionName = x.Action.ToString(),  //TODO: localize enum
-                            LessonId = x.Lesson.Training2LessonId,
+                        GradingName = x.Grading?.Name,
+                        LessonId = x.Lesson.Training2LessonId,
                         ExerciseId = x.Exercise.Training2ExerciseId
                     }),
                 Note = annotation?.Note ?? "",
@@ -178,7 +215,7 @@ namespace FlightJournal.Web.Controllers
             var flightModels = new List<TrainingFlightExportViewModel>();
             foreach (var f in flights)
             {
-                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Action != ExerciseAction.None);
+                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
                 var m = new TrainingFlightExportViewModel
@@ -250,7 +287,7 @@ namespace FlightJournal.Web.Controllers
     {
         public IEnumerable<TrainingFlightViewModel> Flights { get; set; }
         public string  Message { get; set; }
-        public int Year { get; set; }
+        public int Year { get; set; } = -1;
     }
 
     /// <summary>
@@ -290,7 +327,7 @@ namespace FlightJournal.Web.Controllers
     {
         public string LessonName { get; set; }
         public string ExerciseName{ get; set; }
-        public string ActionName { get; set; }
+        public string GradingName { get; set; }
         public int LessonId { get; set; }
         public int ExerciseId { get; set; }
     }

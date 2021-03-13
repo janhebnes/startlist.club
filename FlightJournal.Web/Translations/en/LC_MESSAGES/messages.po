@@ -1,16 +1,26 @@
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:40
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:41
 msgid "All training flights"
 msgstr ""
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:51
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:52
 msgid "Your training flights"
 msgstr ""
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:56
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:57
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:94
 msgid "You do not have access to training flight logs"
 msgstr ""
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:134
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:80
+msgid "Unknown pilot or lesson id"
+msgstr ""
+
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:87
+#, csharp-format
+msgid "Flights of pilot {0} on exercise {1}"
+msgstr ""
+
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:171
 msgid "No flights"
 msgstr ""
 
@@ -85,7 +95,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\History.cshtml:31
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:34
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:9
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:37
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:39
 msgid "Date"
 msgstr ""
 
@@ -128,7 +138,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\Index.cshtml:505
 #: FlightJournal.Web\Views\Report\Index.cshtml:557
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:10
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:38
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:40
 msgid "Plane"
 msgstr ""
 
@@ -136,7 +146,7 @@ msgstr ""
 #: FlightJournal.Web\Models\IdentityModels.cs:36
 #: FlightJournal.Web\Views\Report\Index.cshtml:310
 #: FlightJournal.Web\Views\Report\Index.cshtml:502
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:18
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:19
 msgid "Pilot"
 msgstr ""
 
@@ -222,7 +232,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\Index.cshtml:515
 #: FlightJournal.Web\Views\Report\Index.cshtml:567
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:14
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:42
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:44
 msgid "Duration"
 msgstr ""
 
@@ -234,7 +244,7 @@ msgstr ""
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:108
 #: FlightJournal.Web\Models\Pilot.cs:32 FlightJournal.Web\Models\Plane.cs:41
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:25
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:246
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:233
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:21
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:19
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:21
@@ -416,11 +426,28 @@ msgid "URL"
 msgstr ""
 
 #: FlightJournal.Web\Models\Training\Predefined\Commentary.cs:15
+#: FlightJournal.Web\Models\Training\Predefined\Grading.cs:13
 msgid "Comment/evaluation"
 msgstr ""
 
 #: FlightJournal.Web\Models\Training\Predefined\Commentary.cs:17
 msgid "Is this the 'OK' comment?"
+msgstr ""
+
+#: FlightJournal.Web\Models\Training\Predefined\Grading.cs:15
+msgid "Comment/Numerical grade (higher is better)"
+msgstr ""
+
+#: FlightJournal.Web\Models\Training\Predefined\Grading.cs:18
+msgid "Is this the 'OK' or 'Completed' grading?"
+msgstr ""
+
+#: FlightJournal.Web\Models\Training\Predefined\Grading.cs:21
+msgid "Does this apply to 'Briefing only' partial exercises?"
+msgstr ""
+
+#: FlightJournal.Web\Models\Training\Predefined\Grading.cs:24
+msgid "Does this apply to practical partial exercises?"
 msgstr ""
 
 #: FlightJournal.Web\Models\Training\Predefined\Manouvre.cs:20
@@ -530,6 +557,9 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:161
 #: FlightJournal.Web\Views\Flight\History.cshtml:124
 #: FlightJournal.Web\Views\Flight\Index.cshtml:104
+#: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:4
+#: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:7
+#: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:52
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:305
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:7
@@ -541,7 +571,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:47
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:42
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:72
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:74
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:33
@@ -561,6 +591,10 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Details.cshtml:156
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:148
 #: FlightJournal.Web\Views\Flight\Index.cshtml:101
+#: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:13
+#: FlightJournal.Web\Views\GradingAdmin\Edit.cshtml:3
+#: FlightJournal.Web\Views\GradingAdmin\Edit.cshtml:6
+#: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:51
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:13
 #: FlightJournal.Web\Views\ManouvreAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\ManouvreAdmin\Edit.cshtml:6
@@ -595,6 +629,9 @@ msgstr ""
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Create.cshtml:3
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Create.cshtml:6
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Index.cshtml:11
+#: FlightJournal.Web\Views\GradingAdmin\Create.cshtml:3
+#: FlightJournal.Web\Views\GradingAdmin\Create.cshtml:6
+#: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:11
 #: FlightJournal.Web\Views\ManouvreAdmin\Create.cshtml:3
 #: FlightJournal.Web\Views\ManouvreAdmin\Create.cshtml:6
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:11
@@ -616,6 +653,10 @@ msgstr ""
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Index.cshtml:36
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:4
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:3
+#: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:6
+#: FlightJournal.Web\Views\GradingAdmin\DeleteLocked.cshtml:4
+#: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:55
 #: FlightJournal.Web\Views\ManouvreAdmin\Delete.cshtml:3
 #: FlightJournal.Web\Views\ManouvreAdmin\Delete.cshtml:6
 #: FlightJournal.Web\Views\ManouvreAdmin\DeleteLocked.cshtml:4
@@ -636,6 +677,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\CommentaryAdmin\Delete.cshtml:8
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Delete.cshtml:8
+#: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:8
 #: FlightJournal.Web\Views\ManouvreAdmin\Delete.cshtml:8
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Delete.cshtml:10
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Delete.cshtml:11
@@ -645,6 +687,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\CommentaryAdmin\DeleteLocked.cshtml:6
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\DeleteLocked.cshtml:6
+#: FlightJournal.Web\Views\GradingAdmin\DeleteLocked.cshtml:6
 #: FlightJournal.Web\Views\ManouvreAdmin\DeleteLocked.cshtml:6
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\DeleteLocked.cshtml:6
 #: FlightJournal.Web\Views\TrainingLessonAdmin\DeleteLocked.cshtml:6
@@ -698,13 +741,13 @@ msgstr ""
 msgid "Back to List of flight phases"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Create.cshtml:4
-#: FlightJournal.Web\Views\Flight\Create.cshtml:12
+#: FlightJournal.Web\Views\Flight\Create.cshtml:5
+#: FlightJournal.Web\Views\Flight\Create.cshtml:13
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:11
 msgid "Create flight"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Create.cshtml:140
+#: FlightJournal.Web\Views\Flight\Create.cshtml:141
 #: FlightJournal.Web\Views\Flight\Details.cshtml:106
 #: FlightJournal.Web\Views\Flight\Details.cshtml:159
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:17
@@ -713,7 +756,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
 #: FlightJournal.Web\Views\Pilot\Edit.cshtml:95
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:277
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:264
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:75
 msgid "Back"
 msgstr ""
@@ -874,6 +917,27 @@ msgstr ""
 msgid "Initial Climb rate"
 msgstr ""
 
+#: FlightJournal.Web\Views\GradingAdmin\DeleteLocked.cshtml:8
+#: FlightJournal.Web\Views\TrainingExerciseAdmin\DeleteLocked.cshtml:8
+#: FlightJournal.Web\Views\TrainingLessonAdmin\DeleteLocked.cshtml:8
+msgid "The item is in use, and therefore cannot be deleted"
+msgstr ""
+
+#: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:5
+#: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:8
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:123
+msgid "Gradings"
+msgstr ""
+
+#: FlightJournal.Web\Views\GradingAdmin\_PartialBackToList.cshtml:2
+msgid "Back to List of gradings"
+msgstr ""
+
+#: FlightJournal.Web\Views\GradingAdmin\_PartialGrading.cshtml:4
+#: FlightJournal.Web\Views\GradingAdmin\_PartialGradingReadonly.cshtml:2
+msgid "Grading"
+msgstr ""
+
 #: FlightJournal.Web\Views\Location\Edit.cshtml:15
 msgid "Edit Location"
 msgstr ""
@@ -999,8 +1063,8 @@ msgid "Training flights"
 msgstr ""
 
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:86
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:7
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:9
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:8
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:10
 msgid "Training status"
 msgstr ""
 
@@ -1047,31 +1111,31 @@ msgstr ""
 msgid "Flight comments"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:129
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:130
 msgid "[Create relation to pilotprofile]"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:145
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:146
 msgid "Guided tour"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:157
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:158
 msgid "About"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:188
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:189
 msgid "Next >"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:189
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:190
 msgid "< Prev"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:190
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:191
 msgid "Skip"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:191
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:192
 msgid "Done"
 msgstr ""
 
@@ -1093,11 +1157,6 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Create.cshtml:7
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:16
 msgid "Create partial exercise"
-msgstr ""
-
-#: FlightJournal.Web\Views\TrainingExerciseAdmin\DeleteLocked.cshtml:8
-#: FlightJournal.Web\Views\TrainingLessonAdmin\DeleteLocked.cshtml:8
-msgid "The item is in use, and therefore cannot be deleted"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:13
@@ -1160,7 +1219,7 @@ msgstr ""
 msgid "Training exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:14
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:15
 msgid ""
 "On this page, you can plan a training flight based on the current status of "
 "the pilot, and you can evaluate and grade the flight. Note that the guide "
@@ -1168,210 +1227,203 @@ msgid ""
 "open the sections you are interested in"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:17
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:18
 msgid ""
 "Select the training program for this flight. This determines which exercises "
 "and partial exercises you will see below"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:27
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:28
 msgid "Flight info"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:40
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:41
 msgid "Show/hide bar-chart style overview of exercises and their completion"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:40
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:41
 msgid "Lesson progress"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:41
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:42
 msgid "Show/hide buttons to access partial exercises for each exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:41
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:42
 msgid "Lesson details"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:42
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:43
+msgid "Show/hide list of recent training flights of this pilot"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:43
 msgid "Show recent flights"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:43
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:44
 msgid "Show/hide selection of maneuvers done during the flight"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:43
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:217
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:44
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:204
 msgid "Maneuvers"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:44
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:45
 msgid "Show/hide options for grading the flight phases"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:44
-msgid "Grading"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:45
+msgid "Flight phase grading"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:45
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:46
 msgid "Show/hide options for describing the weather during the flight"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:45
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:254
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:46
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:241
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:22
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:22
 msgid "Weather"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:49
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:50
 msgid "Progress for each exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:66
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:67
 msgid "Number of completed partial exercises is shown in this style"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:72
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:73
 msgid "Number of partial exercises in progress is shown in this style"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:78
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:79
 msgid "Number of partial exercises not started yet is shown in this style"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:105
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:106
 msgid ""
 "Click a button to see the detailed partial exercise info and status for the "
 "exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:117
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:118
 msgid "All exercises and partial exercises with status"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:120
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:287
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:121
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:274
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:44
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:90
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:92
 msgid "Exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:121
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:122
 msgid "Partial Exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:122
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:126
-msgid "Briefed"
-msgstr ""
-
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:123
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:127
-msgid "Trained"
+msgid "Best grading"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:124
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:128
-msgid "Ok"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:125
+msgid "Grading in this flight"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:174
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:156
 msgid "Click here to see a description of the exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:176
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:158
 msgid "Click here to see a description of the partial exercise (if available)"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:182
-msgid "Checked if the partial exercise has previously been briefed"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:164
+msgid "Best grading on previous flights is shown here"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:184
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:166
 msgid ""
-"Checked if the partial exercise has previously been trained but is not yet "
-"at a sufficient level"
+"Marker is shown here if the partial exercise has previously been completed, "
+"graded lower, i.e. a regression"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:186
-msgid "Checked if the partial exercise has previously been completed"
-msgstr ""
-
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:188
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:168
 msgid ""
-"Marker here if the partial exercise has previously been completed, but later "
-"marked as (just) Trained or Briefed, i.e. a regression"
+"Grade the partial exercise in the flight by selecting a grade here. Leave "
+"empty if not used"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:191
-msgid "Check this when the partial exercise has been briefed on this flight"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:170
+msgid "Click here to clear the selection"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:193
-msgid ""
-"Check this when the partial exercise has been trained on this flight but is "
-"not yet at a sufficient level"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:180
+msgid "Select a grading"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:195
-msgid "Check this when the partial exercise is completed on this flight"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:199
+msgid "Recent training flights of this pilot"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:216
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:203
 msgid "Select the maneuvers performed during the flight"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:218
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:205
 msgid "Select one or more maneuvers"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:229
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:216
 msgid "Here you can grade, annotate, and comment the phases of the flight "
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:231
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:218
 msgid "Everything ok"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:247
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234
 msgid ""
 "If you have comments beyond the predefined selections above, you can enter "
 "them here"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:253
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:240
 msgid ""
 "In case the weather has been a factor (for better or worse), you can "
 "describe it here"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:255
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:242
 msgid "Wind direction"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:262
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:249
 msgid "Wind speed"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:276
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:263
 msgid "Save"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:295
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:282
 msgid "Preconditions"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:309
-msgid "Recent flights"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:424
+msgid ""
+"You have unsaved data - do you want to leave the page and lose the changes?"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:434
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:446
 msgid ""
-"You have unsaved data - do you want to leave the page and loose the changes?"
+"Training data for this flight have been edited by someone else, please "
+"reload!"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:6
@@ -1385,23 +1437,23 @@ msgid "Manouvers"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:11
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:39
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:41
 msgid "Front seat"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:12
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:40
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:42
 msgid "Back seat"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:13
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:41
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:43
 msgid "Airfield"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:15
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:43
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:19
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:45
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:20
 msgid "Program"
 msgstr ""
 
@@ -1437,19 +1489,19 @@ msgstr ""
 msgid "Training program"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:20
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:21
 msgid "Last Flight"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:21
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:22
 msgid "Hours in last 60 days"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:22
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:23
 msgid "Flights in last 60 days"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:23
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:24
 msgid "Status"
 msgstr ""
 

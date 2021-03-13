@@ -3,9 +3,11 @@ using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Predefined;
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
+using FlightJournal.Web.Models.Training.Flight;
 using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Migrations.FlightContext
@@ -20,116 +22,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
             MigrationsDirectory = @"Migrations\FlightContext";
         }
 
-        internal static void InitializeCommentaries(Models.FlightContext context)
-        {
-
-            var startCommentary = new CommentaryType { CType = "Start", Commentaries = new HashSet<Commentary>(), DisplayOrder = 0};
-            var flightCommentary = new CommentaryType { CType = "Flight", Commentaries = new HashSet<Commentary>(), DisplayOrder = 1 };
-            var approachCommentary = new CommentaryType { CType = "Approach", Commentaries = new HashSet<Commentary>(), DisplayOrder = 2 };
-            var landingCommentary = new CommentaryType { CType = "Landing", Commentaries = new HashSet<Commentary>(), DisplayOrder = 3 };
-
-            var commentOk = new Commentary { 
-                Comment = "&#x2713",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary },
-                IsOk = true
-            };
-
-            var commentAlmostOk = new Commentary
-            {
-                Comment = "(&#x2713)",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-
-            var commentSkull = new Commentary
-            {
-                Comment = "&#x2620",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-            var commentInstructorGuidance = new Commentary
-            {
-                Comment = "Instructor guidance needed",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-            var commentInstructorTakeOver = new Commentary
-            {
-                Comment = "Instructor takeover needed",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-            var commentUnstableDirection = new Commentary
-            {
-                Comment = "Unstable direction",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-            var commentUnstableSpeed = new Commentary
-            {
-                Comment = "Unstable speed",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-            var commentSpeedTooHigh = new Commentary
-            {
-                Comment = "Speed too high",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-            var commentSpeedTooLow = new Commentary
-            {
-                Comment = "Speed too low",
-                CommentaryTypes = new HashSet<CommentaryType> { startCommentary, flightCommentary, approachCommentary, landingCommentary }
-            };
-
-            var commentUnstablePosition = new Commentary
-            {
-                Comment = "Unstable position",
-                CommentaryTypes = new HashSet<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
-            };
-            var commentPosTooHigh = new Commentary
-            {
-                Comment = "Position too high",
-                CommentaryTypes = new HashSet<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
-            };
-            var commentPosTooLow = new Commentary
-            {
-                Comment = "Position too low",
-                CommentaryTypes = new HashSet<CommentaryType> { flightCommentary, approachCommentary, landingCommentary }
-            };
-            var commentFlareTooHigh = new Commentary
-            {
-                Comment = "Flare too high",
-                CommentaryTypes = new HashSet<CommentaryType> { landingCommentary }
-            };
-            var commentFlareTooLow = new Commentary
-            {
-                Comment = "Flare too low",
-                CommentaryTypes = new HashSet<CommentaryType> { landingCommentary }
-            };
-
-            context.Commentaries.Add(commentOk);
-            context.Commentaries.Add(commentAlmostOk);
-            context.Commentaries.Add(commentSkull);
-            context.Commentaries.Add(commentInstructorGuidance);
-            context.Commentaries.Add(commentInstructorTakeOver);
-            context.Commentaries.Add(commentUnstableDirection);
-            context.Commentaries.Add(commentUnstableSpeed);
-            context.Commentaries.Add(commentSpeedTooHigh);
-            context.Commentaries.Add(commentSpeedTooLow);
-            context.Commentaries.Add(commentUnstablePosition);
-            context.Commentaries.Add(commentPosTooHigh);
-            context.Commentaries.Add(commentPosTooLow);
-            context.Commentaries.Add(commentFlareTooHigh);
-            context.Commentaries.Add(commentFlareTooLow);
-
-            context.CommentaryTypes.Add(landingCommentary);
-            context.CommentaryTypes.Add(startCommentary);
-            context.CommentaryTypes.Add(approachCommentary);
-            context.CommentaryTypes.Add(flightCommentary);
-
-            context.SaveChanges();
-        }
 
         internal static void InitializeDemoFlights(Models.FlightContext context)
         {
@@ -245,161 +137,110 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
         internal static void InitializeManouvres(Models.FlightContext context)
         {
-
-            // Training ui manouvre icons
-/*            var iconLeftTurn = new ManouvreIcon { Icon = "fa fa-undo" };
-            context.ManouvreIcons.Add(iconLeftTurn);
-            var iconRightTurn = new ManouvreIcon { Icon = "fa fa-repeat" };
-            context.ManouvreIcons.Add(iconRightTurn);
-            var iconFigEight = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconFigEight);
-            var iconBank30 = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconBank30);
-            var iconBank45 = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconBank45);
-            var iconBank60 = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconBank60);
-            var iconAbortedLowAltitude = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconAbortedLowAltitude);
-            var iconAbortedMidAltitude = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconAbortedMidAltitude);
-            var iconAbortedHighAltitude = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconAbortedHighAltitude);
-            var iconSTurn = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconSTurn);
-            var iconLeftCircuit = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconLeftCircuit);
-            var iconRightCircuit = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconRightCircuit);*/
-
-            var right90 = new Manouvre
+            context.Manouvres.AddRange(new[]
             {
-                ManouvreItem = "90",
-                //ManouvreIcon = iconRightTurn,
-                Description = "90 degree right turn",
-                IconCssClass = "fa fa-repeat"
-            };
-            context.Manouvres.Add(right90);
+                new Manouvre
+                {
+                    ManouvreItem = "90",
+                    Description = "90 graders højredrej",
+                    IconCssClass = "fa fa-repeat",
+                    DisplayOrder = 1
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "90",
+                    Description = "90 grades venstredrej",
+                    IconCssClass = "fa fa-undo",
+                    DisplayOrder = 2
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "180",
+                    Description = "180 graders venstredrej",
+                    IconCssClass = "fa fa-undo",
+                    DisplayOrder = 3
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "180",
+                    Description = "180 graders højredrej",
+                    IconCssClass = "fa fa-repeat",
+                    DisplayOrder = 4
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "360",
+                    Description = "360 fuldkurve til højre",
+                    IconCssClass = "fa fa-repeat",
+                    DisplayOrder = 5
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "360",
+                    Description = "360 fuldkurve til venstre",
+                    IconCssClass = "fa fa-repeat",
+                    DisplayOrder = 6
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&infin;",
+                    Description = "Ottetal",
+                    DisplayOrder = 7
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&ang;30&deg;",
+                    Description = "30 graders krængning",
+                    DisplayOrder = 8
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&ang;45&deg;",
+                    Description = "45 graders krængning",
+                    DisplayOrder = 9
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&ang;60&deg;",
+                    Description = "60 graders krængning",
+                    DisplayOrder = 10
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&#x21B7 Afb start L",
+                    Description = "Afbrudt start i lav højde",
+                    DisplayOrder = 11
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&#x21B7 Afb start M",
+                    Description = "Afbrudt start i mellem højde",
+                    DisplayOrder = 12
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&#x21B7 Afb start H",
+                    Description = "Afbrudt start i stor højde",
+                    DisplayOrder = 13
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&#x219D S-drej",
+                    DisplayOrder = 14
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&#x21B0 Landingsrunde V",
+                    DisplayOrder = 15
+                },
+                new Manouvre
+                {
+                    ManouvreItem = "&#x21B1 Landingsrunde H",
+                    DisplayOrder = 16
+                }
+            });
 
-            var left90 = new Manouvre
-            {
-                ManouvreItem = "90",
-                //ManouvreIcon = iconLeftTurn,
-                Description = "90 degree left turn",
-                IconCssClass = "fa fa-undo"
-            };
-            context.Manouvres.Add(left90);
-
-            var left180 = new Manouvre
-            {
-                ManouvreItem = "180",
-                //ManouvreIcon = iconLeftTurn,
-                Description = "180 degree left turn",
-                IconCssClass = "fa fa-undo"
-            };
-            context.Manouvres.Add(left180);
-
-            var right180 = new Manouvre
-            {
-                ManouvreItem = "180",
-               // ManouvreIcon = iconRightTurn,
-                Description = "180 degree right turn",
-                IconCssClass = "fa fa-repeat"
-            };
-            context.Manouvres.Add(right180);
-
-            var right360 = new Manouvre
-            {
-                ManouvreItem = "360",
-                //ManouvreIcon = iconRightTurn,
-                Description = "360 degree right turn",
-                IconCssClass = "fa fa-repeat"
-            };
-            context.Manouvres.Add(right360);
-
-            var left360 = new Manouvre
-            {
-                ManouvreItem = "360",
-                //ManouvreIcon = iconLeftTurn,
-                Description = "360 degree left turn",
-                IconCssClass = "fa fa-repeat"
-            };
-            context.Manouvres.Add(left360);
-
-            var FigureEight = new Manouvre
-            {
-                ManouvreItem = "&infin;",
-                //ManouvreIcon = iconFigEight,
-                Description = "Figure-eight"
-            };
-            context.Manouvres.Add(FigureEight);
-
-            var Bank30 = new Manouvre
-            {
-                ManouvreItem = "&ang;30&deg;",
-                //ManouvreIcon = iconBank30,
-                Description = "30 degree bank"
-            };
-            context.Manouvres.Add(Bank30);
-
-            var Bank45 = new Manouvre
-            {
-                ManouvreItem = "&ang;45&deg;",
-                //ManouvreIcon = iconBank45,
-                Description = "45 degree bank"
-            };
-            context.Manouvres.Add(Bank45);
-
-            var Bank60 = new Manouvre
-            {
-                ManouvreItem = "&ang;60&deg;",
-                //ManouvreIcon = iconBank60,
-                Description = "60 degree bank"
-            };
-            context.Manouvres.Add(Bank60);
-
-            var AbortedStartLowAlt = new Manouvre
-            {
-                ManouvreItem = "&#x21B7 Afb start lavt",
-                //ManouvreIcon = iconAbortedLowAltitude
-            };
-            context.Manouvres.Add(AbortedStartLowAlt);
-
-            var AbortedStartMedAlt = new Manouvre
-            {
-                ManouvreItem = "&#x21B7 Afb start mellem",
-                //ManouvreIcon = iconAbortedMidAltitude
-            };
-            context.Manouvres.Add(AbortedStartMedAlt);
-
-            var AbortedStartHighAlt = new Manouvre
-            {
-                ManouvreItem = "&#x21B7 Afb start højt",
-                //ManouvreIcon = iconAbortedHighAltitude
-            };
-            context.Manouvres.Add(AbortedStartHighAlt);
-
-            var Sturn = new Manouvre
-            {
-                ManouvreItem = "&#x219D S-drej",
-                //ManouvreIcon = iconSTurn
-            };
-            context.Manouvres.Add(Sturn);
-
-            var LandingLeftCircuit = new Manouvre
-            {
-                ManouvreItem = "&#x21B0 Landingsrunde",
-                //ManouvreIcon = iconLeftCircuit
-            };
-            context.Manouvres.Add(LandingLeftCircuit);
-
-            var LandingRightCircuit = new Manouvre
-            {
-                ManouvreItem = "&#x21B1 Landingsrunde",
-                //ManouvreIcon = iconRightCircuit
-            };
-            context.Manouvres.Add(LandingRightCircuit);
-
+            context.SaveChanges();
         }
 
         internal static void InitializeWindDirections(Models.FlightContext context)
@@ -410,6 +251,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 context.WindDirections.Add(direction);
             }
 
+            context.SaveChanges();
         }
 
         internal static void InitializeWindSpeeds(Models.FlightContext context)
@@ -419,6 +261,159 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 var speed = new WindSpeed { WindSpeedItem = v };
                 context.WindSpeeds.Add(speed);
             }
+            context.SaveChanges();
+        }
+        internal static void InitializeCommentaries(Models.FlightContext context)
+        {
+            var startCommentary = new CommentaryType {CType = "Start", Commentaries = new HashSet<Commentary>(), DisplayOrder = 0};
+            var flightCommentary = new CommentaryType {CType = "Flyvning", Commentaries = new HashSet<Commentary>(), DisplayOrder = 1};
+            var approachCommentary = new CommentaryType {CType = "Indflyvning", Commentaries = new HashSet<Commentary>(), DisplayOrder = 2};
+            var landingCommentary = new CommentaryType {CType = "Landing", Commentaries = new HashSet<Commentary>(), DisplayOrder = 3};
+
+            context.Commentaries.AddRange(new[]
+            {
+                new Commentary
+                {
+                    Comment = "&#x2713",
+                    DisplayOrder = 1,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary},
+                    IsOk = true
+                },
+
+                new Commentary
+                {
+                    Comment = "(&#x2713)",
+                    DisplayOrder = 2,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "&#x2620",
+                    DisplayOrder = 3,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Instruktørvejledning nødvendig",
+                    DisplayOrder = 4,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Instruktørindgriben nødvendig",
+                    DisplayOrder = 5,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Retning ustabil",
+                    DisplayOrder = 6,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Fart ustabil",
+                    DisplayOrder = 7,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Fart for høj",
+                    DisplayOrder = 8,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Fart for lav",
+                    DisplayOrder = 9,
+                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Position ustabil",
+                    DisplayOrder = 10,
+                    CommentaryTypes = new HashSet<CommentaryType> {flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Position for høj",
+                    DisplayOrder = 11,
+                    CommentaryTypes = new HashSet<CommentaryType> {flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Position for lav",
+                    DisplayOrder = 12,
+                    CommentaryTypes = new HashSet<CommentaryType> {flightCommentary, approachCommentary, landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Udfladning for høj",
+                    DisplayOrder = 13,
+                    CommentaryTypes = new HashSet<CommentaryType> {landingCommentary}
+                },
+                new Commentary
+                {
+                    Comment = "Udfladning for lav",
+                    DisplayOrder = 14,
+                    CommentaryTypes = new HashSet<CommentaryType> {landingCommentary}
+                }
+            });
+
+            context.CommentaryTypes.Add(landingCommentary);
+            context.CommentaryTypes.Add(startCommentary);
+            context.CommentaryTypes.Add(approachCommentary);
+            context.CommentaryTypes.Add(flightCommentary);
+
+            context.SaveChanges();
+        }
+
+        internal static void InitializeGradings(Models.FlightContext context)
+        {
+            context.Gradings.AddRange(new[]
+            {
+                new Grading
+                {
+                    GradingIdForExport = Guid.NewGuid(),
+                    Name = "Briefet",
+                    IsOk = true,
+                    DisplayOrder = 1,
+                    Value = 3,
+                    AppliesToBriefingOnlyPartialExercises = true,
+                    AppliesToPracticalPartialExercises = false
+                },
+                new Grading
+                {
+                    GradingIdForExport = Guid.NewGuid(),
+                    Name = "Kan kun udføres med hjælp fra instruktøren",
+                    IsOk = false,
+                    DisplayOrder = 1,
+                    Value = 1,
+                    AppliesToBriefingOnlyPartialExercises = false,
+                    AppliesToPracticalPartialExercises = true
+                },
+                new Grading
+                {
+                    GradingIdForExport = Guid.NewGuid(),
+                    Name = "Kan udføres med mundtlige korrektioner fra instruktøren",
+                    IsOk = false,
+                    DisplayOrder = 2,
+                    Value = 2,
+                    AppliesToBriefingOnlyPartialExercises = false,
+                    AppliesToPracticalPartialExercises = true
+                },
+                new Grading
+                {
+                    GradingIdForExport = Guid.NewGuid(),
+                    Name = "Udføres selvstændigt og tilfredsstillende",
+                    IsOk = true,
+                    DisplayOrder = 3,
+                    Value = 3,
+                    AppliesToBriefingOnlyPartialExercises = false,
+                    AppliesToPracticalPartialExercises = true
+                }
+            });
+            context.SaveChanges();
         }
 
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
@@ -469,6 +464,60 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 context.CommentaryTypes.RemoveRange(context.CommentaryTypes);
                 InitializeCommentaries(context);
             }
+
+            if (forceTrainingProgramRecreation || !context.Gradings.Any())
+            {
+                context.Gradings.RemoveRange(context.Gradings);
+                InitializeGradings(context);
+            }
+
+            /// This is a temp hack to migrate from the old brief/trained/ok to Gradings (to let testers work with existing data)
+            /// Can be removed before deployment to production.
+            
+            //var notMigratedAppliedExercises = context.AppliedExercises.Where(x => x.Grading == null).ToList();
+            //if (notMigratedAppliedExercises.Any())
+            //{
+            //    var gradings = context.Gradings.ToList();
+
+            //    var briefedGrading = gradings.FirstOrDefault(x => x.AppliesToBriefingOnlyPartialExercises && x.IsOk);
+            //    var grading1 = gradings.Where(x => x.AppliesToPracticalPartialExercises && !x.IsOk).OrderBy(x => x.Value).FirstOrDefault();
+            //    var grading2 = gradings.Where(x => x.AppliesToPracticalPartialExercises && !x.IsOk).OrderBy(x => x.Value).Skip(1).FirstOrDefault();
+            //    var gradingOk = gradings.Where(x => x.AppliesToPracticalPartialExercises && x.IsOk).OrderBy(x => x.Value).LastOrDefault();
+
+            //    foreach (var ae in notMigratedAppliedExercises)
+            //    {
+            //        switch (ae.Action)
+            //        {
+            //            case ExerciseAction.None:
+            //                ae.Grading = null;
+            //                break;
+            //            case ExerciseAction.Briefed when ae.Exercise.IsBriefingOnly:
+            //                ae.Grading = briefedGrading;
+            //                break;
+            //            case ExerciseAction.Briefed:
+            //                ae.Grading = grading1;
+            //                break;
+            //            case ExerciseAction.Trained:
+            //                ae.Grading = grading2;
+            //                break;
+            //            case ExerciseAction.Completed:
+            //                ae.Grading = gradingOk;
+            //                break;
+            //        }
+
+            //        try
+            //        {
+            //            if (context.Entry(ae).State != EntityState.Deleted)
+            //                context.Entry(ae).State = EntityState.Modified;
+            //            context.SaveChanges();
+            //        }
+            //        catch (Exception ex)
+            //        {
+
+            //        }
+            //    }
+            //}
+
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.

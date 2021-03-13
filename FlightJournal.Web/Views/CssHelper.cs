@@ -12,10 +12,7 @@ namespace FlightJournal.Web.Views
                 case TrainingStatus.NotStarted:
                     clz = "status-not-started";
                     break;
-                case TrainingStatus.Briefed:
-                    clz = "status-in-progress";
-                    break;
-                case TrainingStatus.Trained:
+                case TrainingStatus.InProgress:
                     clz = "status-in-progress";
                     break;
                 case TrainingStatus.Completed:
