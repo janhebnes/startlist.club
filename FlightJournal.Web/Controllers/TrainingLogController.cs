@@ -45,7 +45,7 @@ namespace FlightJournal.Web.Controllers
                         Program = db.TrainingPrograms.FirstOrDefault(p => p.Training2ProgramId == e.programId),
                         Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
                         Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
-                        Action = ExerciseAction.None
+                        //Action = ExerciseAction.None
                     };
                     if (e.gradingId.HasValue)
                     {
@@ -121,7 +121,7 @@ namespace FlightJournal.Web.Controllers
 
             foreach (var f in theFlights)
             {
-                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Action != ExerciseAction.None);
+                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
@@ -140,7 +140,7 @@ namespace FlightJournal.Web.Controllers
                 var m = new TrainingFlightWithSomeDetailsViewModel
                 {
                     FlightId = f.FlightId.ToString(),
-                    Timestamp = f.Date.ToString("yyyy-MM-dd"),
+                    Timestamp = (f.Landing ?? f.Date).ToString("yyyy-MM-dd HH:mm"),
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
                     BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",

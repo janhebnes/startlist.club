@@ -114,7 +114,7 @@ namespace FlightJournal.Web.Models
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
             // zero or one per flight expected
-            var annotationsForThisFlight = db.FlightAnnotations.Where(x => x.FlightId == flight.FlightId).FirstOrDefault();
+            var annotationsForThisFlight = db.FlightAnnotations.FirstOrDefault(x => x.FlightId == flight.FlightId);
             if (annotationsForThisFlight != null) {
                 Notes = string.Join("; ", annotationsForThisFlight.Note);
                 WindSpeed = annotationsForThisFlight.WindSpeed;
@@ -367,11 +367,11 @@ public class TrainingProgramViewModel
         /// <summary>
         /// STatus of the flown exercise
         /// </summary>
-        public ExerciseAction Action { get; set; }
+        //public ExerciseAction Action { get; set; }
 
         public AppliedExerciseViewModel(TrainingDataWrapper db, AppliedExercise appliedExercise)
         {
-            Action = appliedExercise.Action;
+            //Action = appliedExercise.Action;
             var program = db.TrainingProgram;
             var lesson = program.Lessons.SingleOrDefault(x=>x == appliedExercise.Lesson);
             var exercise = lesson.Exercises.SingleOrDefault(x => x == appliedExercise.Exercise);

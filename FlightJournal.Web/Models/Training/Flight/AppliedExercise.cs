@@ -22,12 +22,14 @@ namespace FlightJournal.Web.Models.Training.Flight
         [Required]
         public virtual Training2Exercise Exercise { get; set; }
         [Required]
+        [Obsolete("Replaced by Grading, do not use. Should be deleted by migration")]
         public ExerciseAction Action { get; set; } = ExerciseAction.None;
         
         public virtual Grading Grading { get; set; }
     }
 
-   public enum ExerciseAction
+    [Obsolete("Replaced by Grading, do not use. Should be deleted by migration")]
+    public enum ExerciseAction
     {
         None,
         Briefed,

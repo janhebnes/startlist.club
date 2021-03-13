@@ -16,12 +16,14 @@
     @{
         var thisYear = Html.Raw($"<span class='glyphicon glyphicon-stats'></span> <strong>{Model.Year}</strong>");
     }
-
-    @Html.ActionLink((Model.Year - 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year - 1 }, new { Class = "btn btn-default" })
-    @Html.ActionLink(Model.Year.ToString(), "Index", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-stats")
-    @if (DateTime.Now.Year > Model.Year)
+    @if (Model.Year > -1)
     {
-        @Html.ActionLink((Model.Year + 1).ToString(), "Index", "TrainingLogHistory", new { year = Model.Year + 1 }, new { Class = "btn btn-default" })
+        @Html.ActionLink((Model.Year - 1).ToString(), "Index", "TrainingLogHistory", new {year = Model.Year - 1}, new {Class = "btn btn-default"})
+        @Html.ActionLink(Model.Year.ToString(), "Index", "TrainingLogHistory", new {year = Model.Year}, new {Class = "btn btn-default"}, "glyphicon glyphicon-stats")
+        if (DateTime.Now.Year > Model.Year)
+        {
+            @Html.ActionLink((Model.Year + 1).ToString(), "Index", "TrainingLogHistory", new {year = Model.Year + 1}, new {Class = "btn btn-default"})
+        }
     }
     &nbsp;    
     @Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")

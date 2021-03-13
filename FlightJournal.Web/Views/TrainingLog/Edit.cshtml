@@ -177,7 +177,7 @@
                 <td  class="btn-default hcenter @clz" @Html.Raw(introdefGP)>@GradingText(exercise.BestGrading)</td>
                 <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
                 <td class="btn-default hcenter statusbutton annotationcontainer" @Html.Raw(introdefGT)>
-                    <select class="selectpicker gradingselector userselection" title=@Html.Raw(__("Select a grading")) data-dropdown-Align-Right="true">
+                    <select class="selectpicker gradingselector userselection" title="." @*title=@Html.Raw(__("Select a grading"))*@ data-dropdown-Align-Right="true">
                         @{
                             var gradings = exercise.BriefingOnlyRequired ? Model.GradingsForBriefingPartialExercises : Model.GradingsForPracticalPartialExercises;
                         }
@@ -408,26 +408,28 @@
             $.connection.hub.start(function() {
                 console.log("connected");
                 console.log($.connection);
-                $("#savebtn").click(function() {
-                    if (!isDirty())
-                        window.history.back();
-                    else {
-                        saveFlightData(
-                            function() {
-                                console.debug("saving data");
-                                initialStateOfInput = getStateOfInput(); // don't prompt again
-                                //TODO: this should be done server side, methinks
-                                notifier.server.staleData("@Model.FlightId", "@SessionId");
-                                window.history.back();
-                            },
-                            function() {
-                                alert("@_("Unable to save data")");
-                            });
-                    }
-                });
             });
+
+            $("#savebtn").click(function () {
+                if (!isDirty())
+                    window.history.back();
+                else {
+                    saveFlightData(
+                        function() {
+                            console.debug("saving data");
+                            initialStateOfInput = getStateOfInput(); // don't prompt again
+                            //TODO: this should be done server side, methinks
+                            notifier.server.staleData("@Model.FlightId", "@SessionId");
+                            window.history.back();
+                        },
+                        function() {
+                            alert("@_("Unable to save data")");
+                        });
+                }
+            });
+
             $("#backbtn").click(function() {
-                if (!isDirty() || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and loose the changes?")))) {
+                if (!isDirty() || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
                     initialStateOfInput = getStateOfInput(); // don't prompt twice
                     window.history.back();
                 }
