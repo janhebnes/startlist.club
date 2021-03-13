@@ -15,9 +15,11 @@ namespace FlightJournal.Web.Controllers
         private FlightContext db = new FlightContext();
 
         [Authorize]
-        public ViewResult Edit(Guid flightId, int trainingProgramId = -1)
+        public ActionResult Edit(Guid? flightId, int trainingProgramId = -1)
         {
-            var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId);
+            if (!flightId.HasValue)
+                return RedirectToAction("Grid", "Flight");
+            var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId.Value);
             var model = BuildTrainingLogViewModel(flight, trainingProgramId);
 
             return View(model);
