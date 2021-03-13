@@ -122,7 +122,14 @@ namespace FlightJournal.Web.Controllers
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
-                var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
+                var primaryLessonName = "";
+                if (!appliedLessons.IsNullOrEmpty())
+                {
+                    var primaryLesson = appliedLessons.Where(x => x.Value == appliedLessons.First().Value)
+                        .OrderBy(x => x.Key.DisplayOrder).Last();
+                    primaryLessonName = primaryLesson.Key.Name;
+                }
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
                // var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
                 var phases = db.CommentaryTypes.OrderBy(x => x.DisplayOrder).ToList();
@@ -146,7 +153,8 @@ namespace FlightJournal.Web.Controllers
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
-                    PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
+                    PrimaryLessonName = primaryLessonName,
+                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x => x.Key.DisplayOrder).Select(x => x.Key.Name)),
                     Annotations = string.Join(", ", phaseComments.Select(x=>$"{x.Key}: {string.Join(",", x.Value)}")),
                     Manouvres = string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
                     Note = annotation?.Note
@@ -214,6 +222,7 @@ namespace FlightJournal.Web.Controllers
         public string TrainingProgramName { get; set; }
 
         public string PrimaryLessonName { get; set; }
+        public string AppliedLessons { get; set; }
         public string Airfield { get; set; }
         public string Manouvres { get; set; }
         public string Annotations { get; set; }

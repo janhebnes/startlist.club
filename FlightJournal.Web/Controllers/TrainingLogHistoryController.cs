@@ -153,7 +153,7 @@ namespace FlightJournal.Web.Controllers
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
-                var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
                 var primaryLessonName = "";
                 if (!appliedLessons.IsNullOrEmpty())
                 {
@@ -172,6 +172,7 @@ namespace FlightJournal.Web.Controllers
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
                     PrimaryLessonName = primaryLessonName,
+                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x=>x.Key.DisplayOrder).Select(x=>x.Key.Name))
                 };
                 flightModels.Add(m);
             }
@@ -224,7 +225,14 @@ namespace FlightJournal.Web.Controllers
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
-                var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
+                var primaryLessonName = "";
+                if (!appliedLessons.IsNullOrEmpty())
+                {
+                    var primaryLesson = appliedLessons.Where(x => x.Value == appliedLessons.First().Value)
+                        .OrderBy(x => x.Key.DisplayOrder).Last();
+                    primaryLessonName = primaryLesson.Key.Name;
+                }
                 var m = new TrainingFlightExportViewModel
                 {
                     Timestamp = f.Date.ToString("yyyy-MM-dd"),
@@ -242,7 +250,8 @@ namespace FlightJournal.Web.Controllers
                     Duration = f.Duration.ToString("hh\\:mm"),
                     DurationInMinutes = f.Duration.TotalMinutes,
                     TrainingProgramName = programName,
-                    PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
+                    PrimaryLessonName = primaryLessonName,
+                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x => x.Key.DisplayOrder).Select(x => x.Key.Name)),
                 };
                 flightModels.Add(m);
             }
@@ -312,6 +321,7 @@ namespace FlightJournal.Web.Controllers
         public string TrainingProgramName { get; set; }
 
         public string PrimaryLessonName { get; set; }
+        public string AppliedLessons { get; set; }
         public string Airfield { get; set; }
     }
 
@@ -368,5 +378,6 @@ namespace FlightJournal.Web.Controllers
         public double DurationInMinutes { get; set; }
         public string TrainingProgramName { get; set; }
         public string PrimaryLessonName { get; set; }
+        public string AppliedLessons { get; set; }
     }
 }
