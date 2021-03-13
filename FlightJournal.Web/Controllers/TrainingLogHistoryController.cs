@@ -153,7 +153,14 @@ namespace FlightJournal.Web.Controllers
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
-                var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var primaryLessonName = "";
+                if (!appliedLessons.IsNullOrEmpty())
+                {
+                    var primaryLesson = appliedLessons.Where(x => x.Value == appliedLessons.First().Value)
+                        .OrderBy(x => x.Key.DisplayOrder).Last();
+                    primaryLessonName = primaryLesson.Key.Name;
+                }
                 var m = new TrainingFlightViewModel
                 {
                     FlightId = f.FlightId.ToString(),
@@ -164,7 +171,7 @@ namespace FlightJournal.Web.Controllers
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
-                    PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
+                    PrimaryLessonName = primaryLessonName,
                 };
                 flightModels.Add(m);
             }

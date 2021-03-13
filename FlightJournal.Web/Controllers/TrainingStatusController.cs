@@ -97,10 +97,10 @@ namespace FlightJournal.Web.Controllers
 
                         if (statusForExercises.All(x => x == TrainingStatus.Completed))
                             status = TrainingStatus.Completed;
-                        else if (statusForExercises.Any(x => x == TrainingStatus.InProgress))
-                            status = TrainingStatus.InProgress;
-                        else 
+                        else if (statusForExercises.All(x => x == TrainingStatus.NotStarted))
                             status = TrainingStatus.NotStarted;
+                        else 
+                            status = TrainingStatus.InProgress;
                     }
 
                     lessonStatus.Add(new LessonWithStatus(lesson, status, regression ));

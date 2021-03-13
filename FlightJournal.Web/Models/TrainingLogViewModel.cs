@@ -338,13 +338,20 @@ public class TrainingProgramViewModel
             var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
             var appliedInThisFlight = totalApplied.FirstOrDefault(x => x.FlightId == db.FlightId); // should be only one
             var thisGrading = appliedInThisFlight?.Grading;
+            var flightIdsWithThisExercise = totalApplied.Select(x => x.FlightId).ToList();
+            var latestFlightWithThisExercise = db.PilotFlights
+                .Where(x => flightIdsWithThisExercise.Contains(x.FlightId)).OrderBy(x => x.Landing ?? x.Date)
+                .LastOrDefault();
+
+            var latestGradingOfThisExercise = totalApplied
+                .SingleOrDefault(x => x.FlightId == latestFlightWithThisExercise?.FlightId)?.Grading;
             var bestGrading = totalApplied.OrderBy(x => x.Grading?.Value).LastOrDefault()?.Grading;
             GradingInThisFlight = thisGrading != null && thisGrading.Value > 0 ? thisGrading : null;
             BestGrading = bestGrading != null && bestGrading.Value > 0 ? bestGrading : null;
             if (exercise.IsBriefingOnly)
                 Regression = false;
             else
-                Regression = thisGrading?.Value < bestGrading?.Value;
+                Regression = latestGradingOfThisExercise?.Value < bestGrading?.Value;
 
             Status = bestGrading == null || bestGrading.Value == 0
                 ? TrainingStatus.NotStarted 
