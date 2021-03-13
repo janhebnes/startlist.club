@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web.Management;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Predefined;
 
@@ -91,17 +93,18 @@ namespace FlightJournal.Web.Controllers
             var model = new CommentsInFlightPhasesViewModel();
             var phases = db.CommentaryTypes.OrderBy(x => x.DisplayOrder);
             var comments = db.Commentaries.OrderBy(x=>x.DisplayOrder);
-            model.FlightPhaseNames = phases.Select(x => x.CType);
-            model.Comments = new Dictionary<string, IEnumerable<CommentInFlightPhaseViewModel>>();
+            model.FlightPhases = phases.ToList();
+            model.Comments = new Dictionary<int, IEnumerable<CommentInFlightPhaseViewModel>>();
             foreach (var p in phases)
             {
                 var cinp = comments.Select(c => new CommentInFlightPhaseViewModel
                 {
+                    CommentId = c.CommentaryId,
                     Name = c.Comment,
                     DisplayOrder = 0,
                     UsedInPhase = c.CommentaryTypes.Select(x=>x.CType).ToList().Contains(p.CType)
                 });
-                model.Comments.Add(p.CType, cinp);
+                model.Comments.Add(p.CommentaryTypeId, cinp);
             }
             return View("CommentInFlightPhase", model);
         }
@@ -138,5 +141,37 @@ namespace FlightJournal.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult UpdatePhasesVsComments(CommentsInFlightPhase[] commentsInPhases)
+        {
+            foreach (var cip in commentsInPhases)
+            {
+                var phase = db.CommentaryTypes.SingleOrDefault(x => x.CommentaryTypeId == cip.phaseId);
+                if (phase != null)
+                {
+                    phase.Commentaries.Clear();
+                    foreach (var cid in cip.commentIds)
+                    {
+                        var c = db.Commentaries.SingleOrDefault(x => x.CommentaryId == cid);
+                        if(c != null)
+                            phase.Commentaries.Add(c);
+                    }
+
+                    db.Entry(phase).State = EntityState.Modified;
+                }
+            }
+
+            db.SaveChanges();
+
+            return new JsonResult() { @Data = new { Success = true } };
+        }
+
+
+    }
+    public class CommentsInFlightPhase
+    {
+        public int phaseId { get; set; }
+        public int[] commentIds { get; set; }
     }
 }

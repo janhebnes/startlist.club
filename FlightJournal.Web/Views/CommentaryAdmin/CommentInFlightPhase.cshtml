@@ -9,30 +9,78 @@
 <table class="table table-striped table-hover table-condensed">
     <thead>
         <tr>
-            @foreach (var phase in Model.FlightPhaseNames)
+            @foreach (var phase in Model.FlightPhases)
             {
-                <th>@phase</th>
+                <th>@phase.CType</th>
             }
         </tr>
     </thead>
     <tbody>
-        @foreach (var phase in Model.FlightPhaseNames)
+        @foreach (var phase in Model.FlightPhases)
         {
         <td>
-            <select multiple class="selectpicker" data-selected-text-format="static" title="@_("Select the comments relevant for this flight phase")">
-                @foreach (var c in Model.Comments[phase])
+            <select multiple class="phaseselector selectpicker" data-selected-text-format="static" data-phaseid="@phase.CommentaryTypeId" title="@_("Select the comments relevant for this flight phase")">
+                @foreach (var c in Model.Comments[phase.CommentaryTypeId])
                 {
                     var sel = c.UsedInPhase ? "selected" : "";
-                    <option @sel>@Html.Raw(c.Name)</option>
+                    <option @sel data-commentid="@c.CommentId">@Html.Raw(c.Name)</option>
                 }
             </select>
         </td>
-        }
-    </tbody>
+    }
+        </tbody>
 
     </table>
 
-    <div>
-        @Html.Partial("_PartialBackToList")
+    <div class="btn-group btn-group-sm">
+
+        <div class="btn btn-default" id="btnsave">Save</div>
+        <div>@Html.Partial("_PartialBackToList")</div>
     </div>
 
+    <div id="urls"
+         data-updatecommentvsphases="@Url.Action("UpdatePhasesVsComments", "CommentaryAdmin")">
+    </div>
+
+
+    @section scripts
+    {
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#btnsave").click(function() {
+                    var phases = [];
+                    $(".phaseselector").each(function() {
+                        var selected = [];
+                        var phaseid = $(this).data("phaseid");
+                        $(this).find("option:selected").each(function() {
+                            selected.push($(this).data("commentid"));
+                        });
+                        if (phaseid) {
+                            phases.push({
+                                phaseId: phaseid,
+                                commentIds: selected
+                            });
+                        }
+                    });
+
+                    var url = $("#urls").data("updatecommentvsphases");
+                    var json = JSON.stringify({ commentsInPhases: phases });
+                
+                // Post
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: json,
+                    contentType: "application/json; charset=utf-8",
+                    success: function(j) {
+
+                    },
+                    error: function(a, b, c) {
+                        alert("Error - changes not saved!");
+                    },
+                });
+
+            });
+        });
+        </script>
+    }
