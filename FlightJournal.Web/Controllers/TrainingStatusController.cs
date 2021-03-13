@@ -91,18 +91,18 @@ namespace FlightJournal.Web.Controllers
                                 }
                             }
                             else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Trained))
-                                statusForThisExercise = TrainingStatus.Trained;
+                                statusForThisExercise = TrainingStatus.InProgress;
                             else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Briefed))
-                                statusForThisExercise = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.Briefed;
+                                statusForThisExercise = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.InProgress;
                             statusForExercises.Add(statusForThisExercise);
                         }
 
                         if (statusForExercises.All(x => x == TrainingStatus.Completed))
                             status = TrainingStatus.Completed;
-                        else if (statusForExercises.Any(x => x == TrainingStatus.Trained))
-                            status = TrainingStatus.Trained;
-                        else if (statusForExercises.Any(x => x == TrainingStatus.Briefed))
-                            status = TrainingStatus.Briefed;
+                        else if (statusForExercises.Any(x => x == TrainingStatus.InProgress))
+                            status = TrainingStatus.InProgress;
+                        else 
+                            status = TrainingStatus.NotStarted;
                     }
 
                     lessonStatus.Add(new LessonWithStatus(lesson, status, regression ));

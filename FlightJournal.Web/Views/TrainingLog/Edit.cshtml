@@ -1,10 +1,11 @@
 ﻿@using FlightJournal.Web.Extensions
-@using FlightJournal.Web.Models
+@using FlightJournal.Web.Models.Training.Predefined
 @using FlightJournal.Web.Views
 @using MarkdownSharp
 @model FlightJournal.Web.Models.TrainingLogViewModel
 @{
     var mkd = new Markdown();
+    var SessionId = Guid.NewGuid();
 
     IHtmlString regressionMarkerIcon(bool regression)
     {
@@ -119,13 +120,9 @@
             <tr>
                 <th>@_("Exercise")</th>
                 <th>@_("Partial Exercise")</th>
-                <th class="hcenter ">@_("Briefed")</th>
-                <th class="hcenter ">@_("Trained")</th>
-                <th class="hcenter ">@_("Ok")</th>
+                <th class="hcenter ">@_("Best grading")</th>
                 <th class="hcenter "></th>
-                <th class="hcenter ">@_("Briefed")</th>
-                <th class="hcenter ">@_("Trained")</th>
-                <th class="hcenter ">@_("Ok")</th>
+                <th class="hcenter ">@_("Grading in this flight")</th>
             </tr>
         </thead>
         <tbody>
@@ -138,36 +135,21 @@
             {
                 foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
                 {
-                    string CheckboxType(TrainingExerciseWithOverallStatusViewModel.CheckBoxType t)
+                    string GradingText(Grading g)
                     {
-                        switch (t)
-                        {
-                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.PlaceHolder:
-                                return "";
-                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledChecked:
-                                return "<input type='checkbox' checked disabled>";
-                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.DisabledUnchecked:
-                                return "<input type='checkbox' disabled>";
-                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledChecked:
-                                return "<input type='checkbox' checked class='lessoncheckbox'>";
-                            case TrainingExerciseWithOverallStatusViewModel.CheckBoxType.EnabledUnchecked:
-                                return "<input type='checkbox' class='lessoncheckbox' >";
-                        }
-                        return "";
+                        if (g == null){ return "";}
+                        var text = exercise.BriefingOnlyRequired ? g.Name : $"{g.Value}-{g.Name}";
+                        return text;
                     }
-
                     var clz = CssHelper.CssClassFor(exercise.Status);
                     var regressionMarker = regressionMarkerIcon(exercise.Regression);
                     var infoMarker = exercise.LongDescription?.Any() ?? false ? "<span class='fa fa-info-circle'></span>" : "";
                     var introdefL = "";
                     var introdefX = "";
-                    var introdefB0 = "";
-                    var introdefT0 = "";
-                    var introdefC0 = "";
+                    var introdefGP = "";
                     var introdefR0 = "";
-                    var introdefB = "";
-                    var introdefT = "";
-                    var introdefC = "";
+                    var introdefGT = "";
+                    var introdefNG = "";
                     if (!helpIntroShown && (exercise.LongDescription?.Any() ?? false))
                     {
                         // show lesson/exercise help on first exercise with long description
@@ -177,36 +159,38 @@
                         introdefX = $"data-step=32 data-intro={introtxtX}";
                         helpIntroShown = true;
                     }
-                    else if (!statusIntroShown && !exercise.BriefingOnlyRequired)
+                    else if (!statusIntroShown)
                     {
-                        var introtxtB0 = Html.Raw(__("Checked if the partial exercise has previously been briefed")).ToString();
-                        introdefB0 = $"data-step=33 data-intro={introtxtB0}";
-                        var introtxtT0 = Html.Raw(__("Checked if the partial exercise has previously been trained but is not yet at a sufficient level")).ToString();
-                        introdefT0 = $"data-step=34 data-intro={introtxtT0}";
-                        var introtxtC0 = Html.Raw(__("Checked if the partial exercise has previously been completed")).ToString();
-                        introdefC0 = $"data-step=35 data-intro={introtxtC0}";
-                        var introtxtR0 = Html.Raw(__("Marker here if the partial exercise has previously been completed, but later marked as (just) Trained or Briefed, i.e. a regression")).ToString();
-                        introdefR0 = $"data-step=36 data-intro={introtxtR0}";
-
-                        var introtxtB = Html.Raw(__("Check this when the partial exercise has been briefed on this flight")).ToString();
-                        introdefB = $"data-step=37 data-intro={introtxtB}";
-                        var introtxtT = Html.Raw(__("Check this when the partial exercise has been trained on this flight but is not yet at a sufficient level")).ToString();
-                        introdefT = $"data-step=38 data-intro={introtxtT}";
-                        var introtxtC = Html.Raw(__("Check this when the partial exercise is completed on this flight")).ToString();
-                        introdefC = $"data-step=39 data-intro={introtxtC}";
+                        var introtxtGP = Html.Raw(__("Best grading on previous flights is shown here")).ToString();
+                        introdefGP = $"data-step=33 data-intro={introtxtGP}";
+                        var introtxtR0 = Html.Raw(__("Marker is shown here if the partial exercise has previously been completed, graded lower, i.e. a regression")).ToString();
+                        introdefR0 = $"data-step=34 data-intro={introtxtR0}";
+                        var introtxtGT = Html.Raw(__("Grade the partial exercise in the flight by selecting a grade here. Leave empty if not used")).ToString();
+                        introdefGT = $"data-step=35 data-intro={introtxtGT}";
+                        var introtxtNG = Html.Raw(__("Click here to clear the selection")).ToString();
+                        introdefNG = $"data-step=36 data-intro={introtxtNG}";
                         statusIntroShown = true;
                     }
-                    <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
-                        <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)>@lesson.Name</td>
-                        <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id" @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
-                        <td class="btn-default hcenter @clz" @Html.Raw(introdefB0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallBriefed))</td>
-                        <td class="btn-default hcenter @clz" @Html.Raw(introdefT0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallTrained))</td>
-                        <td class="btn-default hcenter @clz" @Html.Raw(introdefC0)>@Html.Raw(CheckboxType(exercise.CheckBoxForOverallCompleted))</td>
-                        <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
-                        <td class="btn-default hcenter statusbutton chk_briefed annotationcontainer" @Html.Raw(introdefB)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightBriefed))</td>
-                        <td class="btn-default hcenter statusbutton chk_trained annotationcontainer" @Html.Raw(introdefT)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightTrained))</td>
-                        <td class="btn-default hcenter statusbutton chk_ok annotationcontainer" @Html.Raw(introdefC)>@Html.Raw(CheckboxType(exercise.CheckBoxForThisFlightCompleted))</td>
-                    </tr>
+            <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
+                <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)>@lesson.Name</td>
+                <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id" @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
+                <td  class="btn-default hcenter @clz" @Html.Raw(introdefGP)>@GradingText(exercise.BestGrading)</td>
+                <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
+                <td class="btn-default hcenter statusbutton annotationcontainer" @Html.Raw(introdefGT)>
+                    <select class="selectpicker gradingselector userselection" title=@Html.Raw(__("Select a grading")) data-dropdown-Align-Right="true">
+                        @{
+                            var gradings = exercise.BriefingOnlyRequired ? Model.GradingsForBriefingPartialExercises : Model.GradingsForPracticalPartialExercises;
+                        }
+                        @foreach (var grading in gradings)
+                        {
+                            var selected = exercise.GradingInThisFlight != null && grading.GradingId == exercise.GradingInThisFlight.GradingId ? "selected" : "";
+
+                            <option class="grading" value="@grading.GradingId" @selected>@GradingText(grading)</option>
+                        }
+                    </select>
+                    <div class="btn btn-sm gradingunselector" @Html.Raw(introdefNG)><i class="fa fa-times"></i></div>
+                </td>
+                </tr>
                 }
             }
         </tbody>
@@ -342,7 +326,7 @@
     <script type="text/javascript">
         var initialStateOfInput = {};
         var notifier = $.connection.flightHub;
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#TrainingProgram").change(function() {
                 reloadWithTrainingProgram($(this));
             });
@@ -414,23 +398,31 @@
                 });
             });
 
-            $.connection.hub.start(function () {
+            $(".gradingunselector").click(function() {
+                $(this).parent().find(".selectpicker").selectpicker('val', null);
+            });
+            $(".gradingselector").change(function() {
+                $(this).parent().find(".gradingunselector").prop('disable', $(this).val() == null);
+            });
+
+            $.connection.hub.start(function() {
                 console.log("connected");
                 console.log($.connection);
-            $("#savebtn").click(function() {
-                if (!isDirty())
-                    window.history.back();
-                else {
-                    saveFlightData(
-                        function () {
-                            console.debug("saving data");
-                            initialStateOfInput = getStateOfInput(); // don't prompt again
-                            notifier.server.staleData("@Model.FlightId");
-                            window.history.back();
-                        },
-                        function() {
-                            alert("@_("Unable to save data")");
-                        });
+                $("#savebtn").click(function() {
+                    if (!isDirty())
+                        window.history.back();
+                    else {
+                        saveFlightData(
+                            function() {
+                                console.debug("saving data");
+                                initialStateOfInput = getStateOfInput(); // don't prompt again
+                                //TODO: this should be done server side, methinks
+                                notifier.server.staleData("@Model.FlightId", "@SessionId");
+                                window.history.back();
+                            },
+                            function() {
+                                alert("@_("Unable to save data")");
+                            });
                     }
                 });
             });
@@ -451,10 +443,13 @@
                     }
                 });
 
-            initialStateOfInput = getStateOfInput();
-            notifier.client.dataIsStale = function (flightId) {
-                if (flightId === "@Model.FlightId") {
-                    alert("Training data for this flight have been edited, please reload!");
+            // let js libs settle before taking initial state snapshot
+            setTimeout(function () { initialStateOfInput = getStateOfInput(); }, 100);
+            
+
+            notifier.client.dataIsStale = function(flightId, sessionId) {
+                if (flightId === "@Model.FlightId" && sessionId != "@SessionId") {
+                    alert(@Html.Raw(__("Training data for this flight have been edited by someone else, please reload!"))); //TODO: localize
                 }
                 console.log(flightId);
             };
@@ -462,13 +457,9 @@
 
         var getStateOfInput = function() {
             var state = {
-                checkboxes: [],
                 userselection: []
             };
 
-            $("input.lessoncheckbox").each(function() {
-                state.checkboxes.push($(this).prop("checked"));
-            });
             $("select.userselection").each(function() {
                 state.userselection.push($(this).val());
             });
@@ -480,15 +471,8 @@
 
         var isDirty = function() {
             var current = getStateOfInput();
-            var dirty =  (initialStateOfInput != current);
+            var dirty = (initialStateOfInput != current);
             return dirty;
-
-            var exerciseDataChanged = $(".lessoncheckbox:checked").length > 0;
-            //TODO: detect change, not just presence
-            var annotationCount = 0;
-            $(".userselection").each(function() { if ($(this).val()) ++annotationCount; });
-            var hasNote = $("#flightnotes").val().length > 0;
-            return exerciseDataChanged || hasNote || annotationCount > 0;
         }
 
         var showRelevantExercises = function(lesson) {
@@ -540,15 +524,14 @@
             // status for all exercises
             var exercises = [];
             $(".exercise").each(function(i, e) {
+                var grading = $(this).find("option.grading:selected");
                 var ex = {
                     programId: $(this).data("programid"),
                     lessonId: $(this).data("lessonid"),
                     exerciseId: $(this).data("exerciseid"),
-                    briefed: $(this).find(".chk_briefed").find(".lessoncheckbox").prop("checked"),
-                    trained: $(this).find(".chk_trained").find(".lessoncheckbox").prop("checked"),
-                    ok: $(this).find(".chk_ok").find(".lessoncheckbox").prop("checked"),
+                    gradingId: grading.val(),
                 };
-                if (ex.briefed || ex.trained || ex.ok)
+                if (ex.gradingId)
                     exercises.push(ex);
             });
 
@@ -584,7 +567,7 @@
                 contentType: "application/json; charset=utf-8",
                 type: "POST",
                 dataType: "json",
-                success: function (d) {
+                success: function(d) {
                     onSuccess();
                 },
                 error: function(a, b, c) {
@@ -619,7 +602,7 @@
                         searching: false,
                         pageLength: 5,
                         pagingType: "full_numbers",
-                        language: { url: '@DataTableLocalizationUrl()'}
+                        language: { url: '@DataTableLocalizationUrl()' }
                     });
                 },
                 error: function(a, b, c) {

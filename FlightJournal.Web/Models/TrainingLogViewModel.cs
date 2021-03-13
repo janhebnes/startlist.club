@@ -35,6 +35,7 @@ namespace FlightJournal.Web.Models
             WindSpeeds = db.WindSpeeds.ToList();
             Commentaries = db.Commentaries.ToList();
             CommentaryTypes = db.CommentaryTypes.ToList();
+            Gradings = db.Gradings.ToList();
             TrainingFlightAnnotationCommentCommentTypes = db.TrainingFlightAnnotationCommentCommentTypes.Include("CommentaryType");
             
         }
@@ -75,7 +76,7 @@ namespace FlightJournal.Web.Models
         public IEnumerable<Commentary> Commentaries { get; }
         public IEnumerable<CommentaryType> CommentaryTypes { get; }
         public IEnumerable<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; }
-
+        public IEnumerable<Grading> Gradings { get; }
 
     }
 
@@ -174,6 +175,8 @@ namespace FlightJournal.Web.Models
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
             Manouvres = dbmodel.Manouvres.OrderBy(x=>x.DisplayOrder);
+            GradingsForBriefingPartialExercises = dbmodel.Gradings.Where(x=>x.AppliesToBriefingOnlyPartialExercises && x.Value > 0).OrderBy(x=>x.DisplayOrder);
+            GradingsForPracticalPartialExercises = dbmodel.Gradings.Where(x=>x.AppliesToPracticalPartialExercises && x.Value > 0).OrderBy(x=>x.DisplayOrder);
             AnnotationsForFlightPhases =
                 dbmodel.CommentaryTypes
                     .OrderBy(c => c.DisplayOrder)
@@ -207,6 +210,8 @@ namespace FlightJournal.Web.Models
 
         // Selectable stuff
         public IEnumerable<Manouvre> Manouvres { get; }
+        public IEnumerable<Grading> GradingsForBriefingPartialExercises{ get; }
+        public IEnumerable<Grading> GradingsForPracticalPartialExercises { get; }
         public List<WindDirectionViewModel> WindDirections { get; }
         public List<WindSpeedViewModel> WindSpeeds { get; }
         
@@ -289,12 +294,13 @@ public class TrainingProgramViewModel
             DisplayOrder = lesson.DisplayOrder;
             Exercises = lesson.Exercises.Select(ex => new TrainingExerciseWithOverallStatusViewModel(ex, db)).ToList();
             ExercisesTotal = Exercises.Count();
+
             ExercisesCompleted = Exercises.Count(x => x.Status == TrainingStatus.Completed);
             ExercisesNotStarted = Exercises.Count(x => x.Status == TrainingStatus.NotStarted);
             ExercisesInProgress = ExercisesTotal - ExercisesCompleted - ExercisesNotStarted;
             Status = ExercisesTotal == ExercisesCompleted ? TrainingStatus.Completed 
                 : ExercisesTotal == ExercisesNotStarted ? TrainingStatus.NotStarted 
-                : TrainingStatus.Trained;
+                : TrainingStatus.InProgress;
             Debug.WriteLine($"     {StatusSummary} -> {Status}");
         }
     }
@@ -304,14 +310,6 @@ public class TrainingProgramViewModel
     /// </summary>
     public class TrainingExerciseWithOverallStatusViewModel
     {
-        public enum CheckBoxType{
-            PlaceHolder,
-            DisabledUnchecked,
-            DisabledChecked,
-            EnabledUnchecked,
-            EnabledChecked
-        };
-
         public string Id { get; }
 
         public string Description { get; }
@@ -319,35 +317,12 @@ public class TrainingProgramViewModel
 
         public TrainingStatus Status { get; }
 
-        public ExerciseAction ActionInThisFlight { get; set; }
-
-        public bool IsBriefed => Status == TrainingStatus.Briefed
-                                 || Status == TrainingStatus.Trained
-                                 || Status == TrainingStatus.Completed;
-
-        public bool IsBriefedInThisFlight => ActionInThisFlight == ExerciseAction.Briefed
-                                           || ActionInThisFlight == ExerciseAction.Trained
-                                           || ActionInThisFlight == ExerciseAction.Completed;
-
-
-        public bool IsTrained => Status == TrainingStatus.Trained
-                                 || Status == TrainingStatus.Completed;
-
-        public bool IsTrainedInThisFlight => ActionInThisFlight == ExerciseAction.Trained
-                                             || ActionInThisFlight == ExerciseAction.Completed;
-
-        public bool IsCompleted => Status == TrainingStatus.Completed;
-        public bool IsCompletedInThisFlight => ActionInThisFlight == ExerciseAction.Completed;
         public bool BriefingOnlyRequired { get; }
         public int DisplayOrder { get; }
         public bool Regression { get; }
-        public CheckBoxType CheckBoxForOverallBriefed =>  IsBriefed ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
-        public CheckBoxType CheckBoxForOverallTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder :  IsTrained ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
-        public CheckBoxType CheckBoxForOverallCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompleted ? CheckBoxType.DisabledChecked : CheckBoxType.DisabledUnchecked;
-        public CheckBoxType CheckBoxForThisFlightBriefed =>  IsBriefedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
-        public CheckBoxType CheckBoxForThisFlightTrained => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsTrainedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
-        public CheckBoxType CheckBoxForThisFlightCompleted => BriefingOnlyRequired ? CheckBoxType.PlaceHolder : IsCompletedInThisFlight ? CheckBoxType.EnabledChecked : CheckBoxType.EnabledUnchecked;
-
+        public Grading BestGrading { get; }
+        public Grading GradingInThisFlight {get; }
+    
         public TrainingExerciseWithOverallStatusViewModel(Training2Exercise exercise, TrainingDataWrapper db)
         {
             Id = exercise.Training2ExerciseId.ToString();
@@ -357,28 +332,21 @@ public class TrainingProgramViewModel
             DisplayOrder = exercise.DisplayOrder;
 
             var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
-            var flightsWhereThisExerciseWasAtLeastBriefed = totalApplied.Where(x => x.Action == ExerciseAction.Briefed).Select(f=>f.FlightId);
-            var flightsWhereThisExerciseWasAtLeastTrained = totalApplied.Where(x => x.Action == ExerciseAction.Trained).Select(f => f.FlightId);
-            var flightsWhereThisExerciseWasCompleted = totalApplied.Where(x => x.Action == ExerciseAction.Completed).Select(f => f.FlightId);
-            // check if we have a Trained or Briefed later than a Completed => regression, which should be highlighted.
-            var latestBriefedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasAtLeastBriefed.Contains(f.FlightId));
-            var latestTrainedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasAtLeastTrained.Contains(f.FlightId));
-            var latestCompletedFlight = db.PilotFlights.LastOrDefault(f => flightsWhereThisExerciseWasCompleted.Contains(f.FlightId));
-            Regression = latestCompletedFlight != null 
-                         && (LandingTimeOf(latestTrainedFlight) > LandingTimeOf(latestCompletedFlight) 
-                         || LandingTimeOf(latestBriefedFlight) > LandingTimeOf(latestCompletedFlight));
-
-            Status =
-                flightsWhereThisExerciseWasCompleted.Any() ? TrainingStatus.Completed :
-                flightsWhereThisExerciseWasAtLeastTrained.Any() ? TrainingStatus.Trained :
-                flightsWhereThisExerciseWasAtLeastBriefed.Any() ? TrainingStatus.Briefed :
-                TrainingStatus.NotStarted;
-
             var appliedInThisFlight = totalApplied.FirstOrDefault(x => x.FlightId == db.FlightId); // should be only one
-            ActionInThisFlight = appliedInThisFlight?.Action ?? ExerciseAction.None;
+            var thisGrading = appliedInThisFlight?.Grading;
+            var bestGrading = totalApplied.OrderBy(x => x.Grading?.Value).LastOrDefault()?.Grading;
+            GradingInThisFlight = thisGrading != null && thisGrading.Value > 0 ? thisGrading : null;
+            BestGrading = bestGrading != null && bestGrading.Value > 0 ? bestGrading : null;
+            if (exercise.IsBriefingOnly)
+                Regression = false;
+            else
+                Regression = thisGrading?.Value < bestGrading?.Value;
 
-            if (BriefingOnlyRequired && (Status == TrainingStatus.Briefed || Status == TrainingStatus.Trained))
-                Status = TrainingStatus.Completed;
+            Status = bestGrading == null || bestGrading.Value == 0
+                ? TrainingStatus.NotStarted 
+                : bestGrading.IsOk 
+                    ? TrainingStatus.Completed 
+                    : TrainingStatus.InProgress;
 
         }
 
@@ -412,15 +380,10 @@ public class TrainingProgramViewModel
     }
 
 
-    //TODO: add viewmodel for last 15 flights (
-    //TODO: send back data to db (post): update db.AppliedExercises and db.TrainingFlightAnnotation (not created yet)
-    //TODO: UI and models for SFIL quickselect
-
     public enum TrainingStatus
     {
         NotStarted,
-        Briefed,
-        Trained,
+        InProgress,
         Completed
     }
 }

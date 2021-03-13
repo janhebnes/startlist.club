@@ -47,13 +47,10 @@ namespace FlightJournal.Web.Controllers
                         Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
                         Action = ExerciseAction.None
                     };
-
-                    if (e.ok.HasValue && e.ok.Value)
-                        appliedExercise.Action = ExerciseAction.Completed;
-                    else if (e.trained.HasValue && e.trained.Value)
-                        appliedExercise.Action = ExerciseAction.Trained;
-                    else if (e.briefed.HasValue && e.briefed.Value)
-                        appliedExercise.Action = ExerciseAction.Briefed;
+                    if (e.gradingId.HasValue)
+                    {
+                        appliedExercise.Grading = db.Gradings.FirstOrDefault(x => x.GradingId == e.gradingId.Value);
+                    }
 
                     db.AppliedExercises.AddOrUpdate(appliedExercise);
                 }
@@ -199,9 +196,7 @@ namespace FlightJournal.Web.Controllers
         public int programId { get; set; }
         public int lessonId { get; set; }
         public int exerciseId { get; set; }
-        public bool? briefed { get; set; }
-        public bool? trained { get; set; }
-        public bool? ok { get; set; }
+        public int? gradingId { get; set; }
     }
 
 

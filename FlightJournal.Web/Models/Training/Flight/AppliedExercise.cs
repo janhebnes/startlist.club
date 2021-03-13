@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using FlightJournal.Web.Models.Training.Catalogue;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models.Training.Flight
 {
@@ -22,6 +23,8 @@ namespace FlightJournal.Web.Models.Training.Flight
         public virtual Training2Exercise Exercise { get; set; }
         [Required]
         public ExerciseAction Action { get; set; } = ExerciseAction.None;
+        
+        public virtual Grading Grading { get; set; }
     }
 
    public enum ExerciseAction

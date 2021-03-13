@@ -3,9 +3,11 @@ using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Predefined;
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
+using FlightJournal.Web.Models.Training.Flight;
 using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Migrations.FlightContext
@@ -245,33 +247,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
         internal static void InitializeManouvres(Models.FlightContext context)
         {
-
-            // Training ui manouvre icons
-/*            var iconLeftTurn = new ManouvreIcon { Icon = "fa fa-undo" };
-            context.ManouvreIcons.Add(iconLeftTurn);
-            var iconRightTurn = new ManouvreIcon { Icon = "fa fa-repeat" };
-            context.ManouvreIcons.Add(iconRightTurn);
-            var iconFigEight = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconFigEight);
-            var iconBank30 = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconBank30);
-            var iconBank45 = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconBank45);
-            var iconBank60 = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconBank60);
-            var iconAbortedLowAltitude = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconAbortedLowAltitude);
-            var iconAbortedMidAltitude = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconAbortedMidAltitude);
-            var iconAbortedHighAltitude = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconAbortedHighAltitude);
-            var iconSTurn = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconSTurn);
-            var iconLeftCircuit = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconLeftCircuit);
-            var iconRightCircuit = new ManouvreIcon { Icon = "" };
-            context.ManouvreIcons.Add(iconRightCircuit);*/
-
             var right90 = new Manouvre
             {
                 ManouvreItem = "90",
@@ -400,6 +375,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             };
             context.Manouvres.Add(LandingRightCircuit);
 
+            context.SaveChanges();
         }
 
         internal static void InitializeWindDirections(Models.FlightContext context)
@@ -410,6 +386,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 context.WindDirections.Add(direction);
             }
 
+            context.SaveChanges();
         }
 
         internal static void InitializeWindSpeeds(Models.FlightContext context)
@@ -419,6 +396,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 var speed = new WindSpeed { WindSpeedItem = v };
                 context.WindSpeeds.Add(speed);
             }
+            context.SaveChanges();
         }
 
         internal static void InitializeGradings(Models.FlightContext context)
@@ -463,6 +441,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 AppliesToBriefingOnlyPartialExercises = false,
                 AppliesToPracticalPartialExercises = true
             });
+            context.SaveChanges();
         }
 
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
@@ -514,11 +493,60 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 InitializeCommentaries(context);
             }
 
-            if (true || forceTrainingProgramRecreation || !context.Gradings.Any())
+            if (forceTrainingProgramRecreation || !context.Gradings.Any())
             {
                 context.Gradings.RemoveRange(context.Gradings);
                 InitializeGradings(context);
             }
+
+            /// This is a temp hack to migrate from the old brief/trained/ok to Gradings (to let testers work with existing data)
+            /// Can be removed before deployment to production.
+            
+            //var notMigratedAppliedExercises = context.AppliedExercises.Where(x => x.Grading == null).ToList();
+            //if (notMigratedAppliedExercises.Any())
+            //{
+            //    var gradings = context.Gradings.ToList();
+
+            //    var briefedGrading = gradings.FirstOrDefault(x => x.AppliesToBriefingOnlyPartialExercises && x.IsOk);
+            //    var grading1 = gradings.Where(x => x.AppliesToPracticalPartialExercises && !x.IsOk).OrderBy(x => x.Value).FirstOrDefault();
+            //    var grading2 = gradings.Where(x => x.AppliesToPracticalPartialExercises && !x.IsOk).OrderBy(x => x.Value).Skip(1).FirstOrDefault();
+            //    var gradingOk = gradings.Where(x => x.AppliesToPracticalPartialExercises && x.IsOk).OrderBy(x => x.Value).LastOrDefault();
+
+            //    foreach (var ae in notMigratedAppliedExercises)
+            //    {
+            //        switch (ae.Action)
+            //        {
+            //            case ExerciseAction.None:
+            //                ae.Grading = null;
+            //                break;
+            //            case ExerciseAction.Briefed when ae.Exercise.IsBriefingOnly:
+            //                ae.Grading = briefedGrading;
+            //                break;
+            //            case ExerciseAction.Briefed:
+            //                ae.Grading = grading1;
+            //                break;
+            //            case ExerciseAction.Trained:
+            //                ae.Grading = grading2;
+            //                break;
+            //            case ExerciseAction.Completed:
+            //                ae.Grading = gradingOk;
+            //                break;
+            //        }
+
+            //        try
+            //        {
+            //            if (context.Entry(ae).State != EntityState.Deleted)
+            //                context.Entry(ae).State = EntityState.Modified;
+            //            context.SaveChanges();
+            //        }
+            //        catch (Exception ex)
+            //        {
+
+            //        }
+            //    }
+            //}
+
+
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
