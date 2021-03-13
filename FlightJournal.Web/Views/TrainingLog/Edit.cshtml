@@ -40,10 +40,10 @@
 <div class="row no-gutter btn-group-toggle" data-toggle="buttons">
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of exercises and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access partial exercises for each exercise"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogtopbutton" id="showrecentflights"><i class="fa fa-history"></i><span class="hidden-xs hidden-sm"> @_("Show recent flights")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="6" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox">@_("Grading")</label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle" data-step="8" data-intro=@Html.Raw(__("Show/hide options for describing the weather during the flight"))><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> @_("Weather")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="showrecentflights" data-step="6" data-intro=@Html.Raw(__("Show/hide list of recent training flights of this pilot"))><input type="checkbox"><i class="fa fa-history"></i><span class="hidden-xs hidden-sm"> @_("Show recent flights")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="8" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox">@_("Grading")</label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle" data-step="9" data-intro=@Html.Raw(__("Show/hide options for describing the weather during the flight"))><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> @_("Weather")</span></label>
 </div>
 
 <div id="lessonsoverviewcontainer" class="table-responsive row no-gutter bordered">
@@ -196,6 +196,9 @@
         </tbody>
     </table>
 </div>
+<div id="recentflightscontainer" class="row bordered no-gutter" data-step="38" data-intro=@Html.Raw(@__("Recent training flights of this pilot"))>
+
+</div>
 
 <div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter" data-step="40" data-intro=@Html.Raw(@__("Select the maneuvers performed during the flight"))>
     <div class="col-xs-2  col-sm-1">@_("Maneuvers")</div>
@@ -286,23 +289,6 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="recentflightsmodal">
-    <div class="modal-dialog modal-full ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">@_("Recent flights")</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @foreach (var lesson in Model.TrainingProgram.Lessons)
 {
@@ -347,7 +333,12 @@
             });
 
             $("#showrecentflights").click(function() {
-                showRecentFlights();
+                if ($(this).find("input").is(":checked"))
+                    $("#recentflightscontainer").hide();
+                else {
+                    $("#recentflightscontainer").show();
+                    showRecentFlights();
+                }
             });
 
             $(".lessonscontainer").hide();
@@ -355,6 +346,7 @@
             $("#maneuverscontainer").hide();
             $("#weathercontainer").hide();
             $("#lessonsoverviewcontainer").hide();
+            $("#recentflightscontainer").hide();
 
 
             $("#maneuverstoggle").click(function() {
@@ -410,7 +402,7 @@
                 console.log($.connection);
             });
 
-            $("#savebtn").click(function () {
+            $("#savebtn").click(function() {
                 if (!isDirty())
                     window.history.back();
                 else {
@@ -446,8 +438,8 @@
                 });
 
             // let js libs settle before taking initial state snapshot
-            setTimeout(function () { initialStateOfInput = getStateOfInput(); }, 100);
-            
+            setTimeout(function() { initialStateOfInput = getStateOfInput(); }, 100);
+
 
             notifier.client.dataIsStale = function(flightId, sessionId) {
                 if (flightId === "@Model.FlightId" && sessionId != "@SessionId") {
@@ -587,14 +579,13 @@
             var url = $("#urls").data("recentflights");
             var flightId = "@Model.FlightId";
             // Post
+            $("#recentflightscontainer").html("");
             $.ajax({
                 url: url,
                 data: { flightId: flightId },
                 contentType: "application/json; charset=utf-8",
                 success: function(v) {
-                    $("#recentflightsmodal").find(".modal-body").html(v);
-
-                    $("#recentflightsmodal").modal();
+                    $("#recentflightscontainer").html(v);
                     $('#flightstable').DataTable({
                         deferRender: true,
                         scrollY: true,
