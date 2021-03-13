@@ -42,7 +42,7 @@
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access partial exercises for each exercise"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="showrecentflights" data-step="6" data-intro=@Html.Raw(__("Show/hide list of recent training flights of this pilot"))><input type="checkbox"><i class="fa fa-history"></i><span class="hidden-xs hidden-sm"> @_("Show recent flights")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
-    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="8" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox">@_("Grading")</label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="8" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox"><i class="fa fa-check"></i><span class="hidden-xs  hidden-sm"> @_("Flight phase grading")</span></label>
     <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle" data-step="9" data-intro=@Html.Raw(__("Show/hide options for describing the weather during the flight"))><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> @_("Weather")</span></label>
 </div>
 
@@ -82,8 +82,8 @@
                 }
                 var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
                 <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id">
-                    <td style="width: 5%; line-height: 0.7;">@lesson.Name</td>
-                    <td class="progress" style="width: 95%; padding: 0px;">
+                    <td class="col-xs-2 col-md-5" style="line-height: 0.7;"><span class="visible-xs visible-sm ">@lesson.ShortName</span><span class="hidden-xs hidden-sm">@lesson.Name</span></td>
+                    <td class="progress col-xs-10 col-md-7" style="padding: 0px;">
                         @if (completedpct > 0)
                         {
                             <div class="progress-bar status-completed" role="progressbar" style="width: @completedpct%" @Html.Raw(introdefC)>@lesson.ExercisesCompleted@regressionMarker</div>
@@ -107,7 +107,7 @@
     @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
     {
         var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
-        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn btn-default @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.Name@regressionMarker</label>
+        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn btn-default @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.ShortName@regressionMarker</label>
     }
     <div class="col-xs-2 col-sm-1 "></div>
 </div>
@@ -172,7 +172,7 @@
                         statusIntroShown = true;
                     }
             <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
-                <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)>@lesson.Name</td>
+                <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)><span class="visible-xs visible-sm">@lesson.ShortName</span><span class="hidden-xs hidden-sm">@lesson.Name</span></td>
                 <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id" @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
                 <td  class="btn-default hcenter @clz" @Html.Raw(introdefGP)>@GradingText(exercise.BestGrading)</td>
                 <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
@@ -292,7 +292,7 @@
 
 @foreach (var lesson in Model.TrainingProgram.Lessons)
 {
-    <div class="lessondescription" id="@lesson.Id" data-header="@lesson.Name" data-description="@Html.Raw(mkd.Transform(lesson.Description))" data-precondition="@Html.Raw(mkd.Transform(lesson.Precondition))"></div>
+    <div class="lessondescription" id="@lesson.Id" data-header="@lesson.ShortName" data-description="@Html.Raw(mkd.Transform(lesson.Description))" data-precondition="@Html.Raw(mkd.Transform(lesson.Precondition))"></div>
     foreach (var exercise in lesson.Exercises)
     {
         <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@Html.Raw(mkd.Transform(exercise.LongDescription))"></div>

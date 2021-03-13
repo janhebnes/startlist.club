@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Flight;
-using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
 {

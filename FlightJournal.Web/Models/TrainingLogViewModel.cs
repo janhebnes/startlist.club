@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
@@ -255,7 +256,8 @@ public class TrainingProgramViewModel
     public class TrainingLessonWithOverallStatusViewModel
     {
         public string Id { get; }
-        public string Name { get; }
+        public string ShortName { get; }
+        public string Name{ get; }
 
         public string Description { get; }
         public string Precondition { get; }
@@ -288,7 +290,9 @@ public class TrainingProgramViewModel
         public TrainingLessonWithOverallStatusViewModel(Training2Lesson lesson, TrainingDataWrapper db)
         {
             Id = lesson.Training2LessonId.ToString();
-            Name = lesson.Name;
+            ShortName = lesson.Name;
+            var intro = lesson.Purpose.FirstLine().RemoveNonAlphaNumPrefix().Trim();
+            Name = intro.Any() ? $"{lesson.Name}-{intro}" : lesson.Name;
             Description = lesson.Purpose;
             Precondition = lesson.Precondition;
             DisplayOrder = lesson.DisplayOrder;
