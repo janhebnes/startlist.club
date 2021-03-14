@@ -1,4 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
 @using FlightJournal.Web.Models.Training.Flight
 @using FlightJournal.Web.Views
 @model IEnumerable<FlightJournal.Web.Controllers.TrainingProgramStatus>
@@ -36,8 +37,17 @@
                     @foreach (var x in f.LessonsWithStatus)
                     {
                         var clz = CssHelper.CssClassFor(x.Status);
-                        var regressionmarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
-                        <label class="bordered @clz" style="padding:2px">@x.LessonName@Html.Raw(@regressionmarker)</label>
+                        var regressionMarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
+                        if (x.Status == TrainingStatus.NotStarted)
+                        {
+                            <label class="bordered @clz" style="padding: 2px">@x.LessonName@Html.Raw(regressionMarker)</label>
+                        }
+                        else
+                        {
+                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new{pilotId=f.PilotId, lessonId=x.LessonId})>
+                                <label class="clickable bordered @clz" style="padding: 2px">@x.LessonName@Html.Raw(regressionMarker)</label>
+                            </a>
+                        }
                     }
                 </td>
             </tr>

@@ -249,6 +249,7 @@
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
     <Compile Include="Controllers\CommentaryAdminController.cs" />
+    <Compile Include="Controllers\GradingAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
     <Compile Include="Extensions\OGNFlightExtension.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
     <Compile Include="Hubs\FlightHub.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
     <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
     <Compile Include="Models\Training\Predefined\CommentsInFlightPhasesViewModel.cs" />
+    <Compile Include="Models\Training\Predefined\Grading.cs" />
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
@@ -1090,6 +1093,15 @@
     <Content Include="Views\CommentaryTypeAdmin\Index.cshtml" />
     <Content Include="Views\CommentaryAdmin\CommentInFlightPhase.cshtml" />
     <Content Include="Views\TrainingStatus\Index.cshtml" />
+    <Content Include="Views\GradingAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\GradingAdmin\_PartialGrading.cshtml" />
+    <Content Include="Views\GradingAdmin\_PartialGradingReadonly.cshtml" />
+    <Content Include="Views\GradingAdmin\Create.cshtml" />
+    <Content Include="Views\GradingAdmin\Delete.cshtml" />
+    <Content Include="Views\GradingAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\GradingAdmin\Details.cshtml" />
+    <Content Include="Views\GradingAdmin\Edit.cshtml" />
+    <Content Include="Views\GradingAdmin\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

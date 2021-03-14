@@ -60,7 +60,7 @@ namespace FlightJournal.Web.Controllers
                 var lessonStatus = new List<LessonWithStatus>();
                 foreach (var lesson in program.Lessons)
                 {
-                    var flownExercisesForThisLesson = db.AppliedExercises.Where(x => flightIds.Contains(x.FlightId) && x.Lesson.Training2LessonId == lesson.Training2LessonId).Select(x=>new{ExId = x.Exercise.Training2ExerciseId, Action = x.Action, FlightId = x.FlightId}).ToList();
+                    var flownExercisesForThisLesson = db.AppliedExercises.Where(x => flightIds.Contains(x.FlightId) && x.Lesson.Training2LessonId == lesson.Training2LessonId).Select(x=>new{ExId = x.Exercise.Training2ExerciseId, Grading = x.Grading, FlightId = x.FlightId}).ToList();
                     var regression = false;
                     TrainingStatus status = TrainingStatus.NotStarted;
                     if (flownExercisesForThisLesson.Any())
@@ -70,7 +70,7 @@ namespace FlightJournal.Web.Controllers
                         {
                             var statusForThisExercise = TrainingStatus.NotStarted;
                             var flownExercisesForThisExercise = flownExercisesForThisLesson.Where(y => y.ExId == e.Training2ExerciseId).ToList();
-                            if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Completed))
+                            if (flownExercisesForThisExercise.Any(y => y.Grading?.IsOk ?? false))
                             {
                                 statusForThisExercise = TrainingStatus.Completed;
                                 // if latest flight with this exercise it not Completed, then regression is present
@@ -81,28 +81,26 @@ namespace FlightJournal.Web.Controllers
                                     .Select(x=>x.FlightId)
                                     .ToList()
                                     .LastOrDefault();
-                                if (idOfLatestFlightWithThisExercise != null)
+                                if (idOfLatestFlightWithThisExercise != Guid.Empty)
                                 {
                                     var ex = flownExercisesForThisExercise.SingleOrDefault(x => x.FlightId == idOfLatestFlightWithThisExercise);
-                                    if (ex != null && ex.Action != ExerciseAction.Completed)
+                                    if (ex?.Grading != null && !ex.Grading.IsOk)
                                     {
                                         regression = true;
                                     }
                                 }
                             }
-                            else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Trained))
-                                statusForThisExercise = TrainingStatus.Trained;
-                            else if (flownExercisesForThisExercise.Any(y => y.Action == ExerciseAction.Briefed))
-                                statusForThisExercise = e.IsBriefingOnly ? TrainingStatus.Completed : TrainingStatus.Briefed;
+                            else if (flownExercisesForThisExercise.Any(y => y.Grading != null))
+                                statusForThisExercise = TrainingStatus.InProgress;
                             statusForExercises.Add(statusForThisExercise);
                         }
 
                         if (statusForExercises.All(x => x == TrainingStatus.Completed))
                             status = TrainingStatus.Completed;
-                        else if (statusForExercises.Any(x => x == TrainingStatus.Trained))
-                            status = TrainingStatus.Trained;
-                        else if (statusForExercises.Any(x => x == TrainingStatus.Briefed))
-                            status = TrainingStatus.Briefed;
+                        else if (statusForExercises.All(x => x == TrainingStatus.NotStarted))
+                            status = TrainingStatus.NotStarted;
+                        else 
+                            status = TrainingStatus.InProgress;
                     }
 
                     lessonStatus.Add(new LessonWithStatus(lesson, status, regression ));
@@ -133,6 +131,7 @@ namespace FlightJournal.Web.Controllers
 
     public class TrainingProgramStatus
     {
+        public int PilotId { get; }
         public string  PilotName { get; }
         public string  ProgramName { get; }
         public string LastFlight { get; }
@@ -142,6 +141,7 @@ namespace FlightJournal.Web.Controllers
 
         public TrainingProgramStatus(Pilot pilot, Training2Program program, IEnumerable<LessonWithStatus> status, DateTime? lastFlight, TimeSpan flightTimeInLast60days, int flightsInLast60Days)
         {
+            PilotId = pilot.PilotId;
             PilotName = pilot.Name;
             ProgramName = program.Name;
             LessonsWithStatus = status.ToList();
@@ -153,6 +153,7 @@ namespace FlightJournal.Web.Controllers
 
     public class LessonWithStatus
     {
+        public int LessonId { get; }
         public string LessonName { get; }
         public TrainingStatus Status { get; }
         public bool Regression { get; }
@@ -163,6 +164,7 @@ namespace FlightJournal.Web.Controllers
             Status = status;
             Regression = regression;
             LessonName = lesson.Name;
+            LessonId = lesson.Training2LessonId;
             DisplayOrder = lesson.DisplayOrder;
         }
     }

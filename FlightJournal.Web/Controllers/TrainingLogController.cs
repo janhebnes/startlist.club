@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Flight;
-using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -16,9 +15,11 @@ namespace FlightJournal.Web.Controllers
         private FlightContext db = new FlightContext();
 
         [Authorize]
-        public ViewResult Edit(Guid flightId, int trainingProgramId = -1)
+        public ActionResult Edit(Guid? flightId, int trainingProgramId = -1)
         {
-            var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId);
+            if (!flightId.HasValue)
+                return RedirectToAction("Grid", "Flight");
+            var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId.Value);
             var model = BuildTrainingLogViewModel(flight, trainingProgramId);
 
             return View(model);
@@ -45,15 +46,12 @@ namespace FlightJournal.Web.Controllers
                         Program = db.TrainingPrograms.FirstOrDefault(p => p.Training2ProgramId == e.programId),
                         Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
                         Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
-                        Action = ExerciseAction.None
+                        //Action = ExerciseAction.None
                     };
-
-                    if (e.ok.HasValue && e.ok.Value)
-                        appliedExercise.Action = ExerciseAction.Completed;
-                    else if (e.trained.HasValue && e.trained.Value)
-                        appliedExercise.Action = ExerciseAction.Trained;
-                    else if (e.briefed.HasValue && e.briefed.Value)
-                        appliedExercise.Action = ExerciseAction.Briefed;
+                    if (e.gradingId.HasValue)
+                    {
+                        appliedExercise.Grading = db.Gradings.FirstOrDefault(x => x.GradingId == e.gradingId.Value);
+                    }
 
                     db.AppliedExercises.AddOrUpdate(appliedExercise);
                 }
@@ -124,9 +122,16 @@ namespace FlightJournal.Web.Controllers
 
             foreach (var f in theFlights)
             {
-                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Action != ExerciseAction.None);
+                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
-                var appliedLessons = ae.Select(x => x.Lesson.Name).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value);
+                var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
+                var primaryLessonName = "";
+                if (!appliedLessons.IsNullOrEmpty())
+                {
+                    var primaryLesson = appliedLessons.Where(x => x.Value == appliedLessons.First().Value)
+                        .OrderBy(x => x.Key.DisplayOrder).Last();
+                    primaryLessonName = primaryLesson.Key.Name;
+                }
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
                // var weather = annotation?.Weather != null ? $"{annotation.Weather.WindDirection.WindDirectionItem}­&deg; {annotation.Weather.WindSpeed.WindSpeedItem}kn " : "";
                 var phases = db.CommentaryTypes.OrderBy(x => x.DisplayOrder).ToList();
@@ -143,14 +148,15 @@ namespace FlightJournal.Web.Controllers
                 var m = new TrainingFlightWithSomeDetailsViewModel
                 {
                     FlightId = f.FlightId.ToString(),
-                    Timestamp = f.Date.ToString("yyyy-MM-dd"),
+                    Timestamp = (f.Landing ?? f.Date).ToString("yyyy-MM-dd HH:mm"),
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
                     BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
-                    PrimaryLessonName = appliedLessons.FirstOrDefault().Key ?? "",
+                    PrimaryLessonName = primaryLessonName,
+                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x => x.Key.DisplayOrder).Select(x => x.Key.Name)),
                     Annotations = string.Join(", ", phaseComments.Select(x=>$"{x.Key}: {string.Join(",", x.Value)}")),
                     Manouvres = string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
                     Note = annotation?.Note
@@ -199,9 +205,7 @@ namespace FlightJournal.Web.Controllers
         public int programId { get; set; }
         public int lessonId { get; set; }
         public int exerciseId { get; set; }
-        public bool? briefed { get; set; }
-        public bool? trained { get; set; }
-        public bool? ok { get; set; }
+        public int? gradingId { get; set; }
     }
 
 
@@ -220,6 +224,7 @@ namespace FlightJournal.Web.Controllers
         public string TrainingProgramName { get; set; }
 
         public string PrimaryLessonName { get; set; }
+        public string AppliedLessons { get; set; }
         public string Airfield { get; set; }
         public string Manouvres { get; set; }
         public string Annotations { get; set; }
