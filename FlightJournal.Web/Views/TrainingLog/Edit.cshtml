@@ -222,11 +222,11 @@
         var id = $"comment-id-{p.Phase.CommentaryTypeId}";
 
         <div class="col-xs-2 col-sm-1">@p.Phase.CType</div>
-        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" multiple id="@id" )>
+        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" multiple id="@id" title=@Html.Raw(_("Select one or more comments"))>
             @foreach (var comment in p.Options)
             {
                 var selected = Model.ThisFlight.CommentIdsByPhase.GetOrDefault(p.Phase.CommentaryTypeId).SafeContains(comment.CommentaryId) ? "selected" : "";
-                <option value="@comment.CommentaryId" @selected class="phaseannotation" data-phaseid="@p.Phase.CommentaryTypeId" title="@_("Select one or more comments")">@Html.Raw(comment.Comment)</option>
+                <option value="@comment.CommentaryId" @selected class="phaseannotation" data-phaseid="@p.Phase.CommentaryTypeId" >@Html.Raw(comment.Comment)</option>
             }
         </select>
     }

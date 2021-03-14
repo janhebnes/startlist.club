@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-03-13 11:29+0100\n"
+"POT-Creation-Date: 2021-03-14 09:13+0100\n"
 "PO-Revision-Date: 2015-06-23 22:51+0100\n"
 "Last-Translator: André Ebert <andre@ebert.no>\n"
 "Language-Team: da <da@li.org>\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "Flights of pilot {0} on exercise {1}"
 msgstr ""
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:171
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:179
 #, fuzzy
 msgid "No flights"
 msgstr "Forrige flygning"
@@ -844,6 +844,12 @@ msgstr "Slett permanent"
 msgid "TrainingLog"
 msgstr ""
 
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:368
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:424
+msgid ""
+"You have unsaved data - do you want to leave the page and lose the changes?"
+msgstr ""
+
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:4
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:244
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:65
@@ -1270,6 +1276,8 @@ msgid "Partial exercises"
 msgstr "Opprett ny"
 
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:12
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:15
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:42
 msgid "Exercises"
@@ -1395,8 +1403,6 @@ msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:121
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:274
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:92
 msgid "Exercise"
 msgstr ""
@@ -1468,6 +1474,10 @@ msgstr ""
 msgid "Everything ok"
 msgstr ""
 
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:225
+msgid "Select one or more comments"
+msgstr ""
+
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234
 msgid ""
 "If you have comments beyond the predefined selections above, you can enter "
@@ -1494,11 +1504,6 @@ msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:282
 msgid "Preconditions"
-msgstr ""
-
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:424
-msgid ""
-"You have unsaved data - do you want to leave the page and lose the changes?"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:446

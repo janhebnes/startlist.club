@@ -178,7 +178,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 {
                     ManouvreItem = "360",
                     Description = "360 fuldkurve til venstre",
-                    IconCssClass = "fa fa-repeat",
+                    IconCssClass = "fa fa-undo",
                     DisplayOrder = 6
                 },
                 new Manouvre
