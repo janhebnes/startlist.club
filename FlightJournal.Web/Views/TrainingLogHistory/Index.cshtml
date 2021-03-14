@@ -1,0 +1,176 @@
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Controllers.TrainingFlightHistoryViewModel
+
+@{
+    ViewBag.Title = _("Training flights") + " " + Model.Year;
+}
+<h2>@_("Training flights")</h2>
+
+
+@if (!Model.Message.IsNullOrEmpty())
+{
+    <b>@Model.Message</b>
+}
+
+<div class="btn-group" style="margin-left: 20px">
+    @{
+        var thisYear = Html.Raw($"<span class='glyphicon glyphicon-stats'></span> <strong>{Model.Year}</strong>");
+    }
+    @if (Model.Year > -1)
+    {
+        @Html.ActionLink((Model.Year - 1).ToString(), "Index", "TrainingLogHistory", new {year = Model.Year - 1}, new {Class = "btn btn-default"})
+        @Html.ActionLink(Model.Year.ToString(), "Index", "TrainingLogHistory", new {year = Model.Year}, new {Class = "btn btn-default"}, "glyphicon glyphicon-stats")
+        if (DateTime.Now.Year > Model.Year)
+        {
+            @Html.ActionLink((Model.Year + 1).ToString(), "Index", "TrainingLogHistory", new {year = Model.Year + 1}, new {Class = "btn btn-default"})
+        }
+    }
+    &nbsp;    
+    @Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new { year = Model.Year }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
+
+</div>
+
+@if (Model.Flights.Any())
+{
+
+    <table class="table table-striped table-hover table-condensed" id="flightstable">
+        <thead>
+            <tr>
+                <th>@_("Date")</th>
+                <th>@_("Plane")</th>
+                <th>@_("Front seat")</th>
+                <th>@_("Back seat")</th>
+                <th>@_("Airfield")</th>
+                <th>@_("Duration")</th>
+                <th>@_("Program")</th>
+                <th>@_("Exercises")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model.Flights)
+            {
+                <tr class="clickable detailslink" data-flightid="@f.FlightId">
+                    <td data-flightid="@f.FlightId">@f.Timestamp</td>
+                    <td>@f.Plane</td>
+                    <td>@f.FrontSeatOccupant</td>
+                    <td>@f.BackSeatOccupant</td>
+                    <td>@f.Airfield</td>
+                    <td>@f.Duration</td>
+                    <td>@f.TrainingProgramName</td>
+                    <td>@f.AppliedLessons</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<div id="urls" data-details="@Url.Action("GetDetails")" data-exercisedetails="@Url.Action("ExerciseDetails")"></div>
+
+<div class="modal" tabindex="-1" role="dialog" id="detailsmodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@_("Details")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="exercisemodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@_("Exercise")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".detailslink").on("click",
+                function() {
+                    var url = $("#urls").data("details");
+                    var id = $(this).data("flightid");
+                    if (!url || !id)
+                        return;
+                    $.ajax({
+                        url: url,
+                        data: { flightId: id },
+                        contentType: "application/json; charset=utf-8",
+                        //dataType: "html",
+                        success: function(v) {
+                            $("#detailsmodal").find(".modal-body").html(v);
+                            $("#detailsmodal").modal();
+
+                            setupExerciseModal();
+                        },
+                        error: function(a, b, c) {
+
+                        },
+
+                    });
+                });
+
+            $('#flightstable').DataTable({
+                deferRender: true,
+                scrollY: true,
+                info: true,
+                lengthChange: true,
+                ordering: true,
+                searching: true,
+                pageLength: 50,
+                pagingType: "full_numbers",
+                language: { url: '@DataTableLocalizationUrl()'}
+            });
+        });
+
+        var setupExerciseModal = function()
+        {
+            $(".exerciselink").on("click",
+                function () {
+                    var url = $("#urls").data("exercisedetails");
+                    var lessonId = $(this).data("id1");
+                    var exerciseId = $(this).data("id2");
+                    if (!url || !lessonId || !exerciseId)
+                        return;
+                    $.ajax({
+                        url: url,
+                        data: {
+                            trainingLessonId: lessonId,
+                            trainingExerciseid: exerciseId
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (v) {
+                            $("#exercisemodal").find(".modal-body").html(v);
+                            $("#exercisemodal").modal();
+                        },
+                        error: function (a, b, c) {
+
+                        },
+
+                    });
+                });
+        }
+    </script>
+}

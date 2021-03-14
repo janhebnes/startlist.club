@@ -1,0 +1,49 @@
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+
+<legend>@_("Training exercise")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Purpose)
+</div>
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.Purpose, new { cols = 80, rows = 5 })
+    @Html.ValidationMessageFor(model => model.Purpose)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Precondition)
+</div>
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.Precondition, new { cols = 80, rows = 5 })
+    @Html.ValidationMessageFor(model => model.Precondition)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.AcceptanceCriteria)
+</div>
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.AcceptanceCriteria, new { cols = 80, rows = 5 })
+    @Html.ValidationMessageFor(model => model.AcceptanceCriteria)
+</div>
+
+@{
+    int tpi = ViewBag.TrainingProgramId;
+}
+@Html.HiddenFor(x => tpi)
+@Html.HiddenFor(model => model.Training2LessonId)
+@Html.HiddenFor(model => Model.DisplayOrder)
+

@@ -1,0 +1,14 @@
+﻿@model FlightJournal.Web.Models.Training.Predefined.CommentaryType
+
+@{
+    ViewBag.Title = _("Delete");
+}
+<h2>@_("Deletion not possible")</h2>
+<hr />
+<h3>@_("The comment is in use, and therefore cannot be deleted")</h3>
+<fieldset>
+    @Html.Partial("_PartialItemReadOnly", Model);
+</fieldset>
+<p>
+    @Html.Partial("_PartialBackToList");
+</p>

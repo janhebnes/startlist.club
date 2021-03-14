@@ -1,0 +1,15 @@
+﻿@model FlightJournal.Web.Models.Training.Predefined.Grading
+
+@{
+    ViewBag.Title = _("Details");
+}
+
+<h2>@_("Details")</h2>
+
+<fieldset>
+    @Html.Partial("_PartialGradingReadOnly", Model)
+</fieldset>
+<p>
+    @Html.ActionLink(_("Edit"), "Edit", new { id = Model.GradingId }, new { @class = "btn btn-default" })
+    @Html.Partial("_PartialBackToList")
+</p>

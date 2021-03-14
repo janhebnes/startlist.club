@@ -305,8 +305,11 @@ namespace FlightJournal.Web.Controllers
         //
         // GET: /Flight/Edit/5
         [Authorize]
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid? id)
         {
+            if(!id.HasValue)
+                return RedirectToAction("Grid");
+
             bool isEditable = User.IsEditor();
             
             Flight flight = this.db.Flights.Find(id);
@@ -321,8 +324,8 @@ namespace FlightJournal.Web.Controllers
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
 
-            ViewBag.FlightId = id;
-            ViewBag.ChangeHistory = this.GetChangeHistory(id);
+            ViewBag.FlightId = id.Value;
+            ViewBag.ChangeHistory = this.GetChangeHistory(id.Value);
             this.PopulateViewBag(flight);
             return View(flight);
         }

@@ -1,0 +1,29 @@
+﻿@model FlightJournal.Web.Models.Training.Predefined.Grading
+<legend>@_("Grading")</legend>
+<table>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Value)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Value)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Name)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.IsOk)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.IsOk)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.AppliesToBriefingOnlyPartialExercises)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.AppliesToBriefingOnlyPartialExercises)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.AppliesToPracticalPartialExercises)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.AppliesToPracticalPartialExercises)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.GradingIdForExport)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.GradingIdForExport)</td>
+    </tr>
+</table>
+

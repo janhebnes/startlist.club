@@ -1,0 +1,78 @@
+﻿@using FlightJournal.Web.Extensions
+@using MarkdownSharp
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+
+@{
+    ViewBag.Title = $"Partial Exercises";
+    int tpi = ViewBag.TrainingProgramId;
+    var mkd = new Markdown();
+}
+
+<h3>@ViewBag.TrainingProgramName -  @ViewBag.TrainingLessonName</h3>
+
+<h2>@_("Partial Exercises")</h2>
+<hr />
+<p>
+    @Html.ActionLink(_("Create partial exercise"), "Create", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId}, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+            @_("Name")
+        </th>
+        <th>
+            @_("Note")
+        </th>
+        <th>
+            @_("Briefing Only?")
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @{
+        var ordered = Model.Exercises.OrderBy(x => x.DisplayOrder).ToList();
+        for (var n = 0; n < ordered.Count; n++)
+        {
+            var item = ordered[n];
+
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td class="display-field">@Html.Raw(@mkd.Transform(item.Note))</td>
+            <td class="display-field">@Html.DisplayFor(modelItem => item.IsBriefingOnly)</td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @Html.ActionLink(_("Edit"), "Edit", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                    @Html.ActionLink(_("Details"), "Details", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                    @if (
+                        ViewBag.CanDelete[item.Training2ExerciseId])
+                    {
+                        @Html.ActionLink(_("Delete"), "Delete", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+                        @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+                    }
+                </div>
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @if (n > 0)
+                    {
+                        <a href="@Url.Action("SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n - 1].Training2ExerciseId })" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
+                    }
+                    @if (n < ordered.Count - 1)
+                    {
+                        <a href="@Url.Action("SwapExerciseOrder", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, exerciseId1 = ordered[n].Training2ExerciseId, exerciseId2 = ordered[n + 1].Training2ExerciseId })" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
+                    }
+                </div>
+            </td>
+        </tr>
+        }
+    }
+
+</table>
+<div>
+    @Html.ActionLink(_("Back to list of exercises"), "Index", "TrainingLessonAdmin", new { trainingProgramId = tpi, id = Model.Training2LessonId }, new { @class = "btn btn-default" })
+</div>
