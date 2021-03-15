@@ -164,7 +164,6 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
-
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -354,6 +353,10 @@
     <Compile Include="Migrations\FlightContext\202103132323451_Flights extended with index on Date-StartedFromId-Deleted.cs" />
     <Compile Include="Migrations\FlightContext\202103132323451_Flights extended with index on Date-StartedFromId-Deleted.designer.cs">
       <DependentUpon>202103132323451_Flights extended with index on Date-StartedFromId-Deleted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.cs" />
+    <Compile Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.designer.cs">
+      <DependentUpon>202103151426589_Flight training tracking and instructors for flight school.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonsInProgramViewModel.cs" />
@@ -716,6 +719,7 @@
     <Content Include="Migrations\FlightContext\201603292109197_Location extended with bit for marking ICAO spot as a OGN FlightLog Airfield.sql" />
     <Content Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.sql" />
     <Content Include="Migrations\FlightContext\202103132323451_Flights extended with index on Date-StartedFromId-Deleted.sql" />
+    <Content Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1232,6 +1236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202103132323451_Flights extended with index on Date-StartedFromId-Deleted.resx">
       <DependentUpon>202103132323451_Flights extended with index on Date-StartedFromId-Deleted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.resx">
+      <DependentUpon>202103151426589_Flight training tracking and instructors for flight school.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
