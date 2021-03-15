@@ -10,16 +10,12 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 using FlightJournal.Web.Configuration;
-using Microsoft.Azure.Services.AppAuthentication;
+
 
 namespace FlightJournal.Web {
     public partial class Startup {
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app) {
-
-            // will look for SQL connection strings that contain Authentication=Active Directory Interactive. When found, they will use the AzureServiceTokenProvider to fetch an access token to authenticate with Azure SQL Database.
-            // https://www.pluralsight.com/guides/how-to-use-managed-identity-with-azure-sql-database
-            System.Data.SqlClient.SqlAuthenticationProvider.SetProvider(System.Data.SqlClient.SqlAuthenticationMethod.ActiveDirectoryInteractive, new SqlAppAuthenticationProvider());
 
             // Configure the db context, user manager and role manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);

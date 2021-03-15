@@ -180,10 +180,10 @@ namespace FlightJournal.Web.Models
 
                 return Task.FromResult(0);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                throw new Exception($"Failed to send to {message.Destination} from {Settings.MailFrom}" , e);
-                return Task.FromResult(1);
+                System.Diagnostics.Trace.TraceError($"Failed to send to {message.Destination} from {Settings.MailFrom} with host {Settings.MailSmtpHost}:{Settings.MailSmtpPort} and user {Settings.MailSmtpUserName} and exception {exception}");
+                throw new Exception($"Failed to send to {message.Destination} from {Settings.MailFrom}", exception);
             }
         }
     }
@@ -206,11 +206,15 @@ namespace FlightJournal.Web.Models
                 if (smsmessage.Sid == null)
                 {
                     Task.FromResult(1);
-                    throw new Exception("Twilio did not respond with a valid message sid when sending to destination "+ message.Destination +" - no sms sent");
+
+                    System.Diagnostics.Trace.TraceError($"Twilio did not respond with a valid message sid when sending to destination {message.Destination} - no sms sent");
+                    throw new Exception($"Twilio did not respond with a valid message sid when sending to destination {message.Destination} - no sms sent");
                 }
                 if (smsmessage.ErrorMessage != null)
                 {
                     Task.FromResult(1);
+
+                    System.Diagnostics.Trace.TraceError(smsmessage.ErrorMessage);
                     throw new Exception(smsmessage.ErrorMessage);
                 }
                 return Task.FromResult(0);
