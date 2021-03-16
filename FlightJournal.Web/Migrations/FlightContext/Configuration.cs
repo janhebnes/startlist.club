@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
+using System.Web;
 using FlightJournal.Web.Models.Training.Flight;
 using Newtonsoft.Json;
 
@@ -156,7 +157,12 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 context.TrainingLessons.RemoveRange(context.TrainingLessons);
                 context.TrainingExercises.RemoveRange(context.TrainingExercises);
                 context.SaveChanges();
-                FlightTraining.InitializeTrainingPrograms(context);
+
+                //FlightTraining.InitializeTrainingPrograms(context);
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, spilstart, UHB922 01012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, flyslæb, UHB922 01012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, selvstart, UHB922 01012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, TMG, UHB923 30012021.json"));
             }
 
             if (dropCreateTrainingPrograms || !context.Manouvres.Any())

@@ -818,6 +818,20 @@ Krav om strækflyvning kan ikke reduceres eller erstattes<br>
                 });
 
             }
+
+            public static void InitializeTrainingProgramsFromFileSystem(Models.FlightContext context, string importTrainingProgramJsonFilePath)
+            {
+                if (!File.Exists(importTrainingProgramJsonFilePath))
+                    throw new FileNotFoundException(importTrainingProgramJsonFilePath);
+                    
+                using (var sr = new StreamReader(File.OpenRead(importTrainingProgramJsonFilePath)))
+                using (var reader = new JsonTextReader(sr))
+                {
+                    var program = JsonConvert.DeserializeObject<Training2Program>(sr.ReadToEnd());
+                    context.TrainingPrograms.Add(program);
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
