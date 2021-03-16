@@ -18,6 +18,7 @@ namespace FlightJournal.Web.Models
         public FlightContext() : base("FlightJournal")
         {
             Database.SetInitializer<FlightContext>(new MigrateDatabaseToLatestVersion<FlightContext, Migrations.FlightContext.Configuration>());
+            //Database.SetInitializer<FlightContext>(new DropCreateDatabaseAlways<FlightContext>()); // Note that after a Drop the MigrateDatabaseToLatestVersion needs to run for seed data to be populated
         }
 
         public DbSet<Flight> Flights { get; set; }

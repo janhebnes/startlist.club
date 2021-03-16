@@ -65,6 +65,7 @@ namespace FlightJournal.Web.Models
         static ApplicationDbContext()
         {
             Database.SetInitializer<ApplicationDbContext>(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.ApplicationDbContext.Configuration>());
+            //Database.SetInitializer<ApplicationDbContext>(new DropCreateDatabaseAlways<ApplicationDbContext>()); // Note that after a Drop the MigrateDatabaseToLatestVersion needs to run for seed data to be populated
         }
 
         public static ApplicationDbContext Create()

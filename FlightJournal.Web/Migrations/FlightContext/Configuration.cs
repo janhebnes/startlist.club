@@ -12,8 +12,7 @@ using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Migrations.FlightContext
 {
-
-    internal sealed class Configuration : DbMigrationsConfiguration<FlightJournal.Web.Models.FlightContext>
+    internal sealed partial class Configuration : DbMigrationsConfiguration<FlightJournal.Web.Models.FlightContext>
     {
         public Configuration()
         {
@@ -21,7 +20,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
             AutomaticMigrationDataLossAllowed = true;
             MigrationsDirectory = @"Migrations\FlightContext";
         }
-
 
         internal static void InitializeDemoFlights(Models.FlightContext context)
         {
@@ -110,7 +108,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var pilot3B = new Pilot { Name = "Mr Demo OtherClub Pilot", MemberId = "9997", Club = club3, MobilNumber = "+4500000007" };
             context.Pilots.Add(pilot3B);
 
-
             context.SaveChanges();
 
             GenerateFlights(pl1, pl2, location, pilot, start)
@@ -122,7 +119,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
             GenerateFlights(pl1, pl2, location, pilot3, start)
                 .ForEach(b => context.Flights.Add(b));
 
-
             GenerateFlights(pl1, pl2, location3, pilot2B, start)
                 .ForEach(b => context.Flights.Add(b));
 
@@ -132,301 +128,66 @@ namespace FlightJournal.Web.Migrations.FlightContext
             GenerateFlights(pl1, pl2, location5, pilot3B, start)
                 .ForEach(b => context.Flights.Add(b));
 
-            context.SaveChanges();
-        }
-
-        internal static void InitializeManouvres(Models.FlightContext context)
-        {
-            context.Manouvres.AddRange(new[]
-            {
-                new Manouvre
-                {
-                    ManouvreItem = "90",
-                    Description = "90 graders højredrej",
-                    IconCssClass = "fa fa-repeat",
-                    DisplayOrder = 1
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "90",
-                    Description = "90 grades venstredrej",
-                    IconCssClass = "fa fa-undo",
-                    DisplayOrder = 2
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "180",
-                    Description = "180 graders venstredrej",
-                    IconCssClass = "fa fa-undo",
-                    DisplayOrder = 3
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "180",
-                    Description = "180 graders højredrej",
-                    IconCssClass = "fa fa-repeat",
-                    DisplayOrder = 4
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "360",
-                    Description = "360 fuldkurve til højre",
-                    IconCssClass = "fa fa-repeat",
-                    DisplayOrder = 5
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "360",
-                    Description = "360 fuldkurve til venstre",
-                    IconCssClass = "fa fa-undo",
-                    DisplayOrder = 6
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&infin;",
-                    Description = "Ottetal",
-                    DisplayOrder = 7
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&ang;30&deg;",
-                    Description = "30 graders krængning",
-                    DisplayOrder = 8
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&ang;45&deg;",
-                    Description = "45 graders krængning",
-                    DisplayOrder = 9
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&ang;60&deg;",
-                    Description = "60 graders krængning",
-                    DisplayOrder = 10
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&#x21B7 Afb start L",
-                    Description = "Afbrudt start i lav højde",
-                    DisplayOrder = 11
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&#x21B7 Afb start M",
-                    Description = "Afbrudt start i mellem højde",
-                    DisplayOrder = 12
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&#x21B7 Afb start H",
-                    Description = "Afbrudt start i stor højde",
-                    DisplayOrder = 13
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&#x219D S-drej",
-                    DisplayOrder = 14
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&#x21B0 Landingsrunde V",
-                    DisplayOrder = 15
-                },
-                new Manouvre
-                {
-                    ManouvreItem = "&#x21B1 Landingsrunde H",
-                    DisplayOrder = 16
-                }
-            });
+            GenerateFlights(pl1, pl2, location5, pilot3B, start)
+                .ForEach(b => context.Flights.Add(b));
 
             context.SaveChanges();
-        }
 
-        internal static void InitializeWindDirections(Models.FlightContext context)
-        {
-            for (int v = 0; v < 360; v += 45)
-            {
-                var direction = new WindDirection { WindDirectionItem = v };
-                context.WindDirections.Add(direction);
-            }
+            // Flight Training 
+
+            var pilotStudent = new Pilot { Name = "Mr Demo Student Pilot", MemberId = "9998", Club = club, MobilNumber = "+4500000008" };
+            context.Pilots.Add(pilotStudent);
+            var pilotInstructor = new Pilot { Name = "Mr Demo Instructor Pilot", MemberId = "9999", Club = club, MobilNumber = "+4500000009", InstructorId = "Maverick-FI007" };
+            context.Pilots.Add(pilotInstructor);
 
             context.SaveChanges();
-        }
 
-        internal static void InitializeWindSpeeds(Models.FlightContext context)
-        {
-            for (int v = 0; v < 30; v += 5)
-            {
-                var speed = new WindSpeed { WindSpeedItem = v };
-                context.WindSpeeds.Add(speed);
-            }
-            context.SaveChanges();
-        }
-        internal static void InitializeCommentaries(Models.FlightContext context)
-        {
-            var startCommentary = new CommentaryType {CType = "Start", Commentaries = new HashSet<Commentary>(), DisplayOrder = 0};
-            var flightCommentary = new CommentaryType {CType = "Flyvning", Commentaries = new HashSet<Commentary>(), DisplayOrder = 1};
-            var approachCommentary = new CommentaryType {CType = "Indflyvning", Commentaries = new HashSet<Commentary>(), DisplayOrder = 2};
-            var landingCommentary = new CommentaryType {CType = "Landing", Commentaries = new HashSet<Commentary>(), DisplayOrder = 3};
-
-            context.Commentaries.AddRange(new[]
-            {
-                new Commentary
-                {
-                    Comment = "&#x2713",
-                    DisplayOrder = 1,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary},
-                    IsOk = true
-                },
-
-                new Commentary
-                {
-                    Comment = "(&#x2713)",
-                    DisplayOrder = 2,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "&#x2620",
-                    DisplayOrder = 3,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Instruktørvejledning nødvendig",
-                    DisplayOrder = 4,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Instruktørindgriben nødvendig",
-                    DisplayOrder = 5,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Retning ustabil",
-                    DisplayOrder = 6,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Fart ustabil",
-                    DisplayOrder = 7,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Fart for høj",
-                    DisplayOrder = 8,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Fart for lav",
-                    DisplayOrder = 9,
-                    CommentaryTypes = new HashSet<CommentaryType> {startCommentary, flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Position ustabil",
-                    DisplayOrder = 10,
-                    CommentaryTypes = new HashSet<CommentaryType> {flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Position for høj",
-                    DisplayOrder = 11,
-                    CommentaryTypes = new HashSet<CommentaryType> {flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Position for lav",
-                    DisplayOrder = 12,
-                    CommentaryTypes = new HashSet<CommentaryType> {flightCommentary, approachCommentary, landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Udfladning for høj",
-                    DisplayOrder = 13,
-                    CommentaryTypes = new HashSet<CommentaryType> {landingCommentary}
-                },
-                new Commentary
-                {
-                    Comment = "Udfladning for lav",
-                    DisplayOrder = 14,
-                    CommentaryTypes = new HashSet<CommentaryType> {landingCommentary}
-                }
-            });
-
-            context.CommentaryTypes.Add(landingCommentary);
-            context.CommentaryTypes.Add(startCommentary);
-            context.CommentaryTypes.Add(approachCommentary);
-            context.CommentaryTypes.Add(flightCommentary);
-
-            context.SaveChanges();
-        }
-
-        internal static void InitializeGradings(Models.FlightContext context)
-        {
-            context.Gradings.AddRange(new[]
-            {
-                new Grading
-                {
-                    GradingIdForExport = Guid.NewGuid(),
-                    Name = "Briefet",
-                    IsOk = true,
-                    DisplayOrder = 1,
-                    Value = 3,
-                    AppliesToBriefingOnlyPartialExercises = true,
-                    AppliesToPracticalPartialExercises = false
-                },
-                new Grading
-                {
-                    GradingIdForExport = Guid.NewGuid(),
-                    Name = "Kan kun udføres med hjælp fra instruktøren",
-                    IsOk = false,
-                    DisplayOrder = 1,
-                    Value = 1,
-                    AppliesToBriefingOnlyPartialExercises = false,
-                    AppliesToPracticalPartialExercises = true
-                },
-                new Grading
-                {
-                    GradingIdForExport = Guid.NewGuid(),
-                    Name = "Kan udføres med mundtlige korrektioner fra instruktøren",
-                    IsOk = false,
-                    DisplayOrder = 2,
-                    Value = 2,
-                    AppliesToBriefingOnlyPartialExercises = false,
-                    AppliesToPracticalPartialExercises = true
-                },
-                new Grading
-                {
-                    GradingIdForExport = Guid.NewGuid(),
-                    Name = "Udføres selvstændigt og tilfredsstillende",
-                    IsOk = true,
-                    DisplayOrder = 3,
-                    Value = 3,
-                    AppliesToBriefingOnlyPartialExercises = false,
-                    AppliesToPracticalPartialExercises = true
-                }
-            });
-            context.SaveChanges();
+            FlightTraining.GenerateTrainingFlights(pl2, location, pilotStudent, pilotInstructor, start, context);
         }
 
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
         {
             //  This method will be called after migrating to the latest version.
 
-            var forceTrainingProgramRecreation = false;
-
-            if (forceTrainingProgramRecreation
-                || !context.TrainingPrograms.Any()
-                )
+            var dropCreateTrainingPrograms = false;
+            if (dropCreateTrainingPrograms || !context.TrainingPrograms.Any())
             {
-                TrainingProgramCatalogue.InitializeTrainingPrograms(context);
+                context.TrainingPrograms.RemoveRange(context.TrainingPrograms);
+                context.TrainingLessons.RemoveRange(context.TrainingLessons);
+                context.TrainingExercises.RemoveRange(context.TrainingExercises);
+                context.SaveChanges();
+                FlightTraining.InitializeTrainingPrograms(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.Manouvres.Any())
+            {
+                context.Manouvres.RemoveRange(context.Manouvres);
+                FlightTraining.InitializeManouvres(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.WindSpeeds.Any())
+            {
+                context.WindSpeeds.RemoveRange(context.WindSpeeds);
+                FlightTraining.InitializeWindSpeeds(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.WindDirections.Any())
+            {
+                context.WindDirections.RemoveRange(context.WindDirections);
+                FlightTraining.InitializeWindDirections(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.Commentaries.Any())
+            {
+                context.Commentaries.RemoveRange(context.Commentaries);
+                context.CommentaryTypes.RemoveRange(context.CommentaryTypes);
+                FlightTraining.InitializeCommentaries(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.Gradings.Any())
+            {
+                context.Gradings.RemoveRange(context.Gradings);
+                FlightTraining.InitializeGradings(context);
             }
 
             //  Only seed if the database is empty
@@ -439,41 +200,9 @@ namespace FlightJournal.Web.Migrations.FlightContext
             }
 
 
-            if (forceTrainingProgramRecreation || !context.Manouvres.Any())
-            {
-                context.Manouvres.RemoveRange(context.Manouvres);
-                InitializeManouvres(context);
-            }
-
-
-            if (forceTrainingProgramRecreation || !context.WindSpeeds.Any())
-            {
-                context.WindSpeeds.RemoveRange(context.WindSpeeds);
-                InitializeWindSpeeds(context);
-            }
-
-            if (forceTrainingProgramRecreation || !context.WindDirections.Any())
-            {
-                context.WindDirections.RemoveRange(context.WindDirections);
-                InitializeWindDirections(context);
-            }
-
-            if (forceTrainingProgramRecreation || !context.Commentaries.Any())
-            {
-                context.Commentaries.RemoveRange(context.Commentaries);
-                context.CommentaryTypes.RemoveRange(context.CommentaryTypes);
-                InitializeCommentaries(context);
-            }
-
-            if (forceTrainingProgramRecreation || !context.Gradings.Any())
-            {
-                context.Gradings.RemoveRange(context.Gradings);
-                InitializeGradings(context);
-            }
-
             /// This is a temp hack to migrate from the old brief/trained/ok to Gradings (to let testers work with existing data)
             /// Can be removed before deployment to production.
-            
+
             //var notMigratedAppliedExercises = context.AppliedExercises.Where(x => x.Grading == null).ToList();
             //if (notMigratedAppliedExercises.Any())
             //{

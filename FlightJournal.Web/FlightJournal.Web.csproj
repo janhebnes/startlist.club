@@ -358,10 +358,10 @@
     <Compile Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.designer.cs">
       <DependentUpon>202103151426589_Flight training tracking and instructors for flight school.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\Configuration.FlightTraining.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonsInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingProgramAdminViewModel.cs" />
-    <Compile Include="Models\Training\Catalogue\TrainingProgramCatalogue.cs" />
     <Compile Include="Models\InstructorPilotRelation.cs" />
     <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\LogbookViewModels.cs" />

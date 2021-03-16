@@ -20,6 +20,7 @@ namespace FlightJournal.Web.Configuration
             public string Name;
             public string Password;
             public string PhoneNumber;
+            public string InstructorId;
 
             public ApplicationUser GetApplicationUser
             {
@@ -35,12 +36,13 @@ namespace FlightJournal.Web.Configuration
                 }
             }
 
-            public DemoMembership(string roleName, string name, string password, string phoneNumber)
+            public DemoMembership(string roleName, string name, string password, string phoneNumber, string instructorId = null)
             {
                 this.RoleName = roleName;
                 this.Name = name;
                 this.Password = password;
                 this.PhoneNumber = phoneNumber;
+                this.InstructorId = instructorId;
                 this._applicationUser = null;
             }
         }
@@ -60,7 +62,10 @@ namespace FlightJournal.Web.Configuration
                     // Users related to another club
                     new DemoMembership("Manager", "manager-of-other-club@demo.startlist.club", "manager", "+4500000005"),
                     new DemoMembership("Editor", "editor-of-other-club@demo.startlist.club", "editor", "+4500000006"),
-                    new DemoMembership(string.Empty, "pilot-of-other-club@demo.startlist.club", "pilot", "+4500000007")
+                    new DemoMembership(string.Empty, "pilot-of-other-club@demo.startlist.club", "pilot", "+4500000007"),
+                    // Users related to flight training 
+                    new DemoMembership(string.Empty, "student-pilot@demo.startlist.club", "pilot", "+4500000008"),
+                    new DemoMembership(string.Empty, "instructor-pilot@demo.startlist.club", "pilot", "+4500000009", "Maverick-FI007")
                 };
             }
         }
