@@ -1,0 +1,918 @@
+{
+  "Lessons": [
+    {
+      "Exercises": [
+        {
+          "Name": "Opbygning af motorsvæveflyet (TMG)",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Cockpitindretning og tilvænning til at sidde i cockpittet",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Tank, tankningsprocedure, drænprøve",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "El-systemer, wire, hydraulik, hjulbremser, karburatorforvarmer",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Checkliste – og ”hvad skal fingrene gøre”",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        }
+      ],
+      "Name": "Øvelse 1",
+      "Purpose": "#### Tilvænning til TMG\r\n\r\nØvelsen indeholder ikke flyvning og kan udføres på en dag med dårligt vejr.\r\n\r\nAspiranten skal sætte sig ind opbygningen flyet samt orienteres om de systemer, der er tilgængelige fra cockpittet.\r\nFlyets checkliste indgår i gennemgang af øvelsen",
+      "DisplayOrder": 1
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Brand på jorden og i luften",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Motorrum og brand i det elektriske system",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Betydningen af at have brændstof ombord",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Fejl på wirer, elektricitet og hydraulik",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Placering af brandslukker og procedurer for at forlade flyet",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 5
+        }
+      ],
+      "Name": "Øvelse 1e",
+      "Purpose": "#### Procedure ved opståede nødsituationer\r\n\r\nØvelsen indeholder ikke flyvning og kan udføres på en dag med dårligt vejr.\r\n\r\nAspiranten skal sætte sig ind i procedurer, som skal bruges i tilfælde af en nødsituation\r\n",
+      "DisplayOrder": 2
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Kontrol af flyets dokumenter. ",
+          "Note": "Er der elementer, som er løbet ud for tid?\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Nødvendigt udstyr: Kort, flyveplan, AIP/VFG",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Udførelse af dagligt tilsyn og cockpitcheck",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Indkodning af nødvendige frekvenser til flyvningen",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Korrekt sædeposition og afstand til siderorspedaler",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Kontrol ved opstart og opvarmning af motor",
+          "Note": "Forståelse af motorens karakteristika.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Kontrol af motorydelse ",
+          "Note": "Omdrejninger, tændingskredse, choker m.v.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Rækkefølge for nedlukning af systemer og instrumenter ved slukning af motor",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        },
+        {
+          "Name": "Parkering, sikring og tøjring af flyet efter endt flyvning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 9
+        },
+        {
+          "Name": "Føring af flyets logbog, pilotens logbog, startliste og andre dokumenter.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 10
+        }
+      ],
+      "Name": "Øvelse 2",
+      "Purpose": "#### Forberedelse før og afslutning efter flyvning\r\n\r\n(Øvelsen indeholder ikke flyvning, men kan kombineres med en efterfølgende flyvning).\r\n\r\nAspiranten skal lære at kontrollere flyets dokumenter for bl.a. overholdelse af eftersynsterminer samt lære at tage\r\nhøjde for, hvilke forberedelser der skal gøres før flyvning. \r\n\r\nAspiranten skal endvidere lære af afslutte flyvningen med håndtering af flyet og føring af flyets logbog",
+      "DisplayOrder": 3
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Kontrol før taxi",
+          "Note": "Flyets begrænsninger, situationen på flyvepladsen",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Brug af motor under taxi – på græs – på hårdt underlag",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Kontrol af retning og under drej",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Drej mellem andre luftfartøjer mv. på flyvepladsen",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Procedure ved parkering",
+          "Note": "Hensyn til andre, brug af motor ved parkering",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Vindens indflydelse – ”pind ind i vinden”",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Pladsens overflade og virkningen af denne",
+          "Note": "Grus, langt græs, sne og is",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Rorenes frie bevægelse",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        },
+        {
+          "Name": "Signaler til og fra marshaller",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 9
+        },
+        {
+          "Name": "Instrumentcheck – især motorinstrumenter",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 10
+        },
+        {
+          "Name": "Generelle ATC-procedurer",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 11
+        }
+      ],
+      "Name": "Øvelse 3",
+      "Purpose": "#### Taxi\r\n\r\nØvelsen indeholder ikke flyvning, men kombineres typisk med efterfølgende flyvelektion.\r\n\r\nAspiranten skal lære at taxi med flyet frem til startpositionen samt lære at forholde sig til de vejrforhold, der er på flyvedagen. \r\n\r\nAspiranten skal lære ATC-procedurerne ifm. taxi frem til startpositionen\r\n",
+      "DisplayOrder": 4
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Se beskrivelse af øvelse",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 1
+        }
+      ],
+      "Name": "Øvelse 3e",
+      "Purpose": "#### Nødprocedure under taxi – fejl på bremser og styring\r\n\r\nØvelsen indeholder ikke flyvning, men kombineres typisk med øvelse 3 og efterfølgende flyvelektion.\r\n\r\nAspiranten skal instrueres i at taxi således, at der er mulighed for at undvige og undgå kollisioner, hvis bremser eller\r\nstyring skulle svigte. \r\n\r\nDer skal være særlig opmærksomhed på, at flyet ikke kører for tæt på andre fly, køretøjer, bygninger eller andre forhindringer.\r\n",
+      "DisplayOrder": 5
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Flyvning ved normal rejsehastighed",
+          "Note": "Opnåelse og fastholdelse af ligeudflyvning i samme højde",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Flyvning indenfor fartmålerens farveafmærkning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Demonstration af flyets egenstabilitet",
+          "Note": "Høj-, tvær- og længdeakse\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Flyets næsestilling incl. brug af trim",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Flyve flyet vandret og holde kurs – brug af trim",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Flyvning ved forskellige hastigheder ",
+          "Note": "Brug af motor, trim, synsindtryk og horisontens placering",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Ændringer af flyets konfiguration under flyvning ",
+          "Note": "F.eks. udfældning af understel, luftbremser, flaps osv.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Brug af instrumenter til præcisionsflyvning",
+          "Note": "F.eks. kuglelibelle, variometer, motorydelse",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        }
+      ],
+      "Name": "Øvelse 4",
+      "Purpose": "#### Ligeudflyvning i samme højde\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:20 Akk: 0:20\r\n\r\nAspiranten skal instrueres i at flyve lige ud, holde højde samtidig med, at flyet flyves rent. \r\n\r\nAspiranten skal vænne sig til normalbilledet ved ligeudflyvning uden stigning samt lære at bruge trimmet.\r\n",
+      "DisplayOrder": 6
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Indgang i stigning, bedste stigehastighed og bedste stigevinkel. Definition af ”blå streg”",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Udfladning i opnået højde",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Stigning med flaps udfældet – jfr. flyets håndbog",
+          "Note": "Hvis aktuelt",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Overgang til normal stigning efter indfældning af flaps",
+          "Note": "Hvis aktuelt",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Brug af instrumenter mv. under stigning ",
+          "Note": "Horisontens placering, variometer og ”normalbilledet”",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        }
+      ],
+      "Name": "Øvelse 5",
+      "Purpose": "#### Stigeøvelser\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:10 Akk: 0:30\r\n\r\nAspiranten skal instrueres i at stige med flyet med hastigheden for bedste stig – blå streg på fartmåleren. \r\n\r\nAspiranten skal lære at rette ud af stigningen, så flyet netop ender i den højde, som var planlagt.",
+      "DisplayOrder": 7
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Indgang i en nedstigning, blive i den og flade ud ",
+          "Note": "Ved ønsket flyvehøjde",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Nedgang i tomgang og med motorstøtte i rejsehastighed",
+          "Note": "Opmærksomhed på farveafmærkning på fartmåler\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Brug af benzinpumpe og/el. karburatorforvarmer",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Brug af sideglidning for at øge synkehastigheden",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Brug af instrumenter ifm. nedstigning",
+          "Note": "Højdemåler, fartmåler og variometer",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Normalbilledet under nedstigning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        }
+      ],
+      "Name": "Øvelse 6",
+      "Purpose": "#### Nedstigning\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:10 Akk: 0:40\r\n\r\n\r\nAspiranten skal instrueres i at descende med flyet og flade ud i planlagt højde. \r\n\r\nAspiranten skal lære at bruge evt. brændstofpumpe og karburatorforvarmer under nedstigningen. \r\n\r\nAspiranten skal endvidere vænne sig til normalbilledet under en nedstigning",
+      "DisplayOrder": 8
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Indgang i og fastholdelse af et drej med 30 graders krængning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Genopretning fra drej til vandret flyvning ",
+          "Note": "På en forudbestemt kurs",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Fejlsituationer under drejet",
+          "Note": "Ukorrekt næsestilling, krængning og kugle. Ren flyvning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Stigedrej",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Drej under nedstigning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Demonstration af pæredrej og faren ved disse",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Brug af instrumenter under drej",
+          "Note": "Kugle, kompas, variometer, gyro og GPS",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Drej mod forudbestemt kurs",
+          "Note": "Brug af gyro eller kursindikator og kompas. Kig ud mod\r\nmålet og start udretning 15 – 30 grader før",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        }
+      ],
+      "Name": "Øvelse 7",
+      "Purpose": "#### Drej\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:30 Akk: 1:10\r\n\r\n\r\nAspiranten skal instrueres i drej med 30o\r\nkrængning – både i samme højde og under nedstigning. \r\n\r\nAspiranten skal endvidere lære at rette ud af drejet på en forudbestemt kurs efter kompas, GPS, kursgyro eller fast punkt i horisonten.",
+      "DisplayOrder": 9
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Sikkerhedscheck – er der nogen nedenunder? ",
+          "Note": "Løse ting i cockpittet? Er besætningen spændt fast?",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Introduktion til langsomflyvning",
+          "Note": "Instruktøren demonstrerer motorydelse, horisontens\r\nplacering, brug af sideror",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Bevidst og kontrolleret flyvning ned til kritisk lav hastighed",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Lære aspiranten at give fuld gas med korrekt næsestilling og vandrette vinger for at opnå korrekt stigehastighed",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        }
+      ],
+      "Name": "Øvelse 8",
+      "Purpose": "#### Langsomflyvning\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:15 Akk: 1:25\r\n\r\n\r\nHensigten med denne øvelse er at træne piloten i erkendelse af en for lav flyvehastighed og i genopretning fra denne flyvetilstand.",
+      "DisplayOrder": 10
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Sikkerhed ",
+          "Note": "Omgivelser og opmærksomhed på flyets karakteristika",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Symptomer og erkendelse af stall",
+          "Note": "Næsestilling, rystelser, støjniveau, fartmålervisning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Rent stall lige ud og i drej – med og uden motorkraft. ",
+          "Note": "Udretning fra stall i drej sker med sideror alene",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Genopretning fra et stall, hvor flyet taber den ene vinge",
+          "Note": "Modsat sideror, pinden frem og giv herefter lidt gas\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Begyndende stall i landingsrunden og med flyet i landingskonfiguration (flaps, luftbremser osv.) med og uden motorstøtte. ",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Genopretning fra begyndende stall efter pæredrej.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        }
+      ],
+      "Name": "Øvelse 8a",
+      "Purpose": "#### Stalløvelser\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:15 Akk: 1:40\r\n\r\nHensigten med denne øvelse er at træne aspiranten i at rette ud af stall ved først at få flyvefart på flyet og først herefter give gas\r\n",
+      "DisplayOrder": 11
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Cockpitcheck",
+          "Note": "Mental forberedelse\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Vindforhold under start – forberedelse til afbrudt start. ",
+          "Note": "Brug af AIC/håndbog vedr. overflade mv",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Start i sidevind – teknik",
+          "Note": "Kursflyvning i sidevind eller vingen ned i vinden. \r\n\r\nHold kursen\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Procedurer under starten",
+          "Note": "Sluk benzinpumpe, reducer omdrejninger, understel op\r\nosv.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Teknik ved start på korte eller bløde pladser",
+          "Note": "Brug flyets håndbog og AIC",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Aflastning af næsehjul – hvis aktuelt",
+          "Note": "Næsehjulet løftes af banen for at mindske modstanden",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Støjhensyn til omgivelserne. ",
+          "Note": "Hvor er byen og hvor er husene?",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        }
+      ],
+      "Name": "Øvelse 9",
+      "Purpose": "#### Start og stigning til observationspunktet\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:30 Akk: 2:10\r\n\r\nHensigten med denne øvelse er at træne aspiranten i at starte flyet på en sådan måde, at der tages hensyn til omgivelser og den landing, der kommer efter starten\r\n",
+      "DisplayOrder": 12
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Procedurer for landingsrunde – engelsk landingsrunde",
+          "Note": "Vær opmærksom på offentlige flyvepladser jfr. VFG/AIP\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Aflytning af ATIS",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Motorstøttet landingsrunde og landing ",
+          "Note": "Overgang til tomgang/luftbremser",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Vindens indflydelse på indflyvnings- og landingshastigheder ",
+          "Note": "Gul trekant + ½ vindhastighed.\r\n\r\nVed kraftig vind flyves TMG’en mere som et motorfly\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Brugen af luftbremser og flaps",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Aflastning af næsehjulet – hvis aktuelt",
+          "Note": "Næsehjulet holdes løftet under afløbet",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Valg af indflyvning ved sidevind ",
+          "Note": "Sideglidning eller kursflyvning på sidevind",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Landingsøvelser med stoppet motor",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        },
+        {
+          "Name": "Teknik ved landing på korte baner eller på bløde pladser",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 9
+        },
+        {
+          "Name": "Indflyvning uden brug af flaps ved fly med flaps",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 10
+        },
+        {
+          "Name": "Landing på hovedhjulene på halehjulsfly",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 11
+        },
+        {
+          "Name": "Mislykket indflyvning og ”go-around”",
+          "Note": "F.eks. ved voldsom ”høns” eller manglende styring på flyet\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 12
+        },
+        {
+          "Name": "Støjprocedurer – hensynet til miljø og beboere",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 13
+        }
+      ],
+      "Name": "Øvelse 10",
+      "Purpose": "#### Landingsrunde, indflyvning og landing\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 1:00 Akk: 3:10\r\n\r\nHensigten med denne øvelse er at træne aspiranten i at lande flyet på en sådan måde, at der tages hensyn til omgivelser og den landing, der kommer efter starten",
+      "DisplayOrder": 13
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Afbrudt start på jorden",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Motorfejl efter start",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Beslutning om at afbryde landingen",
+          "Note": "F.eks. ved bil på banen, komme for højt ind osv",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Afbrudt indflyvningsprocedure",
+          "Note": "Uventede hændelser i landingsrunden, evt. for høj indflyvning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        }
+      ],
+      "Name": "Øvelse 10e",
+      "Purpose": "#### Nødprocedurer under start og landing\r\n\r\nØvelsen integreres i andre flyveøvelser – forventet flyvetid: 0:00 Akk: 3:10\r\n\r\nAspiranten skal lære procedurerne ved at afbryde starten, inden flyet er kommet i luften og ved at afbryde en landing pga. uventede hændelser.\r\n",
+      "DisplayOrder": 14
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Drej med stor krængning (45 grader)",
+          "Note": "i samme højde og under nedstigning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Stall under drej og opretning fra stall under drej",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Unormale flyvestillinger og udretning fra disse",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        }
+      ],
+      "Name": "Øvelse 11",
+      "Purpose": "#### Avancerede drej\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:15 Akk: 3:25\r\n\r\nAspiranten skal lære drej med stor krængning samt stall under drej og unormale flyvestillinger",
+      "DisplayOrder": 15
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Køleprocedurer for motoren – se flyets håndbog",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Procedurer for at slukke motoren i luften",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Svæveflyvekarakteristika ",
+          "Note": "Min. synk, bedste glidetal, vindens indflydelse",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Procedure for genstart af motor",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Beslutning om ikke at starte motor, men lande som svævefly",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        }
+      ],
+      "Name": "Øvelse 12",
+      "Purpose": "####  Stop og start af motor i luften (ikke PPL-A- eller LAPL-A-piloter)\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:15 Akk: 3:40\r\n\r\nAspiranten skal lære at stoppe og starte motoren under flyvning, og herunder lære procedurerne for evt. slukning\r\naf elektronisk udstyr under motorstop og -start.",
+      "DisplayOrder": 16
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Nødlandingsprocedurer",
+          "Note": "Brug farten til at få så stor højde på som muligt\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Valg af egnet landingsområde",
+          "Note": "Dynamisk nødplan under forløbet\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Glidedistance fra flyets flyvehøjde",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Plan for nedstigning til den valgte mark",
+          "Note": "Synsvinkel ned til marken",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Nøglepunkter – højder i landingsrunden",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Procedure for check af genstart af motor",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Radioprocedure",
+          "Note": "Hvilken melding skal jeg udsende – og til hvem?\r\n\r\n* Skråt ben og base i landingsrunde ned til marken\r\n* Finalebenet\r\n* Landing\r\n\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Hvad skal piloten foretage sig efter landing?",
+          "Note": "* Lukke flyveplan\r\n* Underrette ATC-myndighed,\r\n* Kontakt til markens ejer,\r\n* Havariberedskab ved skader,\r\n* Sikre flyet\r\n* Ring hjem til flyvepladsen",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        }
+      ],
+      "Name": "Øvelse 13",
+      "Purpose": "#### Nødlanding uden motor\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:30 Akk: 4:10\r\n\r\nAspiranten skal lære at udvælge egnede marker til en nødlanding samt sætte en landingsrunde op til en sådan\r\nmark. \r\n\r\nLandingen skal afbrydes i min. 500 fod, medmindre der foreligger en skriftlig aftale med markens ejer om, at marken må anvendes til nødlandingsøvelser ned til 50 fod/15 meter.\r\n",
+      "DisplayOrder": 17
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Fuld procedure væk fra flyvepladsen i break-off-højde",
+          "Note": "Cockpitcheck og fuld landingsrunde\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Nødvendige hensyn",
+          "Note": "Flyet, omgivelserne, piloten\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Hvad er forholdene omkring flyvningen ",
+          "Note": "Inden sikkerhedslandingen?",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Valg af landingsplads",
+          "Note": "Alm. flyveplads, nedlagt flyveplads, almindelig mark\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Vurdering af markens længde",
+          "Note": "Ved overflyvning og tidtagning\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Planlægning af landingsrunde og indflyvning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Hvad skal piloten foretage sig efter landing?",
+          "Note": "* Markens ejer, \r\n* lukke flyveplan, \r\n* underrette ATC-myndighed, \r\n* evt. kontakte havariberedskab",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        }
+      ],
+      "Name": "Øvelse 14",
+      "Purpose": "#### Sikkerhedslanding (lavt olietryk, høj olietemperatur, for lidt benzin)\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: 0:15 Akk: 4:25\r\n\r\nAspiranten skal lære at proceduren, hvis en sikkerhedslanding bliver nødvendig. \r\n\r\nAspiranten skal udvælge egnede\r\nmarker til en nødlanding samt sætte en landingsrunde op til en sådan mark. \r\n\r\nLandingen skal afbrydes i min. 500 fod,\r\nmedmindre der foreligger en skriftlig aftale med markens ejer om, at marken må anvendes til nødlandingsøvelserned til 50 fod/15 meter.\r\n\r\nVed en sikkerhedslanding er det muligt at vurdere markens længde ved at flyve langs den under tidtagning. \r\n\r\nHvis det tager 30 sekunder fra den ene ende til den anden med 120 km/t, er marken 1000 meter lang,",
+      "DisplayOrder": 18
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Dokumentation af flyvningen",
+          "Note": "Driftsflyveplan og ATC-flyveplan",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Afgang og en-route",
+          "Note": "* Nødvendige kort og dokumenter – skal kunne nås i flyet\r\n* Indhentning af vejroplysninger\r\n* Indretning af cockpit til brug\r\n* ATC-klarering ved start og under vejs\r\n* Noter afgangstidspunkt\r\n* Højde og kurs – evt. revision af ETA og heading\r\n* Master, vindmøller, høje terrænpunkter etc.\r\n* Minimum vejrbetingelser for at fortsætte flyvningen\r\n* Gennemflyvning af kontrolleret luftrum\r\n* Plan B – procedurer for at flyve til anden flyveplads\r\n* Usikkerhed om positionsangivelse og tab af orientering\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Ankomstprocedure ved målflyveplads",
+          "Note": "* ATC-procedurer i reguleret luftrum\r\n* QNH eller QFE\r\n* Trafikmønster og landingsrunde – se AIP/VFG\r\n* Parkering, sikring af TMG – evt. hangarplads\r\n* Lukning af ATC-flyveplan\r\n* Kan flyet tankes – og hvis ikke – hvad så?\r\n* Administrative procedurer efter flyvning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Brug af GPS og/eller VOR/NDB (hvis aktuelt)",
+          "Note": "* Valg af waypoints\r\n* Orientering via GPS\r\n* To- og From-indikationer ved VOR\r\n* Fejlmeddelelser",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Brug af VHF-pejler og anden radiohjælp",
+          "Note": "* VFG eller AIP undersøges for hvad der er muligt\r\n* Radioprocedurer og ATC-forbindelse\r\n* Indhentning af QDM og pejling\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Brug af sekundærradar",
+          "Note": "* Transponder\r\n* Valg af transponderkode\r\n* Registrering og svar",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        }
+      ],
+      "Name": "Øvelse 15 a/c",
+      "Precondition": "Aspiranten skal have gennemført hele teorien til TMG-omskolingen incl. teori til navigation\r\n",
+      "Purpose": "#### Navigation (Ikke PPL-A eller LAPL-A piloter)\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: min. 1:00 Akk: 5:25\r\n\r\nAspiranten skal forberede, planlægge og gennemføre en navigationsflyvning med instruktør i gode vejrforhold. \r\n\r\nMed lille erfaring kan øvelsen gentages med flere navigationsflyvninger.\r\n\r\n**Forudsætning:**\r\n\r\nAspiranten skal have gennemført hele teorien til TMG-omskolingen incl. teori til navigation\r\n",
+      "DisplayOrder": 19
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Flyveøvelse i Special VFR og minimum flyvesigtbarhed",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Forholdsregler før nedstigning",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Hvad skal man være opmærksom på?",
+          "Note": "Terræn, master etc",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Vanskelighed ved at læse kortet",
+          "Note": "Kend kortets signaturer\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Påvirkning af vind og turbulens",
+          "Note": "Højdemålefejl og evt. ændring af vindretningen",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 5
+        },
+        {
+          "Name": "Opmærksomhed på ”situational awareness” ",
+          "Note": "Undgå at flyve flyet ned i terrænet\r\n",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 6
+        },
+        {
+          "Name": "Støjforhold",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 7
+        },
+        {
+          "Name": "Indgang i landingsrunden til en flyveplads",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 8
+        },
+        {
+          "Name": "Landingsrunde og landing i dårligt vejr",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 9
+        }
+      ],
+      "Name": "Øvelse 15b",
+      "Purpose": "#### Navigationsøvelse i lav højde og nedsat sigtbarhed (Ikke PPL-A eller\r\nLAPL-A piloter)\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: min. 1:00 Akk: 6:25\r\n\r\nAspiranten skal forberede, planlægge og gennemføre en navigationsflyvning med instruktør i marginale vejrforhold.\r\n\r\nMed lille erfaring kan øvelsen gentages med flere navigationsflyvninger.\r\n",
+      "DisplayOrder": 20
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Delelementerne fra de foregående øvelser indgår i øvelsen og vurderes af instruktøren.",
+          "IsBriefingOnly": false,
+          "DisplayOrder": 1
+        }
+      ],
+      "Name": "Øvelse 15d",
+      "Purpose": "#### Solonavigationsøvelse\r\n\r\nØvelsen er en flyveøvelse – forventet flyvetid: min. 1:30 Akk: 7:55\r\n\r\nAspiranten skal forberede, planlægge og gennemføre en solonavigationsflyvning, som gennemgås med instruktør\r\ninden flyvningen. \r\n\r\nEfter tilfredsstillende gennemførelse skal aspiranten indstilles til praktisk prøve med en eksaminator med TMG-rettighed.",
+      "DisplayOrder": 21
+    },
+    {
+      "Exercises": [
+        {
+          "Name": "Flyveprincipper (TMG) og begrænsninger ",
+          "Note": "* Opbygningen af et motorsvævefly (TMG)\r\n* Dagligt eftersyn på motorsvævefly\r\n * Terminer for motor og propel er nyt i forhold til svævefly. \r\n* Flyvning i vejrforhold, hvor der svæveflyves.\r\n * Vurdering af vejret på turen er nødvendig ved TMG-flyvning.\r\n* Havarier med motorsvævefly\r\n * Anderledes end traditionelle svævefly\r\n* Pilotens placering i motorsvæveflyet\r\n * Typisk anderledes end i et traditionelt to-sædet svævefly\r\n* Startflyvepladsen er måske ikke en svæveflyveplads.\r\n * Opmærksomhed på flyvepladsens beskaffenhed\r\n* Flyets propel\r\n",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 1
+        },
+        {
+          "Name": "Operationelle procedurer",
+          "Note": "* Operation på svæveflyveplads ift. svæveflyvetrafik\r\n* Klarering fra evt. flyvekontrol\r\n* Pilotens egen flyvestatus ift. at flyve motorsvævefly\r\n* Fastlæggelse af vejrminima for at vende om på turen\r\n* Begrænsninger i flyets forsikringsbetingelser\r\n * Landing på visse pladser\r\n* Regler for PPR og landing på private pladser.\r\n * Indhentning af PPR\r\n* Nødprocedurer ",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 2
+        },
+        {
+          "Name": "Flyvepræstationer og -planlægning ",
+          "Note": "* Hastighed for bedste glid\r\n* Hastighed for mindste synk\r\n* Bedste stigehastighed og bedste stigevinkel\r\n* Maksimal lasteevne og startvægt\r\n* Mulig brændstofmængde og rækkevidde\r\n* Minimum brændstofmængde\r\n* Tyngdepunktsberegning\r\n* ATC-flyveplan\r\n* Replanning og kontrol af flyvningen en route\r\n",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 3
+        },
+        {
+          "Name": "Luftfartøjskendskab",
+          "Note": "* Gennemgang af flyets håndbog\r\n* Gennemgang af et dagligt eftersyn på flyet\r\n* Gennemgang af flyets checkliste\r\n* Instruktion i brugen af flyets radio\r\n * Indkodning af frekvenser til en flyvning\r\n* Instruktion i brugen af flyets transponder\r\n* Instruktion i brugen af flyets GPS",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 4
+        },
+        {
+          "Name": "Navigation",
+          "Note": "* Bestiknavigation\r\n * Motorflyvning sammenlignet med svæveflyvning\r\n* Terrestrisk navigation\r\n* Navigation under flyvning\r\n* Radioen som værktøj i navigationen\r\n* Radiobaseret navigationshjælp\r\n* Radarhjælp\r\n* GPS-navigation\r\n",
+          "IsBriefingOnly": true,
+          "DisplayOrder": 5
+        }
+      ],
+      "Name": "TMG teori",
+      "Purpose": "#### Teori vedr. uddannelse til TMG-rettighed\r\n\r\nØvelsen er ikke en flyveøvelse\r\n\r\nFølgende teori skal være gennemgået inden påbegyndelse af typeomskoling og soloflyvning:\r\n* Flyveprincipper (TMG) og begrænsninger\r\n* Operationelle procedurer\r\n* Flyvepræstationer og -planlægning\r\n* Luftfartøjskendskab\r\n\r\nFølgende teori skal være gennemgået inden påbegyndelse af navigationsflyvningerne:\r\n* Navigation\r\n",
+      "DisplayOrder": 22
+    }
+  ],
+  "ShortName": "TMG-rettighed",
+  "Name": "TMG-rettighed",
+  "Notes": "Dette træningsprogram er detaljeret beskrevet i UHB924 og retter sig mod piloter med SPL-, PPL-A- eller LAPL-A certifikater, som ønsker en TMG-rettighed indført i certifikatet.\r\n\r\nGrunduddannelse til SPL-certifikat på TMG er beskrevet i UHB923.\r\n\r\nAspiranter med PPL-A- eller LAPL-A-certifikater skal ikke træne TMG-flyvning med stoppet motor.\r\n\r\nØvelserne 1 – 14 skal gennemføres, inden aspiranten må flyve solo på TMG, medmindre han i forvejen er omskolet til ”selvstart” på en TMG.\r\n\r\nFor svæveflyvepiloter med stor strækerfaring kan navigationsuddannelsen reduceres til som minimum 1 solonavigationsflyvning på 150 km med landing på anden flyveplads end startflyvepladsen.\r\n",
+  "Url": "https://medlem.dsvu.dk/grp900/2270-uhb924-traeningsprogram-tmg-rettighed-til-andet-certifikat/file/menu-id-117"
+}
