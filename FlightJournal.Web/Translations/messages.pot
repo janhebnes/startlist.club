@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-03-14 09:13+0100\n"
+"POT-Creation-Date: 2021-03-16 20:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1410,10 +1410,6 @@ msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:218
 msgid "Everything ok"
-msgstr ""
-
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:225
-msgid "Select one or more comments"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234

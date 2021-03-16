@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-03-14 09:13+0100\n"
-"PO-Revision-Date: 2021-03-14 09:15+0100\n"
+"POT-Creation-Date: 2021-03-16 20:59+0100\n"
+"PO-Revision-Date: 2021-03-16 21:06+0100\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -1276,9 +1276,9 @@ msgstr "Hvem flyver"
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:41
 msgid "Show/hide bar-chart style overview of exercises and their completion"
 msgstr ""
-"Vis/Skjul oversigt over status for de enkelte øvelser. Hver lektion vises "
-"som op til tre vandrette farvede bjælker, der angiver antal fuldførte, "
-"påbegyndte og ikke startede deløvelser for denne lektion"
+"Vis/Skjul oversigt over status for de enkelte øvelser. Hver øvelse vises som "
+"op til tre vandrette farvede bjælker, der angiver antal fuldførte, "
+"påbegyndte og ikke startede deløvelser for denne øvelse"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:41
 msgid "Lesson progress"
@@ -1356,7 +1356,7 @@ msgid ""
 "Click a button to see the detailed partial exercise info and status for the "
 "exercise"
 msgstr ""
-"Klik på en lektion for at se deløvelserne for en øvelse og status for disse"
+"Klik på en øvelse for at se deløvelserne for en øvelse og status for disse"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:118
 msgid "All exercises and partial exercises with status"
@@ -1435,10 +1435,6 @@ msgstr "Her kan du kommentere og vurdere flyvningens faser"
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:218
 msgid "Everything ok"
 msgstr "SFIL ok"
-
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:225
-msgid "Select one or more comments"
-msgstr "Vælg en eller flere kommentarer"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234
 msgid ""
@@ -1610,6 +1606,9 @@ msgstr "ikke bekræftet"
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
 msgid "User not bound to pilot"
 msgstr "Ikke bundet til PilotId"
+
+#~ msgid "Select one or more comments"
+#~ msgstr "Vælg en eller flere kommentarer"
 
 #~ msgid "Recent flights"
 #~ msgstr "Nylige flyvninger"

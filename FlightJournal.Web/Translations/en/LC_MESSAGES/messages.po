@@ -1393,10 +1393,6 @@ msgstr ""
 msgid "Everything ok"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:225
-msgid "Select one or more comments"
-msgstr ""
-
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234
 msgid ""
 "If you have comments beyond the predefined selections above, you can enter "
