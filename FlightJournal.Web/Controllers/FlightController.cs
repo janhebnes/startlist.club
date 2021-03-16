@@ -41,7 +41,7 @@ namespace FlightJournal.Web.Controllers
                 .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now)
                 .Skip(() => skipRecords)
                 .Take(() => takeRecords);
-
+            
             return View(flights);
         }
 
