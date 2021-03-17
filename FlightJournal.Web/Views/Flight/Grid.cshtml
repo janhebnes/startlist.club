@@ -2,7 +2,7 @@
 @using FlightJournal.Web.Extensions
 @{
     ViewBag.Title = _("Startlist") + " " + ViewBag.Date.ToShortDateString();
-    int startNr = Model != null ? Model.Where(f=> !f.Deleted.HasValue).Sum(m=>m.LandingCount) : 0;
+    int startNr = Model != null ? Model.Where(f => !f.Deleted.HasValue).Sum(m => m.LandingCount) : 0;
 }
 <p>
     <div class="btn-group btn-group-lg">
@@ -151,10 +151,10 @@
                             @Html.ActionLink(" ", "Clone", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Clone") }, "fa fa-clipboard fa-fw")
                             @Html.ActionLink(" ", "Duplicate", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Copy") }, "fa fa-files-o fa-fw")
                             if (item.IsTrainingFlight)
-                             {
-                                 var btnclass = $"btn btn-default {(Request.IsInstructor() || User.IsAdministrator() ? "" : "disabled")}";
-                                 @Html.ActionLink(_(" "), "Edit", "TrainingLog", new {flightId = item.FlightId, }, new {@class = btnclass, type = "button", title = _("Training") },  "fa fa-graduation-cap fa-fw")
-                             }
+                            {
+                                var btnclass = $"btn btn-default {(Request.IsInstructor() || User.IsAdministrator() ? "" : "disabled")}";
+                                @Html.ActionLink(_(" "), "Edit", "TrainingLog", new { flightId = item.FlightId, }, new { @class = btnclass, type = "button", title = _("Training") }, "fa fa-graduation-cap fa-fw")
+                            }
                         }
                         else
                         {
@@ -169,7 +169,10 @@
 
 @section scripts
 {
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
+        var notifier = $.connection.gridHub;
         $(document).ready(function () {
             $(".tablesorter").tablesorter();
 
@@ -190,8 +193,16 @@
                 $this.submit();
                 return false;
             });
+
+            $.connection.hub.start(function () {
+                console.log("connected");
+            });
+
+            notifier.client.newFlightCreated = function () {
+                alert("New flight has been created please reload!");
+            };
         }
-    );
+        );
     </script>
 }
 

@@ -98,7 +98,7 @@
                 <div class="clearfix visible-sm visible-xs"></div>
                 <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                     <div class="btn-group btn-group-lg ">
-                        <input type="submit" value="@_("Create")" class="btn btn-primary" />
+                        <input type="submit" value="@_("Create")" class="btn btn-primary" onclick="gridStaleData()" />
                     </div>
                 </div>
 
@@ -137,7 +137,7 @@
             <div class="row" style="margin-top: 30px">
                 <div class="col-md-6">
                     <div class="btn-group btn-group-lg">
-                        <input type="submit" value="@_("Create")" class="btn btn-primary" />
+                        <input type="submit" value="@_("Create")" class="btn btn-primary" onclick="gridStaleData()" />
                         <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
                     </div>
                 </div>
@@ -159,7 +159,12 @@
     <script src="~/signalr/hubs"></script>
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script type="text/javascript">
+<script type="text/javascript">
+    var notifier = $.connection.gridHub;
+
+    window.gridStaleData = function () {
+        notifier.server.newFlight();
+    }
         function resetJsCss() {
             $(".custom-combobox-input").css("border", "3px solid #888");
             $(".custom-combobox-toggle").css("border", "3px solid #888");
@@ -183,6 +188,10 @@
             $("#LandedOnId").combobox();
 
             resetJsCss();
+
+            $.connection.hub.start(function () {
+                console.log("connected");
+            });
 
             $(".custom-combobox-input").first().focus();
 
@@ -302,5 +311,5 @@
                 }
             }
         }
-    </script>
+</script>
 }
