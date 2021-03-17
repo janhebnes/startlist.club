@@ -897,6 +897,7 @@
     <Content Include="DevData\SPL-certifikat, flyslæb, UHB922 01012021.json" />
     <Content Include="DevData\SPL-certifikat, selvstart, UHB922 01012021.json" />
     <Content Include="DevData\SPL-certifikat, TMG, UHB923 30012021.json" />
+    <Content Include="DevData\TMG-rettighed.json" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
