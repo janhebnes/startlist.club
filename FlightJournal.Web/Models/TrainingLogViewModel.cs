@@ -20,12 +20,11 @@ namespace FlightJournal.Web.Models
         internal TrainingDataWrapper(FlightContext db, int pilotId, Flight flight, int trainingProgramId)
         {
             FlightId = flight.FlightId;
-
-            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).OrderBy(x => x.Landing ?? x.Date);
-            FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Departure ?? x.Date));
-            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Departure ?? x.Date));
+            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).Select(x => new PilotFlightView{FlightId = x.FlightId, Timestamp = x.Departure ?? x.Date}).OrderBy(v=>v.Timestamp).ToList();
+            FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Timestamp)).ToList();
+            AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Timestamp)).ToList();
             if (trainingProgramId == -1)
-            {  // attempt to find the most recetnt training flight, use same training program
+            {  // attempt to find the most recent training flight, use same training program
                 trainingProgramId = AppliedExercises.LastOrDefault()?.Program.Training2ProgramId ?? -1;
             }
             TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
@@ -62,7 +61,7 @@ namespace FlightJournal.Web.Models
         /// <summary>
         /// All flights by the pilot
         /// </summary>
-        public IEnumerable<Flight> PilotFlights { get; }
+        public IEnumerable<PilotFlightView> PilotFlights { get; }
         /// <summary>
         /// Exercises flown across all flights by this pilot
         /// </summary>
@@ -81,6 +80,11 @@ namespace FlightJournal.Web.Models
 
     }
 
+    public class PilotFlightView
+    {
+        public Guid FlightId { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
 
     public class TrainingProgramSelectorViewModel
     {
@@ -108,14 +112,14 @@ namespace FlightJournal.Web.Models
         /// </summary>
         /// <param name="db"></param>
         /// <param name="date"></param>
-        public FlightLogEntryViewModel(Flight flight, TrainingDataWrapper db, DateTime date)
+        public FlightLogEntryViewModel(Guid flightId, TrainingDataWrapper db, DateTime date)
         {
             Date = date;
             // multiple exercises possible per flight
-            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flight.FlightId).ToList();
+            var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flightId).ToList();
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
             // zero or one per flight expected
-            var annotationsForThisFlight = db.FlightAnnotations.FirstOrDefault(x => x.FlightId == flight.FlightId);
+            var annotationsForThisFlight = db.FlightAnnotations.FirstOrDefault(x => x.FlightId == flightId);
             if (annotationsForThisFlight != null) {
                 Notes = string.Join("; ", annotationsForThisFlight.Note);
                 WindSpeed = annotationsForThisFlight.WindSpeed;
@@ -171,7 +175,7 @@ namespace FlightJournal.Web.Models
             Pilot = pilot;
             BackseatPilot = backseatPilot;
 
-            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x, dbmodel, x.Date));
+            FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x.FlightId, dbmodel, x.Timestamp));
 
             TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
@@ -183,7 +187,7 @@ namespace FlightJournal.Web.Models
                     .OrderBy(c => c.DisplayOrder)
                     .Select(x => new FlightPhaseAnnotationViewModel() {Phase = x, Options = x.Commentaries.OrderBy(y=>y.DisplayOrder)});
 
-            ThisFlight = new FlightLogEntryViewModel(dbmodel.PilotFlights.Single(x => x.FlightId == dbmodel.FlightId), dbmodel, date);
+            ThisFlight = new FlightLogEntryViewModel(flightId, dbmodel, date);
             WindDirections = dbmodel.WindDirections.Select(wd => new WindDirectionViewModel(wd.WindDirectionItem)).ToList();
             if (!WindDirections.Exists(x => x.Value == ThisFlight.WindDirection))
             {
@@ -340,7 +344,7 @@ public class TrainingProgramViewModel
             var thisGrading = appliedInThisFlight?.Grading;
             var flightIdsWithThisExercise = totalApplied.Select(x => x.FlightId).ToList();
             var latestFlightWithThisExercise = db.PilotFlights
-                .Where(x => flightIdsWithThisExercise.Contains(x.FlightId)).OrderBy(x => x.Landing ?? x.Date)
+                .Where(x => flightIdsWithThisExercise.Contains(x.FlightId)).OrderBy(x => x.Timestamp)
                 .LastOrDefault();
 
             var latestGradingOfThisExercise = totalApplied
