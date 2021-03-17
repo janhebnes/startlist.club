@@ -143,7 +143,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             context.SaveChanges();
 
-            FlightTraining.GenerateTrainingFlights(pl2, location, pilotStudent, pilotInstructor, start, context);
+            for(DateTime when = DateTime.Now.AddDays(-90); when <= DateTime.Now; when = when.AddDays(1))
+               FlightTraining.GenerateTrainingFlights(when, pl2, location, pilotStudent, pilotInstructor, start, context);
         }
 
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
@@ -163,6 +164,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, flyslæb, UHB922 01012021.json"));
                 FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, selvstart, UHB922 01012021.json"));
                 FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, TMG, UHB923 30012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/TMG-rettighed.json"));
             }
 
             if (dropCreateTrainingPrograms || !context.Manouvres.Any())
