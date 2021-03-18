@@ -7,7 +7,7 @@ Startlist.club
 Startlist.club is an open source project created for handling flightclub startlists and logbooks for pilots and plane.
 Flight journaling is a repetitive task that needs to be as smooth as possible, many clubs have there own version of these journaling systems more or less integrated in existing flows. This is an attempt to gather the ressources into one system. 
 
-Primary focus for this project is to satisfy the needs of soaring flightclubs in the northern european countries.  
+Primary focus for this project is to satisfy the needs of soaring flightclubs in the northern european countries. EASA Part-DTO Training programs has been introduced in 2021, lead by Per Laursen. 
 You can login using facebook, google or mobile (SMS), flight editing is possible by all club members during 48 hours and changes are visible and logged. You can read more about the project at https://startlist.club/about
 
 Live  
@@ -38,13 +38,14 @@ Language translation is currently supported through GNU PO files located in Flig
 License
 -------
 The MIT License (MIT) / https://opensource.org/licenses/MIT
-Copyright (c) 2011-2019 Jan Hebnes
+Copyright (c) 2011-2021 Jan Hebnes
 
 Contact
 -------
 E-mail jan.hebnes@gmail.com
 
 Project https://startlist.club/about  
+Slack https://startlistclub.slack.com/
 Facebook https://www.facebook.com/startlist.club  
 Trello [https://trello.com/board/flight-journal](https://trello.com/board/flight-journal/4f592a73bb5d895218126fed)
 
