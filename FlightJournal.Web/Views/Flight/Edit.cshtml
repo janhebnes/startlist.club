@@ -17,7 +17,7 @@
                         <h4>Deleted @Model.Deleted.ToString() by @Model.LastUpdatedBy</h4>
                         <div class="btn-group">
                             @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger" })
-                            <a href="@ViewBag.UrlReferrer" class="btn btn-default">@_("Back")</a>
+                            <a href="@ViewBag.UrlReferrer" class="btn btn-default leaving">@_("Back")</a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
             <div class="clearfix visible-sm visible-xs"></div>
             <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                 <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary" />
+                    <input type="submit" value="@_("Save")" class="btn btn-primary saving" />
                 </div>
             </div>
 
@@ -155,7 +155,7 @@
         <div class="row" style="margin-top: 30px">
             <div class="col-md-3">
                 <div class="btn-group btn-group-lg">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary" />
+                    <input type="submit" value="@_("Save")" class="btn btn-primary saving" />
                     <a href="@ViewBag.UrlReferrer" class="btn btn-default leaving">@_("Back")</a>
                 </div>
             </div>
@@ -364,8 +364,14 @@
                     }
                 });
 
+            $(".saving").click(function() {
+                 isDirty = false;
+            });
+
             $(".leaving").click(function() {
-                if (!isDirty || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
+                if (
+                    !isDirty
+                    || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
                     isDirty = false;
                     window.history.back();
                 }
