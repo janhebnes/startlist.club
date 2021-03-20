@@ -322,6 +322,7 @@
     <Compile Include="Controllers\CommentaryAdminController.cs" />
     <Compile Include="Controllers\GradingAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
+    <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
     <Compile Include="Controllers\TrainingLessonAdminController.cs" />
