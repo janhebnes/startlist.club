@@ -17,6 +17,15 @@
     @Html.ValidationMessageFor(model => model.CType)
 </div>
 
+<tr>
+    <td class="editor-label">
+        @Html.LabelFor(model => model.CommentaryTypeIdForExport)
+    </td>
+    <td class="editor-field">
+        @Html.EditorFor(model => model.CommentaryTypeIdForExport)
+        @Html.ValidationMessageFor(model => model.CommentaryTypeIdForExport)
+    </td>
+</tr>
 
 
 

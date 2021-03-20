@@ -40,6 +40,14 @@
     @Html.ValidationMessageFor(model => model.AcceptanceCriteria)
 </div>
 
+<div class="editor-label">
+    @Html.LabelFor(model => model.ExerciseIdForExport)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ExerciseIdForExport)
+    @Html.ValidationMessageFor(model => model.ExerciseIdForExport)
+</div>
+
 @{
     int tpi = ViewBag.TrainingProgramId;
     int tli = ViewBag.TrainingLessonId;
