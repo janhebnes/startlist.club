@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.Services.Description;
 using FlightJournal.Web.Extensions;
+using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -127,6 +126,7 @@ namespace FlightJournal.Web.Controllers
                 flight.Landing = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
+                FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
             }
 
             return RedirectToAction("Grid");
@@ -149,6 +149,7 @@ namespace FlightJournal.Web.Controllers
                 flight.Departure = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
+                FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
             }
             return RedirectToAction("Grid");
         }
@@ -197,6 +198,9 @@ namespace FlightJournal.Web.Controllers
             flight.LastUpdatedBy = User.Pilot().ToString();
             this.db.Flights.Add(flight);
             this.db.SaveChanges();
+
+            FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty);
+
             return RedirectToAction("Grid");
         }
 
@@ -263,6 +267,7 @@ namespace FlightJournal.Web.Controllers
             {
                 flight.Description = comment;
                 this.db.SaveChanges();
+                FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
             }
 
             return RedirectToAction("Grid");
@@ -300,6 +305,8 @@ namespace FlightJournal.Web.Controllers
                     HttpContext.Application["FlightCreated" + ClubController.CurrentClub.ShortName] = DateTime.Now.Date;
                     HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = null;
                 }
+
+                FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty);
 
                 return RedirectToAction("Grid");
             }
@@ -360,7 +367,9 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
-                
+
+                FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
+
                 ViewBag.UrlReferrer = ResolveUrlReferrer();
                 return RedirectPermanent(ViewBag.UrlReferrer);
                 //return RedirectToAction("Grid");
@@ -424,9 +433,11 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
+
+                FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
             }
             ViewBag.UrlReferrer = ResolveUrlReferrer();
-            return RedirectPermanent(ViewBag.UrlReferrer);
+            return RedirectPermanent(ViewBag.UrlReferrer); // ??
             //return RedirectToAction("Edit", new { id = id });
         }
 
@@ -448,9 +459,11 @@ namespace FlightJournal.Web.Controllers
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 this.db.SaveChanges();
+
+                FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
             }
             ViewBag.UrlReferrer = ResolveUrlReferrer();
-            return RedirectPermanent(ViewBag.UrlReferrer);
+            return RedirectPermanent(ViewBag.UrlReferrer); // ??
             //return RedirectToAction("Edit", new { id = id});
         }
         
@@ -486,6 +499,8 @@ namespace FlightJournal.Web.Controllers
             Flight flight = this.db.Flights.Find(id);
             this.db.Flights.Remove(flight);
             this.db.SaveChanges();
+
+            FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
             return RedirectToAction("Index");
         }
 

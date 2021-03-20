@@ -337,8 +337,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
-    <Compile Include="Hubs\FlightHub.cs" />
-    <Compile Include="Hubs\GridHub.cs" />
+    <Compile Include="Hubs\FlightsHub.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.Designer.cs">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>

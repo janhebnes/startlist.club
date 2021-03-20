@@ -172,7 +172,8 @@
     <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
-        var notifier = $.connection.gridHub;
+        var signalRflightsHub = $.connection.flightsHub;
+
         $(document).ready(function () {
             $(".tablesorter").tablesorter();
 
@@ -196,11 +197,19 @@
 
             $.connection.hub.start(function () {
                 console.log("connected");
+                console.log($.connection);
             });
 
-            notifier.client.newFlightCreated = function () {
-                alert("New flight has been created please reload!");
+            signalRflightsHub.client.NotifyFlightChanged = function (flight, origin) {
+//                    alert("Flight data updated - please reload");
+                location.reload();
             };
+            signalRflightsHub.client.NotifyFlightAdded = function (flight, origin) {
+//                    alert("Flight added - please reload");
+                location.reload();
+            };
+
+
         }
         );
     </script>
