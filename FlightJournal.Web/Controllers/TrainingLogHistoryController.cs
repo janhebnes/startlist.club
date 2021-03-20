@@ -6,13 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Razor;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
-using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Controllers
@@ -31,11 +29,12 @@ namespace FlightJournal.Web.Controllers
             if (year == -1) year = DateTime.Now.Year;
 
             TrainingFlightHistoryViewModel model;
-            if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
+            var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
+            var flights = GetFlights(year, flightIds);
+
+            if (User.IsAdministrator() || (Request.IsPilot() && Request.Pilot().IsInstructor))
             {
                 // allow access to all flights, filters on front seat / back seat pilot
-                var flightIds = db.AppliedExercises.Select(x=>x.FlightId).Union(db.TrainingFlightAnnotations.Select(y=>y.FlightId)).Distinct().ToList();
-                var flights = db.Flights.Where(x => x.Date.Year == year &&  flightIds.Contains(x.FlightId));
                 model = CreateModel(flights);
                 model.Year = year;
                 model.Message = _("All training flights");
@@ -44,8 +43,7 @@ namespace FlightJournal.Web.Controllers
             {
                 // access to own flights (front or back)
                 var pilotId = Request.Pilot().PilotId;
-                var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
-                var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
+                flights = flights.Where(x => x.PilotId == pilotId || x.PilotBackseatId == pilotId);
 
                 model = CreateModel(flights);
                 model.Year = year;
@@ -60,6 +58,21 @@ namespace FlightJournal.Web.Controllers
             return View(model);
         }
 
+        IQueryable<Flight> GetFlights(int year, IEnumerable<Guid> flightIds)
+        {
+            var flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId));
+            if (ClubController.CurrentClub.ShortName != null)
+            {
+                flights = flights.Where(f =>
+                    f.StartedFromId == ClubController.CurrentClub.LocationId
+                    || f.LandedOnId == ClubController.CurrentClub.LocationId
+                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId));
+            }
+
+            return flights;
+        }
         /// <summary>
         /// SHow flights for a pilot on a particular exercise
         /// </summary>
@@ -185,7 +198,7 @@ namespace FlightJournal.Web.Controllers
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
             var weather = annotation?.WindDirection != null && annotation?.WindSpeed != null ? $"{annotation.WindDirection}­&deg; {annotation.WindSpeed}kn " : "";
            
-            var commentsForPhasesInThisFlight = annotation
+            var commentsForPhasesInThisFlight = annotation? 
                 .TrainingFlightAnnotationCommentCommentTypes?
                 .GroupBy(e => e.CommentaryType.CType, e => e.Commentary, (phase, comments) => new { phase, comments })
                 .ToDictionary(

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Catalogue;
-using FlightJournal.Web.Models.Training.Flight;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -20,7 +17,15 @@ namespace FlightJournal.Web.Controllers
             var model = new List<TrainingProgramStatus>();
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
             {
-                var flyingPilots = db.Flights.Select(x => x.Pilot).Distinct().OrderBy(p=>p.Name);
+                var flights = db.Flights.Where(f =>
+                    ClubController.CurrentClub.ShortName == null
+                    || f.StartedFromId == ClubController.CurrentClub.LocationId
+                    || f.LandedOnId == ClubController.CurrentClub.LocationId
+                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId));
+
+                var flyingPilots = flights.Select(x => x.Pilot).Distinct().OrderBy(p=>p.Name);
                 
 
                 foreach ( var p in flyingPilots)
