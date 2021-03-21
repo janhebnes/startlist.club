@@ -28,13 +28,20 @@ namespace FlightJournal.Web.Controllers
     public class TrainingLogHistoryController : Controller
     {
         private readonly FlightContext db = new FlightContext();
-        public ActionResult Index(int year=-1)
+        public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
-            if (year == -1) year = DateTime.Now.Year;
+            if (!fromDate.HasValue || !toDate.HasValue)
+            {
+                var now = DateTime.Now.Date;
+                fromDate = now.AddDays(-now.Day + 1); // this month
+                toDate = now;
+            }
 
-            var flights = SelectFlights(year);
+            var flights = SelectFlights(fromDate.Value, toDate.Value);
             var model = CreateModel(flights);
-            model.Year = year;
+            model.FromDate = fromDate.Value;
+            model.ToDate = toDate.Value;
+
             switch (UsersAccessScope())
             {
                 case AccessScope.AllFlights:
@@ -98,12 +105,17 @@ namespace FlightJournal.Web.Controllers
             return PartialView("_PartialTrainingFlightDetails", null);
         }
 
-        public ActionResult ExportToCsv(int year = -1)
+        public ActionResult ExportToCsv(DateTime? fromDate, DateTime? toDate)
         {
-            if (year == -1) year = DateTime.Now.Year;
+            if (!fromDate.HasValue || !toDate.HasValue)
+            {
+                var now = DateTime.Now.Date;
+                fromDate = now.AddDays(-now.Day + 1); // this month
+                toDate = now;
+            }
 
-            var flights = SelectFlights(year);
-            var model = CreateExportModel(db, flights, year);
+            var flights = SelectFlights(fromDate.Value, toDate.Value);
+            var model = CreateExportModel(db, flights);
 
             var sb = new StringBuilder();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -115,22 +127,28 @@ namespace FlightJournal.Web.Controllers
             {
                 csv.WriteRecords(model.Flights);
             }
-            return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.csv");
+            
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{fromDate.Value.ToString("yyyyMMdd")}-{toDate.Value.ToString("yyyyMMdd")}.csv");
         }
 
-        public ActionResult ExportToJson(int year = -1)
+        public ActionResult ExportToJson(DateTime? fromDate, DateTime? toDate)
         {
-            if (year == -1) year = DateTime.Now.Year;
+            if (!fromDate.HasValue || !toDate.HasValue)
+            {
+                var now = DateTime.Now.Date;
+                fromDate = now.AddDays(-now.Day + 1); // this month
+                toDate = now;
+            }
 
-            var flights = SelectFlights(year);
-            var viewModel = CreateExportModel(db, flights, year);
+            var flights = SelectFlights(fromDate.Value, toDate.Value);
+            var viewModel = CreateExportModel(db, flights);
 
-            return File(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModel, Formatting.Indented)), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{year}.json");
+            return File(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModel, Formatting.Indented)), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{fromDate.Value.ToString("yyyyMMdd")}-{toDate.Value.ToString("yyyyMMdd")}.json");
 
         }
 
 
-        private IEnumerable<Flight> SelectFlights(int year)
+        private IEnumerable<Flight> SelectFlights(DateTime fromDate, DateTime toDate)
         {
             IEnumerable<Flight> flights;
             var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
@@ -138,7 +156,7 @@ namespace FlightJournal.Web.Controllers
             switch (UsersAccessScope())
             {
                 case AccessScope.AllFlights:
-                    flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId));
+                    flights = db.Flights.Where(x => x.Date >= fromDate && x.Date <= toDate && flightIds.Contains(x.FlightId));
                     if (ClubController.CurrentClub.ShortName != null)
                     {
                         flights = flights.Where(f =>
@@ -151,7 +169,7 @@ namespace FlightJournal.Web.Controllers
                     break;
                 case AccessScope.OwnFlights:
                     var pilotId = Request.Pilot().PilotId;
-                    flights = db.Flights.Where(x => x.Date.Year == year && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
+                    flights = db.Flights.Where(x => x.Date >= fromDate && x.Date <= toDate && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
                     break;
                 default:
                     flights = Enumerable.Empty<Flight>();
@@ -245,7 +263,7 @@ namespace FlightJournal.Web.Controllers
         }
 
 
-        private TrainingFlightHistoryExportViewModel CreateExportModel(FlightContext db, IEnumerable<Flight> flights, int year)
+        private TrainingFlightHistoryExportViewModel CreateExportModel(FlightContext db, IEnumerable<Flight> flights)
         {
             var flightModels = new List<TrainingFlightExportViewModel>();
             foreach (var f in flights)
@@ -352,7 +370,8 @@ namespace FlightJournal.Web.Controllers
     {
         public IEnumerable<TrainingFlightViewModel> Flights { get; set; }
         public string Message { get; set; }
-        public int Year { get; set; } = -1;
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
     }
     /// <summary>
     /// A specific training flight, overview
