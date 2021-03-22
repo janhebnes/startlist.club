@@ -409,13 +409,13 @@
                             window.history.back();
                         },
                         function() {
-                            alert("@_("Unable to save data")");
+                            alert(@Html.Raw(RemoveCRLF(__("Unable to save data"))));
                         });
                 }
             });
 
             $("#backbtn").click(function() {
-                if (!isDirty() || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
+                if (!isDirty() || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
                     initialStateOfInput = getStateOfInput(); // don't prompt twice
                     window.history.back();
                 }
@@ -440,8 +440,8 @@
             });
 
             signalRflightsHub.client.NotifyTrainingDataChanged = function (flightId, originator) {
-                if (flightId === "@Model.FlightId" && sessionId != "@SessionId") {
-                    alert(@Html.Raw(__("Training data for this flight have been edited by someone else, please reload!"))); //TODO: localize
+                if (flightId === "@Model.FlightId" && originator != "@SessionId") {
+                    alert(@Html.Raw(RemoveCRLF(__("Training data for this flight have been edited by someone else, please reload!"))));
                 }
             };
 

@@ -1472,7 +1472,8 @@ msgid ""
 "Training data for this flight have been edited by someone else, please "
 "reload!"
 msgstr ""
-"Skolingsdata for denne flyvning er blevet ændret af en anden, du er desværre nødt til at genindlæse siden!"
+"Skolingsdata for denne flyvning er blevet ændret af en anden, du er desværre "
+"nødt til at genindlæse siden!"
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:6
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:6
