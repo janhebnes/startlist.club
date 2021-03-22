@@ -55,7 +55,7 @@
             {
                 style = new HtmlString("style=\"text-decoration: line-through;\"");
             }
-            <tr>
+            <tr class="flightrow" data-flightid="@item.FlightId">
                 <td>
                     @if (!item.Deleted.HasValue)
                     {
@@ -174,10 +174,10 @@
     <script type="text/javascript">
         var signalRflightsHub = $.connection.flightsHub;
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $(".tablesorter").tablesorter();
 
-            $('a.editComment').click(function (e) {
+            $('a.editComment').click(function(e) {
                 e.preventDefault();
 
                 var $this = $(this).closest("td");
@@ -186,7 +186,7 @@
                 return false;
             });
 
-            $('a.setComment').click(function (e) {
+            $('a.setComment').click(function(e) {
                 e.preventDefault();
 
                 var $this = $(this).closest("form");
@@ -195,23 +195,29 @@
                 return false;
             });
 
-            $.connection.hub.start(function () {
+            $.connection.hub.start(function() {
                 console.log("connected");
                 console.log($.connection);
             });
 
-            signalRflightsHub.client.NotifyFlightChanged = function (flight, origin) {
-//                    alert("Flight data updated - please reload");
-                location.reload();
+            signalRflightsHub.client.NotifyFlightChanged = function(flight, origin) {
+                reloadIfFlightPresentOnPage(flight);
             };
             signalRflightsHub.client.NotifyFlightAdded = function (flight, origin) {
-//                    alert("Flight added - please reload");
-                location.reload();
+                reloadIfFlightPresentOnPage(flight);
             };
 
 
+        });
+
+        var reloadIfFlightPresentOnPage = function(flight){
+            $('.flightrow').each(function() {
+                if ($(this).data('flightid') == flight) {
+                    location.reload();
+                    return;
+                }
+            });
         }
-        );
     </script>
 }
 
