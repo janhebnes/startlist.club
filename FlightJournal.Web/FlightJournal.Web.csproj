@@ -1186,6 +1186,8 @@
     <Content Include="Views\GradingAdmin\Details.cshtml" />
     <Content Include="Views\GradingAdmin\Edit.cshtml" />
     <Content Include="Views\GradingAdmin\Index.cshtml" />
+    <Content Include="Views\Report\_Logbook.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\LandingCount.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

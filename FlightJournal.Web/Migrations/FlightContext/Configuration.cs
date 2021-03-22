@@ -286,6 +286,22 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 },
                 new Flight
                 {
+                    Departure = DateTime.Now.AddHours(-3).AddMinutes(20),
+                    Landing = DateTime.Now.AddHours(-3).AddMinutes(50),
+                    Plane = pl2,
+                    StartedFrom = location,
+                    LandedOn = location,
+                    Pilot = pilot,
+                    Betaler = pilot,
+                    StartType = start,
+                    Description = "Demo flight",
+                    TachoDeparture = 1000,
+                    TachoLanding = 1005,
+                    TaskDistance = 50,
+                    LastUpdatedBy = pilot.ToString()
+                },
+                new Flight
+                {
                     Plane = pl2,
                     StartedFrom = location,
                     Pilot = pilot,

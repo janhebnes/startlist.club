@@ -1,12 +1,16 @@
 ﻿@using FlightJournal.Web.Extensions
 @model FlightJournal.Web.Models.ReportViewModel
 @{
-    ViewBag.Title = "Månedsrapport";
     var root = "/";
     if (Request.IsClub())
     {
+        ViewBag.Title = _("Month report {0} {1}", Model.FormattedDate, Request.Club().Name);
         // When root Action has problems identifying that the date is allready part of the path
         root = Url.Action("Index", "Report");
+    }
+    else
+    {
+        ViewBag.Title = _("Month report {0}", Model.FormattedDate);
     }
 }
 <p>
@@ -25,7 +29,7 @@
     </div>
     @if (Model.Flights.Any())
     {
-        <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
+<a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> @_("Export startlist for {0}", @Model.FormattedDate)</a>
     }
 </p>
 @if (Model.Flights.Any())
@@ -33,12 +37,12 @@
     var dateCount = Model.Flights.Select(s => s.Date).Distinct().Count();
     var dates = Model.Flights.Select(s => s.Date).Distinct();
     <h2>
-        Statistik for @Model.Date.ToString("MMMM yyyy")
+        @_("Statistics for {0}", Model.FormattedDate)
     </h2>
     <table class="table table-condensed table-striped ">
         <tr>
             <td>
-                Flyvedage
+                @_("Flight days")
             </td>
             <td align="right">@Model.Flights.Select(s => s.Date).Distinct().Count()</td>
 
@@ -72,7 +76,7 @@
         {
             <tr>
                 <td>
-                    Starter
+                    @_("Count")
                 </td>
                 <td align="right">
                     @{
@@ -82,7 +86,8 @@
                     @clubTotalFlights
                     @if (clubTotalFlights != totalTotalFlights)
                     {
-                        @Html.Raw(string.Format("<span title='Andre fly til/fra {1}'>({0})</span>", totalTotalFlights - clubTotalFlights, Request.Club().Location.Name))
+                        var title = _("Other planes from/to {0}", Request.Club().Location.Name);
+                        @Html.Raw(string.Format("<span title='{1}'>({0})</span>", totalTotalFlights - clubTotalFlights, title))
                     }
                 </td>
                 @foreach (var date in dates)
@@ -95,7 +100,8 @@
                         @clubFlights
                         @if (clubFlights != totalFlights)
                         {
-                            @Html.Raw(string.Format("<span title='Andre fly til/fra {1}'>({0})</span>", totalFlights - clubFlights, Request.Club().Location.Name))
+                            var title = _("Other planes from/to {0}", Request.Club().Location.Name);
+                            @Html.Raw(string.Format("<span title='{1}'>({0})</span>", totalFlights - clubFlights, title))
                         }
                     </td>
                 }
@@ -105,7 +111,7 @@
         {
             <tr>
                 <td>
-                    Starter
+                    @_("Total Count")
                 </td>
                 <td align="right">@Model.Flights.Sum(d => d.LandingCount)</td>
                 @foreach (var date in dates)
@@ -118,7 +124,7 @@
         }
         <tr>
             <td>
-                Flyvetid
+                @_("Total Duration")
             </td>
             <td align="right">
                 @Model.ClubFlights.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
@@ -132,7 +138,7 @@
         </tr>
         <tr>
             <td>
-                Piloter i luften
+                @_("Total Pilots")
             </td>
             <td align="right">@Model.ClubFlights.Select(s => s.Pilot).Union(Model.ClubFlights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()</td>
             @foreach (var date in dates)
@@ -146,7 +152,7 @@
         {
             <tr>
                 <td>
-                    Stræk opgaver
+                    @_("Cross country")
                 </td>
                 <td align="right">
                     @Model.ClubFlights.Count(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0)
@@ -160,7 +166,7 @@
             </tr>
             <tr>
                 <td>
-                    Stræk Km
+                    @_("Cross country Distance(km)")
                 </td>
                 <td align="right">
                     @Model.ClubFlights.Where(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0).Sum(d => d.TaskDistance)
@@ -179,7 +185,7 @@
             {
                 <tr>
                     <td>
-                        <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM"))" >@club.Key.Name</a>
+                        <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM"))">@club.Key.Name</a>
                     </td>
                     <td align="right">
                         @if (club.Any())
@@ -228,101 +234,128 @@
 
     if (Request.IsClub())
     {
-        <h2>
-            Logbøger for @Model.Date.ToString("MMMM yyyy")
-        </h2>
-
-        <div class="row">
-
-            <div class="col-md-6">
-                <table class="tablesorter table table-striped table-hover table-condensed">
-                    <thead>
-                        <tr>
-                            <th>
-                                Fly
-                            </th>
-                            <th>
-                                Forsæde
-                            </th>
-                            <th>
-                                Antal
-                            </th>
-                            <th>
-                                Flyvetid
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in from c in Model.ClubFlights
-                                             group c by new { c.Pilot, c.Plane } into g
-                                             select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, ItemFlights = g })
+        <h3>@_("Pilot statistics")</h3>
+        <table class="tablesorter table table-striped table-hover table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @_("Pilot")
+                    </th>
+                    <th>
+                        @_("Count")
+                    </th>
+                    <th>
+                        @_("Duration")
+                    </th>
+                    @foreach (var source in dates)
+                    {
+                        var reportUrl = "/" + source.ToString("yyyy-MM-dd");
+                        if (Request.IsClub())
                         {
-                            <tr>
-                                <td>
-                                    <span class="hidden-xs">@item.Plane</span>
-                                    <span class="visible-xs">@item.Plane.CompetitionId</span>
-                                </td>
-                                <td>
-                                    @item.Pilot.Name
-                                </td>
-                                <td align="right">
-                                    @item.ItemFlights.Sum(f => f.LandingCount)
-                                </td>
-                                <td align="right">
-                                    @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
-                                </td>
-                            </tr>
+                            reportUrl = "/" + Request.Club().ShortName + reportUrl;
                         }
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <table class="tablesorter table table-striped table-hover table-condensed">
-                    <thead>
-                        <tr>
-                            <th>
-                                Fly
-                            </th>
-                            <th>
-                                Bagsæde
-                            </th>
-                            <th>
-                                Antal
-                            </th>
-                            <th>
-                                Flyvetid
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in from c in Model.ClubFlights
-                                             where c.PilotBackseat != null
-                                             group c by new { c.Plane, c.PilotBackseat } into g
-                                             select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, ItemFlights = g })
+                        <th align="right" colspan="2">
+
+                            <a href="@reportUrl">
+                                @if (dateCount > 10)
+                                {
+                                    @source.ToString("dd")
+                                }
+                                else if (dateCount > 5)
+                                {
+                                    @source.ToString("M")
+                                }
+                                else
+                                {
+                                    @source.ToString("d")
+                                }
+                            </a>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in from c in Model.ClubFlights
+                                     group c by new { c.Pilot } into g
+                                     select new { Pilot = g.Key.Pilot, ItemFlights = g })
+                {
+                    <tr>
+                        <td>
+                            @item.Pilot.Name
+                        </td>
+                        <td align="right">
+                            @item.ItemFlights.Sum(f => f.LandingCount)
+                        </td>
+                        <td align="right">
+                            @{
+                                var duration = item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal();
+                                if (duration.Length == 4)
+                                {
+                                    duration = "0" + duration;
+                                }
+                                if (duration.Length == 5)
+                                {
+                                    duration = "0" + duration;
+                                }
+                            }
+                            @duration
+                        </td>
+                        @foreach (var source in dates)
                         {
-                            <tr>
-                                <td>
-                                    <span class="hidden-xs">@item.Plane</span>
-                                    <span class="visible-xs">@item.Plane.CompetitionId</span>
-                                </td>
-                                <td>
-                                    @item.PilotBackseat.Name
-                                </td>
-                                <td align="right">
-                                    @item.ItemFlights.Sum(f => f.LandingCount)
-                                </td>
-                                <td align="right">
-                                    @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
-                                </td>
-                            </tr>
+                            var count = item.ItemFlights.Where(f => f.Date == source).Sum(f => f.LandingCount);
+                            <td align="right">
+                                @(count != 0 ? count.ToString() : "")
+                            </td>
+                            <td align="right">
+                                @item.ItemFlights.Where(f => f.Date == source).Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                            </td>
                         }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    </tr>
+                }
+                @foreach (var item in from c in Model.ClubFlights.Where(d => d.PilotBackseat != null)
+                                     group c by new { c.PilotBackseat } into g
+                                     select new { Pilot = g.Key.PilotBackseat, ItemFlights = g })
+                {
+                    <tr>
+                        <td>
+                            @_("{0} (Co-Pilot)", item.Pilot.Name)
+                        </td>
+                        <td align="right">
+                            @item.ItemFlights.Sum(f => f.LandingCount)
+                        </td>
+                        <td align="right">
+                            @{
+                                var duration = item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal();
+                                if (duration.Length == 4)
+                                {
+                                    duration = "0" + duration;
+                                }
+                                if (duration.Length == 5)
+                                {
+                                    duration = "0" + duration;
+                                }
+                            }
+                            @duration
+                        </td>
+                        @foreach (var source in dates)
+                        {
+                            var count = item.ItemFlights.Where(f => f.Date == source).Sum(f => f.LandingCount);
+                            <td align="right">
+                                @(count != 0 ? count.ToString() : "")
+                            </td>
+                            <td align="right">
+                                @item.ItemFlights.Where(f => f.Date == source).Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        Html.RenderPartial("_Logbook", Model);
 
         <div class="text-center hidden-print">
-            <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("MMMM yyyy")</a>
+            <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year, month = Model.Date.Month })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> @_("Export startlist for {0}", @Model.FormattedDate)</a>
         </div>
         <br style="page-break-after: always;" />
 
@@ -339,34 +372,34 @@
         {
             <a name="@location.LocationId"></a>
             <h2>
-                @location.ToString(Request.Club().Country) @Model.Date.ToString("MMMM yyyy")
+                @location.ToString(Request.Club().Country) @Model.FormattedDate
             </h2>
             <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>
-                            Dato
+                            @_("Date")
                         </th>
                         <th>
-                            Fly
+                            @_("Plane")
                         </th>
                         <th>
-                            Pilote(r)
+                            @_("Pilot(s)")
                         </th>
                         <th>
-                            Start
+                            @_("Departure")
                         </th>
                         <th class="hidden-xs">
-                            Landing
+                            @_("Landing")
                         </th>
                         <th>
-                            Flyvetid
+                            @_("Duration")
                         </th>
                         <th class="hidden-xs hidden-sm">
-                            Tacho
+                            @_("Tacho")
                         </th>
                         <th class="hidden-xs">
-                            Note
+                            @_("Description")
                         </th>
                         <th class="hidden-print">
                         </th>
@@ -415,7 +448,7 @@
         <p>
             @foreach (var club in Model.Flights.Where(f => f.Deleted == null).GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count()))
             {
-                <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">@Html.Raw(string.Format("{0} {1} starter {2} timer", club.Key.Name, club.Sum(f => f.LandingCount), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
+                <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">@Html.Raw(_("{0} {1} take-offs {2} hours", club.Key.Name, club.Sum(f => f.LandingCount), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
             }
         </p>
     }
@@ -423,9 +456,9 @@
 else //@if (Model.Flights.Any())
 {
     <h2>
-        Statistik for @Model.Date.ToString("MMMM yyyy")
+        @_("Statistics for {0}", @Model.FormattedDate)
     </h2>
-    <p>Ingen flyvninger</p>
+    <p>@_("No flights registered")</p>
 }
 @section scripts
 {
