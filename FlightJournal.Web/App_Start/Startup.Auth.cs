@@ -11,10 +11,12 @@ using Owin;
 using System;
 using FlightJournal.Web.Configuration;
 
+
 namespace FlightJournal.Web {
     public partial class Startup {
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app) {
+
             // Configure the db context, user manager and role manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
@@ -44,17 +46,12 @@ namespace FlightJournal.Web {
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Custom Config section for allowing hiding of the values
-            var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
-            if (settings == null)
-                throw new ConfigurationErrorsException("Missing ServiceCredentials section");
-
-            if (!string.IsNullOrWhiteSpace(settings.FacebookAppId) 
-                && !string.IsNullOrWhiteSpace(settings.FacebookAppSecret)) 
+            if (!string.IsNullOrWhiteSpace(Settings.FacebookAppId) 
+                && !string.IsNullOrWhiteSpace(Settings.FacebookAppSecret)) 
             {
                 app.UseFacebookAuthentication(
-                   appId: settings.FacebookAppId,
-                   appSecret: settings.FacebookAppSecret);
+                   appId: Settings.FacebookAppId,
+                   appSecret: Settings.FacebookAppSecret);
             }
             
             // Uncomment the following lines to enable logging in with third party login providers
@@ -66,8 +63,8 @@ namespace FlightJournal.Web {
             //   consumerKey: "dKwmoLMH1zkqnvMblCMcQ",
             //   consumerSecret: "G71eTw0Cm1s0ygVQygPQrw7ckSCR4WfbBWxGWqfiO4");
 
-            if (!string.IsNullOrWhiteSpace(settings.GoogleClientId) 
-                && !string.IsNullOrWhiteSpace(settings.GoogleClientSecret))
+            if (!string.IsNullOrWhiteSpace(Settings.GoogleClientId) 
+                && !string.IsNullOrWhiteSpace(Settings.GoogleClientSecret))
             {
                 //var googleOAuth2AuthenticationOptions = new GoogleOAuth2AuthenticationOptions
                 //{
@@ -87,8 +84,8 @@ namespace FlightJournal.Web {
                 //googleOAuth2AuthenticationOptions.Scope.Add("email");
                 //app.UseGoogleAuthentication(googleOAuth2AuthenticationOptions);
                 app.UseGoogleAuthentication(
-                    clientId: settings.GoogleClientId,
-                    clientSecret: settings.GoogleClientSecret);
+                    clientId: Settings.GoogleClientId,
+                    clientSecret: Settings.GoogleClientSecret);
             }
             // var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
             // var pictureClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type.Equals("picture"));

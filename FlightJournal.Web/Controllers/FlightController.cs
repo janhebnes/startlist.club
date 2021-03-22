@@ -19,11 +19,14 @@ namespace FlightJournal.Web.Controllers
 
         public ViewResult Index(int? skip, int? take, int? locationid)
         {
-            ViewBag.Skip = skip.HasValue ? skip.Value : 0;
-            ViewBag.Take = take.HasValue ? take.Value : 60;
+            int skipRecords = skip.HasValue ? skip.Value : 0;
+            int takeRecords = take.HasValue ? take.Value : 60;
+
+            ViewBag.Skip = skipRecords;
+            ViewBag.Take = takeRecords;
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
-            
+
             // Custom inline Club filtering for allowing maximum performance
             // A copy of the logic in Flight.IsCurrent(Flight arg) 
             var flights = this.db.Flights
@@ -35,8 +38,10 @@ namespace FlightJournal.Web.Controllers
                     || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                     || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now).Skip((skip.HasValue ? skip.Value : 0)).Take((take.HasValue ? take.Value : 60));
-
+                .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now)
+                .Skip(() => skipRecords)
+                .Take(() => takeRecords);
+            
             return View(flights);
         }
 
@@ -538,7 +543,7 @@ namespace FlightJournal.Web.Controllers
                 this.ViewBag.BetalerId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.BetalerId);
                 this.ViewBag.PilotId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
                 this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
-                this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null).OrderBy(p => p.LocalizedDisplayName), "StartTypeId", "LocalizedDispalyName", (flight == null) ? (object)null : flight.StartTypeId);
+                this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null).OrderBy(p => p.LocalizedDisplayName), "StartTypeId", "LocalizedDisplayName", (flight == null) ? (object)null : flight.StartTypeId);
             }
 
             // TODO: Add any pilotid or starttypeid that is actually present in the flight but not present in the selectlist !
