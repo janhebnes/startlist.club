@@ -14,6 +14,8 @@ namespace FlightJournal.Tests.ServiceProviders
         [TestCategory("ServiceProviders")]
         public void Twilio_Send_SMS_with_API()
         {
+            Assert.Inconclusive("Not active on normal test cycle");
+
             var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
             if (settings == null)
                 throw new ConfigurationErrorsException("Missing ServiceCredentials section");

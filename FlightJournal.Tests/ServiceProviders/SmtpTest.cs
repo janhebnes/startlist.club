@@ -15,6 +15,8 @@ namespace FlightJournal.Tests.ServiceProviders
         [TestCategory("ServiceProviders")]
         public void Smtp_Send()
         {
+            Assert.Inconclusive("Not active on normal test cycle");
+
             using (SmtpClient smtpClient = new SmtpClient())
             {
                 using (MailMessage mail = new MailMessage())
