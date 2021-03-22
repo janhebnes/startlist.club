@@ -18,6 +18,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
+        <th>ID for export</th>
         <th></th>
         <th></th>
     </tr>
@@ -28,12 +29,9 @@
             var item = ordered[n];
 
             <tr>
-                <td>
-                    <i class="@item.IconCssClass"></i>@Html.Raw(item.ManouvreItem)
-                </td>
-                <td>
-                    @Html.Raw(item.Description)
-                </td>
+                <td><i class="@item.IconCssClass"></i>@Html.Raw(item.ManouvreItem)</td>
+                <td>@Html.Raw(item.Description)</td>
+                <td>item.ManouvreIdForExport</td>
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink(_("Edit"), "Edit", new {id = item.ManouvreId}, new {@class = "btn btn-default"})

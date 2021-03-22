@@ -19,6 +19,9 @@
         <th>
             @Html.DisplayNameFor(model => model.IsOk)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentaryIdForExport)
+        </th>
         <th></th>
         <th></th>
     </tr>
@@ -35,6 +38,8 @@
                 <td>
                     @Html.Raw(item.IsOk)
                 </td>
+                <td>@item.CommentaryIdForExport</td>
+
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink(_("Edit"), "Edit", new {id = item.CommentaryId}, new {@class = "btn btn-default"})

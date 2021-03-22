@@ -27,6 +27,7 @@
         <th>
             @_("Briefing Only?")
         </th>
+        <th>Id For Export</th>
         <th></th>
         <th></th>
     </tr>
@@ -41,6 +42,8 @@
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
             <td class="display-field">@Html.Raw(@mkd.Transform(item.Note))</td>
             <td class="display-field">@Html.DisplayFor(modelItem => item.IsBriefingOnly)</td>
+            <td class="display-field">@Html.DisplayFor(modelItem=>item.ExerciseIdForExport)</td>
+
             <td>
                 <div class="btn-group btn-group-sm">
                     @Html.ActionLink(_("Edit"), "Edit", new { trainingProgramId = tpi, trainingLessonId = Model.Training2LessonId, id = item.Training2ExerciseId }, new { @class = "btn btn-default" })

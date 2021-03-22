@@ -39,6 +39,13 @@
     @Html.TextAreaFor(model => model.AcceptanceCriteria, new { cols = 80, rows = 5 })
     @Html.ValidationMessageFor(model => model.AcceptanceCriteria)
 </div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.LessonIdForExport)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.LessonIdForExport)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
 
 @{
     int tpi = ViewBag.TrainingProgramId;
