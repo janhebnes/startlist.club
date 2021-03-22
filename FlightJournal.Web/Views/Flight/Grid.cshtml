@@ -210,7 +210,9 @@
 
         });
 
-        var reloadIfFlightPresentOnPage = function(flight) {
+        var reloadIfFlightPresentOnPage = function (flight) {
+            if ($(".setComment").is(":visible"))
+                return;
             $('.flightrow').each(function() {
                 if ($(this).data('flightid') == flight) {
                     location.reload();
@@ -220,6 +222,8 @@
         };
 
         var reloadIfLocationAffected = function(affectedLocations) {
+            if ($(".setComment").is(":visible"))
+                return;
             var thisLocation = @ViewBag.LocationId;
             if (thisLocation === 0 || affectedLocations.includes(thisLocation))
                 location.reload();
