@@ -221,7 +221,7 @@
 
         var reloadIfLocationAffected = function(affectedLocations) {
             var thisLocation = @ViewBag.LocationId;
-            if (affectedLocations.includes(thisLocation))
+            if (thisLocation === 0 || affectedLocations.includes(thisLocation))
                 location.reload();
         };
     </script>
