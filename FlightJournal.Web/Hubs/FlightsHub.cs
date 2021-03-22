@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNet.SignalR;
 
 namespace FlightJournal.Web.Hubs
@@ -22,9 +23,9 @@ namespace FlightJournal.Web.Hubs
             HubContext.Clients.All.NotifyFlightLanded(flightId, changeOrigin);
             HubContext.Clients.All.NotifyFlightChanged(flightId, changeOrigin);
         }
-        public static void NotifyFlightAdded(Guid flightId, Guid changeOrigin)
+        public static void NotifyFlightAdded(Guid flightId, Guid changeOrigin, IEnumerable<int> affectedLocationIds)
         {
-            HubContext.Clients.All.NotifyFlightAdded(flightId, changeOrigin);
+            HubContext.Clients.All.NotifyFlightAdded(flightId, changeOrigin, affectedLocationIds);
         }
         public static void NotifyTrainingDataChanged(Guid flightId, Guid changeOrigin)
         {
@@ -37,7 +38,7 @@ namespace FlightJournal.Web.Hubs
         void NotifyFlightChanged(Guid flightId, Guid changeOrigin);
         void NotifyFlightStarted(Guid flightId, Guid changeOrigin);
         void NotifyFlightLanded(Guid flightId, Guid changeOrigin);
-        void NotifyFlightAdded(Guid flightId, Guid changeOrigin);
+        void NotifyFlightAdded(Guid flightId, Guid changeOrigin, IEnumerable<int> affectedLocationIds);
         void NotifyTrainingDataChanged(Guid flightId, Guid changeOrigin);
     }
 }

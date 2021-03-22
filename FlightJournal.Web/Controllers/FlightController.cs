@@ -72,7 +72,7 @@ namespace FlightJournal.Web.Controllers
         public ViewResult Grid(DateTime? date, int? locationid)
         {
             ViewBag.Date = date.HasValue ? date.Value : DateTime.Today;
-            ViewBag.LocationId = locationid.HasValue ? locationid.Value : 0;
+            ViewBag.LocationId = locationid.HasValue ? locationid.Value : ClubController.CurrentClub.LocationId;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
 
             var flights = this.db.Flights.Where(s => (!locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)) && (date.HasValue ? s.Date == date : s.Date == DateTime.Today))
@@ -199,7 +199,7 @@ namespace FlightJournal.Web.Controllers
             this.db.Flights.Add(flight);
             this.db.SaveChanges();
 
-            FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty);
+            FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty, GetLocationsAffectedByFlight(flight));
 
             return RedirectToAction("Grid");
         }
@@ -306,7 +306,7 @@ namespace FlightJournal.Web.Controllers
                     HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = null;
                 }
 
-                FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty);
+                FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty, GetLocationsAffectedByFlight(flight));
 
                 return RedirectToAction("Grid");
             }
@@ -672,5 +672,14 @@ namespace FlightJournal.Web.Controllers
             return defaultResult;
         }
 
+
+        internal IEnumerable<int> GetLocationsAffectedByFlight(Flight flight)
+        {
+            var payerClubLocationId = db.Pilots.SingleOrDefault(p => p.PilotId == flight.BetalerId)?.Club?.LocationId ?? 0;
+            var pilotClubLocationId = db.Pilots.SingleOrDefault(p => p.PilotId == flight.PilotId)?.Club?.LocationId ?? 0;
+            var backSeatPilotClubLocationId = flight.PilotBackseatId.HasValue ? db.Pilots.SingleOrDefault(p => p.PilotId == flight.PilotBackseatId.Value)?.Club?.LocationId ?? 0 : 0;
+            var affectedLocations = new[] { ClubController.CurrentClub.LocationId, flight.StartedFromId, flight.LandedOnId ?? 0, pilotClubLocationId, backSeatPilotClubLocationId, payerClubLocationId }.Distinct();
+            return affectedLocations;
+        }
     }
 }

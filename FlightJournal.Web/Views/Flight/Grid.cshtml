@@ -203,21 +203,27 @@
             signalRflightsHub.client.NotifyFlightChanged = function(flight, origin) {
                 reloadIfFlightPresentOnPage(flight);
             };
-            signalRflightsHub.client.NotifyFlightAdded = function (flight, origin) {
-                reloadIfFlightPresentOnPage(flight);
+            signalRflightsHub.client.NotifyFlightAdded = function (flight, origin, affectedLocations) {
+                reloadIfLocationAffected(affectedLocations);
             };
 
 
         });
 
-        var reloadIfFlightPresentOnPage = function(flight){
+        var reloadIfFlightPresentOnPage = function(flight) {
             $('.flightrow').each(function() {
                 if ($(this).data('flightid') == flight) {
                     location.reload();
                     return;
                 }
             });
-        }
+        };
+
+        var reloadIfLocationAffected = function(affectedLocations) {
+            var thisLocation = @ViewBag.LocationId;
+            if (affectedLocations.includes(thisLocation))
+                location.reload();
+        };
     </script>
 }
 
