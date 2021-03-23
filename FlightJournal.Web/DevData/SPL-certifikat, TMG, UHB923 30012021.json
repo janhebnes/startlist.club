@@ -74,7 +74,7 @@
         {
           "Name": "Håndtering af skoleflyet på jorden mv.",
           "Note": "Eleven skal deltage i at gøre klar til flyvning – herunder at få flyet ud af hangaren.\r\n\r\nProcedure for tankning af flyet gennemgås",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 3
         },
         {
@@ -95,7 +95,7 @@
           "Name": "Justering af seler, sæde og pedaler ",
           "Note": "Eleven hjælpes til at skabe den rigtige position i cockpittet, så eleven selv fremover kan håndtere dette\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 6
         },
         {
@@ -134,7 +134,7 @@
           "Name": "Sikkerhed og rapportering",
           "Note": "DSvU’s Safety Management System (SMS)\r\n\r\nRapportering af hændelser mv.\r\n\r\nHvor kan man registrere?",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 6
         },
         {
@@ -392,7 +392,7 @@
           "DisplayOrder": 8
         },
         {
-          "Name": "Max. stigehastighed og max. stigevinke",
+          "Name": "Max. stigehastighed og max. stigevinkel",
           "Note": "Jfr. flyets håndbog\r\n",
           "IsBriefingOnly": false,
           "DisplayOrder": 9
@@ -774,7 +774,7 @@
           "Name": "Relevant teori forud for soloflyvning, hvis eleven ikke har bestået SPL-teoriprøven",
           "Note": "Relevant teorimateriale kan hentes på DTO’ens hjemmeside, og denne skal suppleres med emner, som er relevante for flyvepladsen, hvor uddannelsen foregår",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 0
         },
         {
@@ -809,7 +809,7 @@
           "Name": "Observation af flyvningen efterfulgt af instruktørens briefing",
           "Note": "Instruktøren skal både briefe og debriefe eleven ifm. soloflyvningerne og skal være til stede på flyvepladsen.\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 5
         },
         {
@@ -823,7 +823,7 @@
           "Name": "Omskoling skal følge flyveskolens program for typeomskolinger",
           "Note": "**ikke obligatorisk**\r\n\r\nOmskolingen skal min. indeholde:\r\n\r\n* Systemkendskab og adskillelse og samling\r\n* Indretning af fly og cockpit\r\n* Tilvænningsflyvninger ved forskellige hastigheder\r\n* Termikflyvning",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 7
         }
       ],
