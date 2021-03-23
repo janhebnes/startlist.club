@@ -1,9 +1,5 @@
-﻿using System.Configuration;
-using System.Net.Mail;
-using FlightJournal.Web;
-using FlightJournal.Web.Configuration;
+﻿using System.Net.Mail;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Twilio;
 
 namespace FlightJournal.Tests.ServiceProviders
 {
@@ -17,18 +13,18 @@ namespace FlightJournal.Tests.ServiceProviders
         {
             Assert.Inconclusive("Not active on normal test cycle");
 
-            using (SmtpClient smtpClient = new SmtpClient())
-            {
-                using (MailMessage mail = new MailMessage())
-                {
-                    mail.To.Add(new MailAddress("jan.hebnes@gmail.com"));
-                    mail.Subject = "Unit testing startlist.club";
-                    mail.Body = "Hello world.";
+            //using (SmtpClient smtpClient = new SmtpClient())
+            //{
+            //    using (MailMessage mail = new MailMessage())
+            //    {
+            //        mail.To.Add(new MailAddress("jan.hebnes@gmail.com"));
+            //        mail.Subject = "Unit testing startlist.club";
+            //        mail.Body = "Hello world.";
 
-                    smtpClient.Send(mail);
-                }
-            }
-            Assert.Inconclusive("Smtp send without errors - validate email arrival.");
+            //        smtpClient.Send(mail);
+            //    }
+            //}
+            //Assert.Inconclusive("Smtp send without errors - validate email arrival.");
         }
     }
 }
