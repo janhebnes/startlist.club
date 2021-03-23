@@ -48,7 +48,10 @@ namespace FlightJournal.Web.Translations
             return string.Format(Internationalization.GetText(format, Internationalization.LanguageCode), args);
         }
 
-
+        public string RemoveCRLF(string s)
+        {
+            return s.Replace("\n", "").Replace("\r", "");
+        }
         public string DataTableLocalizationUrl()
         {
             switch (Internationalization.LanguageCode)

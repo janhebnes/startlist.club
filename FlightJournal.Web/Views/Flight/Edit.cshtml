@@ -16,7 +16,7 @@
                     <div class="alert alert-danger">
                         <h4>Deleted @Model.Deleted.ToString() by @Model.LastUpdatedBy</h4>
                         <div class="btn-group">
-                            @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger" })
+                            @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger saving" })
                             <a href="@ViewBag.UrlReferrer" class="btn btn-default leaving">@_("Back")</a>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
 
                 <div class="col-md-3">
                     <div class="btn-group btn-group-lg  leaving">
-                        @Html.ActionLink(_("TrainingLog"), "Edit", "TrainingLog", new {flightId = Model.FlightId }, new {@class = btnclass }, "fa fa-graduation-cap")
+                        @Html.ActionLink(_("TrainingLog"), "Edit", "TrainingLog", new { flightId = Model.FlightId }, new { @class = btnclass }, "fa fa-graduation-cap")
                     </div>
                 </div>
             }
@@ -198,8 +198,12 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
-        var isDirty = false;
+    var isDirty = false;
+    var elvisHasLeftTheBuilding = false;
+        var signalRflightsHub = $.connection.flightsHub;
 
         function resetJsCss() {
             $(".custom-combobox-input").css("border", "3px solid #888");
@@ -365,7 +369,8 @@
                 });
 
             $(".saving").click(function() {
-                 isDirty = false;
+                isDirty = false;
+                elvisHasLeftTheBuilding = true;
             });
 
             $(".leaving").click(function() {
@@ -373,10 +378,22 @@
                     !isDirty
                     || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
                     isDirty = false;
+                    elvisHasLeftTheBuilding = true;
                     window.history.back();
                 }
             });
 
+
+            $.connection.hub.start(function () {
+                console.log("connected");
+                console.log($.connection);
+            });
+
+            signalRflightsHub.client.NotifyFlightChanged = function(flightId, originator) {
+                if (flightId === "@Model.FlightId" && !elvisHasLeftTheBuilding) {
+                    alert(@Html.Raw(__("Data for this flight have been edited by someone else, please reload!"))); //TODO: localize
+                }
+            };
         });
 
         var setDirty = function() {
