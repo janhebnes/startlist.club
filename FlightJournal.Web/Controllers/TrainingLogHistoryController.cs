@@ -85,6 +85,9 @@ namespace FlightJournal.Web.Controllers
                     var template = _("Flights of pilot {0} on exercise {1}");
                     model.Message = string.Format(template, pilot.Name, lesson.Name);
                 }
+                model.IsSinglePilot = true;
+                model.IsSingleExercise = true;
+                model.ShowButtonPanel = false;
             }
             else
             {
@@ -370,6 +373,10 @@ namespace FlightJournal.Web.Controllers
     {
         public IEnumerable<TrainingFlightViewModel> Flights { get; set; }
         public string Message { get; set; }
+        public bool IsSinglePilot { get; set; }
+        public bool IsSingleExercise { get; set; }
+        public bool ShowButtonPanel { get; set; } = true;
+
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
     }

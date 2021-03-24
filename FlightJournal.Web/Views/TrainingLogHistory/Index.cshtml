@@ -6,32 +6,34 @@
 }
 <h2>@_("Training flights") <span class="small">(@Model.Message)</span></h2>
 
-<div class="btn-group text-left">
-    @{
-        var span = Model.ToDate - Model.FromDate;
-        var now = DateTime.Now.Date;
-        var firstDayOfThisYear = now.AddDays(-now.DayOfYear + 1);
-        var firstDayOfThisMonth = now.AddDays(-now.Day + 1);
-        var firstDayOfThisWeek = now.AddDays(-((int)now.DayOfWeek + 6) % 7); // 0 is sunday -> 6
-    }
-    @Html.ActionLink(_("This Year"), "Index", "TrainingLogHistory", new { fromDate = firstDayOfThisYear, toDate = now }, new { Class = "btn btn-default" })
-    @Html.ActionLink(_("This Month"), "Index", "TrainingLogHistory", new { fromDate = firstDayOfThisMonth, toDate = now }, new { Class = "btn btn-default" })
-    @Html.ActionLink(_("This Week"), "Index", "TrainingLogHistory", new { fromDate = firstDayOfThisWeek, toDate = now }, new { Class = "btn btn-default" })
-    @Html.ActionLink(_("Today"), "Index", "TrainingLogHistory", new { fromDate = now, toDate = now }, new { Class = "btn btn-default" })
-</div>
-<div style="position: relative; float: right; vertical-align: middle;">
-    @Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new { fromDate = Model.FromDate, toDate = Model.ToDate }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
-    @Html.ActionLink("Export JSON", "ExportToJson", "TrainingLogHistory", new { fromDate = Model.FromDate, toDate = Model.ToDate }, new { Class = "btn btn-default" }, "glyphicon glyphicon-floppy-save")
-</div>
-@using (Html.BeginForm("Index", "TrainingLogHistory"))
+@if (Model.ShowButtonPanel)
 {
-    <fieldset>
-        <input type="submit" value=@_("Between") class="btn btn-default" />
-        <input type="date" name="fromDate" id="fromDate" value="@Model.FromDate.ToString("yyyy-MM-dd")" />
-        <input type="date" name="toDate" id="toDate" value="@Model.ToDate.ToString("yyyy-MM-dd")" />
-    </fieldset>
+    <div class="btn-group text-left">
+        @{
+            var span = Model.ToDate - Model.FromDate;
+            var now = DateTime.Now.Date;
+            var firstDayOfThisYear = now.AddDays(-now.DayOfYear + 1);
+            var firstDayOfThisMonth = now.AddDays(-now.Day + 1);
+            var firstDayOfThisWeek = now.AddDays(-((int) now.DayOfWeek + 6) % 7); // 0 is sunday -> 6
+        }
+        @Html.ActionLink(_("This Year"), "Index", "TrainingLogHistory", new {fromDate = firstDayOfThisYear, toDate = now}, new {Class = "btn btn-default"})
+        @Html.ActionLink(_("This Month"), "Index", "TrainingLogHistory", new {fromDate = firstDayOfThisMonth, toDate = now}, new {Class = "btn btn-default"})
+        @Html.ActionLink(_("This Week"), "Index", "TrainingLogHistory", new {fromDate = firstDayOfThisWeek, toDate = now}, new {Class = "btn btn-default"})
+        @Html.ActionLink(_("Today"), "Index", "TrainingLogHistory", new {fromDate = now, toDate = now}, new {Class = "btn btn-default"})
+    </div>
+    <div style="position: relative; float: right; vertical-align: middle;">
+        @Html.ActionLink("Export CSV", "ExportToCsv", "TrainingLogHistory", new {fromDate = Model.FromDate, toDate = Model.ToDate}, new {Class = "btn btn-default"}, "glyphicon glyphicon-floppy-save")
+        @Html.ActionLink("Export JSON", "ExportToJson", "TrainingLogHistory", new {fromDate = Model.FromDate, toDate = Model.ToDate}, new {Class = "btn btn-default"}, "glyphicon glyphicon-floppy-save")
+    </div>
+    using (Html.BeginForm("Index", "TrainingLogHistory"))
+    {
+        <fieldset>
+            <input type="submit" value=@_("Between") class="btn btn-default"/>
+            <input type="date" name="fromDate" id="fromDate" value="@Model.FromDate.ToString("yyyy-MM-dd")"/>
+            <input type="date" name="toDate" id="toDate" value="@Model.ToDate.ToString("yyyy-MM-dd")"/>
+        </fieldset>
+    }
 }
-
 <hr />
 @if (Model.Flights.Any())
 {
