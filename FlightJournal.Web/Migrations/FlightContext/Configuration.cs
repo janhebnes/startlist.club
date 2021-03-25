@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using FlightJournal.Web.Models.Training.Flight;
 using Newtonsoft.Json;
@@ -154,17 +155,24 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var dropCreateTrainingPrograms = false;
             if (dropCreateTrainingPrograms || !context.TrainingPrograms.Any())
             {
-                context.TrainingPrograms.RemoveRange(context.TrainingPrograms);
-                context.TrainingLessons.RemoveRange(context.TrainingLessons);
-                context.TrainingExercises.RemoveRange(context.TrainingExercises);
-                context.SaveChanges();
+                if (System.Web.HttpContext.Current != null && !Assembly.GetCallingAssembly().FullName.Contains(".Tests")) // if not running from website context we do not seed these files as we must find them from website root (is the case when operating unit tests) 
+                {
+                    // TODO: We should resolve root path of .web when called by unit test instead
+                    // var folder = System.IO.Directory.GetDirectoryRoot(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\FlightJournal.Web\\App_Data"));
+                    // Assembly.GetCallingAssembly().FullName.Contains(".Tests")
 
-                //FlightTraining.InitializeTrainingPrograms(context);
-                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, spilstart, UHB922 01012021.json"));
-                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, flyslæb, UHB922 01012021.json"));
-                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, selvstart, UHB922 01012021.json"));
-                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, TMG, UHB923 30012021.json"));
-                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/TMG-rettighed.json"));
+                    context.TrainingPrograms.RemoveRange(context.TrainingPrograms);
+                    context.TrainingLessons.RemoveRange(context.TrainingLessons);
+                    context.TrainingExercises.RemoveRange(context.TrainingExercises);
+                    context.SaveChanges();
+
+                    //FlightTraining.InitializeTrainingPrograms(context);
+                    FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, spilstart, UHB922 01012021.json"));
+                    FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, flyslæb, UHB922 01012021.json"));
+                    FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, selvstart, UHB922 01012021.json"));
+                    FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, TMG, UHB923 30012021.json"));
+                    FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/TMG-rettighed.json"));
+                }
             }
 
             if (dropCreateTrainingPrograms || !context.Manouvres.Any())
