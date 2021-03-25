@@ -22,6 +22,10 @@
         <td class="display-label valign-top">@Html.LabelFor(model => model.AcceptanceCriteria)</td>
         <td class="display-field">@Html.Raw(@mkd.Transform(Model.AcceptanceCriteria))</td>
     </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.ExerciseIdForExport)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.ExerciseIdForExport)</td>
+    </tr>
 </table>
 @{
     int tpi = ViewBag.TrainingProgramId;

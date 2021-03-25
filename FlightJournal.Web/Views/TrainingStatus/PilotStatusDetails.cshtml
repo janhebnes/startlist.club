@@ -1,0 +1,42 @@
+﻿@using FlightJournal.Web.Views
+@model FlightJournal.Web.Controllers.PilotDetailedStatus
+
+@{
+    ViewBag.Title = _("Training status");
+}
+<h2>@_("Training status")</h2>
+
+@if (Model != null)
+{
+    <h3>@Model.PilotName - @Model.ProgramName</h3>
+    <table>
+    @foreach (var ex in Model.Status.OrderBy(x=>x.DisplayOrder))
+    {
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+            <td style="padding-left: 10px;" class="@CssHelper.CssClassFor(ex.Status) clickable" onclick='window.location="@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = Model.PilotId, lessonId = ex.LessonId})"'>
+                <b>@ex.LessonName</b>
+            </td>
+            <td style="padding-right: 10px;" class="@CssHelper.CssClassFor(ex.Status)">
+                @Html.Raw(ex.Regression ? "<i class='fa fa-exclamation-triangle' style=color:yellow></i>" : "")
+            </td>
+        </tr>
+        foreach (var pex in ex.ExercisesWithStatus.OrderBy(x => x.DisplayOrder))
+        {
+            <tr>
+                <td style="padding-left: 30px;" class="@CssHelper.CssClassFor(pex.Status) ">
+                    @pex.ExerciseName
+                </td>
+                <td style="padding-right: 10px;" class="@CssHelper.CssClassFor(pex.Status)">
+                    @Html.Raw(pex.Regression ? "<i class='fa fa-exclamation-triangle' style=color:yellow></i>" : "")
+                </td>
+            </tr>
+        }
+    }
+    </table>                                             
+}
+else
+{
+
+}
+

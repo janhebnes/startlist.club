@@ -250,7 +250,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 {
                     new Grading
                     {
-                        GradingIdForExport = Guid.NewGuid(),
+                        GradingIdForExport = Guid.Empty,
                         Name = "Briefet",
                         IsOk = true,
                         DisplayOrder = 1,
@@ -260,7 +260,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                     },
                     new Grading
                     {
-                        GradingIdForExport = Guid.NewGuid(),
+                        GradingIdForExport = Guid.Empty,
                         Name = "Kan kun udføres med hjælp fra instruktøren",
                         IsOk = false,
                         DisplayOrder = 1,
@@ -270,7 +270,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                     },
                     new Grading
                     {
-                        GradingIdForExport = Guid.NewGuid(),
+                        GradingIdForExport = Guid.Empty,
                         Name = "Kan udføres med mundtlige korrektioner fra instruktøren",
                         IsOk = false,
                         DisplayOrder = 2,
@@ -280,7 +280,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                     },
                     new Grading
                     {
-                        GradingIdForExport = Guid.NewGuid(),
+                        GradingIdForExport = Guid.Empty,
                         Name = "Udføres selvstændigt og tilfredsstillende",
                         IsOk = true,
                         DisplayOrder = 3,

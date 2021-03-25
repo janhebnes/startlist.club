@@ -32,6 +32,14 @@
     @Html.ValidationMessageFor(model => model.Description)
 </div>
 
+<div class="editor-label">
+    @Html.LabelFor(model => model.ManouvreIdForExport)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ManouvreIdForExport)
+    @Html.ValidationMessageFor(model => model.ManouvreIdForExport)
+</div>
+
 @Html.HiddenFor(model => model.ManouvreId)
 
 

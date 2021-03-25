@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -16,6 +17,8 @@ namespace FlightJournal.Web.Models.Training.Catalogue
         [Key]
         [JsonIgnore]
         public int Training2ProgramId { get; set; }
+        public Guid ProgramIdForExport { get; set; }
+
 
         [Required]
         [LocalizedDisplayName("Short Name")]
@@ -32,6 +35,9 @@ namespace FlightJournal.Web.Models.Training.Catalogue
         
         [LocalizedDisplayName("URL")]
         public string Url{ get; set; }
+
+        [LocalizedDisplayName("Official version")]
+        public string Version { get; set; }
 
         [XmlIgnore]
         public virtual ICollection<Training2Lesson> Lessons { get; set; } // N:M

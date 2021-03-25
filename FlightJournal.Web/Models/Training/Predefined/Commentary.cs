@@ -1,4 +1,5 @@
-﻿using FlightJournal.Web.Models.Training.Flight;
+﻿using System;
+using FlightJournal.Web.Models.Training.Flight;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -10,6 +11,8 @@ namespace FlightJournal.Web.Models.Training.Predefined
     {
         [Key]
         public int CommentaryId { get; set; }
+        public Guid CommentaryIdForExport { get; set; }
+
         [Required]
         [AllowHtml]
         [LocalizedDisplayName("Comment/evaluation")]

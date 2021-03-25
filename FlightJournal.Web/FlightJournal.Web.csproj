@@ -15,6 +15,7 @@
     <RootNamespace>FlightJournal.Web</RootNamespace>
     <AssemblyName>FlightJournal.Web</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>latest</LangVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -322,6 +323,11 @@
     <Compile Include="Controllers\CommentaryAdminController.cs" />
     <Compile Include="Controllers\GradingAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
+    <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.cs" />
+    <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.designer.cs">
+      <DependentUpon>202103201755056_Added export id fieds to training models.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
     <Compile Include="Controllers\TrainingLessonAdminController.cs" />
@@ -337,8 +343,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
-    <Compile Include="Hubs\FlightHub.cs" />
-    <Compile Include="Hubs\GridHub.cs" />
+    <Compile Include="Hubs\FlightsHub.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.cs" />
     <Compile Include="Migrations\FlightContext\201506232105012_Club-Visibility.Designer.cs">
       <DependentUpon>201506232105012_Club-Visibility.cs</DependentUpon>
@@ -721,6 +726,7 @@
     <Content Include="Migrations\FlightContext\201903242342588_PilotLogEntry-extended-with-TrainingLessons.sql" />
     <Content Include="Migrations\FlightContext\202103132323451_Flights extended with index on Date-StartedFromId-Deleted.sql" />
     <Content Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.sql" />
+    <Content Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -897,6 +903,7 @@
     <Content Include="DevData\SPL-certifikat, flyslæb, UHB922 01012021.json" />
     <Content Include="DevData\SPL-certifikat, selvstart, UHB922 01012021.json" />
     <Content Include="DevData\SPL-certifikat, TMG, UHB923 30012021.json" />
+    <Content Include="DevData\TMG-rettighed.json" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -1188,6 +1195,7 @@
     <Content Include="Views\GradingAdmin\Index.cshtml" />
     <Content Include="Views\Report\_Logbook.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\LandingCount.cshtml" />
+    <Content Include="Views\TrainingStatus\PilotStatusDetails.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1242,6 +1250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.resx">
       <DependentUpon>202103151426589_Flight training tracking and instructors for flight school.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.resx">
+      <DependentUpon>202103201755056_Added export id fieds to training models.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

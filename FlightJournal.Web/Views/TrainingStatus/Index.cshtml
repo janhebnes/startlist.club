@@ -27,7 +27,7 @@
         <tbody>
         @foreach (var f in Model)
         {
-            <tr>
+            <tr class="clickable" onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>
                 <td>@f.PilotName</td>
                 <td>@f.ProgramName</td>
                 <td>@f.LastFlight</td>
@@ -40,12 +40,12 @@
                         var regressionMarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
                         if (x.Status == TrainingStatus.NotStarted)
                         {
-                            <label class="bordered @clz" style="padding: 2px">@x.LessonName@Html.Raw(regressionMarker)</label>
+                            <label class="bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
                         }
                         else
                         {
-                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new{pilotId=f.PilotId, lessonId=x.LessonId})>
-                                <label class="clickable bordered @clz" style="padding: 2px">@x.LessonName@Html.Raw(regressionMarker)</label>
+                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId, lessonId = x.LessonId})>
+                                <label class="clickable bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
                             </a>
                         }
                     }

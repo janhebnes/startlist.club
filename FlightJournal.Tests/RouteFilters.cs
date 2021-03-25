@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FakeItEasy;
@@ -21,10 +22,10 @@ namespace FlightJournal.Tests
     public class RouteFilters
     {
         [TestInitialize]
-        public void Prepare()
+        public void init()
         {
-            RouteTable.Routes.Clear();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            var folder = System.IO.Directory.GetDirectoryRoot(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\FlightJournal.Web\\App_Data"));
+            AppDomain.CurrentDomain.SetData("DataDirectory", folder.ToString());
         }
 
         [TestMethod]
@@ -213,18 +214,25 @@ namespace FlightJournal.Tests
 
         public RouteData GetRouteData(string path)
         {
+            // attempting with https://gist.github.com/ExploreMqt/3719348 for getting access to route 
+            var collection = new RouteCollection();
+            RouteConfig.RegisterRoutes(collection, true);
+
             var httpContext = A.Fake<HttpContextBase>();
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
-            var routeData = RouteTable.Routes.GetRouteData(httpContext);
+            var routeData = collection.GetRouteData(httpContext);
             Assert.IsNotNull(routeData);
             return routeData;
         }
 
         public void should_return_expected_controller_and_action(string path, string expectedController, string expectedAction)
         {
+            var collection = new RouteCollection();
+            RouteConfig.RegisterRoutes(collection, true);
+
             var httpContext = A.Fake<HttpContextBase>();
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
-            var routeData = RouteTable.Routes.GetRouteData(httpContext);
+            var routeData = collection.GetRouteData(httpContext);
             Assert.IsNotNull(routeData);
             Assert.AreEqual(expectedController.ToLower(), routeData.Values["controller"].ToString().ToLower());
             Assert.AreEqual(expectedAction.ToLower(), routeData.Values["action"].ToString().ToLower());
@@ -232,10 +240,13 @@ namespace FlightJournal.Tests
 
         public void should_return_expected_club(string path, string expectedClub)
         {
+            var collection = new RouteCollection();
+            RouteConfig.RegisterRoutes(collection, true);
+
             var httpContext = A.Fake<HttpContextBase>();
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
             A.CallTo(() => httpContext.Request.Url).Returns(new Uri("http://localhost/" + path.Replace("~/", string.Empty)));
-            var routeData = RouteTable.Routes.GetRouteData(httpContext);
+            var routeData = collection.GetRouteData(httpContext);
             Assert.IsNotNull(routeData);
             var currentClub = ClubController.GetCurrentClub(httpContext, routeData);
             Assert.IsNotNull(currentClub);

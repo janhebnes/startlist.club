@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using FlightJournal.Web.Models.Training.Flight;
@@ -10,6 +11,8 @@ namespace FlightJournal.Web.Models.Training.Predefined
     {
         [Key]
         public int ManouvreId { get; set; }
+        public Guid ManouvreIdForExport { get; set; }
+
 
         [LocalizedDisplayName("Name")]
         [AllowHtml]

@@ -14,17 +14,17 @@
         },
         {
           "Name": "Tank, tankningsprocedure, drænprøve",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 3
         },
         {
           "Name": "El-systemer, wire, hydraulik, hjulbremser, karburatorforvarmer",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 4
         },
         {
           "Name": "Checkliste – og ”hvad skal fingrene gøre”",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 5
         }
       ],
@@ -69,12 +69,12 @@
         {
           "Name": "Kontrol af flyets dokumenter. ",
           "Note": "Er der elementer, som er løbet ud for tid?\r\n",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 1
         },
         {
           "Name": "Nødvendigt udstyr: Kort, flyveplan, AIP/VFG",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 2
         },
         {

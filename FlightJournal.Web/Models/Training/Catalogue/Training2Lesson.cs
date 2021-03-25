@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Newtonsoft.Json;
@@ -16,6 +17,8 @@ namespace FlightJournal.Web.Models.Training.Catalogue
         [Key]
         [JsonIgnore]
         public int Training2LessonId { get; set; }
+        public Guid LessonIdForExport { get; set; }
+
 
         [Required]
         public string Name { get; set; }

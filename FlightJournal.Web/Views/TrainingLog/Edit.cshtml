@@ -311,7 +311,8 @@
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
         var initialStateOfInput = {};
-        var notifier = $.connection.flightHub;
+        var signalRflightsHub = $.connection.flightsHub;
+
         $(document).ready(function() {
             $("#TrainingProgram").change(function() {
                 reloadWithTrainingProgram($(this));
@@ -397,11 +398,6 @@
                 $(this).parent().find(".gradingunselector").prop('disable', $(this).val() == null);
             });
 
-            $.connection.hub.start(function() {
-                console.log("connected");
-                console.log($.connection);
-            });
-
             $("#savebtn").click(function() {
                 if (!isDirty())
                     window.history.back();
@@ -410,18 +406,16 @@
                         function() {
                             console.debug("saving data");
                             initialStateOfInput = getStateOfInput(); // don't prompt again
-                            //TODO: this should be done server side, methinks
-                            notifier.server.staleData("@Model.FlightId", "@SessionId");
                             window.history.back();
                         },
                         function() {
-                            alert("@_("Unable to save data")");
+                            alert(@Html.Raw(RemoveCRLF(__("Unable to save data"))));
                         });
                 }
             });
 
             $("#backbtn").click(function() {
-                if (!isDirty() || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
+                if (!isDirty() || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
                     initialStateOfInput = getStateOfInput(); // don't prompt twice
                     window.history.back();
                 }
@@ -440,13 +434,17 @@
             // let js libs settle before taking initial state snapshot
             setTimeout(function() { initialStateOfInput = getStateOfInput(); }, 100);
 
+            $.connection.hub.start(function () {
+                console.log("connected");
+                console.log($.connection);
+            });
 
-            notifier.client.dataIsStale = function(flightId, sessionId) {
-                if (flightId === "@Model.FlightId" && sessionId != "@SessionId") {
-                    alert(@Html.Raw(__("Training data for this flight have been edited by someone else, please reload!"))); //TODO: localize
+            signalRflightsHub.client.NotifyTrainingDataChanged = function (flightId, originator) {
+                if (flightId === "@Model.FlightId" && originator != "@SessionId") {
+                    alert(@Html.Raw(RemoveCRLF(__("Training data for this flight have been edited by someone else, please reload!"))));
                 }
-                console.log(flightId);
             };
+
         });
 
         var getStateOfInput = function() {
@@ -544,13 +542,14 @@
 
             // entire flight
             var flightData = JSON.stringify({
+                originator: "@SessionId",
                 flightId: "@Model.FlightId",
                 exercises: exercises,
                 manouverIds: manouverIds,
                 note: $("#flightnotes").val(),
                 phaseComments: phaseComments,
                 wind_direction: $("option.wind_direction:selected").val(),
-                wind_speed: $("option.wind_speed:selected").val()
+                wind_speed: $("option.wind_speed:selected").val(),
             });
 
             var url = $("#urls").data("saveflight");

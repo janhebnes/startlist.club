@@ -55,7 +55,7 @@
             {
                 style = new HtmlString("style=\"text-decoration: line-through;\"");
             }
-            <tr>
+            <tr class="flightrow" data-flightid="@item.FlightId">
                 <td>
                     @if (!item.Deleted.HasValue)
                     {
@@ -172,11 +172,12 @@
     <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
-        var notifier = $.connection.gridHub;
-        $(document).ready(function () {
+        var signalRflightsHub = $.connection.flightsHub;
+
+        $(document).ready(function() {
             $(".tablesorter").tablesorter();
 
-            $('a.editComment').click(function (e) {
+            $('a.editComment').click(function(e) {
                 e.preventDefault();
 
                 var $this = $(this).closest("td");
@@ -185,7 +186,7 @@
                 return false;
             });
 
-            $('a.setComment').click(function (e) {
+            $('a.setComment').click(function(e) {
                 e.preventDefault();
 
                 var $this = $(this).closest("form");
@@ -194,15 +195,39 @@
                 return false;
             });
 
-            $.connection.hub.start(function () {
+            $.connection.hub.start(function() {
                 console.log("connected");
+                console.log($.connection);
             });
 
-            notifier.client.newFlightCreated = function () {
-                alert("New flight has been created please reload!");
+            signalRflightsHub.client.NotifyFlightChanged = function(flight, origin) {
+                reloadIfFlightPresentOnPage(flight);
             };
-        }
-        );
+            signalRflightsHub.client.NotifyFlightAdded = function (flight, origin, affectedLocations) {
+                reloadIfLocationAffected(affectedLocations);
+            };
+
+
+        });
+
+        var reloadIfFlightPresentOnPage = function (flight) {
+            if ($(".setComment").is(":visible"))
+                return;
+            $('.flightrow').each(function() {
+                if ($(this).data('flightid') == flight) {
+                    location.reload();
+                    return;
+                }
+            });
+        };
+
+        var reloadIfLocationAffected = function(affectedLocations) {
+            if ($(".setComment").is(":visible"))
+                return;
+            var thisLocation = @ViewBag.LocationId;
+            if (thisLocation === 0 || affectedLocations.includes(thisLocation))
+                location.reload();
+        };
     </script>
 }
 
