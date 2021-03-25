@@ -86,5 +86,20 @@ namespace FlightJournal.Web.Configuration
             var demoMemberships = GetLiveDemoMemberships();
             return (demoMemberships != null && demoMemberships.Count > 0);
         }
+
+        /// <summary>
+        /// When are we on localhost development
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsLocalDevEnvironment()
+        {
+            if (HttpContext.Current == null)
+                return false;
+
+            if (HttpContext.Current.Request.IsLocal)
+                return true;
+
+            return false;
+        }
     }
 }

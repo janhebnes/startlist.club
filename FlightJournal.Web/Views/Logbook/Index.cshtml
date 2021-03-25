@@ -336,14 +336,18 @@ bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCou
 
 @section head
 {
-    @if (Demo.IsDemoEnvironment())
+    @if (Demo.IsLocalDevEnvironment())
     {
-        <script src="~/Scripts/vue.js"></script>
+        if (Demo.IsDemoEnvironment())
+        {
+            <script src="~/Scripts/vue.js"></script>
+        }
+        else
+        {
+            <script src="~/Scripts/vue.min.js"></script>
+        }
     }
-    else
-    {
-        <script src="~/Scripts/vue.min.js"></script>
-    }
+
     <style>
         [v-cloak] {
             display: none;
@@ -359,7 +363,7 @@ bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCou
         });
     </script>
 
-    @if (Demo.IsDemoEnvironment())
+    @if (Demo.IsLocalDevEnvironment() && Demo.IsDemoEnvironment())
     {
         <script type="text/javascript">
             var app = new Vue({
@@ -574,7 +578,7 @@ bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCou
     }
 }
 
-@if (Demo.IsDemoEnvironment())
+@if (Demo.IsLocalDevEnvironment() && Demo.IsDemoEnvironment())
 {
     <hr />
     <h1>Vue framework workshop</h1>
