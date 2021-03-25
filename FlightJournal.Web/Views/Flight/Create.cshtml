@@ -1,4 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Hubs
 @model FlightJournal.Web.Models.Flight
 @{
     ViewBag.Title = _("Create flight");
@@ -97,7 +98,7 @@
                 <div class="clearfix visible-sm visible-xs"></div>
                 <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                     <div class="btn-group btn-group-lg ">
-                        <input type="submit" value="@_("Create")" class="btn btn-primary" />
+                        <input type="submit" value="@_("Create")" class="btn btn-primary" onclick="gridStaleData()" />
                     </div>
                 </div>
 
@@ -156,7 +157,7 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script type="text/javascript">
+<script type="text/javascript">
         function resetJsCss() {
             $(".custom-combobox-input").css("border", "3px solid #888");
             $(".custom-combobox-toggle").css("border", "3px solid #888");
@@ -299,5 +300,5 @@
                 }
             }
         }
-    </script>
+</script>
 }

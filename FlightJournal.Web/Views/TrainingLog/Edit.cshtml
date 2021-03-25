@@ -1,0 +1,606 @@
+﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models.Training.Predefined
+@using FlightJournal.Web.Views
+@using MarkdownSharp
+@model FlightJournal.Web.Models.TrainingLogViewModel
+@{
+    var mkd = new Markdown();
+    var SessionId = Guid.NewGuid();
+
+    IHtmlString regressionMarkerIcon(bool regression)
+    {
+        return Html.Raw(regression ? "<i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "");
+    }
+}
+<div class="tourable" data-step="1" data-intro=@Html.Raw(__("On this page, you can plan a training flight based on the current status of the pilot, and you can evaluate and grade the flight. Note that the guide only shows descriptions for currently visible elements, so you may have to open the sections you are interested in"))></div>
+
+<div class="row no-gutter">
+    <div class="col-xs-12" data-step="2" data-intro=@Html.Raw(__("Select the training program for this flight. This determines which exercises and partial exercises you will see below"))>
+        <select class="selectpicker" id="TrainingProgram">
+            @foreach (var program in Model.TrainingPrograms)
+            {
+                var selected = Model.TrainingProgram.Id == program.Id ? "selected" : "";
+                <option value="@program.Id" @selected>@program.Name</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="row no-gutter" data-step="3" data-intro=@Html.Raw(__("Flight info"))>
+    <div class="col-xs-6 col-sm-4">
+        @Model.TimeInfo
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        @Model.Pilot
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        @Model.BackseatPilot
+    </div>
+</div>
+
+<div class="row no-gutter btn-group-toggle" data-toggle="buttons">
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonoverviewtoggle" data-step="4" data-intro=@Html.Raw(__("Show/hide bar-chart style overview of exercises and their completion"))><input type="checkbox"><i class="fa fa-list"></i><span class="hidden-xs  hidden-sm"> @_("Lesson progress")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="lessonstoggle" data-step="5" data-intro=@Html.Raw(__("Show/hide buttons to access partial exercises for each exercise"))><input type="checkbox"><i class="fa fa-paper-plane"></i><span class="hidden-xs hidden-sm"> @_("Lesson details")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="showrecentflights" data-step="6" data-intro=@Html.Raw(__("Show/hide list of recent training flights of this pilot"))><input type="checkbox"><i class="fa fa-history"></i><span class="hidden-xs hidden-sm"> @_("Show recent flights")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="maneuverstoggle" data-step="7" data-intro=@Html.Raw(__("Show/hide selection of maneuvers done during the flight"))><input type="checkbox">&#x21B0&#x219D&infin;<span class="hidden-xs  hidden-sm"> @_("Maneuvers")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="annotationstoggle" data-step="8" data-intro=@Html.Raw(__("Show/hide options for grading the flight phases"))><input type="checkbox"><i class="fa fa-check"></i><span class="hidden-xs  hidden-sm"> @_("Flight phase grading")</span></label>
+    <label class="col-xs-2 btn btn-default traininglogstatebutton" id="weathertoggle" data-step="9" data-intro=@Html.Raw(__("Show/hide options for describing the weather during the flight"))><input type="checkbox"><i class="fa fa-cloud"></i><span class="hidden-xs  hidden-sm"> @_("Weather")</span></label>
+</div>
+
+<div id="lessonsoverviewcontainer" class="table-responsive row no-gutter bordered">
+    <table class="table table-condensed col-xs-12 lessonsoverviewtable" data-step="10" data-intro=@Html.Raw(__("Progress for each exercise"))>
+        <tbody>
+            @{
+                var introDefCshown = false;
+                var introDefWshown = false;
+                var introDefNshown = false;
+            }
+            @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
+            {
+                var completedpct = (int)Math.Round(100.0 * lesson.ExercisesCompleted / lesson.ExercisesTotal);
+                var wippct = (int)Math.Round(100.0 * lesson.ExercisesInProgress / lesson.ExercisesTotal);
+                var nspct = 100 - completedpct - wippct;
+                var introdefC = "";
+                var introdefW = "";
+                var introdefN = "";
+                if (!introDefCshown && completedpct > 0)
+                {
+                    var introTxt = Html.Raw(__("Number of completed partial exercises is shown in this style")).ToString();
+                    introdefC = $"data-step=11 data-tooltipClass=status-completed data-intro={introTxt}";
+                    introDefCshown = true;
+                }
+                if (!introDefWshown && wippct > 0)
+                {
+                    var introTxt = Html.Raw(__("Number of partial exercises in progress is shown in this style")).ToString();
+                    introdefW = $"data-step=12 data-tooltipClass=status-in-progress data-intro={introTxt}";
+                    introDefWshown = true;
+                }
+                if (!introDefNshown && nspct > 0)
+                {
+                    var introTxt = Html.Raw(__("Number of partial exercises not started yet is shown in this style")).ToString();
+                    introdefN = $"data-step=13 data-tooltipClass=status-not-started data-intro={introTxt}";
+                    introDefNshown = true;
+                }
+                var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
+                <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id">
+                    <td class="col-xs-2 col-md-5" style="line-height: 0.7;"><span class="visible-xs visible-sm ">@lesson.ShortName</span><span class="hidden-xs hidden-sm">@lesson.Name</span></td>
+                    <td class="progress col-xs-10 col-md-7" style="padding: 0px;">
+                        @if (completedpct > 0)
+                        {
+                            <div class="progress-bar status-completed" role="progressbar" style="width: @completedpct%" @Html.Raw(introdefC)>@lesson.ExercisesCompleted@regressionMarker</div>
+                        }
+                        @if (wippct > 0)
+                        {
+                            <div class="progress-bar status-in-progress" role="progressbar" style="width: @wippct%;" @Html.Raw(introdefW)> @lesson.ExercisesInProgress</div>
+                        }
+                        @if (nspct > 0)
+                        {
+                            <div class="progress-bar status-not-started" role="progressbar" style="width: @nspct%;" @Html.Raw(introdefN)>@lesson.ExercisesNotStarted</div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row no-gutter btn-group-toggle @Model.TrainingProgram.Id lessonscontainer bordered" data-toggle="buttons" data-step="20" data-intro=@Html.Raw(__("Click a button to see the detailed partial exercise info and status for the exercise"))>
+    @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
+    {
+        var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
+        <label class="col-xs-2 col-sm-1 traininglogstatebutton btn btn-default @CssHelper.CssClassFor(lesson.Status)" title="@lesson.StatusSummary"><input type="checkbox" data-lessonclz="@Model.TrainingProgram.Id-@lesson.Id" class="lessontoggle">@lesson.ShortName@regressionMarker</label>
+    }
+    <div class="col-xs-2 col-sm-1 "></div>
+</div>
+
+
+
+<div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered">
+    <table class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All exercises and partial exercises with status"))>
+        <thead>
+            <tr>
+                <th>@_("Exercise")</th>
+                <th>@_("Partial Exercise")</th>
+                <th class="hcenter ">@_("Best grading")</th>
+                <th class="hcenter "></th>
+                <th class="hcenter ">@_("Grading in this flight")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var helpIntroShown = false;
+                var statusIntroShown = false;
+            }
+            @*//TODO: rename to Exercise/ExercisePart (PartialExercise?)*@
+            @foreach (var lesson in Model.TrainingProgram.Lessons.OrderBy(x => x.DisplayOrder))
+            {
+                foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
+                {
+                    string GradingText(Grading g)
+                    {
+                        if (g == null){ return "";}
+                        var text = exercise.BriefingOnlyRequired ? g.Name : $"{g.Value}-{g.Name}";
+                        return text;
+                    }
+                    var clz = CssHelper.CssClassFor(exercise.Status);
+                    var regressionMarker = regressionMarkerIcon(exercise.Regression);
+                    var infoMarker = exercise.LongDescription?.Any() ?? false ? "<span class='fa fa-info-circle'></span>" : "";
+                    var introdefL = "";
+                    var introdefX = "";
+                    var introdefGP = "";
+                    var introdefR0 = "";
+                    var introdefGT = "";
+                    var introdefNG = "";
+                    if (!helpIntroShown && (exercise.LongDescription?.Any() ?? false))
+                    {
+                        // show lesson/exercise help on first exercise with long description
+                        var introtxtL = Html.Raw(__("Click here to see a description of the exercise")).ToString();
+                        introdefL = $"data-step=31 data-intro={introtxtL}";
+                        var introtxtX = Html.Raw(__("Click here to see a description of the partial exercise (if available)")).ToString();
+                        introdefX = $"data-step=32 data-intro={introtxtX}";
+                        helpIntroShown = true;
+                    }
+                    else if (!statusIntroShown)
+                    {
+                        var introtxtGP = Html.Raw(__("Best grading on previous flights is shown here")).ToString();
+                        introdefGP = $"data-step=33 data-intro={introtxtGP}";
+                        var introtxtR0 = Html.Raw(__("Marker is shown here if the partial exercise has previously been completed, graded lower, i.e. a regression")).ToString();
+                        introdefR0 = $"data-step=34 data-intro={introtxtR0}";
+                        var introtxtGT = Html.Raw(__("Grade the partial exercise in the flight by selecting a grade here. Leave empty if not used")).ToString();
+                        introdefGT = $"data-step=35 data-intro={introtxtGT}";
+                        var introtxtNG = Html.Raw(__("Click here to clear the selection")).ToString();
+                        introdefNG = $"data-step=36 data-intro={introtxtNG}";
+                        statusIntroShown = true;
+                    }
+            <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
+                <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)><span class="visible-xs visible-sm">@lesson.ShortName</span><span class="hidden-xs hidden-sm">@lesson.Name</span></td>
+                <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id" @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
+                <td  class="btn-default hcenter @clz" @Html.Raw(introdefGP)>@GradingText(exercise.BestGrading)</td>
+                <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
+                <td class="btn-default hcenter statusbutton annotationcontainer" @Html.Raw(introdefGT)>
+                    <select class="selectpicker gradingselector userselection" title="." @*title=@Html.Raw(__("Select a grading"))*@ data-dropdown-Align-Right="true">
+                        @{
+                            var gradings = exercise.BriefingOnlyRequired ? Model.GradingsForBriefingPartialExercises : Model.GradingsForPracticalPartialExercises;
+                        }
+                        @foreach (var grading in gradings)
+                        {
+                            var selected = exercise.GradingInThisFlight != null && grading.GradingId == exercise.GradingInThisFlight.GradingId ? "selected" : "";
+
+                            <option class="grading" value="@grading.GradingId" @selected>@GradingText(grading)</option>
+                        }
+                    </select>
+                    <div class="btn btn-sm gradingunselector" @Html.Raw(introdefNG)><i class="fa fa-times"></i></div>
+                </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div id="recentflightscontainer" class="row bordered no-gutter" data-step="38" data-intro=@Html.Raw(@__("Recent training flights of this pilot"))>
+
+</div>
+
+<div id="maneuverscontainer" class="row annotationcontainer bordered no-gutter" data-step="40" data-intro=@Html.Raw(@__("Select the maneuvers performed during the flight"))>
+    <div class="col-xs-2  col-sm-1">@_("Maneuvers")</div>
+    <select class="col-xs-10  col-sm-11 selectpicker userselection" multiple id="maneuver-sel" title=@Html.Raw(__("Select one or more maneuvers"))>
+        @foreach (var maneuver in Model.Manouvres)
+        {
+            var selected = Model.ThisFlight.Manouvres.SafeContains(maneuver.ManouvreId) ? "selected" : "";
+
+            <option value="@maneuver.ManouvreId" data-icon="@maneuver.IconCssClass" class="manouver" @selected>@Html.Raw(maneuver.ManouvreItem)</option>
+        }
+    </select>
+</div>
+
+
+<div id="annotationscontainer" class="annotationcontainer bordered row no-gutter" data-step="50" data-intro=@Html.Raw(__("Here you can grade, annotate, and comment the phases of the flight ")) data-id_for_ok="@Model.AnnotationIdForOk">
+    <div class="col-xs-12 col-sm-12">
+        <button class="btn btn-success" id="sfilok">@_("Everything ok")</button>
+    </div>
+    @foreach (var p in Model.AnnotationsForFlightPhases)
+    {
+        var id = $"comment-id-{p.Phase.CommentaryTypeId}";
+
+        <div class="col-xs-2 col-sm-1">@p.Phase.CType</div>
+        <select class="col-xs-10 col-sm-11 selectpicker annotation userselection" multiple id="@id" title="@Html.Raw(_("Select one or more comments"))">
+            @foreach (var comment in p.Options)
+            {
+                var selected = Model.ThisFlight.CommentIdsByPhase.GetOrDefault(p.Phase.CommentaryTypeId).SafeContains(comment.CommentaryId) ? "selected" : "";
+                <option value="@comment.CommentaryId" @selected class="phaseannotation" data-phaseid="@p.Phase.CommentaryTypeId" >@Html.Raw(comment.Comment)</option>
+            }
+        </select>
+    }
+    <div class="col-xs-2 col-sm-1">@_("Note")</div>
+    <div class="col-xs-10 col-sm-11 " data-step="55" data-intro=@Html.Raw(__("If you have comments beyond the predefined selections above, you can enter them here"))>
+        <textarea class="userselection" style="width: 100%; max-width:100%" id="flightnotes" rows="3">@Model.ThisFlight.Notes</textarea>
+    </div>
+</div>
+
+
+<div id="weathercontainer" class="annotationcontainer bordered row no-gutter" data-step="60" data-intro=@Html.Raw(__("In case the weather has been a factor (for better or worse), you can describe it here"))>
+    <div class="col-xs-2  col-sm-1">@_("Weather")</div>
+    <select class="col-xs-5 selectpicker userselection" title=@Html.Raw(__("Wind direction")) id="wind_direction">
+        @foreach (var v in Model.WindDirections)
+        {
+            var selected = Model.ThisFlight.WindDirection == v.Value ? "selected" : "";
+            <option value="@v.Value" class="wind_direction" @selected>@Html.Raw(v.Text)</option>
+        }
+    </select>
+    <select class="col-xs-4 selectpicker userselection" title=@Html.Raw(__("Wind speed")) id="wind_speed">
+        @foreach (var v in Model.WindSpeeds)
+        {
+            var selected = Model.ThisFlight.WindSpeed == v.Value ? "selected" : "";
+            <option value="@v.Value" class="wind_speed" @selected>@Html.Raw(v.Text)</option>
+        }
+    </select>
+</div>
+
+
+
+<div class="row" style="margin-top: 30px">
+    <div class="col-md-6">
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-primary" id="savebtn">@_("Save")</button>
+            <button class="btn btn-default" id="backbtn">@_("Back")</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="exercisemodal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exercisemodaltitle">@_("Exercise")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="exercise-description"></p>
+
+                <h4 id="exercise-precondition-header">@_("Preconditions")</h4>
+                <p id="exercise-precondition"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@foreach (var lesson in Model.TrainingProgram.Lessons)
+{
+    <div class="lessondescription" id="@lesson.Id" data-header="@lesson.ShortName" data-description="@Html.Raw(mkd.Transform(lesson.Description))" data-precondition="@Html.Raw(mkd.Transform(lesson.Precondition))"></div>
+    foreach (var exercise in lesson.Exercises)
+    {
+        <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@Html.Raw(mkd.Transform(exercise.LongDescription))"></div>
+    }
+}
+
+<div id="urls"
+     data-saveflight="@Url.Action("UpdateTrainingFlight", "TrainingLog")"
+     data-recentflights="@Url.Action("GetRecentFlights", "TrainingLog")">
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        var initialStateOfInput = {};
+        var signalRflightsHub = $.connection.flightsHub;
+
+        $(document).ready(function() {
+            $("#TrainingProgram").change(function() {
+                reloadWithTrainingProgram($(this));
+            });
+
+            $(".lessontoggle").change(function() {
+                showRelevantExercises($(this));
+            });
+
+            $(".exercise").hide();
+            $(".lessonsdetailtable").hide();
+            $(".lessonsoverviewtable").hide();
+
+            $(".exercisedetails").click(function() {
+                showInfoFromId($(this).data("exerciseid"));
+            });
+            $(".lessondetails").click(function() {
+                showInfoFromId($(this).data("lessonid"));
+            });
+
+            $("#showrecentflights").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#recentflightscontainer").hide();
+                else {
+                    $("#recentflightscontainer").show();
+                    showRecentFlights();
+                }
+            });
+
+            $(".lessonscontainer").hide();
+            $("#annotationscontainer").hide();
+            $("#maneuverscontainer").hide();
+            $("#weathercontainer").hide();
+            $("#lessonsoverviewcontainer").hide();
+            $("#recentflightscontainer").hide();
+
+
+            $("#maneuverstoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#maneuverscontainer").hide();
+                else
+                    $("#maneuverscontainer").show();
+            });
+            $("#annotationstoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#annotationscontainer").hide();
+                else
+                    $("#annotationscontainer").show();
+            });
+            $("#weathertoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $("#weathercontainer").hide();
+                else
+                    $("#weathercontainer").show();
+            });
+            $("#lessonoverviewtoggle").click(function() {
+                if ($(this).find("input").is(":checked")) {
+                    $("#lessonsoverviewcontainer").hide();
+                    $(".lessonsoverviewtable").hide();
+                } else {
+                    $("#lessonsoverviewcontainer").show();
+                    $(".lessonsoverviewtable").show();
+                }
+            });
+            $("#lessonstoggle").click(function() {
+                if ($(this).find("input").is(":checked"))
+                    $(".lessonscontainer").hide();
+                else
+                    $(".lessonscontainer").show();
+            });
+
+            $("#sfilok").click(function() {
+                var id = $("#annotationscontainer").data("id_for_ok")
+                $(".selectpicker.annotation").each(function() {
+                    $(this).selectpicker('val', id);
+                });
+            });
+
+            $(".gradingunselector").click(function() {
+                $(this).parent().find(".selectpicker").selectpicker('val', null);
+            });
+            $(".gradingselector").change(function() {
+                $(this).parent().find(".gradingunselector").prop('disable', $(this).val() == null);
+            });
+
+            $("#savebtn").click(function() {
+                if (!isDirty())
+                    window.history.back();
+                else {
+                    saveFlightData(
+                        function() {
+                            console.debug("saving data");
+                            initialStateOfInput = getStateOfInput(); // don't prompt again
+                            window.history.back();
+                        },
+                        function() {
+                            alert(@Html.Raw(RemoveCRLF(__("Unable to save data"))));
+                        });
+                }
+            });
+
+            $("#backbtn").click(function() {
+                if (!isDirty() || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
+                    initialStateOfInput = getStateOfInput(); // don't prompt twice
+                    window.history.back();
+                }
+            });
+
+            window.addEventListener("beforeunload",
+                function(event) {
+                    if (isDirty()) {
+                        event.preventDefault();
+                        event.returnValue = "";
+                    } else {
+                        return undefined;
+                    }
+                });
+
+            // let js libs settle before taking initial state snapshot
+            setTimeout(function() { initialStateOfInput = getStateOfInput(); }, 100);
+
+            $.connection.hub.start(function () {
+                console.log("connected");
+                console.log($.connection);
+            });
+
+            signalRflightsHub.client.NotifyTrainingDataChanged = function (flightId, originator) {
+                if (flightId === "@Model.FlightId" && originator != "@SessionId") {
+                    alert(@Html.Raw(RemoveCRLF(__("Training data for this flight have been edited by someone else, please reload!"))));
+                }
+            };
+
+        });
+
+        var getStateOfInput = function() {
+            var state = {
+                userselection: []
+            };
+
+            $("select.userselection").each(function() {
+                state.userselection.push($(this).val());
+            });
+            $("textarea.userselection").each(function() {
+                state.userselection.push($(this).val());
+            });
+            return JSON.stringify(state);
+        }
+
+        var isDirty = function() {
+            var current = getStateOfInput();
+            var dirty = (initialStateOfInput != current);
+            return dirty;
+        }
+
+        var showRelevantExercises = function(lesson) {
+            $(".lessonsdetailtable").show();
+            var key = "." + lesson.data("lessonclz");
+            $(key).each(function() {
+                if (lesson.is(":checked"))
+                    $(this).show();
+                else
+                    $(this).hide();
+            });
+            var anyLessons = $(".lessontoggle:checked").length;
+            if (anyLessons)
+                $(".lessonsdetailtable").show();
+            else
+                $(".lessonsdetailtable").hide();
+        }
+
+        var reloadWithTrainingProgram = function(sel) {
+            var selected = sel.find(":selected").val();
+            if (selected != "@Model.TrainingProgram.Id") {
+                var url = '@Url.Action("Edit", new {flightId = @Model.FlightId})' + '&trainingProgramId=' + selected;
+                window.location.href = url;
+            }
+        }
+
+
+        var showInfoFromId = function(infoid) {
+            var info = $("#" + infoid);
+            var descr = info.data("description");
+            var precondition = info.data("precondition");
+            var title = info.data("header");
+            if (descr && descr.length) {
+                $("#exercisemodaltitle").html(title);
+                $("#exercise-description").html(descr);
+                $("#exercise-precondition").html(precondition ? precondition : "");
+                if (precondition)
+                    $("#exercise-precondition-header").show();
+                else
+                    $("#exercise-precondition-header").hide();
+                $("#exercisemodal").modal();
+            }
+        }
+
+
+        var saveFlightData = function(onSuccess, onFailure) {
+            // collect changed data from UI and post back
+
+            // status for all exercises
+            var exercises = [];
+            $(".exercise").each(function(i, e) {
+                var grading = $(this).find("option.grading:selected");
+                var ex = {
+                    programId: $(this).data("programid"),
+                    lessonId: $(this).data("lessonid"),
+                    exerciseId: $(this).data("exerciseid"),
+                    gradingId: grading.val(),
+                };
+                if (ex.gradingId)
+                    exercises.push(ex);
+            });
+
+            // manouvers
+            var manouverIds = [];
+            $("option.manouver:selected").each(function() { manouverIds.push($(this).val()); });
+
+            // annotations
+            var phaseComments = [];
+            $("option.phaseannotation:selected").each(function() {
+                phaseComments.push({
+                    phaseId: $(this).data("phaseid"),
+                    commentId: $(this).val()
+                });
+            });
+
+            // entire flight
+            var flightData = JSON.stringify({
+                originator: "@SessionId",
+                flightId: "@Model.FlightId",
+                exercises: exercises,
+                manouverIds: manouverIds,
+                note: $("#flightnotes").val(),
+                phaseComments: phaseComments,
+                wind_direction: $("option.wind_direction:selected").val(),
+                wind_speed: $("option.wind_speed:selected").val(),
+            });
+
+            var url = $("#urls").data("saveflight");
+            // Post
+            $.ajax({
+                url: url,
+                data: flightData,
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function(d) {
+                    onSuccess();
+                },
+                error: function(a, b, c) {
+                    onFailure();
+                },
+            });
+        }
+
+        var checkboxChanged = function(chk) {
+            return chk && chk.prop("checked") != chk.hasClass("checkedatentry");
+        };
+
+
+        var showRecentFlights = function() {
+            var url = $("#urls").data("recentflights");
+            var flightId = "@Model.FlightId";
+            // Post
+            $("#recentflightscontainer").html("");
+            $.ajax({
+                url: url,
+                data: { flightId: flightId },
+                contentType: "application/json; charset=utf-8",
+                success: function(v) {
+                    $("#recentflightscontainer").html(v);
+                    $('#flightstable').DataTable({
+                        deferRender: true,
+                        scrollY: true,
+                        info: true,
+                        lengthChange: false,
+                        ordering: false,
+                        searching: false,
+                        pageLength: 5,
+                        pagingType: "full_numbers",
+                        language: { url: '@DataTableLocalizationUrl()' }
+                    });
+                },
+                error: function(a, b, c) {
+
+                },
+            });
+        }
+    </script>
+}

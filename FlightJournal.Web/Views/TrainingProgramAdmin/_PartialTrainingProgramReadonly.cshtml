@@ -1,0 +1,33 @@
+﻿@using MarkdownSharp
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+@{
+    var mkd = new Markdown();
+}
+<legend>Training program</legend>
+<table>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.ShortName)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.ShortName)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Name)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Notes)</td>
+        <td class="display-field">@Html.Raw(@mkd.Transform(Model.Notes))</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.ProgramIdForExport)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.ProgramIdForExport)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Url)</td>
+        <td class="display-field"><a href="@Model.Url">@Model.Url</a></td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Version)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Version)</td>
+    </tr>
+</table>
+

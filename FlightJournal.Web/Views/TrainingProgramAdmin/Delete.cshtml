@@ -1,0 +1,19 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+
+@{
+    ViewBag.Title = _("Delete");
+}
+
+<h2>@_("Delete")</h2>
+
+<h3>@_("Are you sure you want to delete this?")</h3>
+<fieldset>
+    @Html.Partial("_PartialTrainingProgramReadonly", Model);
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.Partial("_PartialBackToList");
+    </p>
+}

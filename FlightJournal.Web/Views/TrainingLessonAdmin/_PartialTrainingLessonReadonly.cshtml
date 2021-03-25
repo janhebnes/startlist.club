@@ -1,0 +1,34 @@
+﻿@using MarkdownSharp
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+@{
+    var mkd = new Markdown();
+}
+<legend>@_("Training exercise")</legend>
+<table>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Name)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Purpose)</td>
+        <td class="display-field">@Html.Raw(@mkd.Transform(Model.Purpose))</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Precondition)</td>
+        <td class="display-field">@Html.Raw(@mkd.Transform(Model.Precondition))</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.AcceptanceCriteria)</td>
+        <td class="display-field">@Html.Raw(@mkd.Transform(Model.AcceptanceCriteria))</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.LessonIdForExport)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.LessonIdForExport)</td>
+    </tr>
+</table>
+@{
+    int tpi = ViewBag.TrainingProgramId;
+}
+@Html.HiddenFor(x => tpi)
+@Html.HiddenFor(model => model.Training2LessonId)
+

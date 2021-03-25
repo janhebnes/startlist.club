@@ -1,0 +1,14 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Lesson
+@{
+    ViewBag.Title = "Delete";
+}
+<h3>@ViewBag.TrainingProgramName</h3>
+<h2>@_("Deletion not possible")</h2>
+<hr />
+<h3>@_("The item is in use, and therefore cannot be deleted")</h3>
+<fieldset>
+    @Html.Partial("_PartialTrainingLessonReadonly", Model)
+</fieldset>
+<p>
+    @Html.Partial("_PartialBackToList", Model)
+</p>

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Migrations;
-using System.IO;
 using System.Linq;
-using FlightJournal.Web.Migrations.FlightContext;
+using FlightJournal.Web.Models.Training.Catalogue;
+using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Models
 {
@@ -14,6 +13,7 @@ namespace FlightJournal.Web.Models
         public FlightContext() : base("FlightJournal")
         {
             Database.SetInitializer<FlightContext>(new MigrateDatabaseToLatestVersion<FlightContext, Migrations.FlightContext.Configuration>());
+            //Database.SetInitializer<FlightContext>(new DropCreateDatabaseAlways<FlightContext>()); // Note that after a Drop the MigrateDatabaseToLatestVersion needs to run for seed data to be populated
         }
 
         public DbSet<Flight> Flights { get; set; }
@@ -27,9 +27,21 @@ namespace FlightJournal.Web.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<PilotLogEntry> PilotLogEntries { get; set; }
         //public DbSet<PilotLogEntryVersionHistory> PilotLogEntryVersions { get; set; }
-        public DbSet<TrainingLessonCategory> TrainingLessonCategories { get; set; }
-        public DbSet<TrainingLesson> TrainingLessons { get; set; }
 
+        public DbSet<Training2Program> TrainingPrograms { get; set; }
+        public DbSet<Training2Lesson> TrainingLessons { get; set; }
+        public DbSet<Training2Exercise> TrainingExercises{ get; set; }
+        public DbSet<AppliedExercise> AppliedExercises { get; set; }
+        public DbSet<TrainingFlightAnnotation> TrainingFlightAnnotations { get; set; }
+
+        public DbSet<Manouvre> Manouvres { get; set; }
+        //public DbSet<ManouvreIcon> ManouvreIcons { get; set; }
+        public DbSet<WindDirection> WindDirections { get; set; }
+        public DbSet<WindSpeed> WindSpeeds { get; set; }
+        public DbSet<Commentary> Commentaries { get; set; }
+        public DbSet<CommentaryType> CommentaryTypes { get; set; }
+        public DbSet<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
+        public DbSet<Grading> Gradings { get; set; }
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
         /// </summary>
@@ -118,6 +130,50 @@ namespace FlightJournal.Web.Models
                         .HasOptional(i => i.TrainingLessonApprovedByFlightInstructor)
                         .WithMany()
                         .WillCascadeOnDelete(false);
+
+ /*           modelBuilder.Entity<Manouvre>()
+                        .HasOptional(i => i.ManouvreIcon)
+                        .WithMany()
+                        .WillCascadeOnDelete(false);*/
+
+            modelBuilder.Entity<Commentary>()
+                        .HasMany<CommentaryType>(s => s.CommentaryTypes)
+                        .WithMany(c => c.Commentaries)
+                        .Map(cs =>
+                        {
+                            cs.MapLeftKey("CommentaryRefId");
+                            cs.MapRightKey("CommentaryTypeRefId");
+                            cs.ToTable("CommentaryCommentaryTypes");
+                        });
+
+            modelBuilder.Entity<TrainingFlightAnnotation>()
+                .HasMany<Manouvre>(s => s.Manouvres)
+                .WithMany(c => c.TrainingFlightAnnotations)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("TrainingFlightAnnotationRefId");
+                    cs.MapRightKey("ManouvreRefId");
+                    cs.ToTable("TrainingFlightAnnotationsManouvres");
+                });
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasKey(k => new { k.TrainingFlightAnnotationId, k.CommentaryId, k.CommentaryTypeId });
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasRequired(i => i.TrainingFlightAnnotation)
+                .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
+                .HasForeignKey(i => i.TrainingFlightAnnotationId);
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasRequired(i => i.Commentary)
+                .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
+                .HasForeignKey(i => i.CommentaryId);
+
+            modelBuilder.Entity<TrainingFlightAnnotationCommentCommentType>()
+                .HasRequired(i => i.CommentaryType)
+                .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
+                .HasForeignKey(i => i.CommentaryTypeId);
+
         }
     }
 }

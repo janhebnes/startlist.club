@@ -1,0 +1,18 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Exercise
+
+@{
+    ViewBag.Title = _("Details");
+    int tpi = ViewBag.TrainingProgramId;
+    int tli = ViewBag.TrainingLessonId;
+}
+
+<h3>@ViewBag.TrainingProgramName - @ViewBag.TrainingLeassonName</h3>
+<h2>@_("Details")</h2>
+
+<fieldset>
+    @Html.Partial("_PartialTrainingExerciseReadonly", Model)
+</fieldset>
+<p>
+    @Html.ActionLink(_("Edit"), "Edit", new {trainingProgramId=tpi,  trainingLessonId = tli, id = Model.Training2ExerciseId}, new { @class = "btn btn-default" })
+    @Html.Partial("_PartialBackToList", Model)
+</p>

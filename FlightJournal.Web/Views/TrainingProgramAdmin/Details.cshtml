@@ -1,0 +1,17 @@
+﻿@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+
+@{
+    ViewBag.Title = _("Details");
+}
+
+<h2>@_("Details")</h2>
+
+<fieldset>
+    @Html.Partial("_PartialTrainingProgramReadonly", Model)
+</fieldset>
+<p>
+    @Html.ActionLink(_("Edit"), "Edit", new { id = Model.Training2ProgramId }, new { @class = "btn btn-default" })
+    @Html.ActionLink(_("Export"), "Export", new { id = Model.Training2ProgramId }, new { @class = "btn btn-default" })
+    @Html.ActionLink(_("Exercises"), "Index", "TrainingLessonAdmin", new { trainingProgramId = Model.Training2ProgramId }, new { @class = "btn btn-default" }) 
+    @Html.Partial("_PartialBackToList")
+</p>

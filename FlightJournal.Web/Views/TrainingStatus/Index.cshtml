@@ -1,0 +1,58 @@
+﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
+@using FlightJournal.Web.Models.Training.Flight
+@using FlightJournal.Web.Views
+@model IEnumerable<FlightJournal.Web.Controllers.TrainingProgramStatus>
+
+@{
+    ViewBag.Title = _("Training status");
+}
+<h2>@_("Training status")</h2>
+
+
+@if (Model.Any())
+{
+
+    <table class="table table-striped table-hover table-condensed" id="flightstable">
+        <thead>
+        <tr>
+            <th>@_("Pilot")</th>
+            <th>@_("Program")</th>
+            <th>@_("Last Flight")</th>
+            <th>@_("Hours in last 60 days")</th>
+            <th>@_("Flights in last 60 days")</th>
+            <th>@_("Status")</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var f in Model)
+        {
+            <tr class="clickable" onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>
+                <td>@f.PilotName</td>
+                <td>@f.ProgramName</td>
+                <td>@f.LastFlight</td>
+                <td>@f.HoursInLast60Days</td>
+                <td>@f.FlightsInLast60Days</td>
+                <td>
+                    @foreach (var x in f.LessonsWithStatus)
+                    {
+                        var clz = CssHelper.CssClassFor(x.Status);
+                        var regressionMarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
+                        if (x.Status == TrainingStatus.NotStarted)
+                        {
+                            <label class="bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
+                        }
+                        else
+                        {
+                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId, lessonId = x.LessonId})>
+                                <label class="clickable bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
+                            </a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+

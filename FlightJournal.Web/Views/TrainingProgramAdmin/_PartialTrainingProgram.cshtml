@@ -1,0 +1,67 @@
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Catalogue.Training2Program
+
+<legend>@_("Training program")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ShortName)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ShortName)
+    @Html.ValidationMessageFor(model => model.ShortName)
+    <small>e.g., SPL-S</small>
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+    <small>e.g., Sailplane Pilot License - S</small>
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Notes)
+</div>
+<div class="editor-field" title="@__("HTML and MarkDown accepted")">
+    @Html.TextAreaFor(model => model.Notes, new { cols = 80, rows = 5 })
+    @Html.ValidationMessageFor(model => model.Notes)
+</div>
+
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ProgramIdForExport)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ProgramIdForExport)
+    @Html.ValidationMessageFor(model => model.ProgramIdForExport)
+</div>
+
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Url)
+</div>
+<div class="editor-field">
+    @Html.TextAreaFor(model => model.Url, new { cols = 80, rows = 1 })
+    @Html.ValidationMessageFor(model => model.Url)
+    <small>reference to the official definition for this training program</small>
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Version)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Version)
+    @Html.ValidationMessageFor(model => model.Version)
+    <small>the current version of the definition for this training program implemented here</small>
+</div>
+
+
+@Html.HiddenFor(model => model.Training2ProgramId)
+
+

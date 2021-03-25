@@ -1,0 +1,36 @@
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.Training.Predefined.CommentaryType
+
+<legend>@_("Comment")</legend>
+
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.CType)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.CType)
+    @Html.ValidationMessageFor(model => model.CType)
+</div>
+
+<tr>
+    <td class="editor-label">
+        @Html.LabelFor(model => model.CommentaryTypeIdForExport)
+    </td>
+    <td class="editor-field">
+        @Html.EditorFor(model => model.CommentaryTypeIdForExport)
+        @Html.ValidationMessageFor(model => model.CommentaryTypeIdForExport)
+    </td>
+</tr>
+
+
+
+
+@Html.HiddenFor(model => model.CommentaryTypeId)
+
+
+

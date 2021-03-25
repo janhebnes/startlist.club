@@ -1,71 +1,25 @@
 using System.Collections.Generic;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Training.Catalogue;
+using FlightJournal.Web.Models.Training.Predefined;
+using System;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.IO;
+using System.Linq;
+using System.Web;
+using FlightJournal.Web.Models.Training.Flight;
+using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Migrations.FlightContext
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<FlightJournal.Web.Models.FlightContext>
+    internal sealed partial class Configuration : DbMigrationsConfiguration<FlightJournal.Web.Models.FlightContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false; 
-            AutomaticMigrationDataLossAllowed = false;
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             MigrationsDirectory = @"Migrations\FlightContext";
-        }
-
-        protected override void Seed(FlightJournal.Web.Models.FlightContext context)
-        {
-            //  This method will be called after migrating to the latest version.
-            
-            if (!context.TrainingLessonCategories.Any()
-                && !context.TrainingLessons.Any())
-            {
-                InitializeTrainingLessons(context);
-            }
-
-            //  Only seed if the database is empty
-            if (!context.StartTypes.Any() 
-                && (!context.Clubs.Any())
-                && (!context.Pilots.Any())
-                && (!context.Planes.Any()))
-            {
-                InitializeDemoFlights(context);
-            }
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-        }
-
-        private void InitializeTrainingLessons(Models.FlightContext context)
-        {
-            context.TrainingLessonCategories.AddOrUpdate(
-              new TrainingLessonCategory { TrainingLessonCategoryId = 1, TrainingLessonCategoryName = "A-normer (SPL)", Enabled = true },
-              new TrainingLessonCategory { TrainingLessonCategoryId = 2, TrainingLessonCategoryName = "B-normer (SPL)", Enabled = true },
-              new TrainingLessonCategory { TrainingLessonCategoryId = 3, TrainingLessonCategoryName = "Typeomskoling", Enabled = true },
-              new TrainingLessonCategory { TrainingLessonCategoryId = 4, TrainingLessonCategoryName = "Startmetode", Enabled = true }
-            );
-
-            int sortOrder = 1;
-            context.TrainingLessons.AddOrUpdate(
-                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-0 (1)", Description = "Grundlæggende kenskab til svæveflyet", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
-                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-0 (2)", Description = "Flyvesikkerhed", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
-                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-0 (-)", Description = "Safety Management System - DSvU", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
-                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-1 (3)", Description = "Tilvænningsflyvning forberedelse", SortOrder = sortOrder++, Enabled = true, RequiresFlight = false, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
-                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-1 (4)", Description = "Tilvænningsflyvning", SortOrder = sortOrder++, Enabled = true, RequiresFlight = true, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 },
-                new TrainingLesson { TrainingLessonId = sortOrder++, Identifier = "A-2 (5)", Description = "Grundlæggende kenskab til svæveflyet", SortOrder = sortOrder++, Enabled = true, RequiresFlight = true, RequiresFlightInstructorApproval = true, TrainingLessonCategoryId = 1 }
-                );
         }
 
         internal static void InitializeDemoFlights(Models.FlightContext context)
@@ -80,7 +34,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             // Locations
             var location = new Location { Name = "Kongsted", Country = "DK", ICAO = "EKKL" };
             context.Locations.Add(location);
-            var location2 = new Location { Name = "True", Country = "DK"};
+            var location2 = new Location { Name = "True", Country = "DK" };
             context.Locations.Add(location2);
             var location3 = new Location { Name = "Slaglille", Country = "DK", ICAO = "EKSL" };
             context.Locations.Add(location3);
@@ -88,16 +42,16 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Locations.Add(location4);
             var location5 = new Location { Name = "Martin", Country = "SK", ICAO = "LZMA" };
             context.Locations.Add(location5);
-            
+
             context.Locations.Add(new Location() { Name = "Arnborg", Country = "DK", ICAO = "EK51" });
             context.SaveChanges();
 
             // Clubs
-            var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = location, Website = "http://flyveklubben.dk"};
+            var club = new Club() { ClubId = 38, ShortName = "ØSF", Name = "Øst-Sjællands Flyveklub", Location = location, Website = "http://flyveklubben.dk", Visible = true };
             context.Clubs.Add(club);
             var club2 = new Club() { ClubId = 99, ShortName = "AASVK", Name = "Århus Svæveflyveklub", Location = location2, Website = "http://www.aasvk.dk" };
             context.Clubs.Add(club2);
-            var club3 = new Club() { ClubId = 199, ShortName = "MSF", Name = "Midtsjællands Svæveflyveklub", Location = location3, Website = "http://slaglille.dk" };
+            var club3 = new Club() { ClubId = 199, ShortName = "MSF", Name = "Midtsjællands Svæveflyveklub", Location = location3, Website = "http://slaglille.dk", Visible = true};
             context.Clubs.Add(club3);
             var club4 = new Club() { ClubId = 210, ShortName = "TØL", Name = "Tølløse Flyveklub", Location = location4, Website = "http://www.cumulus.dk/" };
             context.Clubs.Add(club4);
@@ -146,7 +100,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Pilots.Add(pilot1);
             var pilot2 = new Pilot { Name = "Mr Demo Editor", MemberId = "9992", Club = club, MobilNumber = "+4500000002" };
             context.Pilots.Add(pilot2);
-            var pilot3 = new Pilot {Name = "Mr Demo Pilot", MemberId = "9993", Club = club, MobilNumber = "+4500000003"};
+            var pilot3 = new Pilot { Name = "Mr Demo Pilot", MemberId = "9993", Club = club, MobilNumber = "+4500000003" };
             context.Pilots.Add(pilot3);
             var pilot1B = new Pilot { Name = "Mr Demo OtherClub Manager", MemberId = "9995", Club = club3, MobilNumber = "+4500000005" };
             context.Pilots.Add(pilot1B);
@@ -155,7 +109,6 @@ namespace FlightJournal.Web.Migrations.FlightContext
             var pilot3B = new Pilot { Name = "Mr Demo OtherClub Pilot", MemberId = "9997", Club = club3, MobilNumber = "+4500000007" };
             context.Pilots.Add(pilot3B);
 
-
             context.SaveChanges();
 
             GenerateFlights(pl1, pl2, location, pilot, start)
@@ -163,24 +116,157 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             GenerateFlights(pl1, pl2, location, pilot2, start)
                 .ForEach(b => context.Flights.Add(b));
-            
+
             GenerateFlights(pl1, pl2, location, pilot3, start)
                 .ForEach(b => context.Flights.Add(b));
-
 
             GenerateFlights(pl1, pl2, location3, pilot2B, start)
                 .ForEach(b => context.Flights.Add(b));
 
             GenerateFlights(pl1, pl2, location3, pilot3B, start)
                 .ForEach(b => context.Flights.Add(b));
-            
+
+            GenerateFlights(pl1, pl2, location5, pilot3B, start)
+                .ForEach(b => context.Flights.Add(b));
+
             GenerateFlights(pl1, pl2, location5, pilot3B, start)
                 .ForEach(b => context.Flights.Add(b));
 
             context.SaveChanges();
 
+            // Flight Training 
+
+            var pilotStudent = new Pilot { Name = "Mr Demo Student Pilot", MemberId = "9998", Club = club, MobilNumber = "+4500000008" };
+            context.Pilots.Add(pilotStudent);
+            var pilotInstructor = new Pilot { Name = "Mr Demo Instructor Pilot", MemberId = "9999", Club = club, MobilNumber = "+4500000009", InstructorId = "Maverick-FI007" };
+            context.Pilots.Add(pilotInstructor);
+
+            context.SaveChanges();
+
+            for(DateTime when = DateTime.Now.AddDays(-90); when <= DateTime.Now; when = when.AddDays(1))
+               FlightTraining.GenerateTrainingFlights(when, pl2, location, pilotStudent, pilotInstructor, start, context);
         }
 
+        protected override void Seed(FlightJournal.Web.Models.FlightContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            var dropCreateTrainingPrograms = false;
+            if (dropCreateTrainingPrograms || !context.TrainingPrograms.Any())
+            {
+                context.TrainingPrograms.RemoveRange(context.TrainingPrograms);
+                context.TrainingLessons.RemoveRange(context.TrainingLessons);
+                context.TrainingExercises.RemoveRange(context.TrainingExercises);
+                context.SaveChanges();
+
+                //FlightTraining.InitializeTrainingPrograms(context);
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, spilstart, UHB922 01012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, flyslæb, UHB922 01012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, selvstart, UHB922 01012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/SPL-certifikat, TMG, UHB923 30012021.json"));
+                FlightTraining.InitializeTrainingProgramsFromFileSystem(context, HttpContext.Current.Server.MapPath("~/DevData/TMG-rettighed.json"));
+            }
+
+            if (dropCreateTrainingPrograms || !context.Manouvres.Any())
+            {
+                context.Manouvres.RemoveRange(context.Manouvres);
+                FlightTraining.InitializeManouvres(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.WindSpeeds.Any())
+            {
+                context.WindSpeeds.RemoveRange(context.WindSpeeds);
+                FlightTraining.InitializeWindSpeeds(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.WindDirections.Any())
+            {
+                context.WindDirections.RemoveRange(context.WindDirections);
+                FlightTraining.InitializeWindDirections(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.Commentaries.Any())
+            {
+                context.Commentaries.RemoveRange(context.Commentaries);
+                context.CommentaryTypes.RemoveRange(context.CommentaryTypes);
+                FlightTraining.InitializeCommentaries(context);
+            }
+
+            if (dropCreateTrainingPrograms || !context.Gradings.Any())
+            {
+                context.Gradings.RemoveRange(context.Gradings);
+                FlightTraining.InitializeGradings(context);
+            }
+
+            //  Only seed if the database is empty
+            if (!context.StartTypes.Any()
+                && (!context.Clubs.Any())
+                && (!context.Pilots.Any())
+                && (!context.Planes.Any()))
+            {
+                InitializeDemoFlights(context);
+            }
+
+
+            /// This is a temp hack to migrate from the old brief/trained/ok to Gradings (to let testers work with existing data)
+            /// Can be removed before deployment to production.
+
+            //var notMigratedAppliedExercises = context.AppliedExercises.Where(x => x.Grading == null).ToList();
+            //if (notMigratedAppliedExercises.Any())
+            //{
+            //    var gradings = context.Gradings.ToList();
+
+            //    var briefedGrading = gradings.FirstOrDefault(x => x.AppliesToBriefingOnlyPartialExercises && x.IsOk);
+            //    var grading1 = gradings.Where(x => x.AppliesToPracticalPartialExercises && !x.IsOk).OrderBy(x => x.Value).FirstOrDefault();
+            //    var grading2 = gradings.Where(x => x.AppliesToPracticalPartialExercises && !x.IsOk).OrderBy(x => x.Value).Skip(1).FirstOrDefault();
+            //    var gradingOk = gradings.Where(x => x.AppliesToPracticalPartialExercises && x.IsOk).OrderBy(x => x.Value).LastOrDefault();
+
+            //    foreach (var ae in notMigratedAppliedExercises)
+            //    {
+            //        switch (ae.Action)
+            //        {
+            //            case ExerciseAction.None:
+            //                ae.Grading = null;
+            //                break;
+            //            case ExerciseAction.Briefed when ae.Exercise.IsBriefingOnly:
+            //                ae.Grading = briefedGrading;
+            //                break;
+            //            case ExerciseAction.Briefed:
+            //                ae.Grading = grading1;
+            //                break;
+            //            case ExerciseAction.Trained:
+            //                ae.Grading = grading2;
+            //                break;
+            //            case ExerciseAction.Completed:
+            //                ae.Grading = gradingOk;
+            //                break;
+            //        }
+
+            //        try
+            //        {
+            //            if (context.Entry(ae).State != EntityState.Deleted)
+            //                context.Entry(ae).State = EntityState.Modified;
+            //            context.SaveChanges();
+            //        }
+            //        catch (Exception ex)
+            //        {
+
+            //        }
+            //    }
+            //}
+
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
+        }
         private static List<Flight> GenerateFlights(Plane pl1, Plane pl2, Location location, Pilot pilot, StartType start)
         {
             var s = new List<Flight>

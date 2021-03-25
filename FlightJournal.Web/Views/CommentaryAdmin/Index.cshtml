@@ -1,0 +1,71 @@
+﻿@using FlightJournal.Web.Extensions
+@model IEnumerable<FlightJournal.Web.Models.Training.Predefined.Commentary>
+
+@{
+    ViewBag.Title = _("Comments");
+}
+
+<h2>@_("Flight phase comments")</h2>
+<hr/>
+<p>
+    @Html.ActionLink(_("Create"), "Create", null, new { @class = "btn btn-primary"})
+    @Html.ActionLink(_("Comments in flight phases"), "CommentsInFlightPhases", null, new { @class = "btn btn-default"})
+</p>
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsOk)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentaryIdForExport)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @{
+        var ordered = Model.OrderBy(x => x.DisplayOrder).ToList();
+        for (var n = 0; n < ordered.Count; n++)
+        {
+            var item = ordered[n];
+            <tr>
+                <td>
+                    @Html.Raw(item.Comment)
+                </td>
+                <td>
+                    @Html.Raw(item.IsOk)
+                </td>
+                <td>@item.CommentaryIdForExport</td>
+
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @Html.ActionLink(_("Edit"), "Edit", new {id = item.CommentaryId}, new {@class = "btn btn-default"})
+                        @if (ViewBag.CanDelete[item.CommentaryId])
+                        {
+                            @Html.ActionLink(_("Delete"), "Delete", new {id = item.CommentaryId}, new {@class = "btn btn-default"})
+                        }
+                        else
+                        {
+                            @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @if (n > 0)
+                        {
+                            <a href="@Url.Action("SwapOrder", new {itemId1 = ordered[n].CommentaryId, itemId2 = ordered[n - 1].CommentaryId})" class="btn btn-default"><i class='fa fa-sort-up'></i></a>
+                        }
+                        @if (n < ordered.Count - 1)
+                        {
+                            <a href="@Url.Action("SwapOrder", new {itemId1 = ordered[n].CommentaryId, itemId2 = ordered[n + 1].CommentaryId})" class="btn btn-default"><i class='fa fa-sort-down'></i></a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+</table>
