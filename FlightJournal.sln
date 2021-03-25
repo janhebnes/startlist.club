@@ -19,6 +19,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A7DA5A
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C532EC9D-8C02-4A76-B06B-EFE8793CBC53}"
+	ProjectSection(SolutionItems) = preProject
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
+		.github\README.md = .github\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{0EDC719A-FF1A-4FAB-B7AD-BB4F46BD3223}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\demo_startlist.yml = .github\workflows\demo_startlist.yml
+		.github\workflows\dev_startlist.yml = .github\workflows\dev_startlist.yml
+		.github\workflows\production_startlist.yml = .github\workflows\production_startlist.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +56,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0EDC719A-FF1A-4FAB-B7AD-BB4F46BD3223} = {C532EC9D-8C02-4A76-B06B-EFE8793CBC53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFB5A3DF-D427-439E-AB78-F3B39148939F}
