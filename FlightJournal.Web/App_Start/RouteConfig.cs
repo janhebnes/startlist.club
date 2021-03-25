@@ -7,10 +7,11 @@ using FlightJournal.Web.Validators;
 
 namespace FlightJournal.Web{
     public class RouteConfig {
-        public static void RegisterRoutes(RouteCollection routes) {
+        public static void RegisterRoutes(RouteCollection routes, bool unittest = false) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapMvcAttributeRoutes();
+            if (!unittest)
+                routes.MapMvcAttributeRoutes();
 
             //// Custom club Urls
             //routes.MapRoute(
