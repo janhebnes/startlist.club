@@ -154,12 +154,15 @@ namespace FlightJournal.Web.Controllers
         private IEnumerable<Flight> SelectFlights(DateTime fromDate, DateTime toDate)
         {
             IEnumerable<Flight> flights;
-            var flightIds = db.AppliedExercises.Select(x => x.FlightId).Union(db.TrainingFlightAnnotations.Select(y => y.FlightId)).Distinct().ToList();
+            var trainingFlightIds = db.AppliedExercises
+                .Where(x=>x.Grading != null)
+                .Select(x => x.FlightId)
+                .Distinct().ToList();
 
             switch (UsersAccessScope())
             {
                 case AccessScope.AllFlights:
-                    flights = db.Flights.Where(x => x.Date >= fromDate && x.Date <= toDate && flightIds.Contains(x.FlightId));
+                    flights = db.Flights.Where(x => x.Date >= fromDate && x.Date <= toDate && trainingFlightIds.Contains(x.FlightId));
                     if (ClubController.CurrentClub.ShortName != null)
                     {
                         flights = flights.Where(f =>
@@ -172,7 +175,7 @@ namespace FlightJournal.Web.Controllers
                     break;
                 case AccessScope.OwnFlights:
                     var pilotId = Request.Pilot().PilotId;
-                    flights = db.Flights.Where(x => x.Date >= fromDate && x.Date <= toDate && flightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
+                    flights = db.Flights.Where(x => x.Date >= fromDate && x.Date <= toDate && trainingFlightIds.Contains(x.FlightId) && (x.PilotId == pilotId || x.PilotBackseatId == pilotId));
                     break;
                 default:
                     flights = Enumerable.Empty<Flight>();
