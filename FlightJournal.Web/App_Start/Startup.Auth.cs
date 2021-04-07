@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 using FlightJournal.Web.Configuration;
+using Microsoft.Owin.Security.MicrosoftAccount;
 
 
 namespace FlightJournal.Web {
@@ -49,6 +50,7 @@ namespace FlightJournal.Web {
             //// https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on
             //// https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/facebook-logins?view=aspnetcore-5.0
             //// https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-5.0
+            //// https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/microsoft-logins?view=aspnetcore-5.0
             /// 
             if (!string.IsNullOrWhiteSpace(Settings.FacebookAppId) 
                 && !string.IsNullOrWhiteSpace(Settings.FacebookAppSecret)) 
@@ -59,12 +61,6 @@ namespace FlightJournal.Web {
             }
 
             
-
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
             //app.UseTwitterAuthentication(
             //   consumerKey: "dKwmoLMH1zkqnvMblCMcQ",
             //   consumerSecret: "G71eTw0Cm1s0ygVQygPQrw7ckSCR4WfbBWxGWqfiO4");
@@ -94,6 +90,18 @@ namespace FlightJournal.Web {
                     clientId: Settings.GoogleClientId,
                     clientSecret: Settings.GoogleClientSecret);
             }
+
+            if (!string.IsNullOrWhiteSpace(Settings.MicrosoftClientId)
+                && !string.IsNullOrWhiteSpace(Settings.MicrosoftClientSecret))
+            {
+                var options = new MicrosoftAccountAuthenticationOptions
+                {
+                    ClientId = Settings.MicrosoftClientId,
+                    ClientSecret = Settings.MicrosoftClientSecret
+                };
+                app.UseMicrosoftAccountAuthentication(options);
+            }
+
             // var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
             // var pictureClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type.Equals("picture"));
             // var pictureUrl = pictureClaim.Value;

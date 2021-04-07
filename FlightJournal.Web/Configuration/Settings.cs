@@ -64,6 +64,30 @@ namespace FlightJournal.Web.Configuration
                 return ServiceCredentials.GoogleClientSecret;
             }
         }
+
+        public static string MicrosoftClientId
+        {
+            get
+            {
+                // Azure Configured Environment AppSettings or fallback to the App_Data folder 
+                if (ConfigurationManager.AppSettings["MicrosoftClientId"] != null)
+                    return ConfigurationManager.AppSettings["MicrosoftClientId"];
+
+                return ServiceCredentials.MicrosoftClientId;
+            }
+        }
+        public static string MicrosoftClientSecret
+        {
+            get
+            {
+                // Azure Configured Environment AppSettings or fallback to the App_Data folder 
+                if (ConfigurationManager.AppSettings["MicrosoftClientSecret"] != null)
+                    return ConfigurationManager.AppSettings["MicrosoftClientSecret"];
+
+                return ServiceCredentials.MicrosoftClientSecret;
+            }
+        }
+
         public static string TwilioAccountSid
         {
             get
