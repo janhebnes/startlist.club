@@ -46,6 +46,10 @@ namespace FlightJournal.Web {
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
+            //// https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on
+            //// https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/facebook-logins?view=aspnetcore-5.0
+            //// https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/google-logins?view=aspnetcore-5.0
+            /// 
             if (!string.IsNullOrWhiteSpace(Settings.FacebookAppId) 
                 && !string.IsNullOrWhiteSpace(Settings.FacebookAppSecret)) 
             {
@@ -53,7 +57,9 @@ namespace FlightJournal.Web {
                    appId: Settings.FacebookAppId,
                    appSecret: Settings.FacebookAppSecret);
             }
+
             
+
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
             //    clientId: "",
@@ -63,6 +69,7 @@ namespace FlightJournal.Web {
             //   consumerKey: "dKwmoLMH1zkqnvMblCMcQ",
             //   consumerSecret: "G71eTw0Cm1s0ygVQygPQrw7ckSCR4WfbBWxGWqfiO4");
 
+            
             if (!string.IsNullOrWhiteSpace(Settings.GoogleClientId) 
                 && !string.IsNullOrWhiteSpace(Settings.GoogleClientSecret))
             {
