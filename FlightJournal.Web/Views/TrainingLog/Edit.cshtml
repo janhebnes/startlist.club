@@ -292,10 +292,10 @@
 
 @foreach (var lesson in Model.TrainingProgram.Lessons)
 {
-    <div class="lessondescription" id="@lesson.Id" data-header="@lesson.ShortName" data-description="@Html.Raw(mkd.Transform(lesson.Description))" data-precondition="@Html.Raw(mkd.Transform(lesson.Precondition))"></div>
+    <div class="lessondescription" id="EX_@lesson.Id" data-header="@lesson.ShortName" data-description="@Html.Raw(mkd.Transform(lesson.Description))" data-precondition="@Html.Raw(mkd.Transform(lesson.Precondition))"></div>
     foreach (var exercise in lesson.Exercises)
     {
-        <div class="exercisedescription" id="@exercise.Id" data-header="@exercise.Description" data-description="@Html.Raw(mkd.Transform(exercise.LongDescription))"></div>
+        <div class="exercisedescription" id="PEX_@exercise.Id" data-header="@exercise.Description" data-description="@Html.Raw(mkd.Transform(exercise.LongDescription))"></div>
     }
 }
 
@@ -327,10 +327,10 @@
             $(".lessonsoverviewtable").hide();
 
             $(".exercisedetails").click(function() {
-                showInfoFromId($(this).data("exerciseid"));
+                showInfoFromId("PEX_"+$(this).data("exerciseid"));
             });
             $(".lessondetails").click(function() {
-                showInfoFromId($(this).data("lessonid"));
+                showInfoFromId("EX_" +$(this).data("lessonid"));
             });
 
             $("#showrecentflights").click(function() {
