@@ -31,7 +31,7 @@
             <tr>
                 <td><i class="@item.IconCssClass"></i>@Html.Raw(item.ManouvreItem)</td>
                 <td>@Html.Raw(item.Description)</td>
-                <td>item.ManouvreIdForExport</td>
+                <td>@item.ManouvreIdForExport</td>
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink(_("Edit"), "Edit", new {id = item.ManouvreId}, new {@class = "btn btn-default"})
