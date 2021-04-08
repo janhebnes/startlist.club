@@ -15,6 +15,10 @@
         <th>
             @Html.DisplayNameFor(model => model.CType)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentaryTypeIdForExport)
+        </th>
+
         <th></th>
         <th></th>
     </tr>
@@ -28,6 +32,8 @@
                 <td>
                     @item.CType
                 </td>
+                <td>@item.CommentaryTypeIdForExport</td>
+
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink(_("Edit"), "Edit", new {id = item.CommentaryTypeId}, new {@class = "btn btn-default"})

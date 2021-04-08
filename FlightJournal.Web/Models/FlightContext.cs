@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Migrations;
-using System.IO;
 using System.Linq;
-using FlightJournal.Web.Migrations.FlightContext;
-using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
@@ -18,6 +13,7 @@ namespace FlightJournal.Web.Models
         public FlightContext() : base("FlightJournal")
         {
             Database.SetInitializer<FlightContext>(new MigrateDatabaseToLatestVersion<FlightContext, Migrations.FlightContext.Configuration>());
+            //Database.SetInitializer<FlightContext>(new DropCreateDatabaseAlways<FlightContext>()); // Note that after a Drop the MigrateDatabaseToLatestVersion needs to run for seed data to be populated
         }
 
         public DbSet<Flight> Flights { get; set; }

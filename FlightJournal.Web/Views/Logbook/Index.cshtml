@@ -38,14 +38,14 @@
     <thead>
         <tr>
             <th>
-                Forsæde/Bagsæde
+                @_("Pilot")/@_("Co-Pilot")
             </th>
             <th></th>
             <th>
-                Antal
+                @_("Count")
             </th>
             <th>
-                Flyvetid
+                @_("Duration")
             </th>
             <th colspan="2">
                 Jan
@@ -120,7 +120,7 @@
         {
             <tr>
                 <td>
-                    @item.Pilot.Name (bagsæde)
+                    @item.Pilot.Name (@_("Co-Pilot"))
                 </td>
                 <td>@item.StartType.LocalizedShortName</td>
                 <td align="right">
@@ -150,17 +150,17 @@
             <thead>
                 <tr>
                     <th>
-                        Fly
+                        @_("Plane")
                     </th>
                     <th>
-                        Forsæde
+                        @_("Pilot")
                     </th>
                     <th></th>
                     <th>
-                        Antal
+                        @_("Count")
                     </th>
                     <th>
-                        Flyvetid
+                        @_("Duration")
                     </th>
                 </tr>
             </thead>
@@ -196,17 +196,17 @@
             <thead>
                 <tr>
                     <th>
-                        Fly
+                        @_("Plane")
                     </th>
                     <th>
-                        Bagsæde
+                        @_("Co-Pilot")
                     </th>
                     <th></th>
                     <th>
-                        Antal
+                        @_("Count")
                     </th>
                     <th>
-                        Flyvetid
+                        @_("Duration")
                     </th>
                 </tr>
             </thead>
@@ -243,30 +243,45 @@
 <h2>
     @_("Startlist") <small>@Model.Pilot.Name</small>
 </h2>
+@{
+bool enableLogStartTypeColumn = flightsDataset.Select(s => s.StartType).Distinct().Count() > 1;
+bool enableLogTachoColumn = flightsDataset.ToList().Sum(s => s.Tacho) > 0;
+bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCount != 1);
+}
+
 <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
     <thead>
         <tr>
             <th>
-                Dato
+                @_("Date")
             </th>
             <th>
-                Fly
+                @_("Plane")
             </th>
             <th>
-                Pilote(r)
+                @_("Pilot(s)")
             </th>
             <th></th>
             <th>
-                Flyvetid
+                @_("Duration")
             </th>
+            @if (enableLandingCountColumn)
+            {
+            <th>
+                @_("Landing Count")
+            </th>
+            }
             <th class="hidden-sm">
-                Flyveplads
+                @_("Airfield")
             </th>
+            @if (enableLogTachoColumn)
+            {
             <th class="hidden-sm">
-                Tacho
+                @_("Tacho")
             </th>
+            }
             <th class="hidden-xs">
-                Note
+                @_("Description")
             </th>
             <th>
             </th>
@@ -291,13 +306,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item, "Duration")
                 </td>
+                @if (enableLandingCountColumn)
+                {
+                <td>
+                    @Html.DisplayFor(modelItem => item, "LandingCount")
+                </td>
+                }
                 <td class="hidden-sm">
                     @Html.DisplayFor(modelItem => item, "StartedFrom")
                     @Html.DisplayFor(modelItem => item, "LandedOn")
                 </td>
+                @if (enableLogTachoColumn)
+                {
                 <td class="hidden-sm text-right">
                     @Html.DisplayFor(modelItem => item, "Tacho")
                 </td>
+                }
                 <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")
                 </td>
@@ -312,14 +336,18 @@
 
 @section head
 {
-    @if (Demo.IsDemoEnvironment())
+    @if (Demo.IsLocalDevEnvironment())
     {
-        <script src="~/Scripts/vue.js"></script>
+        if (Demo.IsDemoEnvironment())
+        {
+            <script src="~/Scripts/vue.js"></script>
+        }
+        else
+        {
+            <script src="~/Scripts/vue.min.js"></script>
+        }
     }
-    else
-    {
-        <script src="~/Scripts/vue.min.js"></script>
-    }
+
     <style>
         [v-cloak] {
             display: none;
@@ -335,7 +363,7 @@
         });
     </script>
 
-    @if (Demo.IsDemoEnvironment())
+    @if (Demo.IsLocalDevEnvironment() && Demo.IsDemoEnvironment())
     {
         <script type="text/javascript">
             var app = new Vue({
@@ -550,7 +578,7 @@
     }
 }
 
-@if (Demo.IsDemoEnvironment())
+@if (Demo.IsLocalDevEnvironment() && Demo.IsDemoEnvironment())
 {
     <hr />
     <h1>Vue framework workshop</h1>

@@ -15,18 +15,16 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
+        <th>Id for export</th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
 <tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.ShortName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
+    <td>@Html.DisplayFor(modelItem => item.ShortName)</td>
+    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+    <td>@Html.DisplayFor(modelItem => item.ProgramIdForExport)</td>
     <td>
         <div class="btn-group btn-group-sm">
             @Html.ActionLink(_("Edit"), "Edit", new { id = item.Training2ProgramId }, new { @class = "btn btn-default" })

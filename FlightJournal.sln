@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightJournal.Tests", "Flig
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3246F77-2693-464E-A405-6B0C4F8E884F}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
 		Readme.md = Readme.md
 		Translation.cmd = Translation.cmd
 	EndProjectSection
@@ -16,6 +17,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A7DA5AEF-484D-48EF-AAA4-861A37185E0B}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C532EC9D-8C02-4A76-B06B-EFE8793CBC53}"
+	ProjectSection(SolutionItems) = preProject
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
+		.github\README.md = .github\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{0EDC719A-FF1A-4FAB-B7AD-BB4F46BD3223}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\demo_startlist.yml = .github\workflows\demo_startlist.yml
+		.github\workflows\dev_startlist.yml = .github\workflows\dev_startlist.yml
+		.github\workflows\production_startlist.yml = .github\workflows\production_startlist.yml
 	EndProjectSection
 EndProject
 Global
@@ -42,6 +56,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0EDC719A-FF1A-4FAB-B7AD-BB4F46BD3223} = {C532EC9D-8C02-4A76-B06B-EFE8793CBC53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFB5A3DF-D427-439E-AB78-F3B39148939F}

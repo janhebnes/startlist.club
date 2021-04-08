@@ -34,6 +34,7 @@ namespace FlightJournal.Web.Controllers
                     {
                         var rptYear = new ReportViewModel();
                         rptYear.Date = new DateTime(year, 1, 1);
+                        rptYear.FormattedDate = rptYear.Date.ToString("yyyy");
 
                         // Custom inline Club filtering for allowing maximum performance
                         // A copy of the logic in Flight.IsCurrent(Flight arg) 
@@ -62,6 +63,7 @@ namespace FlightJournal.Web.Controllers
                 if (date.HasValue)
                 {
                     rptMonth.Date = date.Value;
+                    rptMonth.FormattedDate = rptMonth.Date.ToString("MMMM yyyy");
                 }
                 else
                 {
@@ -102,6 +104,8 @@ namespace FlightJournal.Web.Controllers
             {
                 rpt.Date = DateTime.Today;
             }
+
+            rpt.FormattedDate = rpt.Date.ToShortDateString();
 
             // Custom inline Club filtering for allowing maximum performance
             // A copy of the logic in Flight.IsCurrent(Flight arg) 

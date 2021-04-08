@@ -137,7 +137,7 @@
             <div class="row" style="margin-top: 30px">
                 <div class="col-md-6">
                     <div class="btn-group btn-group-lg">
-                        <input type="submit" value="@_("Create")" class="btn btn-primary" onclick="gridStaleData()" />
+                        <input type="submit" value="@_("Create")" class="btn btn-primary" />
                         <a href="javascript:window.history.back();" class="btn btn-default">@_("Back")</a>
                     </div>
                 </div>
@@ -155,16 +155,9 @@
 
 @section scripts
 {
-    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
-    <script src="~/signalr/hubs"></script>
     @Scripts.Render("~/bundles/jqueryval")
 
 <script type="text/javascript">
-    var notifier = $.connection.gridHub;
-
-    window.gridStaleData = function () {
-        notifier.server.newFlight();
-    }
         function resetJsCss() {
             $(".custom-combobox-input").css("border", "3px solid #888");
             $(".custom-combobox-toggle").css("border", "3px solid #888");
@@ -188,10 +181,6 @@
             $("#LandedOnId").combobox();
 
             resetJsCss();
-
-            $.connection.hub.start(function () {
-                console.log("connected");
-            });
 
             $(".custom-combobox-input").first().focus();
 

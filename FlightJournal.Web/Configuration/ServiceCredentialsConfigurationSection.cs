@@ -34,6 +34,20 @@ namespace FlightJournal.Web.Configuration
             set { this["GoogleClientSecret"] = value; }
         }
 
+        [ConfigurationProperty("MicrosoftClientId", DefaultValue = "")]
+        public string MicrosoftClientId
+        {
+            get { return (string)this["MicrosoftClientId"]; }
+            set { this["MicrosoftClientId"] = value; }
+        }
+
+        [ConfigurationProperty("MicrosoftClientSecret", DefaultValue = "")]
+        public string MicrosoftClientSecret
+        {
+            get { return (string)this["MicrosoftClientSecret"]; }
+            set { this["MicrosoftClientSecret"] = value; }
+        }
+
         [ConfigurationProperty("TwilioAccountSid", DefaultValue = "")]
         public string TwilioAccountSid
         {

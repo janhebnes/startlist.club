@@ -77,7 +77,7 @@
           "Name": "Håndtering af skoleflyet på jorden mv.",
           "Note": "Eleven skal deltage i at gøre klar til flyvning – herunder at få flyet ud af hangaren og forsvarligt tøjret ved startstedet.",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 3
         },
         {
@@ -98,7 +98,7 @@
           "Name": "Justering af seler, sæde og pedaler ",
           "Note": "Eleven hjælpes til at skabe den rigtige position i cockpittet, så eleven selv fremover kan håndtere dette\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 6
         },
         {
@@ -142,7 +142,7 @@
           "Name": "Øvelse i procedure for udspring",
           "Note": "Lad eleven prøve – på jorden – at spænde sig fri af selerne, åbne hooden og sætte sig på cockpitkanten med hånden på udløserhåndtaget til faldskærmen.",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 2
         },
         {
@@ -156,7 +156,7 @@
           "Name": "Sikkerhed og rapportering",
           "Note": "DSvU’s Safety Management System (SMS)\r\n\r\nRapportering af hændelser mv.\r\n\r\nHvor kan man registrere?",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 4
         }
       ],
@@ -673,7 +673,7 @@
           "Name": "Relevant teori forud for soloflyvning, hvis eleven ikke har bestået SPL-teoriprøven",
           "Note": "Relevant teorimateriale kan hentes på DTO’ens hjemmeside, og denne skal suppleres med emner, som er relevante for flyvepladsen, hvor uddannelsen foregår",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 0
         },
         {
@@ -708,7 +708,7 @@
           "Name": "Observation af flyvningen efterfulgt af instruktørens briefing",
           "Note": "Instruktøren skal både briefe og debriefe eleven ifm. soloflyvningerne og skal være til stede på flyvepladsen.\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 5
         },
         {
@@ -722,7 +722,7 @@
           "Name": "Omskoling skal følge flyveskolens program for typeomskolinger",
           "Note": "**ikke obligatorisk**\r\n\r\nOmskolingen skal min. indeholde:\r\n\r\n* Systemkendskab og adskillelse og samling\r\n* Indretning af fly og cockpit\r\n* Tilvænningsflyvninger ved forskellige hastigheder\r\n* Termikflyvning",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 7
         }
       ],
@@ -912,77 +912,77 @@
           "Name": "Aktuelt vejr og vejrudsigter",
           "Note": "Både METAR/TAF og vejrprogrammer for svæveflyvning",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 0
         },
         {
           "Name": "NOTAM’s og betragtninger omkring luftrum",
           "Note": "NOTAM’s for berørte områder hentes på NAVIAIR’s hjemmeside. \r\n\r\nKontrolleret luftrum, som skal gennemflyves, gennemgås fsva. klarering og forventede indflyvnings- og udflyvningspunkter.",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 1
         },
         {
           "Name": "Valg af flyvekort og forberedelse af kortet",
           "Note": "Normalt ICAO-kortet, og det foldes således at det passer med turen. Turen indtegnes\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 2
         },
         {
           "Name": "Planlægning af ruten",
           "Note": "Rute ift. vejrudvikling og vindforhold. \r\n\r\nForberedelse til områder, hvor der må forventes god termik, og områder som bør undgås eller passeres højt ",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 3
         },
         {
           "Name": "Radiofrekvenser hvis aktuelt",
           "Note": "Frekvensliste eller kort indeholdende de frekvenser, der kunne blive brug for\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 4
         },
         {
           "Name": "Administrative procedurer før start incl. ekstra udstyr",
           "Note": "* Autorisation hvis eleven flyver solo. \r\n* Aftale med hjemhentningshold, \r\n* Redningsvest ved overflyvning af vand, osv",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 5
         },
         {
           "Name": "ATC-flyveplan hvis aktuelt",
           "Note": "Normalt kun ved krydsning af landegrænser",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 6
         },
         {
           "Name": "Vægtberegning ift. flyets præstationer",
           "Note": "Evt. vandballast, undersøgelse af flyets bedste præstationer ved\r\naktuel vægt\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 7
         },
         {
           "Name": "Beregning af vægt og balance ",
           "Note": "Er begrænsninger overholdt til min. og max. vægt. \r\n\r\nSærlig opmærksomhed omkring vægt i halen, hvis ballast i halen\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 8
         },
         {
           "Name": "Alternative landingsmuligheder – flyvepladser og egnede landingsområder",
           "Note": "På kortet defineres, hvor der er mulighed for at lande, hvis turen ikke kan gennemføres. \r\n\r\nOpmærksomhed omkring mulige flyvepladser, men også områder, hvor en udelanding vil være vanskelig eller umulig.\r\n",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 9
         },
         {
           "Name": "Sikkerhedshøjde",
           "Note": "Eleven fastsætter sikkerhedshøjder med udgangspunkt i beslutningstragten fra teorifaget Operationelle procedurer. \r\n\r\nI betragtningerne skal indgå markers tilstand mht. afgrøders højde.",
           "AcceptanceCriteria": "",
-          "IsBriefingOnly": false,
+          "IsBriefingOnly": true,
           "DisplayOrder": 10
         }
       ],

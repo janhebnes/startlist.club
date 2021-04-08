@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
+using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Training.Flight;
 
@@ -94,6 +95,10 @@ namespace FlightJournal.Web.Controllers
             db.TrainingFlightAnnotations.AddOrUpdate(annotation);
 
             db.SaveChanges();
+
+            var originator = Guid.Empty;
+            Guid.TryParse(flightData.originator, out originator);
+            FlightsHub.NotifyTrainingDataChanged(flightId, originator);
 
             return new JsonResult() { @Data = new { Success = true } };
         }
@@ -194,6 +199,7 @@ namespace FlightJournal.Web.Controllers
 
     public class FlightData
     {
+        public string originator { get; set; }
         // ref to Flight
         public string flightId { get; set; }
         // exercise applied in this flight. Should go into AppliedExercises

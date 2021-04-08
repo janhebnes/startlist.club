@@ -125,7 +125,7 @@ namespace FlightJournal.Web.Controllers
                     }
                 }
             }
-            catch (Exception _)
+            catch (Exception)
             {
             }
             return RedirectToAction("Index");
