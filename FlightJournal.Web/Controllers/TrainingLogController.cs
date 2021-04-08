@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
@@ -176,6 +177,17 @@ namespace FlightJournal.Web.Controllers
 
             var model = new TrainingLogViewModel(flight.FlightId, flight.Date, flight.Departure, flight.Landing, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight, trainingProgramId));
             return model;
+        }
+
+        public ActionResult GetMetarData()
+        {
+            var client = new HttpClient();
+            var location = "EKBI"; // where to get this from? 
+            const string path = "https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=stations&requestType=retrieve&format=xml&stationString="; //should this be a part of the config or in the database?
+            HttpResponseMessage response = client.GetAsync(path + location).Result;
+
+
+            return new JsonResult();
         }
     }
 
