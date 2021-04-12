@@ -27,15 +27,18 @@ namespace FlightJournal.Web.Models.Export
         public string FlightId { get; set; }
         public string Timestamp { get; set; }
         public string Registration { get; set; }
+        public int Seats { get; set; }
+
         public string CompetitionId { get; set; }
         public string FrontSeatOccupantName { get; set; }
         public string FrontSeatOccupantClubId { get; set; }
         public string FrontSeatOccupantUnionId { get; set; }
-        public string FrontSeatOccupantInstructorId { get; set; }
         public string BackSeatOccupantName { get; set; }
         public string BackSeatOccupantClubId { get; set; }
         public string BackSeatOccupantUnionId { get; set; }
-        public string BackSeatOccupantInstructorId { get; set; }
+        public string InstructorName { get; set; }
+        public string InstructorClubId { get; set; }
+        public string InstructorUnionId { get; set; }
         public string Airfield { get; set; }
         public string Duration { get; set; }
         public double DurationInMinutes { get; set; }

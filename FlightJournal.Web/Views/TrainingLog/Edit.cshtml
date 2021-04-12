@@ -255,7 +255,17 @@
     </select>
 </div>
 
-
+<div class="row" id="instructorcontainer" style="margin-top: 5px;">
+    <div class="col-xs-2  col-sm-1">@_("Instructor")</div>
+    <select class="col-xs-5 selectpicker userselection" title=@Html.Raw(__("Instructor")) id="instructor">
+        @foreach (var v in Model.Instructors)
+        {
+            var nameAndClub = $"{v.Name} ({v.Club.ShortName})";
+            var selected = Model.ThisFlight.InstructorId == v.PilotId ? "selected" : "";
+            <option value="@v.PilotId" class="instructor" @selected>@nameAndClub</option>
+        }
+    </select>
+</div>
 
 <div class="row" style="margin-top: 30px">
     <div class="col-md-6">
@@ -544,6 +554,7 @@
             var flightData = JSON.stringify({
                 originator: "@SessionId",
                 flightId: "@Model.FlightId",
+                instructorId: $("option.instructor:selected").val(),
                 exercises: exercises,
                 manouverIds: manouverIds,
                 note: $("#flightnotes").val(),

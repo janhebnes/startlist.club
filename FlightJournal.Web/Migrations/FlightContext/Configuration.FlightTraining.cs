@@ -362,6 +362,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                     Lesson = lesson,
                     Exercise = exercise,
                     Grading = grading,
+                    Instructor = instructor,
                 });
                 
                 context.AppliedExercises.Add(new AppliedExercise()
@@ -371,6 +372,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                     Lesson = lesson,
                     Exercise = exercise,
                     Grading = gradingOk,
+                    Instructor = instructor,
                 });
                 
                 context.AppliedExercises.Add(new AppliedExercise()
@@ -379,6 +381,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
                     Program = program,
                     Lesson = lesson,
                     Exercise = exercise,
+                    Instructor = instructor,
                 });
 
                 // TrainingFlightAnnotations
