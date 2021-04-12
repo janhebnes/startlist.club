@@ -155,6 +155,7 @@
 <div class="container footer-content">
     <footer>
         <p class="pull-right btn-xs">
+            <i class="fa fa-info-circle" id="showdeveloperinfo"></i>
             &copy; <a href="@Url.Action("Index", "About")">@_("About") startlist.club</a> <span class="glyphicon glyphicon-stats"></span>&nbsp; @DateTime.Now.ToString("f")
         </p>
         @Html.Action("ClubSelector", "Club")
@@ -207,6 +208,10 @@
         } else {
             $("#showhelp").hide();
         }
+
+        $("#showdeveloperinfo").on("click", function() {
+            $("#developerinfo").show();
+        });
     });
 </script>
 
