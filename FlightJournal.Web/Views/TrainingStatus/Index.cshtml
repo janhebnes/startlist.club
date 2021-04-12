@@ -56,14 +56,3 @@
     </table>
 }
 
-@if (ViewBag.DeveloperInfo != null)
-{
-<div id="developerinfo" style="display: none;">
-    <hr />
-    @foreach (var info in ViewBag.DeveloperInfo)
-    {
-        <span>@info</span>   <br />
-    }
-</div>
-}
-

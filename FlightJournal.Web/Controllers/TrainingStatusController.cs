@@ -56,7 +56,6 @@ namespace FlightJournal.Web.Controllers
                 // no access
             }
 
-
             ViewBag.DeveloperInfo = developerInfo;
 
             return View(model);
