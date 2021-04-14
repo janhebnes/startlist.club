@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-03-25 11:09+0100\n"
+"POT-Creation-Date: 2021-04-12 22:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Flights of pilot {0} on exercise {1}"
 msgstr ""
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:215
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:221
 msgid "No flights"
 msgstr ""
 
@@ -169,7 +169,6 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:150
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:219
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:271
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:10
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:45
 msgid "Plane"
 msgstr ""
@@ -254,11 +253,11 @@ msgstr ""
 msgid "Last updated by"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:241
+#: FlightJournal.Web\Models\Flight.cs:240
 msgid "Cost"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:250
+#: FlightJournal.Web\Models\Flight.cs:249
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:41
 #: FlightJournal.Web\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\Views\Flight\Index.cshtml:54
@@ -269,7 +268,7 @@ msgstr ""
 msgid "Tacho"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:269
+#: FlightJournal.Web\Models\Flight.cs:268
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:35
 #: FlightJournal.Web\Views\Flight\Index.cshtml:42
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:48
@@ -284,7 +283,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:160
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:229
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:281
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:14
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:13
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:49
 msgid "Duration"
 msgstr ""
@@ -299,7 +298,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:25
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:233
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:21
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:19
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:17
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:21
 msgid "Note"
 msgstr ""
@@ -815,7 +814,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
 #: FlightJournal.Web\Views\Pilot\Edit.cshtml:95
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:264
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:274
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:75
 msgid "Back"
 msgstr ""
@@ -862,7 +861,7 @@ msgid "TrainingLog"
 msgstr ""
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:379
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:418
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:428
 msgid ""
 "You have unsaved data - do you want to leave the page and lose the changes?"
 msgstr ""
@@ -960,7 +959,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\Flight\Index.cshtml:51
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:275
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:13
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:12
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:48
 msgid "Airfield"
 msgstr ""
@@ -1060,7 +1059,7 @@ msgid "The manouvre is in use, and therefore cannot be deleted"
 msgstr ""
 
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:5
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:17
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:15
 msgid "Manouvres"
 msgstr ""
 
@@ -1382,7 +1381,7 @@ msgid "Partial exercises"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:12
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:14
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:51
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:15
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:40
@@ -1503,7 +1502,7 @@ msgid "All exercises and partial exercises with status"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:121
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:274
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:284
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:97
 msgid "Exercise"
 msgstr ""
@@ -1592,19 +1591,26 @@ msgstr ""
 msgid "Wind speed"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:263
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:259
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:260
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:11
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:47
+msgid "Instructor"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:273
 msgid "Save"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:282
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:292
 msgid "Preconditions"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:412
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:422
 msgid "Unable to save data"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:444
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:454
 msgid ""
 "Training data for this flight have been edited by someone else, please "
 "reload!"
@@ -1620,23 +1626,11 @@ msgstr ""
 msgid "Manouvers"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:11
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
-msgid "Front seat"
-msgstr ""
-
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:12
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:47
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:10
 msgid "Back seat"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:15
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:50
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:20
-msgid "Program"
-msgstr ""
-
-#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:18
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
 msgid "Annotations"
 msgstr ""
 
@@ -1658,6 +1652,15 @@ msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:31
 msgid "Between"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
+msgid "Front seat"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:50
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:20
+msgid "Program"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:8

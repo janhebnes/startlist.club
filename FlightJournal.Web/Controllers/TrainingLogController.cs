@@ -47,7 +47,7 @@ namespace FlightJournal.Web.Controllers
                         Program = db.TrainingPrograms.FirstOrDefault(p => p.Training2ProgramId == e.programId),
                         Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
                         Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
-                        //Action = ExerciseAction.None
+                        Instructor = db.Pilots.FirstOrDefault(p=>p.PilotId == flightData.instructorId)
                     };
                     if (e.gradingId.HasValue)
                     {
@@ -150,6 +150,9 @@ namespace FlightJournal.Web.Controllers
                     if(!annotationsForThisPhase.IsNullOrEmpty())
                         phaseComments.Add(p.CType, annotationsForThisPhase);   
                 }
+
+                var instructor = ae.FirstOrDefault(x => x.Instructor != null)?.Instructor;
+                var instructorNameAndClub = instructor != null ? $"{instructor.Name} ({instructor.Club.ShortName})" : "";
                 var m = new TrainingFlightWithSomeDetailsViewModel
                 {
                     FlightId = f.FlightId.ToString(),
@@ -157,6 +160,7 @@ namespace FlightJournal.Web.Controllers
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
                     BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
+                    Instructor = instructorNameAndClub,
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
@@ -177,9 +181,14 @@ namespace FlightJournal.Web.Controllers
 
             //var trainingProgress = db.TrainingFlightAnnotations.Join<Flight>;
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
-            var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId)?.Name ?? "(??)";
-
-            var model = new TrainingLogViewModel(flight.FlightId, flight.Date, flight.Departure, flight.Landing, pilot, backseatPilot, new TrainingDataWrapper(db, flight.PilotId, flight, trainingProgramId));
+            var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId);
+            var backseatPilotName = backseatPilot?.Name ?? "(??)";
+            var instructorId = backseatPilot != null && backseatPilot.IsInstructor
+                ? backseatPilot.PilotId
+                : User.Pilot() != null && User.Pilot().IsInstructor
+                    ? User.Pilot().PilotId
+                    : -1;
+            var model = new TrainingLogViewModel(flight.FlightId, flight.Date, flight.Departure, flight.Landing, pilot, backseatPilotName, new TrainingDataWrapper(db, flight.PilotId, instructorId, flight, trainingProgramId));
             return model;
         }
     }
@@ -190,6 +199,7 @@ namespace FlightJournal.Web.Controllers
         public string originator { get; set; }
         // ref to Flight
         public string flightId { get; set; }
+        public int instructorId { get; set; }
         // exercise applied in this flight. Should go into AppliedExercises
         public Exercise[] exercises { get; set; }
 
@@ -225,6 +235,7 @@ namespace FlightJournal.Web.Controllers
         public string Plane { get; set; }
         public string FrontSeatOccupant { get; set; }
         public string BackSeatOccupant { get; set; }
+        public string Instructor { get; set; }
         public string Duration { get; set; }
 
         public string TrainingProgramName { get; set; }

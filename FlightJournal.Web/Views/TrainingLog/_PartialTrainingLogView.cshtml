@@ -7,12 +7,10 @@
         <thead>
         <tr>
             <th>@_("Date")</th>
-            @*<th>@_("Plane")</th>*@
-            @*<th>@_("Front seat")</th>*@
             <th>@_("Back seat")</th>
+            <th>@_("Instructor")</th>
             <th>@_("Airfield")</th>
             <th>@_("Duration")</th>
-            @*<th>@_("Program")</th>*@
             <th>@_("Exercises")</th>
             <th>@_("Manouvres")</th>
             <th>@_("Annotations")</th>
@@ -24,12 +22,10 @@
         {
             <tr data-flightid="@f.FlightId">
                 <td data-flightid="@f.FlightId">@f.Timestamp</td>
-                @*<td>@f.Plane</td>*@
-                @*<td>@f.FrontSeatOccupant</td>*@
                 <td>@f.BackSeatOccupant</td>
+                <td>@f.Instructor</td>
                 <td>@f.Airfield</td>
                 <td>@f.Duration</td>
-                @*<td>@f.TrainingProgramName</td>*@
                 <td>@f.AppliedLessons</td>
                 <td>@Html.Raw(f.Manouvres)</td>
                 <td>@Html.Raw(f.Annotations)</td>

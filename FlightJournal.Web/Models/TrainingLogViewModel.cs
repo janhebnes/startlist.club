@@ -7,6 +7,7 @@ using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
+using Microsoft.Identity.Client;
 
 namespace FlightJournal.Web.Models
 {
@@ -17,7 +18,7 @@ namespace FlightJournal.Web.Models
     /// </summary>
     public class TrainingDataWrapper
     {
-        internal TrainingDataWrapper(FlightContext db, int pilotId, Flight flight, int trainingProgramId)
+        internal TrainingDataWrapper(FlightContext db, int pilotId, int instructorId, Flight flight, int trainingProgramId)
         {
             FlightId = flight.FlightId;
             PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).Select(x => new PilotFlightView{FlightId = x.FlightId, Timestamp = x.Departure ?? x.Date}).OrderBy(v=>v.Timestamp).ToList();
@@ -37,8 +38,16 @@ namespace FlightJournal.Web.Models
             CommentaryTypes = db.CommentaryTypes.ToList();
             Gradings = db.Gradings.ToList();
             TrainingFlightAnnotationCommentCommentTypes = db.TrainingFlightAnnotationCommentCommentTypes.Include("CommentaryType");
-            
+
+            Instructors = db.Pilots
+                .Where(p => p.InstructorId!=null)
+                .OrderBy(p => p.Club.ShortName)
+                .ThenBy(p => p.Name)
+                .ToList();
+            InstructorId = instructorId;
         }
+
+        public int InstructorId { get; }
 
         /// <summary>
         /// The current (latest used) training program for the pilot
@@ -78,6 +87,8 @@ namespace FlightJournal.Web.Models
         public IEnumerable<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; }
         public IEnumerable<Grading> Gradings { get; }
 
+        public IEnumerable<Pilot> Instructors { get; }
+
     }
 
     public class PilotFlightView
@@ -105,7 +116,7 @@ namespace FlightJournal.Web.Models
         public Dictionary<int, IEnumerable<int>> CommentIdsByPhase { get; } = new Dictionary<int, IEnumerable<int>>();
         public int WindSpeed { get; }
         public int WindDirection { get; }
-
+        public int InstructorId { get; }
         public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; } = Enumerable.Empty<AppliedExerciseViewModel>();
         /// <summary>
         /// 
@@ -117,6 +128,10 @@ namespace FlightJournal.Web.Models
             Date = date;
             // multiple exercises possible per flight
             var exercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId == flightId).ToList();
+            InstructorId =
+                exercisesForThisFlight.FirstOrDefault(x => x.Instructor != null)?.Instructor.PilotId
+                ?? db.InstructorId;
+
             ExercisesWithStatus = exercisesForThisFlight.Select(x => new AppliedExerciseViewModel(db, x));
             // zero or one per flight expected
             var annotationsForThisFlight = db.FlightAnnotations.FirstOrDefault(x => x.FlightId == flightId);
@@ -202,6 +217,8 @@ namespace FlightJournal.Web.Models
             }
             WindSpeeds = WindSpeeds.OrderBy(x => x.Value).ToList();
             AnnotationIdForOk = dbmodel.Commentaries.FirstOrDefault(x => x.IsOk)?.CommentaryId;
+
+            Instructors = dbmodel.Instructors;
         }
 
 
@@ -224,6 +241,8 @@ namespace FlightJournal.Web.Models
         public IEnumerable<TrainingProgramSelectorViewModel> TrainingPrograms { get; }
 
         public int? AnnotationIdForOk { get; }
+
+        public IEnumerable<Pilot> Instructors { get; }
 
         // data for this flight
         public FlightLogEntryViewModel ThisFlight { get; }

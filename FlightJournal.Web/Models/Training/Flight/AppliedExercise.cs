@@ -26,6 +26,8 @@ namespace FlightJournal.Web.Models.Training.Flight
         public ExerciseAction Action { get; set; } = ExerciseAction.None;
         
         public virtual Grading Grading { get; set; }
+
+        public virtual Pilot Instructor { get; set; }
     }
 
     [Obsolete("Replaced by Grading, do not use. Should be deleted by migration")]

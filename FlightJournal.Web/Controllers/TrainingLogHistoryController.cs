@@ -200,13 +200,16 @@ namespace FlightJournal.Web.Controllers
                         .OrderBy(x => x.Key.DisplayOrder).Last();
                     primaryLessonName = primaryLesson.Key.Name;
                 }
+                var instructor = ae.FirstOrDefault(x => x.Instructor != null)?.Instructor;
+                var instructorNameAndClub = instructor != null ? $"{instructor.Name} ({instructor.Club.ShortName})" : "";
+
                 var m = new TrainingFlightViewModel
                 {
                     FlightId = f.FlightId.ToString(),
                     Timestamp = (f.Landing ?? f.Date).ToString("yyyy-MM-dd HH:mm"),
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
-                    BackSeatOccupant = f.PilotBackseat != null ? $"{f.PilotBackseat.Name} ({f.PilotBackseat.MemberId})" : "",
+                    Instructor = instructorNameAndClub,
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
@@ -285,24 +288,26 @@ namespace FlightJournal.Web.Controllers
                 var maneuvers = annotation != null
                     ? annotation.Manouvres?.Select(man => new ManeuverExportViewModel(man))
                     : Enumerable.Empty<ManeuverExportViewModel>();
-
+                var instructor = ae.FirstOrDefault(x => x.Instructor != null)?.Instructor;
                 var m = new TrainingFlightExportViewModel
                 {
                     FlightId = f.FlightId.ToString(),
                     Timestamp = f.Date.ToString("yyyy-MM-dd HH:mm"),
                     Registration = f.Plane.Registration,
+                    Seats = f.Plane.Seats,
                     CompetitionId = f.Plane.CompetitionId,
                     FrontSeatOccupantName = f.Pilot.Name,
                     FrontSeatOccupantClubId = f.Pilot.MemberId,
                     FrontSeatOccupantUnionId = f.Pilot.UnionId,
-                    FrontSeatOccupantInstructorId = f.Pilot.InstructorId,
                     BackSeatOccupantName = f.PilotBackseat?.Name,
                     BackSeatOccupantClubId = f.PilotBackseat?.MemberId,
                     BackSeatOccupantUnionId = f.PilotBackseat?.UnionId,
-                    BackSeatOccupantInstructorId = f.PilotBackseat?.InstructorId,
+                    InstructorName = instructor?.Name,
+                    InstructorClubId = instructor?.MemberId,
+                    InstructorUnionId = instructor?.UnionId,
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
-                    DurationInMinutes = f.Duration.TotalMinutes,
+                    DurationInMinutes = Math.Round(f.Duration.TotalMinutes),
                     TrainingProgramName = program?.Name,
                     TrainingProgramId = program?.ProgramIdForExport.ToString(),
                     PartialExercises =  partialExercises,
@@ -392,7 +397,7 @@ namespace FlightJournal.Web.Controllers
         public string Timestamp { get; set; }
         public string Plane{ get; set; }
         public string FrontSeatOccupant { get; set; }
-        public string BackSeatOccupant { get; set; }
+        public string Instructor { get; set; }
         public string Duration { get; set; }
 
         public string TrainingProgramName { get; set; }
