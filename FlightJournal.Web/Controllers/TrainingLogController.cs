@@ -37,6 +37,8 @@ namespace FlightJournal.Web.Controllers
             var currentExercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId.Equals(flightId));
             // just retain latest edit
             db.AppliedExercises.RemoveRange(currentExercisesForThisFlight);
+            db.SaveChanges();
+
             if (flightData.exercises != null)
             {
                 foreach (var e in flightData.exercises)
@@ -57,6 +59,7 @@ namespace FlightJournal.Web.Controllers
                     db.AppliedExercises.AddOrUpdate(appliedExercise);
                 }
             }
+            db.SaveChanges();
 
             // Upsert flight annotations for this flight
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
