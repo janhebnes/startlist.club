@@ -297,3 +297,6 @@ td.valign-top {
     z-index: 9999;
 }
 
+.withtrainingdata {
+    border: 2px solid yellowgreen;
+}

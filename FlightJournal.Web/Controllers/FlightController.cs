@@ -78,6 +78,10 @@ namespace FlightJournal.Web.Controllers
             var flights = this.db.Flights.Where(s => (!locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)) && (date.HasValue ? s.Date == date : s.Date == DateTime.Today))
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType")
                 .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
+            foreach (var flight in flights)
+            {
+                flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+            }
 
             return View(flights.ToList().Where(f => f.IsCurrent()));
         }
