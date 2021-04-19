@@ -51,6 +51,11 @@ namespace FlightJournal.Web.Controllers
 
                         rptYear.DistinctLocations = rptYear.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
 
+                        foreach (var flight in rptYear.Flights)
+                        {
+                            flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+                        }
+
                         return this.View("year", rptYear);
                     }
                 }
@@ -84,6 +89,11 @@ namespace FlightJournal.Web.Controllers
                     .AsQueryable();
 
                 rptMonth.DistinctLocations = rptMonth.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
+                foreach (var flight in rptMonth.Flights)
+                {
+                    flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+                }
+
 
                 return this.View("month", rptMonth);
             }
@@ -121,6 +131,11 @@ namespace FlightJournal.Web.Controllers
                 .AsQueryable();
             // Allow f.Deleted != null
             rpt.DistinctLocations = rpt.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d=>d.Name);
+            foreach (var flight in rpt.Flights)
+            {
+                flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+            }
+
 
             return this.View(rpt);
         }
