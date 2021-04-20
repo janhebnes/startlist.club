@@ -25,6 +25,8 @@ namespace FlightJournal.Web.Controllers
             var raw = RouteData.Values["date"];
             int year = 0;
 
+            var idsOfAllTrainingFlights = db.AppliedExercises.Select(x => x.FlightId).Distinct().ToList();
+
             // YEAR Statistics
             if (!date.HasValue && raw != null)
             {
@@ -53,7 +55,7 @@ namespace FlightJournal.Web.Controllers
 
                         foreach (var flight in rptYear.Flights)
                         {
-                            flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+                            flight.HasTrainingData = idsOfAllTrainingFlights.Contains(flight.FlightId);
                         }
 
                         return this.View("year", rptYear);
@@ -91,9 +93,8 @@ namespace FlightJournal.Web.Controllers
                 rptMonth.DistinctLocations = rptMonth.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
                 foreach (var flight in rptMonth.Flights)
                 {
-                    flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+                    flight.HasTrainingData = idsOfAllTrainingFlights.Contains(flight.FlightId);
                 }
-
 
                 return this.View("month", rptMonth);
             }
@@ -133,7 +134,7 @@ namespace FlightJournal.Web.Controllers
             rpt.DistinctLocations = rpt.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d=>d.Name);
             foreach (var flight in rpt.Flights)
             {
-                flight.HasTrainingData = db.AppliedExercises.Any(x => x.FlightId == flight.FlightId);
+                flight.HasTrainingData = idsOfAllTrainingFlights.Contains(flight.FlightId);
             }
 
 
