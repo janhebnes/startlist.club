@@ -118,8 +118,6 @@ namespace FlightJournal.Web.Controllers
 
             var allTrainingFlightIdsForThisPilot = db.AppliedExercises
                 .Select(x => x.FlightId)
-                .Union(db.TrainingFlightAnnotations
-                    .Select(y => y.FlightId))
                 .Distinct()
                 .Where(fid=>flightIdsWithThisPilot.Contains(fid))
                 .ToList();
@@ -131,6 +129,8 @@ namespace FlightJournal.Web.Controllers
             foreach (var f in theFlights)
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
+                if (ae.IsNullOrEmpty())
+                    continue;
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
                 var primaryLessonName = "";
