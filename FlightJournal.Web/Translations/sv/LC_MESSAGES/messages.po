@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-04-12 22:08+0200\n"
+"POT-Creation-Date: 2021-05-05 19:28+0200\n"
 "PO-Revision-Date: 2015-10-14 11:45+0100\n"
 "Last-Translator: Peter Christensen <peter@pdk.se>\n"
 "Language: sv\n"
@@ -126,9 +126,9 @@ msgstr "Datum"
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:117
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:121
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:125
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:29
 #: FlightJournal.Web\Views\Flight\History.cshtml:40
 #: FlightJournal.Web\Views\Flight\Index.cshtml:36
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:18
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:43
 #: FlightJournal.Web\Views\Report\Month.cshtml:390
 msgid "Departure"
@@ -139,9 +139,9 @@ msgstr "Start"
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:133
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:137
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:141
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:32
 #: FlightJournal.Web\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\Views\Flight\Index.cshtml:39
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:21
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:46
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
 #: FlightJournal.Web\Views\Report\Month.cshtml:393
@@ -156,9 +156,9 @@ msgstr "Antal flygningar"
 
 #: FlightJournal.Web\Models\Flight.cs:110
 #: FlightJournal.Web\Models\Flight.cs:113
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:23
 #: FlightJournal.Web\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\Views\Flight\Index.cshtml:45
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:12
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:37
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:153
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:199
@@ -202,8 +202,8 @@ msgstr "Startmetod"
 
 #: FlightJournal.Web\Models\Flight.cs:148
 #: FlightJournal.Web\Models\Flight.cs:151
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:38
 #: FlightJournal.Web\Views\Flight\History.cshtml:46
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:27
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:52
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:50
 msgid "Take-off"
@@ -237,6 +237,7 @@ msgstr "Konteras"
 
 #: FlightJournal.Web\Models\Flight.cs:186
 #: FlightJournal.Web\Models\PilotLogEntry.cs:42
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:27
 msgid "Deleted"
 msgstr "Raderat"
 
@@ -259,9 +260,9 @@ msgid "Cost"
 msgstr "Kostnad"
 
 #: FlightJournal.Web\Models\Flight.cs:249
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:41
 #: FlightJournal.Web\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\Views\Flight\Index.cshtml:54
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:30
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:55
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:280
 #: FlightJournal.Web\Views\Report\Month.cshtml:399
@@ -270,8 +271,8 @@ msgid "Tacho"
 msgstr "Tacho"
 
 #: FlightJournal.Web\Models\Flight.cs:268
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:35
 #: FlightJournal.Web\Views\Flight\Index.cshtml:42
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:24
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:48
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:163
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:209
@@ -619,9 +620,9 @@ msgid "Select a flightclub (unfiltered)"
 msgstr "Välj en klubb (ofiltrerad)"
 
 #: FlightJournal.Web\Views\Club\Details.cshtml:7
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:161
 #: FlightJournal.Web\Views\Flight\History.cshtml:124
 #: FlightJournal.Web\Views\Flight\Index.cshtml:104
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:183
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:52
@@ -654,8 +655,8 @@ msgstr "Detaljer"
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Index.cshtml:39
 #: FlightJournal.Web\Views\Flight\Details.cshtml:103
 #: FlightJournal.Web\Views\Flight\Details.cshtml:156
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:148
 #: FlightJournal.Web\Views\Flight\Index.cshtml:101
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:170
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:13
 #: FlightJournal.Web\Views\GradingAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\GradingAdmin\Edit.cshtml:6
@@ -787,8 +788,8 @@ msgstr "Åter till listan"
 
 #: FlightJournal.Web\Views\CommentaryAdmin\_PartialItem.cshtml:4
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\_PartialItem.cshtml:4
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:44
 #: FlightJournal.Web\Views\Flight\History.cshtml:52
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:33
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:58
 msgid "Comment"
 msgstr "Kommentar"
@@ -900,28 +901,22 @@ msgstr "Startlista"
 msgid "Previous flights"
 msgstr "Forriga flygninger"
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:26
-#: FlightJournal.Web\Views\Flight\Index.cshtml:48
-#: FlightJournal.Web\Views\Logbook\Index.cshtml:262
-#: FlightJournal.Web\Views\Report\Index.cshtml:155
-#: FlightJournal.Web\Views\Report\Month.cshtml:387
-msgid "Pilot(s)"
-msgstr "Pilot(er)"
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:24
+#, fuzzy
+msgid "Not started"
+msgstr "Pilotstatus"
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:151
-msgid "Clone"
-msgstr "Skapa klon"
-
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:152
-msgid "Copy"
-msgstr "Kopiera"
-
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:156
-msgid " "
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:25
+msgid "Flying"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:156
-msgid "Training"
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:26
+#, fuzzy
+msgid "Landed"
+msgstr "Landning"
+
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:28
+msgid "All"
 msgstr ""
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:14
@@ -978,11 +973,35 @@ msgstr "RADERAT"
 msgid "Change history"
 msgstr "Historik över ändringar"
 
+#: FlightJournal.Web\Views\Flight\Index.cshtml:48
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:15
+#: FlightJournal.Web\Views\Logbook\Index.cshtml:262
+#: FlightJournal.Web\Views\Report\Index.cshtml:155
+#: FlightJournal.Web\Views\Report\Month.cshtml:387
+msgid "Pilot(s)"
+msgstr "Pilot(er)"
+
 #: FlightJournal.Web\Views\Flight\Index.cshtml:51
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:275
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:12
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:48
 msgid "Airfield"
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:173
+msgid "Clone"
+msgstr "Skapa klon"
+
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:174
+msgid "Copy"
+msgstr "Kopiera"
+
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:178
+msgid " "
+msgstr ""
+
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:178
+msgid "Training"
 msgstr ""
 
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:37
@@ -1343,23 +1362,23 @@ msgstr "[Skapa relation till pilotprofil]"
 msgid "Guided tour"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:158
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:174
 msgid "About"
 msgstr "Om"
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:189
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:205
 msgid "Next >"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:190
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:206
 msgid "< Prev"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:191
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:207
 msgid "Skip"
 msgstr ""
 
-#: FlightJournal.Web\Views\Shared\_Layout.cshtml:192
+#: FlightJournal.Web\Views\Shared\_Layout.cshtml:208
 msgid "Done"
 msgstr ""
 
@@ -1820,6 +1839,10 @@ msgstr "obekräftad"
 #, fuzzy
 msgid "User not bound to pilot"
 msgstr "Kopplat till pilotId"
+
+#, fuzzy
+#~ msgid "flights"
+#~ msgstr "Forriga flygninger"
 
 #, fuzzy
 #~ msgid "Recent flights"
