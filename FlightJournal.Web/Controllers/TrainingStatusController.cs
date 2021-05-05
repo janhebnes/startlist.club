@@ -26,8 +26,7 @@ namespace FlightJournal.Web.Controllers
             var model = new List<TrainingProgramStatus>();
             // pay up front
             var allFlownExercises = db.AppliedExercises.Where(x => x.Grading != null).ToList();
-            var allTrainingFlightIds = allFlownExercises.Select(x => x.FlightId).Distinct();
-            var allTrainingFlights = db.Flights.Where(x => allTrainingFlightIds.Contains(x.FlightId)).ToList();
+            var allTrainingFlights = GetTrainingFlightsFromIds(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
 
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
             {
@@ -75,8 +74,7 @@ namespace FlightJournal.Web.Controllers
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor || Request.Pilot().PilotId == pilotId)
             {
                 var allFlownExercises = db.AppliedExercises.Where(x => x.Grading != null).ToList();
-                var allTrainingFlightIds = allFlownExercises.Select(x => x.FlightId).Distinct();
-                var allTrainingFlights = db.Flights.Where(x => allTrainingFlightIds.Contains(x.FlightId)).ToList();
+                var allTrainingFlights = GetTrainingFlightsFromIds(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
 
                 var p = db.Pilots.SingleOrDefault(x => x.PilotId == pilotId);
                 var tp = db.TrainingPrograms.SingleOrDefault(x => x.Training2ProgramId == trainingProgramId);
@@ -86,6 +84,11 @@ namespace FlightJournal.Web.Controllers
             }
 
             return View((PilotDetailedStatus)null);
+        }
+
+        private IEnumerable<Flight> GetTrainingFlightsFromIds(IReadOnlyList<Guid> ids)
+        {
+            return db.Flights.Where(x => x.Deleted == null && ids.Contains(x.FlightId)).ToList();
         }
 
         private IEnumerable<TrainingProgramStatus> GetStatusForPilot(Pilot p, IEnumerable<Flight> allFlights, IEnumerable<AppliedExercise> allExercises)
