@@ -297,3 +297,24 @@ td.valign-top {
     z-index: 9999;
 }
 
+
+/* fix for location of sorting arrows for dataTable  */
+table.dataTable thead .sorting {
+    background: url('/Content/DataTables/images/sort_both.png') no-repeat center right;
+}
+
+table.dataTable thead .sorting_asc {
+	background: url('/Content/DataTables/images/sort_asc.png') no-repeat center right;
+}
+
+table.dataTable thead .sorting_desc {
+	background: url('/Content/DataTables/images/sort_desc.png') no-repeat center right;
+}
+
+table.dataTable thead .sorting_asc_disabled {
+	background: url('/Content/DataTables/images/sort_asc_disabled.png') no-repeat center right;
+}
+
+table.dataTable thead .sorting_desc_disabled {
+	background: url('/Content/DataTables/images/sort_desc_disabled.png') no-repeat center right;
+}
