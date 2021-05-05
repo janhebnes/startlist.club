@@ -1,4 +1,4 @@
-# [Startlist.club](https://startlist.club) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE.md) [![Build status](https://ci.appveyor.com/api/projects/status/ngkcbx24thlpffxy?svg=true)](https://ci.appveyor.com/project/janhebnes/startlist-club) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+# [Startlist.club](https://startlist.club) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](../LICENSE) [![Build status](https://ci.appveyor.com/api/projects/status/ngkcbx24thlpffxy?svg=true)](https://ci.appveyor.com/project/janhebnes/startlist-club) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 *Flightlog for Soaring Clubs*
 
 Startlist.club is an open source project created for handling flightclub startlists and logbooks for pilots and plane.
