@@ -1,0 +1,63 @@
+﻿@model FlightJournal.Web.Models.TrainingLogViewModel
+
+<div class="row no-gutter">
+    <div class="col-xs-12">
+        <select class="selectpicker" id="TrainingProgram">
+            <option value="-1"></option>
+            @foreach (var program in Model.TrainingPrograms)
+            {
+                <option value="@program.Id">@program.Name</option>
+            }
+        </select>
+        <span class="bg-danger" style="padding:10px"><i class="fa fa-arrow-left"></i>@_("Please select a training program")</span>
+    </div>
+    
+</div>
+
+<div class="row no-gutter" data-step="3" data-intro=@Html.Raw(__("Flight info"))>
+    <div class="col-xs-6 col-sm-4">
+        @Model.TimeInfo
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        @Model.Pilot
+    </div>
+    <div class="col-xs-4 col-sm-2">
+        @Model.BackseatPilot
+    </div>
+</div>
+
+<div class="row" style="margin-top: 30px">
+    <div class="col-md-6">
+        <div class="btn-group btn-group-lg">
+            <button class="btn btn-default" id="backbtn">@_("Back")</button>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $("#TrainingProgram").change(function() {
+                reloadWithTrainingProgram($(this));
+            });
+
+            $("#backbtn").click(function () {
+                window.history.back();
+            });
+
+        });
+
+        var reloadWithTrainingProgram = function(sel) {
+            var selected = sel.find(":selected").val();
+            if (selected != "@Model.TrainingProgram.Id") {
+                var url = '@Url.Action("Edit", new {flightId = @Model.FlightId})' + '&trainingProgramId=' + selected;
+                window.location.replace(url); // avoid 'back experience'
+            }
+        }
+
+
+    </script>
+}
