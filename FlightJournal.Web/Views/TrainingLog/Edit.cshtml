@@ -23,6 +23,10 @@
                 <option value="@program.Id" @selected>@program.Name</option>
             }
         </select>
+        @if (Model.TrainingProgram.HasMultipleTrainingPrograms)
+        {
+            <span class="bg-danger" style="padding:10px"><i class="fa fa-arrow-left"></i>@_("Please check that the correct training program is selected")</span>
+        }
     </div>
 </div>
 <div class="row no-gutter" data-step="3" data-intro=@Html.Raw(__("Flight info"))>
@@ -497,7 +501,7 @@
             var selected = sel.find(":selected").val();
             if (selected != "@Model.TrainingProgram.Id") {
                 var url = '@Url.Action("Edit", new {flightId = @Model.FlightId})' + '&trainingProgramId=' + selected;
-                window.location.href = url;
+                window.location.replace(url); // avoid 'back experience'
             }
         }
 

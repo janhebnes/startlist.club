@@ -22,8 +22,10 @@ namespace FlightJournal.Web.Controllers
                 return RedirectToAction("Grid", "Flight");
             var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId.Value);
             var model = BuildTrainingLogViewModel(flight, trainingProgramId);
-
-            return View(model);
+            if (model.TrainingProgram.Id != -1)
+                return View(model);
+            else
+                return View("SelectTrainingProgram", model);
         }
 
 
