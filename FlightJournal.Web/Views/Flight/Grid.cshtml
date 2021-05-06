@@ -19,32 +19,21 @@
     var landed = Model.Where(x => x.Deleted == null && x.Departure != null && x.Landing != null);
     var deleted = Model.Where(x => x.Deleted != null);
 }
-
-<ul class="nav nav-tabs">
-    <li><a class="tab" data-toggle="tab" href="#pending">@_("Not started") (@pending.Count())</a></li>
-    <li class="active"><a class="tab" data-toggle="tab" href="#flying">@_("Flying") (@flying.Count())</a></li>
-    <li><a class="tab" data-toggle="tab" href="#landed">@_("Landed") (@landed.Count())</a></li>
-    <li><a class="tab" data-toggle="tab" href="#deleted">@_("Deleted") (@deleted.Count())</a></li>
-    <li><a class="tab" data-toggle="tab" href="#all">@_("All") (@Model.Count())</a></li>
+<ul class="nav nav-tabs" role="tablist" >
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#all">@_("All") (@Model.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#pending">@_("Not started") (@pending.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#flying">@_("Flying") (@flying.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#landed">@_("Landed") (@landed.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#deleted">@_("Deleted") (@deleted.Count())</a></li>
 </ul>
 
 
 <div class="tab-content">
-    <div id="pending" class="tab-pane fade">
-        @Html.Partial("PartialGrid", pending, new ViewDataDictionary { { "tableclass", "datatable" } })
-    </div>
-    <div id="flying" class="tab-pane fade in active">
-        @Html.Partial("PartialGrid", flying, new ViewDataDictionary { { "tableclass", "datatable" } })
-    </div>
-    <div id="landed" class="tab-pane fade">
-        @Html.Partial("PartialGrid", landed, new ViewDataDictionary { { "tableclass", "datatable" } })
-    </div>
-    <div id="deleted" class="tab-pane fade">
-        @Html.Partial("PartialGrid", deleted, new ViewDataDictionary{{"tableclass","datatable"}})
-    </div>
-    <div id="all" class="tab-pane fade">
-        @Html.Partial("PartialGrid", Model, new ViewDataDictionary { { "tableclass", "datatable-all" } })
-    </div>
+    <div id="all"     role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", Model, new ViewDataDictionary { { "tableclass", "datatable-all" } })</div>
+    <div id="pending" role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", pending, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+    <div id="flying"  role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", flying, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+    <div id="landed"  role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", landed, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+    <div id="deleted" role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", deleted, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
 </div>
 
 
@@ -58,9 +47,33 @@
         $(document).ready(function() {
             configDataTables();
 
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+            $('a[data-toggle="tab"]').each(function() {
+                var activeTab = sessionStorage.getItem('ActiveGridTab') ?? "all";
+                var tabIdPos = this.href.lastIndexOf('#');
+                if (tabIdPos >= 0) {
+                    var tabId = this.href.substring(tabIdPos + 1);
+                    if (tabId === activeTab) {
+                        $(this).addClass("active");
+                        $(this).parent().addClass("active");
+                    }
+                }
+            });
+            $('div.tab-pane').each(function() {
+                var activeTab = sessionStorage.getItem('ActiveGridTab') ?? "all";
+                var tabId = $(this).attr("id");
+                if (tabId === activeTab) {
+                    $(this).addClass("active");
+                    $(this).addClass("in");
+                }
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+                var tabIdPos = e.currentTarget.href.lastIndexOf('#');
+                if (tabIdPos >= 0) {
+                    var tabId = e.currentTarget.href.substring(tabIdPos + 1);
+                    sessionStorage.setItem('ActiveGridTab', tabId);
+                }
             });
 
             $('a.editComment').click(function(e) {
