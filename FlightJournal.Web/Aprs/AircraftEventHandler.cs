@@ -32,10 +32,10 @@ namespace FlightJournal.Web.Aprs
             {
                 var flight = flights.Single();
                 Log.Debug($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
-                flight.Landing = DateTime.Now;
+                flight.Departure = DateTime.Now;
                 _db.Entry(flight).State = EntityState.Modified;
                 _db.SaveChanges();
-                FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
+                FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
             }
             else
             {
