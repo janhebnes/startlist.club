@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FlightJournal.Web.Extensions;
+using FlightJournal.Web.Logging;
 
 namespace FlightJournal.Web.Aprs
 {
@@ -53,9 +54,9 @@ namespace FlightJournal.Web.Aprs
     public class AircraftCatalog : IAircraftCatalog
     {
         private readonly string _url;
-        private List<Aircraft> _catalog = new List<Aircraft>();
+        private List<Aircraft> _catalog = new();
         private readonly object _catalogLock = new object();
-        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource _cts = new();
         public string DefaultUrl => "https://ddb.glidernet.org/download";
 
         public AircraftCatalog(string url=null)
@@ -91,6 +92,7 @@ namespace FlightJournal.Web.Aprs
             var result = new List<Aircraft>();
             try
             {
+                Log.Debug("Fetching aircraft identities");
                 using (var client = new HttpClient())
                 using (var file = await client.GetStreamAsync(_url))
                 using (var reader = new StreamReader(file))
@@ -106,14 +108,15 @@ namespace FlightJournal.Web.Aprs
                         }
                         catch (Exception e)
                         {
-                            //TODO: log this
+                            Log.Warning($"Failed to fetch aircraft identities: {e.Message}");
                         }
                     }
                 }
+                Log.Debug($"Fetched identities of {result.Count} aircraft");
             }
             catch (Exception e)
             {
-                //TODO: log this
+                Log.Warning($"Failed to fetch aircraft identities: {e.Message}");
             }
 
             return result;

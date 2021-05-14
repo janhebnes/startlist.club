@@ -4,6 +4,7 @@ using Boerman.AprsClient;
 using Boerman.AprsClient.Enums;
 using Boerman.AprsClient.Models;
 using Boerman.Core.Spatial;
+using FlightJournal.Web.Logging;
 using Skyhop.FlightAnalysis;
 using Skyhop.FlightAnalysis.Models;
 
@@ -21,7 +22,7 @@ namespace FlightJournal.Web.Aprs
     {
         private readonly IAircraftCatalog _catalog;
         private static Listener _aprsClient;
-        private static readonly FlightContextFactory FlightContextFactory = new FlightContextFactory();
+        private static readonly FlightContextFactory FlightContextFactory = new();
 
         public EventHandler<Aircraft> OnAircraftTakeoff { get; set; }
         public EventHandler<Aircraft> OnAircraftLanding { get; set; }
@@ -95,27 +96,28 @@ namespace FlightJournal.Web.Aprs
         {
             var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).First();
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
-
-            Console.WriteLine($"{lastPositionUpdate.TimeStamp}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
+            Log.Debug($"{nameof(AprsListener)}: {lastPositionUpdate.TimeStamp}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
         }
         private void OnContactLost(object sender, OnContextDisposedEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Context.Flight.Aircraft));
-            Console.WriteLine($"{DateTime.UtcNow}: {e.Context.Flight.Aircraft} {aircraft.Info()} - contact lost");
+            Log.Debug($"{nameof(AprsListener)}: {e.Context.Flight.Aircraft} {aircraft.Info()} - contact lost");
         }
 
         private void OnTakeoff(object sender, OnTakeoffEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-            Console.WriteLine($"{DateTime.UtcNow}: {e.Flight.Aircraft} {aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {e.Flight.LastSeen}");
+            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {e.Flight.LastSeen}");
+            OnAircraftTakeoff?.Invoke(this, aircraft);
         }
 
         private void OnLanding(object sender, OnLandingEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-            Console.WriteLine($"{DateTime.UtcNow}: {e.Flight.Aircraft} {aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {e.Flight.LastSeen}");
+            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {e.Flight.LastSeen}");
+            OnAircraftLanding?.Invoke(this, aircraft);
         }
 
         public void Start()

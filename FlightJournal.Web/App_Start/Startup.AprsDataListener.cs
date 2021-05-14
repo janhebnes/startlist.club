@@ -1,4 +1,5 @@
 ﻿using FlightJournal.Web.Aprs;
+using FlightJournal.Web.Logging;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web
@@ -11,6 +12,7 @@ namespace FlightJournal.Web
 
         public void ConfigureAprsDataListener()
         {
+            Log.Information("Setting up APRS data listener chain");
             _catalog = new AircraftCatalog();
             _aprsListener = new AprsListener(_catalog);
 

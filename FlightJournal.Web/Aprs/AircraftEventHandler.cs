@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using FlightJournal.Web.Hubs;
+using FlightJournal.Web.Logging;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Aprs
@@ -30,6 +31,7 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
+                Log.Debug($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
                 flight.Landing = DateTime.Now;
                 _db.Entry(flight).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -37,7 +39,7 @@ namespace FlightJournal.Web.Aprs
             }
             else
             {
-                // log error - multiple pending flights for this plane, we cannot autopick one
+                Log.Information($"{nameof(AircraftEventHandler)}: multiple flights matching {p.Registration} - unable to autostart");
             }
 
         }
@@ -51,6 +53,7 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
+                Log.Debug($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
                 flight.Landing = DateTime.Now;
                 _db.Entry(flight).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -58,7 +61,7 @@ namespace FlightJournal.Web.Aprs
             }
             else
             {
-                // log error - only one flight with this plane should be flying
+                Log.Warning($"{nameof(AircraftEventHandler)}: multiple flights matching {p.Registration} - unable to autoland");
             }
         }
 

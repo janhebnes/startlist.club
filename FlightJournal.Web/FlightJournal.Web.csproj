@@ -76,6 +76,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MarkdownSharp, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MarkdownSharp.2.0.5\lib\net40\MarkdownSharp.dll</HintPath>
     </Reference>
@@ -364,6 +367,7 @@
     <Compile Include="Controllers\CommentaryAdminController.cs" />
     <Compile Include="Controllers\GradingAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
+    <Compile Include="Logging\Log.cs" />
     <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.cs" />
     <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.designer.cs">
       <DependentUpon>202103201755056_Added export id fieds to training models.cs</DependentUpon>
@@ -950,6 +954,9 @@
     <Content Include="DevData\SPL-certifikat, selvstart, UHB922 01012021.json" />
     <Content Include="DevData\SPL-certifikat, TMG, UHB923 30012021.json" />
     <Content Include="DevData\TMG-rettighed.json" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
