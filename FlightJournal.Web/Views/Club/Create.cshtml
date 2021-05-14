@@ -60,6 +60,13 @@
             @Html.EditorFor(model => model.Visible)
             @Html.ValidationMessageFor(model => model.Visible)
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
+            @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
+        </div>
         <p>
             <input type="submit" value="Create" />
         </p>

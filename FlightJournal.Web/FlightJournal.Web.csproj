@@ -376,6 +376,10 @@
     <Compile Include="Migrations\FlightContext\202104121845010_Add instructor field to AppliedExercise to track solo flights.designer.cs">
       <DependentUpon>202104121845010_Add instructor field to AppliedExercise to track solo flights.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202105141922276_Add Club flag for using APRS takeoff and landing.cs" />
+    <Compile Include="Migrations\FlightContext\202105141922276_Add Club flag for using APRS takeoff and landing.designer.cs">
+      <DependentUpon>202105141922276_Add Club flag for using APRS takeoff and landing.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
@@ -1310,6 +1314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202104121845010_Add instructor field to AppliedExercise to track solo flights.resx">
       <DependentUpon>202104121845010_Add instructor field to AppliedExercise to track solo flights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202105141922276_Add Club flag for using APRS takeoff and landing.resx">
+      <DependentUpon>202105141922276_Add Club flag for using APRS takeoff and landing.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

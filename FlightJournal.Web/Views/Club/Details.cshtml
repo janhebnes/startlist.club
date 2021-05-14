@@ -38,6 +38,11 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Visible)
     </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UseAPRSTakeoffAndLanding)
+    </div>
 </fieldset>
 <p>
     @if (ViewBag.AllowEdit)

@@ -34,12 +34,23 @@ namespace FlightJournal.Web.Aprs
             var flights = _db.Flights.Where(f => f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
             if (flights.Count() == 1)
             {
+                // we're assuming that the plane takes off from the location specified in the flight.
+                // Check if any club at that location is using APRSTakeoffAndLanding
+
                 var flight = flights.Single();
-                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
-                flight.Departure = DateTime.Now;
-                _db.Entry(flight).State = EntityState.Modified;
-                _db.SaveChanges();
-                FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
+                if (_db.Clubs.Any(c => c.LocationId == flight.StartedFromId && c.UseAPRSTakeoffAndLanding))
+                {
+                    Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
+
+                    flight.Departure = DateTime.Now;
+                    _db.Entry(flight).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
+                }
+                else
+                {
+                    Log.Information($"{nameof(AircraftEventHandler)}: No clubs at the starting location has APRS autostart enabled - takeoff of {flight.Plane.Registration} ignored");
+                }
             }
             else
             {
@@ -61,11 +72,18 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
-                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
-                flight.Landing = DateTime.Now;
-                _db.Entry(flight).State = EntityState.Modified;
-                _db.SaveChanges();
-                FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
+                if (_db.Clubs.Any(c => c.LocationId == flight.LandedOnId && c.UseAPRSTakeoffAndLanding))
+                {
+                    Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
+                    flight.Landing = DateTime.Now;
+                    _db.Entry(flight).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
+                }
+                else
+                {
+                    Log.Information($"{nameof(AircraftEventHandler)}: No clubs at the starting location has APRS autostart enabled - landing of {flight.Plane.Registration} ignored");
+                }
             }
             else
             {
