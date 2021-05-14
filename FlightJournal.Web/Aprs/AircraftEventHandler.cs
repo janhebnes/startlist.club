@@ -25,9 +25,13 @@ namespace FlightJournal.Web.Aprs
         private void OnAircraftTakeoff(object sender, Aircraft aircraft)
         {
             Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == aircraft.Registration.ToLower());
-            if (p == null) return;
+            if (p == null)
+            {
+                Log.Debug($"{nameof(AircraftEventHandler)}: starting {aircraft} not in DB - ignored");
+                return;
+            }
 
-            var flights = _db.Flights.Where(f => f.Plane == p && f.Departure == null && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
@@ -39,7 +43,7 @@ namespace FlightJournal.Web.Aprs
             }
             else
             {
-                Log.Information($"{nameof(AircraftEventHandler)}: {flights.Count()} flights matching {p.Registration} - unable to autostart");
+                Log.Information($"{nameof(AircraftEventHandler)}: {flights.Count()} pending flights matching {p.Registration} - unable to autostart");
             }
 
         }
@@ -47,9 +51,13 @@ namespace FlightJournal.Web.Aprs
         private void OnAircraftLanding(object sender, Aircraft aircraft)
         {
             Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == aircraft.Registration.ToLower());
-            if (p == null) return;
+            if (p == null)
+            {
+                Log.Debug($"{nameof(AircraftEventHandler)}: landing {aircraft} not in DB - ignored");
+                return;
+            }
 
-            var flights = _db.Flights.Where(f => f.Plane == p && f.Departure != null && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Plane.PlaneId == p.PlaneId && f.Departure != null && f.Landing == null);
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
@@ -61,7 +69,7 @@ namespace FlightJournal.Web.Aprs
             }
             else
             {
-                Log.Warning($"{nameof(AircraftEventHandler)}: {flights.Count()} flights matching {p.Registration} - unable to autoland");
+                Log.Warning($"{nameof(AircraftEventHandler)}: {flights.Count()} airborne flights matching {p.Registration} - unable to autoland");
             }
         }
 
