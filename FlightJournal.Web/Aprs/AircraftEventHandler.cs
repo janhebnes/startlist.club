@@ -35,7 +35,7 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
-                Log.Debug($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
+                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
                 flight.Departure = DateTime.Now;
                 _db.Entry(flight).State = EntityState.Modified;
                 _db.SaveChanges();
@@ -61,7 +61,7 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
-                Log.Debug($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
+                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
                 flight.Landing = DateTime.Now;
                 _db.Entry(flight).State = EntityState.Modified;
                 _db.SaveChanges();
