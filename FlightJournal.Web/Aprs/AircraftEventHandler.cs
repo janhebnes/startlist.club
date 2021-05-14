@@ -39,7 +39,7 @@ namespace FlightJournal.Web.Aprs
             }
             else
             {
-                Log.Information($"{nameof(AircraftEventHandler)}: multiple flights matching {p.Registration} - unable to autostart");
+                Log.Information($"{nameof(AircraftEventHandler)}: {flights.Count()} flights matching {p.Registration} - unable to autostart");
             }
 
         }
@@ -61,7 +61,7 @@ namespace FlightJournal.Web.Aprs
             }
             else
             {
-                Log.Warning($"{nameof(AircraftEventHandler)}: multiple flights matching {p.Registration} - unable to autoland");
+                Log.Warning($"{nameof(AircraftEventHandler)}: {flights.Count()} flights matching {p.Registration} - unable to autoland");
             }
         }
 
