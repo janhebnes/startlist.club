@@ -76,13 +76,13 @@ namespace FlightJournal.Web.Aprs
                 {
                     Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
                     flight.Landing = DateTime.Now;
-                    _db.Entry(flight).State = EntityState.Modified;
+                    _db.Entry(flight).State = EntityState.Modified; 
                     _db.SaveChanges();
                     FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
                 }
                 else
                 {
-                    Log.Information($"{nameof(AircraftEventHandler)}: No clubs at the starting location has APRS autostart enabled - landing of {flight.Plane.Registration} ignored");
+                    Log.Information($"{nameof(AircraftEventHandler)}: No clubs at the landing location has APRS autostart enabled - landing of {flight.Plane.Registration} ignored");
                 }
             }
             else
