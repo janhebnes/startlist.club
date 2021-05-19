@@ -12,20 +12,31 @@ namespace FlightJournal.Web.Aprs
 {
     public interface IAprsListener : IDisposable
     {
-        EventHandler<Aircraft> OnAircraftTakeoff { get; set; }
-        EventHandler<Aircraft> OnAircraftLanding { get; set; }
+        EventHandler<AircraftEvent> OnAircraftTakeoff { get; set; }
+        EventHandler<AircraftEvent> OnAircraftLanding { get; set; }
 
         void Start();
     }
 
+    public class AircraftEvent
+    {
+        public Aircraft Aircraft { get; }
+        public DateTime? Time { get; }
+
+        public AircraftEvent(Aircraft a, DateTime? t)
+        {
+            Aircraft = a;
+            Time = t?.ToLocalTime();
+        }
+    }
     public class AprsListener : IAprsListener
     {
         private readonly IAircraftCatalog _catalog;
         private static Listener _aprsClient;
         private static readonly FlightContextFactory FlightContextFactory = new();
 
-        public EventHandler<Aircraft> OnAircraftTakeoff { get; set; }
-        public EventHandler<Aircraft> OnAircraftLanding { get; set; }
+        public EventHandler<AircraftEvent> OnAircraftTakeoff { get; set; }
+        public EventHandler<AircraftEvent> OnAircraftLanding { get; set; }
 
 
         public AprsListener(IAircraftCatalog catalog)
@@ -108,16 +119,18 @@ namespace FlightJournal.Web.Aprs
         {
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {e.Flight.LastSeen}");
-            OnAircraftTakeoff?.Invoke(this, aircraft);
+            var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
+            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time}");
+            OnAircraftTakeoff?.Invoke(this, ae);
         }
 
         private void OnLanding(object sender, OnLandingEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {e.Flight.LastSeen}");
-            OnAircraftLanding?.Invoke(this, aircraft);
+            var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
+            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time}");
+            OnAircraftLanding?.Invoke(this, ae);
         }
 
         public void Start()

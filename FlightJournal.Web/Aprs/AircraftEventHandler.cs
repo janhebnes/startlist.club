@@ -22,12 +22,12 @@ namespace FlightJournal.Web.Aprs
         }
 
 
-        private void OnAircraftTakeoff(object sender, Aircraft aircraft)
+        private void OnAircraftTakeoff(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == aircraft.Registration.ToLower());
+            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower());
             if (p == null)
             {
-                Log.Debug($"{nameof(AircraftEventHandler)}: starting {aircraft} not in DB - ignored");
+                Log.Debug($"{nameof(AircraftEventHandler)}: starting {e.Aircraft} not in DB - ignored");
                 return;
             }
 
@@ -38,11 +38,10 @@ namespace FlightJournal.Web.Aprs
                 // Check if any club at that location is using APRSTakeoffAndLanding
 
                 var flight = flights.Single();
+                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} took off at {e.Time}");
                 if (_db.Clubs.Any(c => c.LocationId == flight.StartedFromId && c.UseAPRSTakeoffAndLanding))
                 {
-                    Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} taking off");
-
-                    flight.Departure = DateTime.Now;
+                    flight.Departure = e.Time ?? DateTime.Now;
                     _db.Entry(flight).State = EntityState.Modified;
                     _db.SaveChanges();
                     FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
@@ -59,12 +58,12 @@ namespace FlightJournal.Web.Aprs
 
         }
 
-        private void OnAircraftLanding(object sender, Aircraft aircraft)
+        private void OnAircraftLanding(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == aircraft.Registration.ToLower());
+            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower());
             if (p == null)
             {
-                Log.Debug($"{nameof(AircraftEventHandler)}: landing {aircraft} not in DB - ignored");
+                Log.Debug($"{nameof(AircraftEventHandler)}: landing {e.Aircraft} not in DB - ignored");
                 return;
             }
 
@@ -72,10 +71,10 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
+                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landed at {e.Time}");
                 if (_db.Clubs.Any(c => c.LocationId == flight.LandedOnId && c.UseAPRSTakeoffAndLanding))
                 {
-                    Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landing");
-                    flight.Landing = DateTime.Now;
+                    flight.Landing = e.Time ?? DateTime.Now;
                     _db.Entry(flight).State = EntityState.Modified; 
                     _db.SaveChanges();
                     FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
