@@ -38,7 +38,7 @@ namespace FlightJournal.Web.Aprs
                 // Check if any club at that location is using APRSTakeoffAndLanding
 
                 var flight = flights.Single();
-                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} took off at {e.Time}");
+                Log.Information($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time}");
                 if (_db.Clubs.Any(c => c.LocationId == flight.StartedFromId && c.UseAPRSTakeoffAndLanding))
                 {
                     flight.Departure = e.Time ?? DateTime.Now;
@@ -48,12 +48,12 @@ namespace FlightJournal.Web.Aprs
                 }
                 else
                 {
-                    Log.Information($"{nameof(AircraftEventHandler)}: No clubs at the starting location has APRS autostart enabled - takeoff of {flight.Plane.Registration} ignored");
+                    Log.Debug($"{nameof(AircraftEventHandler)}: No clubs at the starting location has APRS autostart enabled - takeoff of {flight.Plane.Registration} ignored");
                 }
             }
             else
             {
-                Log.Information($"{nameof(AircraftEventHandler)}: {flights.Count()} pending flights matching {p.Registration} - unable to autostart");
+                Log.Debug($"{nameof(AircraftEventHandler)}: {flights.Count()} pending flights matching {p.Registration} - unable to autostart");
             }
 
         }
@@ -71,7 +71,7 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
-                Log.Information($"{nameof(AircraftEventHandler)}: {flight.Plane.Registration} landed at {e.Time}");
+                Log.Information($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time}");
                 if (_db.Clubs.Any(c => c.LocationId == flight.LandedOnId && c.UseAPRSTakeoffAndLanding))
                 {
                     flight.Landing = e.Time ?? DateTime.Now;
@@ -81,12 +81,12 @@ namespace FlightJournal.Web.Aprs
                 }
                 else
                 {
-                    Log.Information($"{nameof(AircraftEventHandler)}: No clubs at the landing location has APRS autostart enabled - landing of {flight.Plane.Registration} ignored");
+                    Log.Debug($"{nameof(AircraftEventHandler)}: No clubs at the landing location has APRS autostart enabled - landing of {flight.Plane.Registration} ignored");
                 }
             }
             else
             {
-                Log.Warning($"{nameof(AircraftEventHandler)}: {flights.Count()} airborne flights matching {p.Registration} - unable to autoland");
+                Log.Debug($"{nameof(AircraftEventHandler)}: {flights.Count()} airborne flights matching {p.Registration} - unable to autoland");
             }
         }
 
