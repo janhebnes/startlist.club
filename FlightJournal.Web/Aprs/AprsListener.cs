@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Boerman.AprsClient;
 using Boerman.AprsClient.Enums;
 using Boerman.AprsClient.Models;
 using Boerman.Core.Spatial;
 using FlightJournal.Web.Logging;
+using FlightJournal.Web.Models;
 using Skyhop.FlightAnalysis;
 using Skyhop.FlightAnalysis.Models;
 
@@ -29,17 +32,19 @@ namespace FlightJournal.Web.Aprs
             Time = t?.ToLocalTime();
         }
     }
+
+    
     public class AprsListener : IAprsListener
     {
         private readonly IAircraftCatalog _catalog;
-        private static Listener _aprsClient;
+        private static List<Listener> _aprsClients;
         private static readonly FlightContextFactory FlightContextFactory = new();
 
         public EventHandler<AircraftEvent> OnAircraftTakeoff { get; set; }
         public EventHandler<AircraftEvent> OnAircraftLanding { get; set; }
 
 
-        public AprsListener(IAircraftCatalog catalog)
+        public AprsListener(IAircraftCatalog catalog, IEnumerable<ListenerArea> ranges)
         {
             _catalog = catalog;
 
@@ -49,18 +54,25 @@ namespace FlightJournal.Web.Aprs
             FlightContextFactory.OnRadarContact += OnRadarContact;
             FlightContextFactory.OnContextDispose += OnContactLost;
 
-            _aprsClient = new Listener(new Config
+            _aprsClients = ranges.Where(r => r.IsValid).Select(CreateListener).ToList();
+        }
+
+        private Listener CreateListener(ListenerArea r)
+        {
+            Log.Debug($"Adding aprs listener for area {r}");
+            var aprsClient = new Listener(new Config
             {
                 Callsign = "0",
                 Password = "-1",
                 Uri = "aprs.glidernet.org",
                 UseOgnAdditives = true,
                 Port = 14580, //10152: Full feed, 14580: Filtered
-                Filter = "r/55.84/10.63/220" //DK center 220km radius - multiple filters seem not to work ?
+                Filter = $"r/{r.Latitude.ToString(CultureInfo.InvariantCulture)}/{r.Longitude.ToString(CultureInfo.InvariantCulture)}/{r.Radius.ToString(CultureInfo.InvariantCulture)}" 
             });
 
-            _aprsClient.DataReceived += OnAprsDataReceived;
-            _aprsClient.PacketReceived += OnAprsPacketReceived;
+            aprsClient.DataReceived += OnAprsDataReceived;
+            aprsClient.PacketReceived += OnAprsPacketReceived;
+            return aprsClient;
         }
 
         private void OnAprsPacketReceived(object sender, PacketReceivedEventArgs e)
@@ -68,11 +80,9 @@ namespace FlightJournal.Web.Aprs
             switch (e.AprsMessage.DataType)
             {
                 case DataType.Status:
-                    //                        Console.WriteLine(e.AprsMessage);
                     break;
                 case DataType.PositionWithTimestampNoAprsMessaging:
                 case DataType.PositionWithTimestampWithAprsMessaging:
-                    //                        Console.WriteLine(e.AprsMessage);
                     try
                     {
                         var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
@@ -88,8 +98,7 @@ namespace FlightJournal.Web.Aprs
                     }
                     catch (NullReferenceException ex)
                     {
-                        //                    Console.WriteLine(nullReferenceException.Message);
-                        //throw;
+                        // ignore
                     }
                     break;
                 default:
@@ -135,12 +144,12 @@ namespace FlightJournal.Web.Aprs
 
         public void Start()
         {
-            _aprsClient.Open();
+            _aprsClients.ForEach(c=>c.Open());
         }
 
         public void Dispose()
         {
-            _aprsClient.Dispose();
+            _aprsClients.ForEach(c=>c.Dispose());
         }
     }
 

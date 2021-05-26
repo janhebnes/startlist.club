@@ -386,6 +386,10 @@
     <Compile Include="Migrations\FlightContext\202105141922276_Add Club flag for using APRS takeoff and landing.designer.cs">
       <DependentUpon>202105141922276_Add Club flag for using APRS takeoff and landing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.cs" />
+    <Compile Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.designer.cs">
+      <DependentUpon>202105261501463_Add table for defining APRS listening areas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
@@ -424,6 +428,7 @@
       <DependentUpon>202103151426589_Flight training tracking and instructors for flight school.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\FlightContext\Configuration.FlightTraining.cs" />
+    <Compile Include="Models\ListenerArea.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonsInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingProgramAdminViewModel.cs" />
@@ -787,6 +792,7 @@
     <Content Include="Migrations\FlightContext\202103151426589_Flight training tracking and instructors for flight school.sql" />
     <Content Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.sql" />
     <Content Include="Migrations\FlightContext\202104121845010_Add instructor field to AppliedExercise to track solo flights.sql" />
+    <Content Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1321,6 +1327,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202105141922276_Add Club flag for using APRS takeoff and landing.resx">
       <DependentUpon>202105141922276_Add Club flag for using APRS takeoff and landing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.resx">
+      <DependentUpon>202105261501463_Add table for defining APRS listening areas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

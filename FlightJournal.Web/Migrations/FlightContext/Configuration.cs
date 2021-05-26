@@ -216,6 +216,12 @@ namespace FlightJournal.Web.Migrations.FlightContext
             }
 
 
+            if (!context.ListenerAreas.Any())
+            {
+                context.ListenerAreas.Add(new ListenerArea {Latitude = 55.84, Longitude = 10.63, Radius = 220});
+                context.SaveChanges();
+            }
+
             /// This is a temp hack to migrate from the old brief/trained/ok to Gradings (to let testers work with existing data)
             /// Can be removed before deployment to production.
 
