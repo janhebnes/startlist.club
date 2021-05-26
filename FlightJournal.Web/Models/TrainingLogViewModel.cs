@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
@@ -25,10 +26,26 @@ namespace FlightJournal.Web.Models
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Timestamp)).ToList();
             AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.FlightId).OrderBy(y => x.Timestamp)).ToList();
             if (trainingProgramId == -1)
-            {  // attempt to find the most recent training flight, use same training program
-                trainingProgramId = AppliedExercises.LastOrDefault()?.Program.Training2ProgramId ?? -1;
+            {  // is the user is participating in exactly one program, use it, otherwise force the user to select
+                var tps = AppliedExercises.Select(x => x.Program.Training2ProgramId).Distinct().ToList();
+                switch (tps.Count)
+                {
+                    case 0:
+                        trainingProgramId = -1;
+                        HasMultipleTrainingPrograms = false;
+                        break;
+                    case 1:
+                        trainingProgramId = tps.First();
+                        HasMultipleTrainingPrograms = false;
+                        break;
+                    default:
+                        // pick the tp that was last in use
+                        trainingProgramId = AppliedExercises.Last().Program.Training2ProgramId;
+                        HasMultipleTrainingPrograms = true;
+                        break;
+                }
             }
-            TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)) ?? db.TrainingPrograms.First();
+            TrainingProgram = db.TrainingPrograms.SingleOrDefault((x => x.Training2ProgramId == trainingProgramId)); // ?? db.TrainingPrograms.First();
             TrainingPrograms = db.TrainingPrograms.Select(x => new TrainingProgramSelectorViewModel { Name = x.ShortName, Id = x.Training2ProgramId }).ToList();
             
             Manouvres = db.Manouvres.ToList();
@@ -53,6 +70,7 @@ namespace FlightJournal.Web.Models
         /// The current (latest used) training program for the pilot
         /// </summary>
         public Training2Program TrainingProgram { get; }
+        public bool HasMultipleTrainingPrograms { get; }
 
         /// <summary>
         /// All available training programs
@@ -192,7 +210,7 @@ namespace FlightJournal.Web.Models
 
             FlightLog = dbmodel.PilotFlights.Select(x=>new FlightLogEntryViewModel(x.FlightId, dbmodel, x.Timestamp));
 
-            TrainingProgram = new TrainingProgramViewModel(dbmodel.TrainingProgram, dbmodel);
+            TrainingProgram = new TrainingProgramViewModel(dbmodel);
             TrainingPrograms = dbmodel.TrainingPrograms;
             Manouvres = dbmodel.Manouvres.OrderBy(x=>x.DisplayOrder);
             GradingsForBriefingPartialExercises = dbmodel.Gradings.Where(x=>x.AppliesToBriefingOnlyPartialExercises && x.Value > 0).OrderBy(x=>x.DisplayOrder);
@@ -261,15 +279,27 @@ namespace FlightJournal.Web.Models
 public class TrainingProgramViewModel
     {
         public int  Id { get; }
+        public bool HasMultipleTrainingPrograms { get; }
 
         public string Name { get; } 
         public IEnumerable<TrainingLessonWithOverallStatusViewModel> Lessons { get; }
 
-        public TrainingProgramViewModel(Training2Program program, TrainingDataWrapper db)
+        public TrainingProgramViewModel(TrainingDataWrapper db)
         {
-            Id = program.Training2ProgramId;
-            Name = program.Name;
-            Lessons = program.Lessons.Select(less => new TrainingLessonWithOverallStatusViewModel(less, db)).ToList();
+            if (db?.TrainingProgram != null)
+            {
+                HasMultipleTrainingPrograms = db.HasMultipleTrainingPrograms;
+                Id = db.TrainingProgram.Training2ProgramId;
+                Name = db.TrainingProgram.Name;
+                Lessons = db.TrainingProgram.Lessons.Select(less => new TrainingLessonWithOverallStatusViewModel(less, db)).ToList();
+            }
+            else
+            {
+                HasMultipleTrainingPrograms = false;
+                Id = -1;
+                Name = "";
+                Lessons = Enumerable.Empty<TrainingLessonWithOverallStatusViewModel>();
+            }
         }
     }
 
@@ -359,15 +389,14 @@ public class TrainingProgramViewModel
             DisplayOrder = exercise.DisplayOrder;
 
             var totalApplied = db.AppliedExercises.Where(x => x.Exercise == exercise).ToList();
-            var appliedInThisFlight = totalApplied.FirstOrDefault(x => x.FlightId == db.FlightId); // should be only one
+            var appliedInThisFlight = totalApplied.LastOrDefault(x => x.FlightId == db.FlightId); // should be only one
             var thisGrading = appliedInThisFlight?.Grading;
             var flightIdsWithThisExercise = totalApplied.Select(x => x.FlightId).ToList();
             var latestFlightWithThisExercise = db.PilotFlights
                 .Where(x => flightIdsWithThisExercise.Contains(x.FlightId)).OrderBy(x => x.Timestamp)
                 .LastOrDefault();
 
-            var latestGradingOfThisExercise = totalApplied
-                .SingleOrDefault(x => x.FlightId == latestFlightWithThisExercise?.FlightId)?.Grading;
+            var latestGradingOfThisExercise = totalApplied.LastOrDefault(x => x.FlightId == latestFlightWithThisExercise?.FlightId)?.Grading; // should be only one
             var bestGrading = totalApplied.OrderBy(x => x.Grading?.Value).LastOrDefault()?.Grading;
             GradingInThisFlight = thisGrading != null && thisGrading.Value > 0 ? thisGrading : null;
             BestGrading = bestGrading != null && bestGrading.Value > 0 ? bestGrading : null;

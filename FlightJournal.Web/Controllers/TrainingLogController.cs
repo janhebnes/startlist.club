@@ -22,8 +22,10 @@ namespace FlightJournal.Web.Controllers
                 return RedirectToAction("Grid", "Flight");
             var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId.Value);
             var model = BuildTrainingLogViewModel(flight, trainingProgramId);
-
-            return View(model);
+            if (model.TrainingProgram.Id != -1)
+                return View(model);
+            else
+                return View("SelectTrainingProgram", model);
         }
 
 
@@ -37,6 +39,8 @@ namespace FlightJournal.Web.Controllers
             var currentExercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId.Equals(flightId));
             // just retain latest edit
             db.AppliedExercises.RemoveRange(currentExercisesForThisFlight);
+            db.SaveChanges();
+
             if (flightData.exercises != null)
             {
                 foreach (var e in flightData.exercises)
@@ -57,6 +61,7 @@ namespace FlightJournal.Web.Controllers
                     db.AppliedExercises.AddOrUpdate(appliedExercise);
                 }
             }
+            db.SaveChanges();
 
             // Upsert flight annotations for this flight
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId.Equals(flightId)) ?? new TrainingFlightAnnotation() {FlightId = flightId};
@@ -115,8 +120,6 @@ namespace FlightJournal.Web.Controllers
 
             var allTrainingFlightIdsForThisPilot = db.AppliedExercises
                 .Select(x => x.FlightId)
-                .Union(db.TrainingFlightAnnotations
-                    .Select(y => y.FlightId))
                 .Distinct()
                 .Where(fid=>flightIdsWithThisPilot.Contains(fid))
                 .ToList();
@@ -128,6 +131,8 @@ namespace FlightJournal.Web.Controllers
             foreach (var f in theFlights)
             {
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
+                if (ae.IsNullOrEmpty())
+                    continue;
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
                 var primaryLessonName = "";
