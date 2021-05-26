@@ -1254,6 +1254,7 @@
     <Content Include="Views\Shared\DisplayTemplates\LandingCount.cshtml" />
     <Content Include="Views\TrainingStatus\PilotStatusDetails.cshtml" />
     <Content Include="Views\TrainingLog\SelectTrainingProgram.cshtml" />
+    <Content Include="Views\Flight\PartialGrid.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
