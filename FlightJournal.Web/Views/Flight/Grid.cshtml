@@ -13,159 +13,29 @@
         @Html.ActionLink(_("Previous flights"), "Index", new { skip = 0 }, new { @class = "btn btn-default", type = "button" })
     </div>
 </p>
-<table class="tablesorter table table-responsive table-striped table-hover table-condensed">
-    <thead>
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                @_("Plane")
-            </th>
-            <th>
-                @_("Pilot(s)")
-            </th>
-            <th>
-                @_("Departure")
-            </th>
-            <th>
-                @_("Landing")
-            </th>
-            <th>
-                @_("Duration")
-            </th>
-            <th class="hidden-sm">
-                @_("Take-off")
-            </th>
-            <th class="hidden-sm">
-                @_("Tacho")
-            </th>
-            <th class="hidden-xs">
-                @_("Comment")
-            </th>
-            <th class="hidden-print">
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            var style = new HtmlString(string.Empty);
-            if (item.Deleted.HasValue)
-            {
-                style = new HtmlString("style=\"text-decoration: line-through;\"");
-            }
-            <tr class="flightrow" data-flightid="@item.FlightId">
-                <td>
-                    @if (!item.Deleted.HasValue)
-                    {
-                        var startNr1 = startNr;
-                        if (item.LandingCount > 1)
-                        {
-                            startNr = startNr - item.LandingCount + 1;
-                            @(startNr)
-                            <text> - </text>
-                        }
-                        @(startNr1)
-                        startNr--;
-                    }
-                    else
-                    {
-                        <span class="fa fa-trash-o"></span>
-                    }
-                </td>
-                <td @style>
-                    @Html.DisplayFor(modelItem => item.Plane, "Plane")
-                </td>
-                <td @style>
-                    @Html.DisplayFor(modelItem => item, "Pilots")
-                </td>
-                <td @style>
-                    @if (!item.Departure.HasValue && Request.IsPilot() && item.Date == DateTime.Today && item.IsCurrentClubPilots())
-                    {
-                        <div class="btn-group" style="white-space: nowrap;display: flex;">
-                            @Html.ActionLink("-10", "Depart", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            @Html.ActionLink("-05", "Depart", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            @Html.ActionLink("Nu", "Depart", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                        </div>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item, "Departure")
-                    }
-                </td>
-                <td @style>
-                    @if (!item.Landing.HasValue && Request.IsPilot() && item.Date == DateTime.Today && item.IsCurrentClubPilots())
-                    {
-                        <div class="btn-group" style="white-space: nowrap;display: flex;">
-                            @Html.ActionLink("-10", "Land", new { id = item.FlightId, offSet = 10 }, new { title = DateTime.Now.AddMinutes(-10).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            @Html.ActionLink("-05", "Land", new { id = item.FlightId, offSet = 5 }, new { title = DateTime.Now.AddMinutes(-5).ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                            @Html.ActionLink("Nu", "Land", new { id = item.FlightId }, new { title = DateTime.Now.ToString("HH:mm"), @class = "btn btn-warning", type = "button" })
-                        </div>
+@{
+    var pending = Model.Where(x => x.Deleted == null && x.Departure == null);
+    var flying = Model.Where(x => x.Deleted == null && x.Departure != null && x.Landing == null);
+    var landed = Model.Where(x => x.Deleted == null && x.Departure != null && x.Landing != null);
+    var deleted = Model.Where(x => x.Deleted != null);
+}
+<ul class="nav nav-tabs" role="tablist" >
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#all">@_("All") (@Model.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#pending">@_("Not started") (@pending.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#flying">@_("Flying") (@flying.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#landed">@_("Landed") (@landed.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#deleted">@_("Deleted") (@deleted.Count())</a></li>
+</ul>
 
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item, "Landing")
-                    }
-                </td>
-                <td @style>
-                    @Html.DisplayFor(modelItem => item, "Duration")
-                </td>
-                <td @style class="hidden-sm">
-                    @Html.DisplayFor(modelItem => item, "StartedFrom")
-                    @Html.DisplayFor(modelItem => item, "LandedOn")
-                </td>
-                <td @style class="hidden-sm">
-                    @Html.DisplayFor(modelItem => item, "Tacho")
-                </td>
-                <td @style class="hidden-xs">
-                    <span>
-                        @if (Request.IsPilot() && item.IsCurrentClubPilots())
-                        {
-                            <a href="#" class="editComment btn btn-default hidden-print"><span class="fa fa-comment fa-fw"></span></a>
-                        }
-                        @Html.DisplayFor(modelItem => item.Description, "Description")
-                    </span>
-                    @if (Request.IsPilot() && item.IsCurrentClubPilots())
-                    {
-                        <span style="display:none;">
-                            @using (Html.BeginForm("SetComment", "Flight"))
-                            {
-                                <input type="hidden" name="id" value="@item.FlightId" />
-                                <input type="text" name="comment" value="@item.Description" />
-                                <a href="#" class="setComment btn btn-primary">Gem</a>
-                            }
-                        </span>
-                    }
-                </td>
-                <td class="hidden-print">
-                    <div class="btn-group" style="white-space: nowrap;display: flex;">
-                        @if (User.IsPilot() && item.IsCurrentClubPilots())
-                        {
-                            if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
-                            {
-                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" }, "fa fa-pencil-square-o fa-fw")
-                            }
 
-                            @Html.ActionLink(" ", "Clone", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Clone") }, "fa fa-clipboard fa-fw")
-                            @Html.ActionLink(" ", "Duplicate", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button", title = _("Copy") }, "fa fa-files-o fa-fw")
-                            if (item.IsTrainingFlight)
-                            {
-                                var btnclass = $"btn btn-default {(Request.IsInstructor() || User.IsAdministrator() ? "" : "disabled")}";
-                                @Html.ActionLink(_(" "), "Edit", "TrainingLog", new { flightId = item.FlightId, }, new { @class = btnclass, type = "button", title = _("Training") }, "fa fa-graduation-cap fa-fw")
-                            }
-                        }
-                        else
-                        {
-                            @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default", type = "button" })
-                        }
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="tab-content">
+    <div id="all"     role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", Model, new ViewDataDictionary { { "tableclass", "datatable-all" } })</div>
+    <div id="pending" role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", pending, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+    <div id="flying"  role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", flying, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+    <div id="landed"  role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", landed, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+    <div id="deleted" role="tabpanel" class="tab-pane fade">@Html.Partial("PartialGrid", deleted, new ViewDataDictionary { { "tableclass", "datatable" } })</div>
+</div>
+
 
 @section scripts
 {
@@ -175,7 +45,36 @@
         var signalRflightsHub = $.connection.flightsHub;
 
         $(document).ready(function() {
-            $(".tablesorter").tablesorter();
+            configDataTables();
+
+            $('a[data-toggle="tab"]').each(function() {
+                var activeTab = sessionStorage.getItem('ActiveGridTab') ?? "all";
+                var tabIdPos = this.href.lastIndexOf('#');
+                if (tabIdPos >= 0) {
+                    var tabId = this.href.substring(tabIdPos + 1);
+                    if (tabId === activeTab) {
+                        $(this).addClass("active");
+                        $(this).parent().addClass("active");
+                    }
+                }
+            });
+            $('div.tab-pane').each(function() {
+                var activeTab = sessionStorage.getItem('ActiveGridTab') ?? "all";
+                var tabId = $(this).attr("id");
+                if (tabId === activeTab) {
+                    $(this).addClass("active");
+                    $(this).addClass("in");
+                }
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+                var tabIdPos = e.currentTarget.href.lastIndexOf('#');
+                if (tabIdPos >= 0) {
+                    var tabId = e.currentTarget.href.substring(tabIdPos + 1);
+                    sessionStorage.setItem('ActiveGridTab', tabId);
+                }
+            });
 
             $('a.editComment').click(function(e) {
                 e.preventDefault();
@@ -203,14 +102,48 @@
             signalRflightsHub.client.NotifyFlightChanged = function(flight, origin) {
                 reloadIfFlightPresentOnPage(flight);
             };
-            signalRflightsHub.client.NotifyFlightAdded = function (flight, origin, affectedLocations) {
+            signalRflightsHub.client.NotifyFlightAdded = function(flight, origin, affectedLocations) {
                 reloadIfLocationAffected(affectedLocations);
             };
 
 
         });
 
-        var reloadIfFlightPresentOnPage = function (flight) {
+        var configDataTables = function() {
+            $(".datatable").DataTable({
+                deferRender: true,
+                scrollY: true,
+                info: false,
+                lengthChange: false,
+                ordering: true,
+                order: [[4, "desc"]],
+                columnDefs: [
+                    { targets: [9,10], orderable: false },
+                    { targets: [0, 1], visible:false},
+                ],
+                searching: false,
+                paging: false,
+                language: { url: '@DataTableLocalizationUrl()' }
+            });
+            $(".datatable-all").DataTable({
+                deferRender: true,
+                scrollY: true,
+                info: false,
+                lengthChange: false,
+                ordering: true,
+                order: [[0, "asc"], [4, "desc"]],
+                columnDefs: [
+                    { targets: [9,10], orderable: false },
+                    { targets: [1], visible:false},
+                    { targets: [0], orderData:[1]}
+                ],
+                searching: false,
+                paging: false,
+                language: { url: '@DataTableLocalizationUrl()' }
+            });
+        };
+
+        var reloadIfFlightPresentOnPage = function(flight) {
             if ($(".setComment").is(":visible"))
                 return;
             $('.flightrow').each(function() {
