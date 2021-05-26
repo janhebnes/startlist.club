@@ -41,6 +41,8 @@ namespace FlightJournal.Web.Controllers
             db.AppliedExercises.RemoveRange(currentExercisesForThisFlight);
             db.SaveChanges();
 
+            var hasTrainingFlightData = false;
+
             if (flightData.exercises != null)
             {
                 foreach (var e in flightData.exercises)
@@ -59,6 +61,7 @@ namespace FlightJournal.Web.Controllers
                     }
 
                     db.AppliedExercises.AddOrUpdate(appliedExercise);
+                    hasTrainingFlightData = true;
                 }
             }
             db.SaveChanges();
@@ -99,6 +102,13 @@ namespace FlightJournal.Web.Controllers
             db.TrainingFlightAnnotations.AddOrUpdate(annotation);
 
             db.SaveChanges();
+
+            var flight = db.Flights.SingleOrDefault(f => f.FlightId == flightId);
+            if (flight != null && hasTrainingFlightData != flight.HasTrainingData)
+            {
+                flight.HasTrainingData = hasTrainingFlightData;
+                db.SaveChanges();
+            }
 
             var originator = Guid.Empty;
             Guid.TryParse(flightData.originator, out originator);
