@@ -15,7 +15,7 @@ namespace FlightJournal.Web
             System.Data.SqlClient.SqlAuthenticationProvider.SetProvider(System.Data.SqlClient.SqlAuthenticationMethod.ActiveDirectoryInteractive, new SqlAppAuthenticationProvider());
 
             ConfigureAuth(app);
-//            ConfigureOpenGliderNetworkFlightLogMonitor(app); // think this is obsolete ?
+            ConfigureOpenGliderNetworkFlightLogMonitor(app);
             ConfigureAprsDataListener();
             app.MapSignalR();
         }

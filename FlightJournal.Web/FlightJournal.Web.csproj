@@ -390,6 +390,10 @@
     <Compile Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.designer.cs">
       <DependentUpon>202105261501463_Add table for defining APRS listening areas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.cs" />
+    <Compile Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.designer.cs">
+      <DependentUpon>202105270805061_Add note field to ListenerArea.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
@@ -793,6 +797,7 @@
     <Content Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.sql" />
     <Content Include="Migrations\FlightContext\202104121845010_Add instructor field to AppliedExercise to track solo flights.sql" />
     <Content Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.sql" />
+    <Content Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1330,6 +1335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.resx">
       <DependentUpon>202105261501463_Add table for defining APRS listening areas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.resx">
+      <DependentUpon>202105270805061_Add note field to ListenerArea.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

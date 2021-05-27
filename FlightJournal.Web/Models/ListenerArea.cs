@@ -15,6 +15,7 @@ namespace FlightJournal.Web.Models
         // radius in km
         [Required]
         public double Radius { get; set; }
+        public string Note { get; set; }
         public bool IsValid => Radius > 0
                                && Longitude >= -180 && Longitude <= 180
                                && Latitude >= -90 && Latitude <= 90;
