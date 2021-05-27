@@ -17,6 +17,7 @@ namespace FlightJournal.Web
 #elif CFG_DEBUG
             ApplicationConfiguration.Config = AppConfig.CFG_DEBUG;
 #endif
+            log4net.Config.XmlConfigurator.Configure();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -8,18 +8,18 @@
     }
 }
 <div class="jumbotron">
-        @if (Request.LanguageCode() == "da")
-        {
-            <p>
-                <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/startlist.club">open source</a> projekt skabt for at håndtere flyveklubbers behov omkring startlister og logbøger for piloter og fly.
-            </p>
-        }
-        else // en
-        {
-            <p>
-                <strong>Startlist.club</strong> is an <a href="https://github.com/janhebnes/startlist.club">open source</a> project created for handling flightclub startlists and logbooks for pilots and plane.
-            </p>
-        }
+    @if (Request.LanguageCode() == "da")
+    {
+        <p>
+            <strong>Startlist.club</strong> er et <a href="https://github.com/janhebnes/startlist.club">open source</a> projekt skabt for at håndtere flyveklubbers behov omkring startlister og logbøger for piloter og fly.
+        </p>
+    }
+    else // en
+    {
+        <p>
+            <strong>Startlist.club</strong> is an <a href="https://github.com/janhebnes/startlist.club">open source</a> project created for handling flightclub startlists and logbooks for pilots and plane.
+        </p>
+    }
 </div>
 @if (Request.IsAuthenticated)
 {
@@ -32,11 +32,11 @@
         </div>
     </div>
 }
-<hr/>
+<hr />
 <div class="row">
-    
+
     @if (Request.LanguageCode() == "da")
-        {
+    {
         <div class="col-md-6">
             <h2>Projekt fælles startliste</h2>
             <p>
@@ -107,7 +107,7 @@
                 You can filter your search on club and maintain the same pilots and airstrips in all readings and statistics.
             </p>
             <p>
-                The system has three levels of users; a Club Pilot, an Editor and a Manager.<br/>
+                The system has three levels of users; a Club Pilot, an Editor and a Manager.<br />
                 <strong>The Club Pilot</strong> can register flights and edit them for 48 hours. All changes are logged in the correction history.<br />
                 <strong>The Editor</strong> can edit all flights after 48 hours, register new aircrafts and runways, and delete flights.<br />
                 <strong>The Manager</strong> has the same rights as the Editor and in addition, the Manager can edit registered club pilots profiles.<br />
@@ -123,7 +123,7 @@
             <p>The solution is based on ASP.Net MVC and Entity Framework with a Code First approach to the database. It is possible to contribute to the source code through Github. The contribution is included in the source code provided that it is of general value to all clubs, and does not comprise a specialisation which introduces inconveniences to other users.</p>
             <p>The basic idea is that the cashier of the club gets the flight-statistics once a month and club members helps editing comments for the flights continually.</p>
             <p>
-                <br/>
+                <br />
                 <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/startlist.club">
                     <span class="fa fa-github fa-3"></span> startlist.club on Github.com
                 </a>
@@ -131,7 +131,7 @@
             </p>
         </div>
     }
-    
+
     <div class="col-md-4">
         <p>
             <a class="btn btn-primary btn-lg" role="button" href="https://github.com/janhebnes/startlist.club">
@@ -170,7 +170,7 @@
 
                 <div id="fb-root"></div>
                 <script>
-                    (function(d, s, id) {
+                    (function (d, s, id) {
                         var js, fjs = d.getElementsByTagName(s)[0];
                         if (d.getElementById(id)) return;
                         js = d.createElement(s);
@@ -184,4 +184,27 @@
         }
     </div>
 </div>
- 
+<div class="row">
+    <div class="col-md-12">
+        <h3>Credits - use of 3rd party components</h3>
+        <table style="width: 100%; border: 1px solid gray;">
+            <thead>
+            <tr>
+                <th>Component</th>
+                <th>Copyright</th>
+                <th>License</th>
+                <th>Link</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>skyHop.FlightAnalysis</td>
+                    <td>Copyright Corstian Boerman</td>
+                    <td><a href="https://github.com/skyhop/FlightAnalysis/blob/master/LICENSE">GNU GPL-3.0</a></td>
+                    <td><a href="https://github.com/skyhop/FlightAnalysis">https://github.com/skyhop/FlightAnalysis</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>... and several other open-source public-domain packages. Please see the source if you need details.</p>
+    </div>
+</div>
