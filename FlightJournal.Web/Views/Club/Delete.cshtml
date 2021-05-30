@@ -34,6 +34,16 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Location)
     </div>
+    
+    <div class="display-label">@Html.LabelFor(model => model.Visible)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Visible)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UseAPRSTakeoffAndLanding)
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

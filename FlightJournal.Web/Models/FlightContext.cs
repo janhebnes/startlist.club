@@ -42,6 +42,8 @@ namespace FlightJournal.Web.Models
         public DbSet<CommentaryType> CommentaryTypes { get; set; }
         public DbSet<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
         public DbSet<Grading> Gradings { get; set; }
+        public DbSet<ListenerArea> ListenerAreas { get; set; }
+
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
         /// </summary>

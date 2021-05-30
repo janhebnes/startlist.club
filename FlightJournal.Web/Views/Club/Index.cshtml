@@ -29,6 +29,9 @@
         <th>
             @Html.LabelFor(model => Model.FirstOrDefault().Visible)
         </th>
+        <th>
+            @Html.LabelFor(model => Model.FirstOrDefault().UseAPRSTakeoffAndLanding)
+        </th>
         <th></th>
     </tr>
 
@@ -52,6 +55,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Visible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UseAPRSTakeoffAndLanding)
             </td>
             <td>
                 @if (ViewBag.AllowEdit) {
