@@ -24,7 +24,8 @@ namespace FlightJournal.Web.Aprs
 
         private void OnAircraftTakeoff(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower());
+            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
+                                                     || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower()); // need comp. id due to non-stringent registrations...
             if (p == null)
             {
                 Log.Debug($"{nameof(AircraftEventHandler)}: starting {e.Aircraft} not in DB - ignored");
@@ -60,7 +61,8 @@ namespace FlightJournal.Web.Aprs
 
         private void OnAircraftLanding(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower());
+            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
+                                                     || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower());
             if (p == null)
             {
                 Log.Debug($"{nameof(AircraftEventHandler)}: landing {e.Aircraft} not in DB - ignored");
