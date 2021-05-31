@@ -32,7 +32,7 @@ namespace FlightJournal.Web.Aprs
                 return;
             }
 
-            var flights = _db.Flights.Where(f =>  !f.Deleted.HasValue && f.LastUpdated.Date == DateTime.Today && f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted != null && f.LastUpdated.Date == DateTime.Today && f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
             if (flights.Count() == 1)
             {
                 // we're assuming that the plane takes off from the location specified in the flight.
@@ -69,7 +69,7 @@ namespace FlightJournal.Web.Aprs
                 return;
             }
 
-            var flights = _db.Flights.Where(f => !f.Deleted.HasValue && f.Plane.PlaneId == p.PlaneId && f.Departure.HasValue && f.Departure.Value.Date == DateTime.Today && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted != null && f.Plane.PlaneId == p.PlaneId && f.Departure!=null && f.Departure.Value.Date == DateTime.Today && f.Landing == null);
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
