@@ -69,7 +69,7 @@ namespace FlightJournal.Web.Aprs
                 return;
             }
 
-            var flights = _db.Flights.Where(f => f.Deleted != null && f.Plane.PlaneId == p.PlaneId && f.Departure!=null && f.Departure.Value.Date == DateTime.Today && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted == null && f.Plane.PlaneId == p.PlaneId && f.Departure!=null && f.Departure.Value.Date == DateTime.Today && f.Landing == null);
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
