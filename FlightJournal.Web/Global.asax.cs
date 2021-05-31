@@ -18,6 +18,8 @@ namespace FlightJournal.Web
             ApplicationConfiguration.Config = AppConfig.CFG_DEBUG;
 #endif
             log4net.Config.XmlConfigurator.Configure();
+            log4net.GlobalContext.Properties["CONFIG"] = ApplicationConfiguration.Config;
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
