@@ -39,7 +39,7 @@ namespace FlightJournal.Web.Aprs
                 // Check if any club at that location is using APRSTakeoffAndLanding
 
                 var flight = flights.Single();
-                Log.Information($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time}");
+                Log.Information($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time:o}");
                 if (_db.Clubs.Any(c => c.LocationId == flight.StartedFromId && c.UseAPRSTakeoffAndLanding))
                 {
                     flight.Departure = e.Time ?? DateTime.Now;
@@ -73,7 +73,7 @@ namespace FlightJournal.Web.Aprs
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
-                Log.Information($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time}");
+                Log.Information($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time:o}");
                 if (_db.Clubs.Any(c => c.LocationId == flight.LandedOnId && c.UseAPRSTakeoffAndLanding))
                 {
                     flight.Landing = e.Time ?? DateTime.Now;

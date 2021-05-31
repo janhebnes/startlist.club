@@ -87,7 +87,7 @@ namespace FlightJournal.Web.Aprs
                     {
                         var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
                             e.AprsMessage.Callsign,
-                            e.AprsMessage.ReceivedDate,
+                            e.AprsMessage.ReceivedDate.ToUniversalTime(),
                             e.AprsMessage.Latitude.ToDegreesFixed(),
                             e.AprsMessage.Longitude.ToDegreesFixed(),
                             e.AprsMessage.Altitude.FeetAboveSeaLevel,
@@ -116,7 +116,7 @@ namespace FlightJournal.Web.Aprs
         {
             var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).First();
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
-            Log.Debug($"{nameof(AprsListener)}: {lastPositionUpdate.TimeStamp}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
+            Log.Debug($"{nameof(AprsListener)}: {lastPositionUpdate.TimeStamp:o}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
         }
         private void OnContactLost(object sender, OnContextDisposedEventArgs e)
         {
@@ -129,7 +129,7 @@ namespace FlightJournal.Web.Aprs
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
             var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
-            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time}");
+            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
             OnAircraftTakeoff?.Invoke(this, ae);
         }
 
@@ -138,7 +138,7 @@ namespace FlightJournal.Web.Aprs
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
             var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
-            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time}");
+            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
             OnAircraftLanding?.Invoke(this, ae);
         }
 
