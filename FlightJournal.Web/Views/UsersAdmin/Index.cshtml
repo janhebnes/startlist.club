@@ -9,29 +9,30 @@
 <p>
     @Html.ActionLink(_("Create New"), "Create", null, new { @class = "btn btn-default"})
 </p>
-<table class="tablesorter table table-striped table-hover table-condensed">
+<table class="table table-striped table-hover table-condensed" id="userstable">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pilot.Club)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pilot)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastLogonTimeStamp)
-            </th>
-            <th>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pilot.Club)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pilot)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastLogonTimeStamp)
+        </th>
+        <th>
 
-            </th>
-        </tr>
+        </th>
+    </tr>
     </thead>
+    <tbody>
         @foreach (var item in Model.OrderByDescending(d => d.LastLogonTimeStamp))
         {
 <tr>
@@ -56,9 +57,10 @@
     }
     else
     {
-        <td colspan="2">
+        <td>
             @_("User not bound to pilot")
         </td>
+        <td></td>
     }
     <td>
         @Html.DisplayFor(modelItem => item.LastLogonTimeStamp)
@@ -70,12 +72,26 @@
     </td>
 </tr>
         }
+    </tbody>
 </table>
 @section scripts
 {
     <script type="text/javascript">
     $(document).ready(function () {
-        $(".tablesorter").tablesorter();
+        $('#userstable').DataTable({
+            deferRender: true,
+            scrollY: true,
+            info: true,
+            lengthChange: true,
+            ordering: true,
+            columnDefs: [
+                { targets: [5], orderable: false },
+            ],
+            searching: true,
+            pageLength: 25,
+            pagingType: "full_numbers",
+            language: { url: '@DataTableLocalizationUrl()'}
+        });
     });
     </script>
 }
