@@ -24,14 +24,15 @@ namespace FlightJournal.Web.Aprs
 
         private void OnAircraftTakeoff(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower());
+            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
+                                                     || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower()); // need comp. id due to non-stringent registrations...
             if (p == null)
             {
                 Log.Debug($"{nameof(AircraftEventHandler)}: starting {e.Aircraft} not in DB - ignored");
                 return;
             }
 
-            var flights = _db.Flights.Where(f => f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted == null && f.LastUpdated.Date == DateTime.Today && f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
             if (flights.Count() == 1)
             {
                 // we're assuming that the plane takes off from the location specified in the flight.
@@ -60,14 +61,15 @@ namespace FlightJournal.Web.Aprs
 
         private void OnAircraftLanding(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower());
+            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
+                                                     || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower());
             if (p == null)
             {
                 Log.Debug($"{nameof(AircraftEventHandler)}: landing {e.Aircraft} not in DB - ignored");
                 return;
             }
 
-            var flights = _db.Flights.Where(f => f.Plane.PlaneId == p.PlaneId && f.Departure != null && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted == null && f.Plane.PlaneId == p.PlaneId && f.Departure!=null && f.Departure.Value.Date == DateTime.Today && f.Landing == null);
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();
