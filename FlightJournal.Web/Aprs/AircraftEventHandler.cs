@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Logging;
 using FlightJournal.Web.Models;
@@ -24,7 +25,11 @@ namespace FlightJournal.Web.Aprs
 
         private void OnAircraftTakeoff(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
+            if (e?.Aircraft == null)
+                return;
+
+            var planes = _db.Planes.ToList();
+            var p = planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
                                                      || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower()); // need comp. id due to non-stringent registrations...
             if (p == null)
             {
@@ -32,7 +37,9 @@ namespace FlightJournal.Web.Aprs
                 return;
             }
 
-            var flights = _db.Flights.Where(f => f.Deleted == null && f.LastUpdated.Date == DateTime.Today && f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted == null && f.Plane.PlaneId == p.PlaneId && f.Departure == null && f.Landing == null).ToList();
+            flights = flights.Where(f => f.LastUpdated.Date == DateTime.Today).ToList(); // LINQ to Entities can't do this...
+
             if (flights.Count() == 1)
             {
                 // we're assuming that the plane takes off from the location specified in the flight.
@@ -61,7 +68,10 @@ namespace FlightJournal.Web.Aprs
 
         private void OnAircraftLanding(object sender, AircraftEvent e)
         {
-            Plane p = _db.Planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
+            if (e?.Aircraft == null)
+                return;
+            var planes = _db.Planes.ToList();
+            var p = planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
                                                      || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower());
             if (p == null)
             {
@@ -69,7 +79,8 @@ namespace FlightJournal.Web.Aprs
                 return;
             }
 
-            var flights = _db.Flights.Where(f => f.Deleted == null && f.Plane.PlaneId == p.PlaneId && f.Departure!=null && f.Departure.Value.Date == DateTime.Today && f.Landing == null);
+            var flights = _db.Flights.Where(f => f.Deleted == null && f.Plane.PlaneId == p.PlaneId && f.Departure!=null && f.Landing == null).ToList();
+            flights = flights.Where(f => f.Departure.HasValue && f.Departure.Value.Date == DateTime.Today).ToList(); // LINQ to Entities can't do this...
             if (flights.Count() == 1)
             {
                 var flight = flights.Single();

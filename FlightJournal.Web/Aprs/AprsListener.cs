@@ -130,7 +130,14 @@ namespace FlightJournal.Web.Aprs
 
             var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
             Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
-            OnAircraftTakeoff?.Invoke(this, ae);
+            try
+            {
+                OnAircraftTakeoff?.Invoke(this, ae);
+            }
+            catch (Exception ex)
+            {
+                Log.Exception($"{nameof(AprsListener)}",  ex);
+            }
         }
 
         private void OnLanding(object sender, OnLandingEventArgs e)
@@ -139,7 +146,14 @@ namespace FlightJournal.Web.Aprs
 
             var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
             Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
-            OnAircraftLanding?.Invoke(this, ae);
+            try{
+                OnAircraftLanding?.Invoke(this, ae);
+            }
+            catch (Exception ex)
+            {
+                Log.Exception($"{nameof(AprsListener)}", ex);
+            }
+
         }
 
         public void Start()
