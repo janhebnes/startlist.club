@@ -200,7 +200,7 @@ namespace FlightJournal.Web.Models
         {
             get
             {
-                return "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde unionsnr;Bagsæde medlemsnr;Bagsæde navn;Bagsæde unionsnr;Betaler medlemsnr;Betaler navn;Betaler unionsnr;Startet;Landed;Flyvetid;Tacho start;Tacho slut;Tacho;Note;Km;Starttype;Start fra;Landed på;Klub;Sidst opdateret;Sidst opdateret af" + Environment.NewLine;
+                return "Dato;Fly;Forsæde medlemsnr;Forsæde navn;Forsæde unionsnr;Bagsæde medlemsnr;Bagsæde navn;Bagsæde unionsnr;Betaler medlemsnr;Betaler navn;Betaler unionsnr;Startet;Landed;Flyvetid;Tacho start;Tacho slut;Tacho;Note;Km;Starttype;Start fra;Landed på;Klub;Sidst opdateret;Sidst opdateret af;Antal landinger" + Environment.NewLine;
             }
         }
 
@@ -208,7 +208,7 @@ namespace FlightJournal.Web.Models
         {
                 return
                 string.Format(
-                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24}" + Environment.NewLine,
+                    "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24};{25}" + Environment.NewLine,
                     this.Date.ToShortDateString(),
                     this.Plane,
                     this.Pilot != null ? this.Pilot.MemberId : string.Empty,
@@ -233,7 +233,8 @@ namespace FlightJournal.Web.Models
                     this.LandedOn,
                     this.Pilot != null ? this.Pilot.Club.ShortName : string.Empty,
                     this.LastUpdated,
-                    this.LastUpdatedBy);
+                    this.LastUpdatedBy,
+                    this.LandingCount);
             
         }
 
