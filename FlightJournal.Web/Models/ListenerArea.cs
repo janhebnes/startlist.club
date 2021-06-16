@@ -23,7 +23,7 @@ namespace FlightJournal.Web.Models
         public override string ToString()
         {
             return
-                $"({Latitude.ToString(CultureInfo.InvariantCulture)}, {Longitude.ToString(CultureInfo.InvariantCulture)}), radius {Radius.ToString(CultureInfo.InvariantCulture)} km";
+                $"({Latitude.ToString(CultureInfo.InvariantCulture)}, {Longitude.ToString(CultureInfo.InvariantCulture)}), radius {Radius.ToString(CultureInfo.InvariantCulture)} km ({Note})";
         }
     }
 
