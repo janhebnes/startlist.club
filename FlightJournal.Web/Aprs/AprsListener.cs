@@ -175,7 +175,7 @@ namespace FlightJournal.Web.Aprs
             var h = latlong.Vector;
             if (h.Minutes > 60)
             {
-                var m = h.Minutes / 100;
+                var m = h.Minutes / 100.0;
 
                 return (double)h.Degrees + (double)m / 60.0;
 
