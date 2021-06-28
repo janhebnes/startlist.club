@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
@@ -98,6 +99,12 @@ namespace FlightJournal.Web.Controllers
 
             db.TrainingFlightAnnotations.AddOrUpdate(annotation);
 
+            var flight = db.Flights.SingleOrDefault(f => f.FlightId == flightId);
+            if (flight != null)
+            {
+                flight.CandidateForExport = true;
+                this.db.Entry(flight).State = EntityState.Modified;
+            }
             db.SaveChanges();
 
             var originator = Guid.Empty;

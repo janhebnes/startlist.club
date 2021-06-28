@@ -17,6 +17,7 @@ namespace FlightJournal.Web
             ConfigureAuth(app);
             ConfigureOpenGliderNetworkFlightLogMonitor(app);
             ConfigureAprsDataListener();
+            ConfigureAutoExport();
             app.MapSignalR();
         }
     }

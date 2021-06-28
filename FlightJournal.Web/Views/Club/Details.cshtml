@@ -43,6 +43,11 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.UseAPRSTakeoffAndLanding)
     </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.AutoExportConfigName)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AutoExportConfigName)
+    </div>
 </fieldset>
 <p>
     @if (ViewBag.AllowEdit)

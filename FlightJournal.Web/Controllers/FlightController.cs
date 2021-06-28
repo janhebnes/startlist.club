@@ -124,6 +124,8 @@ namespace FlightJournal.Web.Controllers
             if ((flight != null) && (flight.Landing == null))
             {
                 flight.Landing = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
+                flight.CandidateForExport = true;
+
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
                 FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
@@ -147,6 +149,8 @@ namespace FlightJournal.Web.Controllers
             if ((flight != null) && (flight.Landing == null))
             {
                 flight.Departure = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
+                flight.CandidateForExport = true;
+
                 this.db.Entry(flight).State = EntityState.Modified;
                 this.db.SaveChanges();
                 FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
@@ -266,6 +270,7 @@ namespace FlightJournal.Web.Controllers
             if (isEditable)
             {
                 flight.Description = comment;
+                flight.CandidateForExport = true;
                 this.db.SaveChanges();
                 FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
             }
@@ -366,6 +371,8 @@ namespace FlightJournal.Web.Controllers
                 this.db.Entry(flight).State = EntityState.Modified;
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
+                flight.CandidateForExport = true;
+
                 this.db.SaveChanges();
 
                 FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
@@ -432,6 +439,7 @@ namespace FlightJournal.Web.Controllers
                 flight.Deleted = DateTime.Now;
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
+                flight.CandidateForExport = true;
                 this.db.SaveChanges();
 
                 FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
@@ -458,6 +466,7 @@ namespace FlightJournal.Web.Controllers
                 flight.Deleted = null;
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
+                flight.CandidateForExport = true;
                 this.db.SaveChanges();
 
                 FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);

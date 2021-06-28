@@ -50,6 +50,7 @@ namespace FlightJournal.Web.Aprs
                 if (_db.Clubs.Any(c => c.LocationId == flight.StartedFromId && c.UseAPRSTakeoffAndLanding))
                 {
                     flight.Departure = e.Time ?? DateTime.Now;
+                    flight.CandidateForExport = true;
                     _db.Entry(flight).State = EntityState.Modified;
                     _db.SaveChanges();
                     FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
@@ -88,6 +89,8 @@ namespace FlightJournal.Web.Aprs
                 if (_db.Clubs.Any(c => c.LocationId == flight.LandedOnId && c.UseAPRSTakeoffAndLanding))
                 {
                     flight.Landing = e.Time ?? DateTime.Now;
+                    flight.CandidateForExport = true;
+
                     _db.Entry(flight).State = EntityState.Modified; 
                     _db.SaveChanges();
                     FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);

@@ -29,9 +29,11 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Contact information")]
         public string ContactInformation { get; set; }
 
-        [LocalizedDisplayName("Use APRS-based registration of takeoff and landing")]
+        [LocalizedDisplayName("FLARM autostart/landing")]
         public bool UseAPRSTakeoffAndLanding { get; set; }
 
+        [LocalizedDisplayName("Config for automatic export of flights")]
+        public string AutoExportConfigName { get; set; }
 
         [XmlIgnore]
         public virtual ICollection<StartType> StartTypes { get; set; }

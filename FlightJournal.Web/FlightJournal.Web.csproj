@@ -359,11 +359,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SqlAppAuthenticationProvider.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\Startup.AutoExport.cs" />
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Aprs\AircraftCatalog.cs" />
     <Compile Include="Aprs\AircraftEventHandler.cs" />
     <Compile Include="Aprs\AprsListener.cs" />
     <Compile Include="Aprs\TokenSleeper.cs" />
+    <Compile Include="Extensions\TrainingFlightExtensions.cs" />
+    <Compile Include="FlightExport\AutoExporter.cs" />
     <Compile Include="Configuration\AutoExport.cs" />
     <Compile Include="Configuration\AutoExportConfigurationSection.cs" />
     <Compile Include="Configuration\Demo.cs" />
@@ -375,6 +378,7 @@
     <Compile Include="Controllers\CommentaryAdminController.cs" />
     <Compile Include="Controllers\GradingAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
+    <Compile Include="FlightExport\FlightExporter.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.cs" />
     <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.designer.cs">
@@ -395,6 +399,10 @@
     <Compile Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.cs" />
     <Compile Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.designer.cs">
       <DependentUpon>202105270805061_Add note field to ListenerArea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\202106281540079_Adding fields to support automatic export of flight data.cs" />
+    <Compile Include="Migrations\FlightContext\202106281540079_Adding fields to support automatic export of flight data.designer.cs">
+      <DependentUpon>202106281540079_Adding fields to support automatic export of flight data.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
@@ -800,6 +808,7 @@
     <Content Include="Migrations\FlightContext\202104121845010_Add instructor field to AppliedExercise to track solo flights.sql" />
     <Content Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.sql" />
     <Content Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.sql" />
+    <Content Include="Migrations\FlightContext\202106281540079_Adding fields to support automatic export of flight data.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1340,6 +1349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.resx">
       <DependentUpon>202105270805061_Add note field to ListenerArea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202106281540079_Adding fields to support automatic export of flight data.resx">
+      <DependentUpon>202106281540079_Adding fields to support automatic export of flight data.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

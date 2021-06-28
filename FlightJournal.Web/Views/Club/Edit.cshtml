@@ -65,18 +65,26 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)
+            @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding, new { Title = "Use APRS-based registration of takeoff and landing" })
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
             @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AutoExportConfigName, new { Title = "Name of configuration to use for automatic export of flights. Ask administrator!" } )
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("AutoExportConfigName", String.Empty)
+            @Html.ValidationMessageFor(model => model.AutoExportConfigName)
+        </div>
 
-        <p>
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </p>
+
     </fieldset>
+    <div class="right">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
 }
 
 <div>

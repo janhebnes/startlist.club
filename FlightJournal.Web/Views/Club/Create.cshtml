@@ -11,66 +11,74 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Club</legend>
+<fieldset>
+    <legend>Club</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ShortName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ShortName)
-            @Html.ValidationMessageFor(model => model.ShortName)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShortName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShortName)
+        @Html.ValidationMessageFor(model => model.ShortName)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Website)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Website)
-            @Html.ValidationMessageFor(model => model.Website)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ContactInformation)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ContactInformation)
-            @Html.ValidationMessageFor(model => model.ContactInformation)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Website)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Website)
+        @Html.ValidationMessageFor(model => model.Website)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.LocationId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("LocationId")
-            @Html.ValidationMessageFor(model => model.LocationId)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Visible)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Visible)
-            @Html.ValidationMessageFor(model => model.Visible)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
-            @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
-        </div>
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ContactInformation)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ContactInformation)
+        @Html.ValidationMessageFor(model => model.ContactInformation)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.LocationId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("LocationId")
+        @Html.ValidationMessageFor(model => model.LocationId)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Visible)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Visible)
+        @Html.ValidationMessageFor(model => model.Visible)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding, new { Title = "Use APRS-based registration of takeoff and landing" })
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
+        @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AutoExportConfigName, new { Title = "Name of configuration to use for automatic export of flights. Ask administrator!" })
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("AutoExportConfigName", String.Empty)
+        @Html.ValidationMessageFor(model => model.AutoExportConfigName)
+    </div>
+    <p>
+        <input type="submit" value="Create" />
+    </p>
+</fieldset>
 }
 
 <div>

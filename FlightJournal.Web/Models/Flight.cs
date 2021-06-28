@@ -193,6 +193,11 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Last updated by")]
         public string LastUpdatedBy { get; set; }
 
+        /// <summary>
+        ///  'dirty' flag for use when selecting data for export
+        /// </summary>
+        public bool CandidateForExport { get; set; }
+
         public int RecordKey { get; set; }
         public bool IsTrainingFlight => true; //TODO: figure out how to derive this from db
 

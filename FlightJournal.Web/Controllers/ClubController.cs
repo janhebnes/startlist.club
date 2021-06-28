@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Channels;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -201,6 +202,9 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Create()
         {
             this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name");
+            var options = Settings.AutoExports.Select(x => new { Name = x.Name });
+            ViewBag.AutoExportConfigName = new SelectList(options, "Name", "Name", "");
+
             return View();
         }
 
@@ -226,6 +230,8 @@ namespace FlightJournal.Web.Controllers
         {
             Club club = db.Clubs.Find(id);
             this.ViewBag.LocationId = new SelectList(this.db.Locations.OrderBy(p => p.Name), "LocationId", "Name", (club == null) ? (object)null : club.LocationId);
+            var options = Settings.AutoExports.Select(x => new{Name = x.Name});
+            ViewBag.AutoExportConfigName = new SelectList(options, "Name", "Name", club.AutoExportConfigName);
             return View(club);
         }
 
