@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
+using System.Linq;
+using System.Net.NetworkInformation;
+using FlightJournal.Web.Logging;
+using Newtonsoft.Json;
+
 namespace FlightJournal.Web.Configuration
 {
     public static class Settings
@@ -16,6 +19,16 @@ namespace FlightJournal.Web.Configuration
                 var settings = ConfigurationManager.GetSection("serviceCredentials") as ServiceCredentialsConfigurationSection;
                 if (settings == null)
                     throw new ConfigurationErrorsException("Missing ServiceCredentials section");
+                return settings;
+            }
+        }
+
+        private static AutoExportConfigurationSection AutoExport
+        {
+            get
+            {
+                /// Custom Config section for allowing hiding of the values 
+                var settings = ConfigurationManager.GetSection("autoExportSection") as AutoExportConfigurationSection ?? new AutoExportConfigurationSection();
                 return settings;
             }
         }
@@ -183,6 +196,44 @@ namespace FlightJournal.Web.Configuration
 
                 var smtpSection = (System.Net.Configuration.SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
                 return smtpSection.From;
+            }
+        }
+
+
+        public static IEnumerable<AutoExport> AutoExports
+        {
+            get
+            {
+                try
+                {
+                    var azureSetting = ConfigurationManager.AppSettings["AutoExport"];
+                    if (azureSetting != null)
+                    {
+                        var res = JsonConvert.DeserializeObject<List<AutoExport>>(azureSetting);
+                        return res;
+                    }
+                    else
+                    {
+                        var section = ConfigurationManager.GetSection("autoExportSection") as AutoExportConfigurationSection;
+                        var res = new List<AutoExport>();
+                        foreach (var x in section.AutoExports)
+                        {
+                            var aece = x as AutoExportConfigElement;
+                            if (aece != null)
+                            {
+                                var export = new AutoExport { Name = aece.Name, Username = aece.Username, Password = aece.Password, TokenUrl = aece.TokenUrl, PostUrl = aece.PostUrl, IntervalInMinutes = aece.IntervalMinutes};
+                                res.Add(export);
+                            }
+                        }
+
+                        return res;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Warning($"Unable to parse azure setting for autoexport: {e.Message}");
+                }
+                return Enumerable.Empty<AutoExport>();
             }
         }
     }

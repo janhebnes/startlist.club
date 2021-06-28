@@ -364,6 +364,8 @@
     <Compile Include="Aprs\AircraftEventHandler.cs" />
     <Compile Include="Aprs\AprsListener.cs" />
     <Compile Include="Aprs\TokenSleeper.cs" />
+    <Compile Include="Configuration\AutoExport.cs" />
+    <Compile Include="Configuration\AutoExportConfigurationSection.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />

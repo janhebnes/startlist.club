@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using FlightJournal.Web.Aprs;
+﻿using FlightJournal.Web.Aprs;
 using FlightJournal.Web.Logging;
 using FlightJournal.Web.Models;
 
@@ -21,7 +20,6 @@ namespace FlightJournal.Web
             _aircraftEventHandler = new AircraftEventHandler(_aprsListener, db);
 
             _aprsListener.Start();
-                      
         }
     }
 }
