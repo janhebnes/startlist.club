@@ -3,13 +3,13 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddHasTrainingDatafieldtoFlight : DbMigration
+    public partial class AddFlightsHasTrainingData : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.Flights", "HasTrainingData", c => c.Boolean(false, false));
+            AddColumn("dbo.Flights", "HasTrainingData", c => c.Boolean(nullable: false));
         }
-
+        
         public override void Down()
         {
             DropColumn("dbo.Flights", "HasTrainingData");

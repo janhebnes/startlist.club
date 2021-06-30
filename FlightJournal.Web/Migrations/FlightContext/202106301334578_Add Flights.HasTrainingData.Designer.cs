@@ -7,18 +7,18 @@ namespace FlightJournal.Web.Migrations.FlightContext
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class AddHasTrainingDatafieldtoFlight : IMigrationMetadata
+    public sealed partial class AddFlightsHasTrainingData : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddHasTrainingDatafieldtoFlight));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddFlightsHasTrainingData));
         
         string IMigrationMetadata.Id
         {
-            get { return "202105261056416_Add HasTrainingData field to Flight"; }
+            get { return "202106301334578_Add Flights.HasTrainingData"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target
