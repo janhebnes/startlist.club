@@ -134,6 +134,7 @@
         bool enableTachoColumn = Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId).ToList().Sum(s => s.Tacho) > 0;
         bool enableNoteColumn = Model.ClubFlights.Any(d => d.StartedFromId == location.LocationId)
             && Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId).Sum(s => (s.Description + "").Length) > 0;
+        bool enableTrainingFlightColumn = true;
 
         <a name="@location.LocationId"></a>
         <h2>
@@ -174,6 +175,12 @@
                     {
                         <th class="hidden-xs text-right">
                             @Html.DisplayNameFor(model => headerMetadata.Description) &nbsp;&nbsp;
+                        </th>
+                    }
+                    @if (enableTrainingFlightColumn)
+                    {
+                        <th>
+                            @_("Udd")&nbsp;&nbsp;
                         </th>
                     }
                     <th class="hidden-print">
@@ -240,6 +247,15 @@
                         {
                             <td @style class="hidden-xs">
                                 @Html.DisplayFor(modelItem => item.Description, "Description")
+                            </td>
+                        }
+                        @if (enableTrainingFlightColumn)
+                        {
+                            <td @style>
+                                @if (item.HasTrainingData)
+                                {
+                                    <span class="text-center">X</span>
+                                }
                             </td>
                         }
                         <td class="hidden-print text-right">

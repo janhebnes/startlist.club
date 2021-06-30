@@ -297,6 +297,9 @@ td.valign-top {
     z-index: 9999;
 }
 
+.withtrainingdata {
+    border: 2px solid yellowgreen;
+}
 
 /* fix for location of sorting arrows for dataTable  */
 table.dataTable thead .sorting {

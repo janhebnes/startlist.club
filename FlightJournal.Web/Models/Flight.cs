@@ -194,7 +194,7 @@ namespace FlightJournal.Web.Models
         public string LastUpdatedBy { get; set; }
 
         public int RecordKey { get; set; }
-        public bool IsTrainingFlight => true; //TODO: figure out how to derive this from db
+        public bool HasTrainingData { get; set; } 
 
         public static string CsvHeaders
         {
