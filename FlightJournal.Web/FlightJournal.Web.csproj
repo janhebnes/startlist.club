@@ -394,10 +394,9 @@
     <Compile Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.designer.cs">
       <DependentUpon>202105270805061_Add note field to ListenerArea.cs</DependentUpon>
     </Compile>
-
-    <Compile Include="Migrations\FlightContext\202105261056416_Add HasTrainingData field to Flight.cs" />
-    <Compile Include="Migrations\FlightContext\202105261056416_Add HasTrainingData field to Flight.designer.cs">
-      <DependentUpon>202105261056416_Add HasTrainingData field to Flight.cs</DependentUpon>
+    <Compile Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.cs" />
+    <Compile Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.designer.cs">
+      <DependentUpon>202106301334578_Add Flights.HasTrainingData.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
@@ -803,6 +802,7 @@
     <Content Include="Migrations\FlightContext\202104121845010_Add instructor field to AppliedExercise to track solo flights.sql" />
     <Content Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.sql" />
     <Content Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.sql" />
+    <Content Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1344,8 +1344,8 @@
     <EmbeddedResource Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.resx">
       <DependentUpon>202105270805061_Add note field to ListenerArea.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\FlightContext\202105261056416_Add HasTrainingData field to Flight.resx">
-      <DependentUpon>202105261056416_Add HasTrainingData field to Flight.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.resx">
+      <DependentUpon>202106301334578_Add Flights.HasTrainingData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
