@@ -359,6 +359,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SqlAppAuthenticationProvider.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\Startup.AutoExporter.cs" />
     <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="Aprs\AircraftCatalog.cs" />
     <Compile Include="Aprs\AircraftEventHandler.cs" />
@@ -368,11 +369,18 @@
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
+    <Compile Include="Controllers\ExportRecipientAdminController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
     <Compile Include="Controllers\CommentaryAdminController.cs" />
     <Compile Include="Controllers\GradingAdminController.cs" />
     <Compile Include="Controllers\ManouvreAdminController.cs" />
+    <Compile Include="FlightExport\AutoExporter.cs" />
+    <Compile Include="FlightExport\FlightExporter.cs" />
+    <Compile Include="FlightExport\FlightExporterAuthenticator.cs" />
+    <Compile Include="FlightExport\FlightExporterUploader.cs" />
+    <Compile Include="FlightExport\TrainingFlightExportFormatter.cs" />
+    <Compile Include="FlightExport\FlightExportModelCreator.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.cs" />
     <Compile Include="Migrations\FlightContext\202103201755056_Added export id fieds to training models.designer.cs">
@@ -398,6 +406,15 @@
     <Compile Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.designer.cs">
       <DependentUpon>202106301334578_Add Flights.HasTrainingData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202107051830307_Add table for export recipients.cs" />
+    <Compile Include="Migrations\FlightContext\202107051830307_Add table for export recipients.designer.cs">
+      <DependentUpon>202107051830307_Add table for export recipients.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\202107051911406_Let clubs use export recipient.cs" />
+    <Compile Include="Migrations\FlightContext\202107051911406_Let clubs use export recipient.designer.cs">
+      <DependentUpon>202107051911406_Let clubs use export recipient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ExportRecipient.cs" />
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
@@ -803,6 +820,8 @@
     <Content Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.sql" />
     <Content Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.sql" />
     <Content Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.sql" />
+    <Content Include="Migrations\FlightContext\202107051830307_Add table for export recipients.sql" />
+    <Content Include="Migrations\FlightContext\202107051911406_Let clubs use export recipient.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1274,6 +1293,15 @@
     <Content Include="Views\TrainingStatus\PilotStatusDetails.cshtml" />
     <Content Include="Views\TrainingLog\SelectTrainingProgram.cshtml" />
     <Content Include="Views\Flight\PartialGrid.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\_PartialBackToList.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\_PartialExportRecipient.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\_PartialExportRecipientReadonly.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\Create.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\Delete.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\DeleteLocked.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\Details.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\Edit.cshtml" />
+    <Content Include="Views\ExportRecipientAdmin\Index.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1346,6 +1374,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.resx">
       <DependentUpon>202106301334578_Add Flights.HasTrainingData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202107051830307_Add table for export recipients.resx">
+      <DependentUpon>202107051830307_Add table for export recipients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202107051911406_Let clubs use export recipient.resx">
+      <DependentUpon>202107051911406_Let clubs use export recipient.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

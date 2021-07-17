@@ -1,0 +1,15 @@
+﻿@model FlightJournal.Web.Models.ExportRecipient
+
+@{
+    ViewBag.Title = _("Details");
+}
+
+<h2>@_("Details")</h2>
+
+<fieldset>
+    @Html.Partial("_PartialExportRecipientReadonly", Model)
+</fieldset>
+<p>
+    @Html.ActionLink(_("Edit"), "Edit", "ExportRecipientAdmin", new { id = Model.ExportRecipientId }, new { @class = "btn btn-default" })
+    @Html.Partial("_PartialBackToList")
+</p>

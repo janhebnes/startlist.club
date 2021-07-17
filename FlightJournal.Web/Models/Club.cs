@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
@@ -32,6 +33,8 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Use APRS-based registration of takeoff and landing")]
         public bool UseAPRSTakeoffAndLanding { get; set; }
 
+        public int? ExportRecipientId { get; set; }
+        public virtual ExportRecipient ExportRecipient { get; set; }
 
         [XmlIgnore]
         public virtual ICollection<StartType> StartTypes { get; set; }

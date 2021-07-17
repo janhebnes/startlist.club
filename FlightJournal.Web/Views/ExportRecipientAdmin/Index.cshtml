@@ -1,0 +1,66 @@
+﻿@using FlightJournal.Web.Extensions
+@model IEnumerable<FlightJournal.Web.Models.ExportRecipient>
+@{
+    ViewBag.Title = _("Export recipients");
+}
+
+<h2>@_("Export recipients")</h2>
+<hr />
+<p>
+    @Html.ActionLink(_("Create"), "Create", "ExportRecipientAdmin", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExporterType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AuthenticationUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeliveryUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxDeliverySize)
+        </th>
+        <th></th>
+    </tr>
+    @{
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.ExporterType</td>
+                <td>@item.AuthenticationUrl</td>
+                <td>@item.Username</td>
+                <td>@item.Password</td>
+                <td>@item.DeliveryUrl</td>
+                <td>@item.MaxDeliverySize</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @Html.ActionLink(_("Edit"), "Edit", "ExportRecipientAdmin", new { id = item.ExportRecipientId}, new { @class = "btn btn-default" })
+                        @Html.ActionLink(_("Details"), "Details", "ExportRecipientAdmin", new { id = item.ExportRecipientId }, new { @class = "btn btn-default" })
+                        @if (ViewBag.CanDelete[item.ExportRecipientId])
+                        {
+                            @Html.ActionLink(_("Delete"), "Delete","ExportRecipientAdmin", new { id = item.ExportRecipientId }, new { @class = "btn btn-default" })
+                        }
+                        else
+                        {
+                            @Html.Raw(HtmlHelpers.InUseCannotDeleteAlert())
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+
+</table>

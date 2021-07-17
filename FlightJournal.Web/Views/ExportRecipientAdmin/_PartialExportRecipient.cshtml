@@ -1,0 +1,84 @@
+﻿@using FlightJournal.Web.Extensions
+@model FlightJournal.Web.Models.ExportRecipient
+
+<legend>@_("Export recipient")</legend>
+
+@if (ViewBag.IsInUse != null && ViewBag.IsInUse)
+{
+    @Html.Raw(HtmlHelpers.DoNotChangeSemanticsAlert())
+}
+
+<table>
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.ExporterType)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.ExporterType)
+            @Html.ValidationMessageFor(model => model.ExporterType)
+        </td>
+
+    </tr>
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.AuthenticationUrl)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.AuthenticationUrl)
+            @Html.ValidationMessageFor(model => model.AuthenticationUrl)
+        </td>
+
+    </tr>
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.Username)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Username)
+            @Html.ValidationMessageFor(model => model.Username)
+        </td>
+    </tr>
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.DeliveryUrl)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.DeliveryUrl)
+            @Html.ValidationMessageFor(model => model.DeliveryUrl)
+        </td>
+
+    </tr>
+    <tr>
+        <td class="editor-label">
+            @Html.LabelFor(model => model.MaxDeliverySize)
+        </td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.MaxDeliverySize)
+            @Html.ValidationMessageFor(model => model.MaxDeliverySize)
+        </td>
+
+    </tr>
+</table>
+@Html.HiddenFor(model => model.ExportRecipientId)
+
+
+

@@ -72,6 +72,14 @@
             @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ExportRecipient)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExportRecipient)
+            @Html.ValidationMessageFor(model => model.ExportRecipient)
+        </div>
+
 
         <p>
             <input type="submit" value="Save" class="btn btn-primary" />

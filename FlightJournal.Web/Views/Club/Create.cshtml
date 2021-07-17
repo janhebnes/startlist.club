@@ -67,6 +67,10 @@
             @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
             @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
         </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ExportRecipient)
+            @Html.ValidationMessageFor(model => model.ExportRecipient)
+        </div>
         <p>
             <input type="submit" value="Create" />
         </p>

@@ -1,0 +1,33 @@
+﻿@model FlightJournal.Web.Models.ExportRecipient
+<legend>@_("Export recipient")</legend>
+<table>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Name)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.ExporterType)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.ExporterType)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.AuthenticationUrl)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.AuthenticationUrl)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Username)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Username)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.Password)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.Password)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.DeliveryUrl)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.DeliveryUrl)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.MaxDeliverySize)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.MaxDeliverySize)</td>
+    </tr>
+</table>
+

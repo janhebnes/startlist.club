@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Extensions
 {
@@ -23,6 +24,13 @@ namespace FlightJournal.Web.Extensions
         public static V GetOrDefault<K,V>(this Dictionary<K,V> x, K k, V defaultValue = default)
         {
             return x.TryGetValue(k, out var v) ? v : defaultValue;
+        }
+
+        public static List<T> AsList<T>(this IEnumerable<T> o)
+        {
+            if (o is List<T> list)
+                return list;
+            return o?.ToList();
         }
     }
 }

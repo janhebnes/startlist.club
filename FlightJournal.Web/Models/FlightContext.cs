@@ -44,6 +44,8 @@ namespace FlightJournal.Web.Models
         public DbSet<Grading> Gradings { get; set; }
         public DbSet<ListenerArea> ListenerAreas { get; set; }
 
+        public DbSet<ExportRecipient> ExportRecipients { get; set; }
+
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
         /// </summary>
