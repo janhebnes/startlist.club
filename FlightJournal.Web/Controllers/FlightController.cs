@@ -317,7 +317,7 @@ namespace FlightJournal.Web.Controllers
         //
         // GET: /Flight/Edit/5
         [Authorize]
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(Guid? id, string? referrer)
         {
             if(!id.HasValue)
                 return RedirectToAction("Grid");
@@ -339,6 +339,8 @@ namespace FlightJournal.Web.Controllers
             ViewBag.FlightId = id.Value;
             ViewBag.ChangeHistory = this.GetChangeHistory(id.Value);
             this.PopulateViewBag(flight);
+            if (referrer != null && Uri.TryCreate(referrer, UriKind.RelativeOrAbsolute, out var uri))
+                ViewBag.UrlReferrer = uri.ToString();
             return View(flight);
         }
 
@@ -407,10 +409,10 @@ namespace FlightJournal.Web.Controllers
             if (Request.QueryString[key] != null)
                 return Request.QueryString[key];
 
-            if (Request.UrlReferrer != null)
+            if (Request.UrlReferrer != null && Request.Url != Request.UrlReferrer)
                 return Request.UrlReferrer.ToString();
 
-            return "javascript:window.history.back();";
+            return "javascript:window.history.back();"; // this works oddly...
         }
 
         //

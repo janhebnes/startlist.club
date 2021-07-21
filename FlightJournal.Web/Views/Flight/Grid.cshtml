@@ -45,6 +45,12 @@
         var signalRflightsHub = $.connection.flightsHub;
 
         $(document).ready(function() {
+            if (sessionStorage.getItem("refresh") == "true") {
+                // we came from somewhere that may have updated  our model
+                sessionStorage.removeItem("refresh");
+                window.location.reload();
+            }
+
             configDataTables();
 
             $('a[data-toggle="tab"]').each(function() {

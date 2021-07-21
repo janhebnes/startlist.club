@@ -420,6 +420,7 @@
                         function() {
                             console.debug("saving data");
                             initialStateOfInput = getStateOfInput(); // don't prompt again
+                            sessionStorage.setItem("refresh", "true"); // tell referrer to reload, we may have changed state (and messing with history stack causes odd side effects)
                             window.history.back();
                         },
                         function() {

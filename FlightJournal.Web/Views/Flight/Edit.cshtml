@@ -17,13 +17,14 @@
                         <h4>Deleted @Model.Deleted.ToString() by @Model.LastUpdatedBy</h4>
                         <div class="btn-group">
                             @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger saving" })
-                            <a href="@ViewBag.UrlReferrer" class="btn btn-default leaving">@_("Back")</a>
+                            <a href="@ViewBag.UrlReferrer" class="btn btn-default back">@_("Back")</a>
                         </div>
                     </div>
                 </div>
             </div>
         }
         @Html.HiddenFor(model => model.FlightId)
+        @Html.HiddenFor(model => model.HasTrainingData)
         @Html.Hidden("UrlReferrer", (string)ViewBag.UrlReferrer)
         <div class="row">
             <div class="col-md-4 col-sm-6 col-xs-12">
@@ -156,7 +157,7 @@
             <div class="col-md-3">
                 <div class="btn-group btn-group-lg">
                     <input type="submit" value="@_("Save")" class="btn btn-primary saving" />
-                    <a href="@ViewBag.UrlReferrer" class="btn btn-default leaving">@_("Back")</a>
+                    <a href="@ViewBag.UrlReferrer" class="btn btn-default back">@_("Back")</a>
                 </div>
             </div>
             <div class="col-md-6">
@@ -176,10 +177,9 @@
                 </div>
             </div>
             @{
-                var btnclass = $"btn btn-default {(Request.IsInstructor() || User.IsAdministrator() ? "" : "disabled")}";
-
+                var btnclass = $"btn btn-default {(Request.IsInstructor() || User.IsAdministrator() ? "" : "disabled")} {(Model.HasTrainingData ? "withtrainingdata" : "")}";
                 <div class="col-md-3">
-                    <div class="btn-group btn-group-lg  leaving">
+                    <div class="btn-group btn-group-lg  totraining">
                         @Html.ActionLink(_("TrainingLog"), "Edit", "TrainingLog", new { flightId = Model.FlightId }, new { @class = btnclass }, "fa fa-graduation-cap")
                     </div>
                 </div>
@@ -276,7 +276,13 @@
             }
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
+            if (sessionStorage.getItem("refresh") == "true") {
+                // we came from somewhere that may have updated  our model
+                sessionStorage.removeItem("refresh");
+                var referrer = (location.href.includes('?') ? "&" : "?") + "referrer=" + "@ViewBag.UrlReferrer";
+                location = location + referrer;
+            }
 
             $("#PlaneId").combobox();
             $("#PilotId").combobox();
@@ -372,13 +378,24 @@
                 elvisHasLeftTheBuilding = true;
             });
 
-            $(".leaving").click(function() {
+            $(".back").click(function() {
                 if (
                     !isDirty
                     || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
                     isDirty = false;
                     elvisHasLeftTheBuilding = true;
                     window.history.back();
+                }
+            });
+
+
+            $(".totraining").click(function() {
+                if (
+                    !isDirty || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
+                    isDirty = false;
+                    elvisHasLeftTheBuilding = true;
+                } else {
+                    event.preventDefault();
                 }
             });
 
