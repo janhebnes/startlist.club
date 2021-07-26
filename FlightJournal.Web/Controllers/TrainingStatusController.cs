@@ -97,12 +97,12 @@ namespace FlightJournal.Web.Controllers
             var flightsByPilot = allFlights
                 .Where(x => x.Date >= FirstRelevantDate)
                 .Where(f => f.Pilot.PilotId == p.PilotId)
-                .Select(x => new { x.FlightId, x.Departure, x.Landing, x.Date}) 
+                .Select(x => new { x.FlightId, x.Departure, x.Landing, x.Date, IsTwoSeat = x.PilotBackseatId != null}) 
                 .ToList();
 
             var model = new List<TrainingProgramStatus>();
             var flights = flightsByPilot
-                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date ))
+                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date, x.IsTwoSeat ))
                 .OrderByDescending(x => x.Timestamp)
                 .ToList();
             developerInfo.Add($"__got {flights.Count} flights for pilot {p.Name} in {sw.Elapsed}");
@@ -123,11 +123,11 @@ namespace FlightJournal.Web.Controllers
             var flightsByPilot = allFlights
                 .Where(x => x.Date >= FirstRelevantDate)
                 .Where(f => f.Pilot.PilotId == p.PilotId)
-                .Select(x=>new {x.FlightId, x.Departure, x.Landing, x.Date})
+                .Select(x=>new {x.FlightId, x.Departure, x.Landing, x.Date, IsTwoSeat = x.PilotBackseatId != null })
                 .ToList();
 
             var flights = flightsByPilot
-                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date))
+                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date, x.IsTwoSeat))
                 .OrderByDescending(x => x.Timestamp)
                 .ToList();
 
@@ -209,18 +209,29 @@ namespace FlightJournal.Web.Controllers
                     var trainingFlightIdsInThisProgramByThisPilot =
                         trainingFlightsInThisProgramByThisPilot.Select(x => x.FlightId);
                     var firstDate = DateTime.Now - TimeSpan.FromDays(60);
-                    var recentFlightsInThisProgram = flightsByPilot
+                    var dualFlights = flightsByPilot
+                        .Where(x => x.IsTwoSeat && trainingFlightIdsInThisProgramByThisPilot.Contains(x.FlightId))
+                        .ToList();
+                    var soloFlights = flightsByPilot
+                        .Where(x => !x.IsTwoSeat && trainingFlightIdsInThisProgramByThisPilot.Contains(x.FlightId))
+                        .ToList();
+                    var recentFlights = flightsByPilot
                         .Where(x => x.Timestamp > firstDate && trainingFlightIdsInThisProgramByThisPilot.Contains(x.FlightId))
                         .ToList();
-
-                    var recentTime = recentFlightsInThisProgram.Select(y => y.Duration).Select(x => x.TotalHours).Sum();
+                    var dualTime = dualFlights.Select(y => y.Duration).Select(x => x.TotalHours).Sum();
+                    var soloTime = soloFlights.Select(y => y.Duration).Select(x => x.TotalHours).Sum();
+                    var recentTime = recentFlights.Select(y => y.Duration).Select(x => x.TotalHours).Sum();
                     var programStatus = new TrainingProgramStatus(
                         p,
                         program,
                         lessonStatus.OrderBy(x=>x.DisplayOrder),
                         flightsByPilot.First().Timestamp,
                         TimeSpan.FromHours(recentTime),
-                        recentFlightsInThisProgram.Count()
+                        recentFlights.Count(),
+                        TimeSpan.FromHours(dualTime),
+                        dualFlights.Count,
+                        TimeSpan.FromHours(soloTime),
+                        soloFlights.Count
                         );
                     developerInfo.Add($"____got data for {program.ShortName} for {p.Name} in {sw.Elapsed}");
                     return programStatus;
@@ -235,11 +246,13 @@ namespace FlightJournal.Web.Controllers
             public Guid FlightId { get; }
             public DateTime Timestamp { get; }
             public TimeSpan Duration { get; }
-            public LightWeightFlight(Guid id, DateTime? departure, DateTime? landing, DateTime date)
+            public bool IsTwoSeat { get; }
+            public LightWeightFlight(Guid id, DateTime? departure, DateTime? landing, DateTime date, bool isTwoSeat)
             {
                 FlightId = id;
                 Timestamp = landing ?? date;
                 Duration = departure.HasValue && landing.HasValue ? (landing.Value - departure.Value) : TimeSpan.Zero;
+                IsTwoSeat = isTwoSeat;
             }
         }
     }
@@ -253,9 +266,13 @@ namespace FlightJournal.Web.Controllers
         public string LastFlight { get; }
         public string HoursInLast60Days { get; }
         public int FlightsInLast60Days { get; }
+        public string DualTime { get; }
+        public int DualFlights { get; }
+        public string SoloTime { get; }
+        public int SoloFlights { get; }
         public List<LessonWithStatus> LessonsWithStatus { get; }
 
-        public TrainingProgramStatus(Pilot pilot, Training2Program program, IEnumerable<LessonWithStatus> status, DateTime? lastFlight, TimeSpan flightTimeInLast60days, int flightsInLast60Days)
+        public TrainingProgramStatus(Pilot pilot, Training2Program program, IEnumerable<LessonWithStatus> status, DateTime? lastFlight, TimeSpan flightTimeInLast60days, int flightsInLast60Days, TimeSpan dualTime, int dualFlights, TimeSpan soloTime, int soloFlights)
         {
             PilotId = pilot.PilotId;
             PilotName = pilot.Name;
@@ -265,6 +282,10 @@ namespace FlightJournal.Web.Controllers
             LastFlight = lastFlight.HasValue ? lastFlight.Value.ToShortDateString() : "";
             HoursInLast60Days = flightTimeInLast60days.ToString(@"hh\:mm");
             FlightsInLast60Days = flightsInLast60Days;
+            DualTime = dualTime.ToString(@"hh\:mm");
+            DualFlights = dualFlights;
+            SoloTime = soloTime.ToString(@"hh\:mm"); ;
+            SoloFlights = soloFlights;
         }
     }
 

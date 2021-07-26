@@ -86,7 +86,11 @@ msgstr ""
 msgid "Contact information"
 msgstr ""
 
-#: FlightJournal.Web\Models\Club.cs:52 FlightJournal.Web\Models\Location.cs:22
+#: FlightJournal.Web\Models\Club.cs:32
+msgid "Use APRS-based registration of takeoff and landing"
+msgstr ""
+
+#: FlightJournal.Web\Models\Club.cs:55 FlightJournal.Web\Models\Location.cs:22
 msgid "Country"
 msgstr ""
 
@@ -143,7 +147,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:153
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:199
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:259
-#: FlightJournal.Web\Views\Report\Index.cshtml:152
+#: FlightJournal.Web\Views\Report\Index.cshtml:153
 #: FlightJournal.Web\Views\Report\Month.cshtml:384
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:21
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:97
@@ -235,11 +239,11 @@ msgstr ""
 msgid "Last updated by"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:240
+#: FlightJournal.Web\Models\Flight.cs:241
 msgid "Cost"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:249
+#: FlightJournal.Web\Models\Flight.cs:250
 #: FlightJournal.Web\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\Views\Flight\Index.cshtml:54
 #: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:30
@@ -250,7 +254,7 @@ msgstr ""
 msgid "Tacho"
 msgstr ""
 
-#: FlightJournal.Web\Models\Flight.cs:268
+#: FlightJournal.Web\Models\Flight.cs:269
 #: FlightJournal.Web\Views\Flight\Index.cshtml:42
 #: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:24
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:48
@@ -594,7 +598,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Club\Details.cshtml:7
 #: FlightJournal.Web\Views\Flight\History.cshtml:124
 #: FlightJournal.Web\Views\Flight\Index.cshtml:104
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:183
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:180
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:52
@@ -602,7 +606,7 @@ msgstr ""
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:38
-#: FlightJournal.Web\Views\Report\Index.cshtml:253
+#: FlightJournal.Web\Views\Report\Index.cshtml:269
 #: FlightJournal.Web\Views\Report\Month.cshtml:438
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:10
@@ -614,7 +618,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:31
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:68
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:70
 msgid "Details"
 msgstr ""
 
@@ -637,7 +641,7 @@ msgstr ""
 #: FlightJournal.Web\Views\ManouvreAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\ManouvreAdmin\Edit.cshtml:6
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:37
-#: FlightJournal.Web\Views\Report\Index.cshtml:250
+#: FlightJournal.Web\Views\Report\Index.cshtml:266
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:16
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Edit.cshtml:7
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:49
@@ -648,7 +652,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:6
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:30
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:67
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:69
 msgid "Edit"
 msgstr ""
 
@@ -690,7 +694,7 @@ msgstr ""
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\DeleteLocked.cshtml:4
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Index.cshtml:42
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:4
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:167
 #: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:3
 #: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:6
 #: FlightJournal.Web\Views\GradingAdmin\DeleteLocked.cshtml:4
@@ -709,7 +713,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:34
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:69
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:71
 msgid "Delete"
 msgstr ""
 
@@ -792,7 +796,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Details.cshtml:159
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:17
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:20
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:159
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:160
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
 #: FlightJournal.Web\Views\Pilot\Edit.cshtml:95
@@ -831,25 +835,26 @@ msgid "Edit flight"
 msgstr ""
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:19
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:170
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:171
 msgid "Undo Delete"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:173
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:174
 msgid "Delete permanently"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:184
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:183
 msgid "TrainingLog"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:379
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:432
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:384
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:394
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:433
 msgid ""
 "You have unsaved data - do you want to leave the page and lose the changes?"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:394
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:410
 msgid "Data for this flight have been edited by someone else, please reload!"
 msgstr ""
 
@@ -935,7 +940,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Index.cshtml:48
 #: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:15
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:262
-#: FlightJournal.Web\Views\Report\Index.cshtml:155
+#: FlightJournal.Web\Views\Report\Index.cshtml:156
 #: FlightJournal.Web\Views\Report\Month.cshtml:387
 msgid "Pilot(s)"
 msgstr ""
@@ -955,11 +960,11 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:178
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
 msgid " "
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:178
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
 msgid "Training"
 msgstr ""
 
@@ -1104,22 +1109,26 @@ msgstr ""
 msgid "'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'"
 msgstr ""
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:279
+#: FlightJournal.Web\Views\Report\Index.cshtml:183
+msgid "Udd"
+msgstr ""
+
+#: FlightJournal.Web\Views\Report\Index.cshtml:295
 msgid "Editing is restricted after 48 hours."
 msgstr ""
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:294
+#: FlightJournal.Web\Views\Report\Index.cshtml:310
 #, csharp-format
 msgid "{0} logbooks {1} take-offs {2} hours"
 msgstr ""
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:301
+#: FlightJournal.Web\Views\Report\Index.cshtml:317
 #, csharp-format
 msgid "No flights registered on {0}"
 msgstr ""
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:305
-#: FlightJournal.Web\Views\Report\Index.cshtml:306
+#: FlightJournal.Web\Views\Report\Index.cshtml:321
+#: FlightJournal.Web\Views\Report\Index.cshtml:322
 #: FlightJournal.Web\Views\Report\Month.cshtml:40
 #: FlightJournal.Web\Views\Report\Month.cshtml:459
 #: FlightJournal.Web\Views\Report\Year.cshtml:37
@@ -1610,11 +1619,11 @@ msgstr ""
 msgid "Preconditions"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:426
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:427
 msgid "Unable to save data"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:458
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:459
 msgid ""
 "Training data for this flight have been edited by someone else, please "
 "reload!"
@@ -1700,18 +1709,34 @@ msgid "Training program"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:21
-msgid "Last Flight"
+msgid "Dual hours"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:22
-msgid "Hours in last 60 days"
+msgid "Dual flights"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:23
-msgid "Flights in last 60 days"
+msgid "Solo hours"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:24
+msgid "Solo flights"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:25
+msgid "Last Flight"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:26
+msgid "Hours in last 60 days"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:27
+msgid "Flights in last 60 days"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:28
 msgid "Status"
 msgstr ""
 
@@ -1758,10 +1783,10 @@ msgstr ""
 msgid "Create New"
 msgstr ""
 
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:43
 msgid "unconfirmed"
 msgstr ""
 
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:61
 msgid "User not bound to pilot"
 msgstr ""

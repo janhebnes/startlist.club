@@ -18,6 +18,10 @@
         <tr>
             <th>@_("Pilot")</th>
             <th>@_("Program")</th>
+            <th>@_("Dual hours")</th>
+            <th>@_("Dual flights")</th>
+            <th>@_("Solo hours")</th>
+            <th>@_("Solo flights")</th>
             <th>@_("Last Flight")</th>
             <th>@_("Hours in last 60 days")</th>
             <th>@_("Flights in last 60 days")</th>
@@ -30,6 +34,10 @@
             <tr class="clickable" onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>
                 <td>@f.PilotName</td>
                 <td>@f.ProgramName</td>
+                <td>@f.DualTime</td>
+                <td>@f.DualFlights</td>
+                <td>@f.SoloTime</td>
+                <td>@f.SoloFlights</td>
                 <td>@f.LastFlight</td>
                 <td>@f.HoursInLast60Days</td>
                 <td>@f.FlightsInLast60Days</td>
