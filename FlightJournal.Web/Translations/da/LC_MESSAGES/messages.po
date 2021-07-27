@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
 "POT-Creation-Date: 2021-07-26 20:14+0200\n"
-"PO-Revision-Date: 2021-07-26 20:17+0200\n"
+"PO-Revision-Date: 2021-07-27 08:58+0200\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -107,7 +107,7 @@ msgstr "Kontakt information"
 
 #: FlightJournal.Web\Models\Club.cs:32
 msgid "Use APRS-based registration of takeoff and landing"
-msgstr ""
+msgstr "Brug APRS data til registrering af start og landing"
 
 #: FlightJournal.Web\Models\Club.cs:55 FlightJournal.Web\Models\Location.cs:22
 msgid "Country"
@@ -1678,7 +1678,7 @@ msgstr "Forudsætninger"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:427
 msgid "Unable to save data"
-msgstr ""
+msgstr "Kunne ikke gemme data"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:459
 msgid ""
