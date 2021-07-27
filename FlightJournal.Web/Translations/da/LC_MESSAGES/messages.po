@@ -7,13 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2021-05-05 19:28+0200\n"
-"PO-Revision-Date: 2021-05-05 19:31+0200\n"
-=======
-"POT-Creation-Date: 2021-05-05 16:43+0200\n"
-"PO-Revision-Date: 2021-05-05 16:44+0200\n"
->>>>>>> master
+"POT-Creation-Date: 2021-07-26 20:14+0200\n"
+"PO-Revision-Date: 2021-07-27 08:58+0200\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -31,7 +26,7 @@ msgid "Your training flights"
 msgstr "Dine uddannelsesflyvninger"
 
 #: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:54
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:95
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:97
 msgid "You do not have access to training flight logs"
 msgstr "Du har ikke adgang til at se uddannelsesflyvninger"
 
@@ -39,12 +34,12 @@ msgstr "Du har ikke adgang til at se uddannelsesflyvninger"
 msgid "Unknown pilot or lesson id"
 msgstr "Ukendt pilot eller øvelse"
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:85
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:87
 #, csharp-format
 msgid "Flights of pilot {0} on exercise {1}"
 msgstr "{0}s flyvninger på øvelse {1}"
 
-#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:221
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:238
 msgid "No flights"
 msgstr "Ingen flyvninger"
 
@@ -110,7 +105,11 @@ msgstr "Synlig i klub filteret"
 msgid "Contact information"
 msgstr "Kontakt information"
 
-#: FlightJournal.Web\Models\Club.cs:52 FlightJournal.Web\Models\Location.cs:22
+#: FlightJournal.Web\Models\Club.cs:32
+msgid "Use APRS-based registration of takeoff and landing"
+msgstr "Brug APRS data til registrering af start og landing"
+
+#: FlightJournal.Web\Models\Club.cs:55 FlightJournal.Web\Models\Location.cs:22
 msgid "Country"
 msgstr "Land"
 
@@ -167,7 +166,7 @@ msgstr "Antal flyvninger"
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:153
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:199
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:259
-#: FlightJournal.Web\Views\Report\Index.cshtml:152
+#: FlightJournal.Web\Views\Report\Index.cshtml:153
 #: FlightJournal.Web\Views\Report\Month.cshtml:384
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:21
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:97
@@ -260,11 +259,11 @@ msgstr "Sidst opdateret"
 msgid "Last updated by"
 msgstr "Sidst opdateret af"
 
-#: FlightJournal.Web\Models\Flight.cs:240
+#: FlightJournal.Web\Models\Flight.cs:241
 msgid "Cost"
 msgstr "Pris"
 
-#: FlightJournal.Web\Models\Flight.cs:249
+#: FlightJournal.Web\Models\Flight.cs:250
 #: FlightJournal.Web\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\Views\Flight\Index.cshtml:54
 #: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:30
@@ -275,7 +274,7 @@ msgstr "Pris"
 msgid "Tacho"
 msgstr "Tacho"
 
-#: FlightJournal.Web\Models\Flight.cs:268
+#: FlightJournal.Web\Models\Flight.cs:269
 #: FlightJournal.Web\Views\Flight\Index.cshtml:42
 #: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:24
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:48
@@ -619,7 +618,7 @@ msgstr "Vælg Flyveklub (ufiltreret)"
 #: FlightJournal.Web\Views\Club\Details.cshtml:7
 #: FlightJournal.Web\Views\Flight\History.cshtml:124
 #: FlightJournal.Web\Views\Flight\Index.cshtml:104
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:183
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:180
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:52
@@ -627,7 +626,7 @@ msgstr "Vælg Flyveklub (ufiltreret)"
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\ManouvreAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:38
-#: FlightJournal.Web\Views\Report\Index.cshtml:253
+#: FlightJournal.Web\Views\Report\Index.cshtml:269
 #: FlightJournal.Web\Views\Report\Month.cshtml:438
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:10
@@ -639,7 +638,7 @@ msgstr "Vælg Flyveklub (ufiltreret)"
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:31
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:68
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:70
 msgid "Details"
 msgstr "Detaljer"
 
@@ -662,7 +661,7 @@ msgstr "Detaljer"
 #: FlightJournal.Web\Views\ManouvreAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\ManouvreAdmin\Edit.cshtml:6
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:37
-#: FlightJournal.Web\Views\Report\Index.cshtml:250
+#: FlightJournal.Web\Views\Report\Index.cshtml:266
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Details.cshtml:16
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Edit.cshtml:7
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:49
@@ -673,7 +672,7 @@ msgstr "Detaljer"
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:6
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:30
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:40
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:67
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:69
 msgid "Edit"
 msgstr "Rediger"
 
@@ -715,7 +714,7 @@ msgstr "Opret"
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\DeleteLocked.cshtml:4
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\Index.cshtml:42
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:4
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:166
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:167
 #: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:3
 #: FlightJournal.Web\Views\GradingAdmin\Delete.cshtml:6
 #: FlightJournal.Web\Views\GradingAdmin\DeleteLocked.cshtml:4
@@ -734,7 +733,7 @@ msgstr "Opret"
 #: FlightJournal.Web\Views\TrainingProgramAdmin\DeleteLocked.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:34
 #: FlightJournal.Web\Views\UsersAdmin\Delete.cshtml:4
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:69
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:71
 msgid "Delete"
 msgstr "Slet"
 
@@ -817,7 +816,7 @@ msgstr "Opret flyvning"
 #: FlightJournal.Web\Views\Flight\Details.cshtml:159
 #: FlightJournal.Web\Views\Flight\Disable.cshtml:17
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:20
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:159
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:160
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
 #: FlightJournal.Web\Views\Pilot\Edit.cshtml:95
@@ -856,29 +855,31 @@ msgid "Edit flight"
 msgstr "Rediger flyvning"
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:19
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:170
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:171
 msgid "Undo Delete"
 msgstr "Fortryd slet"
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:173
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:174
 msgid "Delete permanently"
 msgstr "Slet permanent"
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:184
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:183
 msgid "TrainingLog"
 msgstr "Uddannelseslog"
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:379
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:432
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:384
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:394
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:433
 msgid ""
 "You have unsaved data - do you want to leave the page and lose the changes?"
 msgstr "Du har (muligvis) data som ikke er gemt - vil du forlade siden ?"
 
-#: FlightJournal.Web\Views\Flight\Edit.cshtml:394
+#: FlightJournal.Web\Views\Flight\Edit.cshtml:410
 #, fuzzy
 msgid "Data for this flight have been edited by someone else, please reload!"
 msgstr ""
-"Skolingsdata for denne flyvning er blevet ændret af en anden, du er desværre nødt til at genindlæse siden!"
+"Skolingsdata for denne flyvning er blevet ændret af en anden, du er desværre "
+"nødt til at genindlæse siden!"
 
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:4
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:244
@@ -892,6 +893,10 @@ msgstr "Startliste"
 msgid "Previous flights"
 msgstr "Forrige flyvning"
 
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:23
+msgid "All"
+msgstr "Alle"
+
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:24
 msgid "Not started"
 msgstr "Ikke startet"
@@ -903,10 +908,6 @@ msgstr "Flyver"
 #: FlightJournal.Web\Views\Flight\Grid.cshtml:26
 msgid "Landed"
 msgstr "Landet"
-
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:28
-msgid "All"
-msgstr "Alle"
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:14
 #: FlightJournal.Web\Views\Flight\History.cshtml:17
@@ -963,7 +964,7 @@ msgstr "Historik over rettelser"
 #: FlightJournal.Web\Views\Flight\Index.cshtml:48
 #: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:15
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:262
-#: FlightJournal.Web\Views\Report\Index.cshtml:155
+#: FlightJournal.Web\Views\Report\Index.cshtml:156
 #: FlightJournal.Web\Views\Report\Month.cshtml:387
 msgid "Pilot(s)"
 msgstr "Pilot(er)"
@@ -983,11 +984,11 @@ msgstr "Klon"
 msgid "Copy"
 msgstr "Kopi"
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:178
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
 msgid " "
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:178
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
 msgid "Training"
 msgstr "Uddannelse"
 
@@ -1133,22 +1134,26 @@ msgstr "{0} starter."
 msgid "'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'"
 msgstr "'Sø', 'Ma', 'Ti', 'On', 'To', 'Fr', 'Lø'"
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:279
+#: FlightJournal.Web\Views\Report\Index.cshtml:183
+msgid "Udd"
+msgstr ""
+
+#: FlightJournal.Web\Views\Report\Index.cshtml:295
 msgid "Editing is restricted after 48 hours."
 msgstr "Redigering begrænses efter 48 timer."
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:294
+#: FlightJournal.Web\Views\Report\Index.cshtml:310
 #, csharp-format
 msgid "{0} logbooks {1} take-offs {2} hours"
 msgstr "{0} logbøger {1} starter {2} timer"
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:301
+#: FlightJournal.Web\Views\Report\Index.cshtml:317
 #, csharp-format
 msgid "No flights registered on {0}"
 msgstr "Ingen flyvninger registreret {0}"
 
-#: FlightJournal.Web\Views\Report\Index.cshtml:305
-#: FlightJournal.Web\Views\Report\Index.cshtml:306
+#: FlightJournal.Web\Views\Report\Index.cshtml:321
+#: FlightJournal.Web\Views\Report\Index.cshtml:322
 #: FlightJournal.Web\Views\Report\Month.cshtml:40
 #: FlightJournal.Web\Views\Report\Month.cshtml:459
 #: FlightJournal.Web\Views\Report\Year.cshtml:37
@@ -1671,11 +1676,11 @@ msgstr "Gem"
 msgid "Preconditions"
 msgstr "Forudsætninger"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:426
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:427
 msgid "Unable to save data"
-msgstr ""
+msgstr "Kunne ikke gemme data"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:458
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:459
 msgid ""
 "Training data for this flight have been edited by someone else, please "
 "reload!"
@@ -1763,18 +1768,34 @@ msgid "Training program"
 msgstr "Træningsprogram"
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:21
+msgid "Dual hours"
+msgstr "Tosædet tid"
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:22
+msgid "Dual flights"
+msgstr "Tosædede flyvninger"
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:23
+msgid "Solo hours"
+msgstr "Solotid"
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:24
+msgid "Solo flights"
+msgstr "Soloflyvninger"
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:25
 msgid "Last Flight"
 msgstr "Sidste flyvning"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:22
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:26
 msgid "Hours in last 60 days"
 msgstr "Flyvetimer i de sidste 60 dage"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:23
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:27
 msgid "Flights in last 60 days"
 msgstr "Flyvninger i de sidste 60 dage"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:24
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:28
 msgid "Status"
 msgstr "Status"
 
@@ -1824,17 +1845,13 @@ msgstr "Bruger administration"
 msgid "Create New"
 msgstr "Opret ny"
 
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:42
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:43
 msgid "unconfirmed"
 msgstr "ikke bekræftet"
 
-#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:60
+#: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:61
 msgid "User not bound to pilot"
 msgstr "Ikke bundet til PilotId"
-
-#, fuzzy
-#~ msgid "flights"
-#~ msgstr "Ingen flyvninger"
 
 #~ msgid "Select one or more comments"
 #~ msgstr "Vælg en eller flere kommentarer"
