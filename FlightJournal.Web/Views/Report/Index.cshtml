@@ -259,12 +259,9 @@
                             </td>
                         }
                         <td class="hidden-print text-right">
-                            @if (Request.IsPilot() && item.IsCurrentClubPilots())
+                            @if (Request.IsPilot() && item.IsCurrentClubPilots() && ((IEnumerable<Guid>)ViewBag.EditableFlights).Contains(item.FlightId))
                             {
-                                if (User.IsEditor() || item.Date.AddDays(3) >= DateTime.Now)
-                                {
-                                    @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
-                                }
+                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
                             }
                             @Html.ActionLink(_("Details"), "Details", "Flight", new { id = item.FlightId }, new { @class = "btn btn-default btn-xs" })
                         </td>

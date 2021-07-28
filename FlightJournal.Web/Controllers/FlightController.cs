@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Principal;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
@@ -92,23 +93,27 @@ namespace FlightJournal.Web.Controllers
         {
             Flight flight = this.db.Flights.Where(f => f.FlightId == id).Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType").FirstOrDefault();
             ViewBag.FlightId = id;
-            ViewBag.ChangeHistory = this.GetChangeHistory(id);
+            ViewBag.ChangeHistory = GetChangeHistory(db, id);
             return View(flight);
         }
 
         public ViewResult ChangeHistory(Guid id)
         {
             ViewBag.FlightId = id;
-            return View("_changeHistory", this.GetChangeHistory(id));
+            return View("_changeHistory", GetChangeHistory(db, id));
         }
 
-        private IEnumerable<FlightVersionHistory> GetChangeHistory(Guid id)
+        private static IEnumerable<FlightVersionHistory> GetChangeHistory(FlightContext db, Guid id)
         {
-            return this.db.FlightVersions.Where(s => s.FlightId == id)
+            return db.FlightVersions.Where(s => s.FlightId == id)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType")
                 .OrderByDescending(s => s.Created);
         }
 
+        public static DateTime? FirstHistoryEntryTime(FlightContext db, Guid flightId)
+        {
+            return GetChangeHistory(db, flightId).LastOrDefault()?.Created;
+        }
         /// <summary>
         /// Set the landing time to actual time.
         /// </summary>
@@ -246,24 +251,14 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult SetComment(Guid id, string comment)
         {
-            bool isEditable = false;
-            if (User.IsManager()) { isEditable = true; }
-
-            Flight flight = this.db.Flights.Find(id);
-
-            if (flight != null && flight.Date.AddDays(3) >= DateTime.Now)
-            {
-                isEditable = true;
-            }
-
-            if (!isEditable)
+            if (!UserCanEditFlight(db, id, User))
             {
                 // TODO: Evaluate security error handling procedure vs. error controller and generel logging model of the platform
                 throw new UnauthorizedAccessException(
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
-
-            if (isEditable)
+            var flight = this.db.Flights.Find(id);
+            if (flight != null)
             {
                 flight.Description = comment;
                 this.db.SaveChanges();
@@ -322,22 +317,17 @@ namespace FlightJournal.Web.Controllers
             if(!id.HasValue)
                 return RedirectToAction("Grid");
 
-            bool isEditable = User.IsEditor();
-            
-            Flight flight = this.db.Flights.Find(id);
-
-            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
-            {
-                isEditable = true;
-            }
-            if (!isEditable)
+            if (!UserCanEditFlight(db, id.Value, User))
             {
                 throw new UnauthorizedAccessException(
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
             }
+            var flight = this.db.Flights.Find(id);
+            if(flight == null)
+                return RedirectToAction("Grid");
 
             ViewBag.FlightId = id.Value;
-            ViewBag.ChangeHistory = this.GetChangeHistory(id.Value);
+            ViewBag.ChangeHistory = GetChangeHistory(db, id.Value);
             this.PopulateViewBag(flight);
             if (referrer != null && Uri.TryCreate(referrer, UriKind.RelativeOrAbsolute, out var uri))
                 ViewBag.UrlReferrer = uri.ToString();
@@ -350,14 +340,7 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Edit(Flight flight)
         {
-            bool isEditable = false;
-            if (User.IsAdministrator()) { isEditable = true; }
-            if (User.IsManager()) { isEditable = true; }
-            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
-            {
-                isEditable = true;
-            }
-            if (!isEditable)
+            if (!UserCanEditFlight(db, flight.FlightId, User))
             {
                 throw new UnauthorizedAccessException(
                     string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
@@ -376,7 +359,7 @@ namespace FlightJournal.Web.Controllers
                 return RedirectPermanent(ViewBag.UrlReferrer);
                 //return RedirectToAction("Grid");
             }
-            ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+            ViewBag.ChangeHistory = GetChangeHistory(db, flight.FlightId);
             ViewBag.FlightId = flight.FlightId;
             this.PopulateViewBag(flight);
             return View(flight);
@@ -393,7 +376,7 @@ namespace FlightJournal.Web.Controllers
 
             Flight flight = this.db.Flights.Find(id);
             if (flight != null)
-                ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+                ViewBag.ChangeHistory = GetChangeHistory(db, flight.FlightId);
 
             ViewBag.UrlReferrer = ResolveUrlReferrer();
 
@@ -481,7 +464,7 @@ namespace FlightJournal.Web.Controllers
 
             Flight flight = this.db.Flights.Find(id);
             if (flight != null)
-                ViewBag.ChangeHistory = this.GetChangeHistory(flight.FlightId);
+                ViewBag.ChangeHistory = GetChangeHistory(db, flight.FlightId);
 
             return View(flight);
         }
@@ -682,6 +665,17 @@ namespace FlightJournal.Web.Controllers
             var backSeatPilotClubLocationId = flight.PilotBackseatId.HasValue ? db.Pilots.SingleOrDefault(p => p.PilotId == flight.PilotBackseatId.Value)?.Club?.LocationId ?? 0 : 0;
             var affectedLocations = new[] { ClubController.CurrentClub.LocationId, flight.StartedFromId, flight.LandedOnId ?? 0, pilotClubLocationId, backSeatPilotClubLocationId, payerClubLocationId }.Distinct();
             return affectedLocations;
+        }
+
+        public static bool UserCanEditFlight(FlightContext db, Guid flightId, IPrincipal user)
+        {
+            if (user.IsManager()) return true;
+            if (user.IsEditor()) return true;
+            if (user.IsAdministrator()) return true;
+
+            var historyCreated = FirstHistoryEntryTime(db, flightId);
+            
+            return !historyCreated.HasValue || historyCreated.Value.Date.AddDays(3) >= DateTime.Now;
         }
     }
 }

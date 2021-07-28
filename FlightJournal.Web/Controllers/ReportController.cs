@@ -122,6 +122,10 @@ namespace FlightJournal.Web.Controllers
             // Allow f.Deleted != null
             rpt.DistinctLocations = rpt.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d=>d.Name);
 
+            ViewBag.EditableFlights = rpt.Flights
+                .ToList()
+                .Where(x => FlightController.UserCanEditFlight(db, x.FlightId, User))
+                .Select(x => x.FlightId);
             return this.View(rpt);
         }
 
