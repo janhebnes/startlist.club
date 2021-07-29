@@ -13,7 +13,7 @@ namespace FlightJournal.Web.Controllers
 {
     public class TrainingLogController : Controller
     {
-        private FlightContext db = new FlightContext();
+        private readonly FlightContext db = new FlightContext();
 
         [Authorize]
         public ActionResult Edit(Guid? flightId, int trainingProgramId = -1)
@@ -122,10 +122,10 @@ namespace FlightJournal.Web.Controllers
         {
             if (!Guid.TryParse(flightId, out var id)) return PartialView("_PartialTrainingLogView", null);
 
-            var frontSeatPilotId = db.Flights.SingleOrDefault(x => x.FlightId == id)?.Pilot.PilotId;
+            var frontSeatPilotId = db.Flights.SingleOrDefault(x => x.Deleted == null && x.FlightId == id)?.Pilot.PilotId;
             if(!frontSeatPilotId.HasValue) return PartialView("_PartialTrainingLogView", null);
 
-            var flightsWithThisPilot = db.Flights.Where(x => x.Pilot.PilotId == frontSeatPilotId);
+            var flightsWithThisPilot = db.Flights.Where(x => x.Deleted == null && x.Pilot.PilotId == frontSeatPilotId);
             var flightIdsWithThisPilot = flightsWithThisPilot.Select(f=>f.FlightId).ToList();
 
             var allTrainingFlightIdsForThisPilot = db.AppliedExercises
