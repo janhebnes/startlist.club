@@ -48,6 +48,13 @@ namespace FlightJournal.Web.Models.Export
         public string Note { get; set; }
 
         [Ignore] // not in CSV
+        public string NoteAndPhaseComments => string.Join("\n", new[] { Note, PhaseComments }.Where(x => x != null && x.Any()));
+
+        [Ignore] // not in CSV
+        public string PhaseComments => string.Join("\n", FlightPhaseComments.Select(x => $"{x.FlightPhase.Phase}: {string.Join(",", x.Comments.Select(y => y.Comment))}"));
+
+
+        [Ignore] // not in CSV
         public IEnumerable<TrainingFlightPartialExerciseExportViewModel> PartialExercises { get; set; }
         [Ignore] // not in CSV
         public IEnumerable<CommentInFlightPhaseExportViewModel> FlightPhaseComments { get; set; }
