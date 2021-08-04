@@ -32,7 +32,10 @@ namespace FlightJournal.Web.Models.Training.Catalogue
         [DataType(DataType.MultilineText)]
         [AllowHtml]
         public string Notes{ get; set; }
-        
+
+        [LocalizedDisplayName("EXPORT: Require UnionId to be defined for the pilot(s) in flights on this program")]
+        public bool RequireUnionIdsForExport { get; set; } = true;
+
         [LocalizedDisplayName("URL")]
         public string Url{ get; set; }
 

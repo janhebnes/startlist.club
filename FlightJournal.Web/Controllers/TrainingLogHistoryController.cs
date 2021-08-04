@@ -207,7 +207,7 @@ namespace FlightJournal.Web.Controllers
             var flightModels = new List<TrainingFlightViewModel>();
             foreach (var f in flights)
             {
-                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0);
+                var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0).ToList();
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
                 var primaryLessonName = "";
@@ -219,7 +219,7 @@ namespace FlightJournal.Web.Controllers
                 }
                 var instructor = ae.FirstOrDefault(x => x.Instructor != null)?.Instructor;
                 var instructorNameAndClub = instructor != null ? $"{instructor.Name} ({instructor.Club.ShortName})" : "";
-
+                var validator = new TrainingFlightExportValidator(f, ae);
                 var m = new TrainingFlightViewModel
                 {
                     FlightId = f.FlightId.ToString(),
@@ -231,7 +231,8 @@ namespace FlightJournal.Web.Controllers
                     Duration = f.Duration.ToString("hh\\:mm"),
                     TrainingProgramName = programName,
                     PrimaryLessonName = primaryLessonName,
-                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x=>x.Key.DisplayOrder).Select(x=>x.Key.Name))
+                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x=>x.Key.DisplayOrder).Select(x=>x.Key.Name)),
+                    PassesValidation = validator.IsValid
                 };
                 flightModels.Add(m);
             }
@@ -249,6 +250,8 @@ namespace FlightJournal.Web.Controllers
                     x=>x.Key.CType, 
                     x=>x.Value.Select(v => new HtmlString(v.Comment)));
 
+            var validator = new TrainingFlightExportValidator(db.Flights.SingleOrDefault(x=>x.FlightId == id), ae);
+
             var details = new TrainingFlightDetailsViewModel
             {
                 Exercises = ae.OrderBy(x => x.Lesson.DisplayOrder).ToList().Select(x =>
@@ -258,12 +261,14 @@ namespace FlightJournal.Web.Controllers
                         ExerciseName = x.Exercise.Name,
                         GradingName = x.Grading?.Name,
                         LessonId = x.Lesson.Training2LessonId,
-                        ExerciseId = x.Exercise.Training2ExerciseId
+                        ExerciseId = x.Exercise.Training2ExerciseId,
                     }),
                 Note = annotation?.Note ?? "",
                 Manouvres = new HtmlString(string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{x.ManouvreItem}") ?? Enumerable.Empty<string>())),
                 FlightPhaseAnnotations = commentsForAllPhases,
-                Weather = new HtmlString(weather)
+                Weather = new HtmlString(weather),
+                PassesValidation = validator.IsValid,
+                Violations = validator.Violations
             };
             return details;
         }
@@ -422,6 +427,8 @@ namespace FlightJournal.Web.Controllers
         public string PrimaryLessonName { get; set; }
         public string AppliedLessons { get; set; }
         public string Airfield { get; set; }
+
+        public bool PassesValidation { get; set; }
     }
 
     /// <summary>
@@ -434,6 +441,8 @@ namespace FlightJournal.Web.Controllers
         public HtmlString Manouvres { get; set; }
         public Dictionary<string, IEnumerable<HtmlString>> FlightPhaseAnnotations { get; set; }
         public HtmlString Weather { get; set; }
+        public bool PassesValidation { get; set; }
+        public IEnumerable<string> Violations { get; set; }
     }
 
     /// <summary>

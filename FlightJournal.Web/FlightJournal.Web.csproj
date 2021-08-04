@@ -398,6 +398,11 @@
     <Compile Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.designer.cs">
       <DependentUpon>202106301334578_Add Flights.HasTrainingData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.cs" />
+    <Compile Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.designer.cs">
+      <DependentUpon>202108040827479_Extra fields for export validation for training programs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Export\TrainingFlightExportValidator.cs" />
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
     <Compile Include="Controllers\TrainingExerciseAdminController.cs" />
@@ -803,6 +808,7 @@
     <Content Include="Migrations\FlightContext\202105261501463_Add table for defining APRS listening areas.sql" />
     <Content Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.sql" />
     <Content Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.sql" />
+    <Content Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1346,6 +1352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.resx">
       <DependentUpon>202106301334578_Add Flights.HasTrainingData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.resx">
+      <DependentUpon>202108040827479_Extra fields for export validation for training programs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
