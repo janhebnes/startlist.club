@@ -223,7 +223,9 @@ namespace FlightJournal.Web.Controllers
                 var m = new TrainingFlightViewModel
                 {
                     FlightId = f.FlightId.ToString(),
+                    IsCurrentClubPilots = f.IsCurrentClubPilots(),
                     Timestamp = (f.Landing ?? f.Date).ToString("yyyy-MM-dd HH:mm"),
+                    Date = f.Date,
                     Plane = $"{f.Plane.CompetitionId} ({f.Plane.Registration})",
                     FrontSeatOccupant = $"{f.Pilot.Name} ({f.Pilot.MemberId})",
                     Instructor = instructorNameAndClub,
@@ -429,6 +431,8 @@ namespace FlightJournal.Web.Controllers
         public string Airfield { get; set; }
 
         public bool PassesValidation { get; set; }
+        public bool IsCurrentClubPilots { get; set; }
+        public DateTime Date { get; set; }
     }
 
     /// <summary>

@@ -50,6 +50,7 @@
                 <th>@_("Program")</th>
                 <th>@_("Exercises")</th>
                 <th>@_("Issues")</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -66,6 +67,16 @@
                     <td>@f.TrainingProgramName</td>
                     <td>@f.AppliedLessons</td>
                     <td>@validationMarker</td>
+                    <td>
+                        @if (Request.IsPilot() && f.IsCurrentClubPilots)
+                        {
+                            if (User.IsEditor() || f.Date.AddDays(3) >= DateTime.Now)
+                            {
+                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = f.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
+                            }
+                        }
+                    </td>
+
                 </tr>
             }
         </tbody>
