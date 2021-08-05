@@ -80,15 +80,15 @@ namespace FlightJournal.Web.Models.Export
         {
             if (_flight.Duration.TotalMinutes > 0)
             {
-                if (_flight.PilotBackseat == null && _aes.All(x => !x.Lesson.CanHaveSoloFlightDuration) && _aes.Any(x => x.Lesson.CanHaveDualFlightDuration))
+                if (_flight.PilotBackseat == null && _aes.All(x => !x.Lesson.CanHaveSoloFlightDuration))
                 {
                     IsValid = false;
-                    Violations.Add(_("Duration will not be used for a solo flight when only dual exercises are graded"));
+                    Violations.Add(_("Duration will not be used for a solo flight when no solo exercises are graded"));
                 }
-                if (_flight.PilotBackseat != null && _aes.All(x => !x.Lesson.CanHaveDualFlightDuration) && _aes.Any(x => x.Lesson.CanHaveSoloFlightDuration))
+                if (_flight.PilotBackseat != null && _aes.All(x => !x.Lesson.CanHaveDualFlightDuration))
                 {
                     IsValid = false;
-                    Violations.Add(_("Duration will not be used for a dual flight when only solo exercises are graded"));
+                    Violations.Add(_("Duration will not be used for a dual flight when no dual exercises are graded"));
                 }
             }
         }

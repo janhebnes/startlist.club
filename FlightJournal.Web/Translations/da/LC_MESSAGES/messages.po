@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-08-04 13:09+0200\n"
-"PO-Revision-Date: 2021-08-04 15:44+0200\n"
+"POT-Creation-Date: 2021-08-05 11:10+0200\n"
+"PO-Revision-Date: 2021-08-05 11:25+0200\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -471,49 +471,49 @@ msgstr "Sorter"
 msgid "Lesson category"
 msgstr ""
 
-#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:46
-msgid "Pilot is missing Union ID"
-msgstr "Piloten mangler Unions-ID"
-
-#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:51
-msgid "Back seat pilot is missing Union ID"
-msgstr "Bagsædepiloten mangler Unions-ID"
-
-#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:56
-msgid "Instructor is missing Union ID"
-msgstr "Instruktør mangler Unions-ID"
-
-#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:71
-msgid "Duration will not be used when only non-flying exercises are graded"
-msgstr ""
-"Flyvetid vil ikke blive registreret (i FA) når der kun er givet karakter for "
-"øvelser som ikke omfatter flyvning"
-
-#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:87
-msgid ""
-"Duration will not be used for a solo flight when only dual exercises are "
-"graded"
-msgstr ""
-"Flyvetid vil ikke blive registreret (i FA) for en soloflyvning, når der kun "
-"er givet karakter for tosædede øvelser"
-
-#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:92
-msgid ""
-"Duration will not be used for a dual flight when only solo exercises are "
-"graded"
-msgstr ""
-"Flyvetid vil ikke blive registreret (i FA) for en tosædet flyvning, når der "
-"kun er givet karakter for ensædede øvelser"
-
+#: FlightJournal.Web\Models\TrainingLogViewModel.cs:359
 #: FlightJournal.Web\Models\Training\Catalogue\Training2Lesson.cs:37
 #, fuzzy
 msgid "Valid for dual flights"
 msgstr "Tosædede flyvninger"
 
+#: FlightJournal.Web\Models\TrainingLogViewModel.cs:361
 #: FlightJournal.Web\Models\Training\Catalogue\Training2Lesson.cs:39
 #, fuzzy
 msgid "Valid for solo flights"
 msgstr "Soloflyvninger"
+
+#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:45
+msgid "Pilot is missing Union ID"
+msgstr "Piloten mangler Unions-ID"
+
+#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:50
+msgid "Back seat pilot is missing Union ID"
+msgstr "Bagsædepiloten mangler Unions-ID"
+
+#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:55
+msgid "Instructor is missing Union ID"
+msgstr "Instruktør mangler Unions-ID"
+
+#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:70
+msgid "Duration will not be used when only non-flying exercises are graded"
+msgstr ""
+"Flyvetid vil ikke blive registreret (i FA) når der kun er givet karakter for "
+"øvelser som ikke omfatter flyvning"
+
+#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:86
+msgid ""
+"Duration will not be used for a solo flight when no solo exercises are graded"
+msgstr ""
+"Flyvetid vil ikke blive registreret (i FA) for en soloflyvning, når der ikke "
+"givet karakter for ensædede øvelser"
+
+#: FlightJournal.Web\Models\Export\TrainingFlightExportValidator.cs:91
+msgid ""
+"Duration will not be used for a dual flight when no dual exercises are graded"
+msgstr ""
+"Flyvetid vil ikke blive registreret (i FA) for en tosædet flyvning, når der "
+"ikke givet karakter for tosædede øvelser"
 
 #: FlightJournal.Web\Models\Training\Catalogue\Training2Program.cs:24
 msgid "Short Name"
@@ -925,7 +925,6 @@ msgid ""
 msgstr "Du har (muligvis) data som ikke er gemt - vil du forlade siden ?"
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:410
-#, fuzzy
 msgid "Data for this flight have been edited by someone else, please reload!"
 msgstr ""
 "Skolingsdata for denne flyvning er blevet ændret af en anden, du er desværre "
