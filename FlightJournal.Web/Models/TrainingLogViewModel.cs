@@ -140,6 +140,8 @@ namespace FlightJournal.Web.Models
         public bool IsValid { get; }
         public IEnumerable<string> ValidationIssues { get; }
         public IEnumerable<AppliedExerciseViewModel> ExercisesWithStatus { get; } = Enumerable.Empty<AppliedExerciseViewModel>();
+        public string GradedExercises { get; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -173,6 +175,7 @@ namespace FlightJournal.Web.Models
             var validator = new TrainingFlightExportValidator(flight, exercisesForThisFlight);
             IsValid = validator.IsValid;
             ValidationIssues = validator.Violations;
+            GradedExercises = string.Join(", ", exercisesForThisFlight.Select(e => e.Lesson).OrderBy(x => x.DisplayOrder).Select(x => x.Name).Distinct());
         }
 
     }

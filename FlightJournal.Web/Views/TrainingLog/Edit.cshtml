@@ -39,6 +39,9 @@
     <div class="col-xs-4 col-sm-2">
         @Model.BackseatPilot
     </div>
+    <div class="col-xs-4 col-sm-4">
+        @Model.ThisFlight.GradedExercises
+    </div>
 </div>
 <div class="row alert alert-danger" id="violations">
     @if (!Model.ThisFlight.IsValid)
