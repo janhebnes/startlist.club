@@ -65,6 +65,23 @@ namespace FlightJournal.Web.Models.Export
         public string FlattenedPartialExerciseGradings => string.Join("|", PartialExercises?.Select(x => $"{x.ExerciseName} {x.PartialExerciseName} :{x.GradingName}"));
         [JsonIgnore] // Not in JSON
         public string FlattenedFlightPhaseComments => string.Join("|", FlightPhaseComments?.Select(x => $"{x.FlightPhase.Phase}:{string.Join(",",x.Comments)}"));
+
+        public void TrimAll()
+        {
+            foreach (var fi in this.GetType().GetProperties())
+            {
+                if (fi.PropertyType == typeof(string) && fi.CanWrite)
+                {
+                    if (fi.GetValue(this) is string v)
+                    {
+                        var trimmed = v.Trim();
+                        if (v != trimmed)
+                            fi.SetValue(this, trimmed);
+                    }
+                }
+            }
+        }
+
     }
     public class TrainingFlightPartialExerciseExportViewModel
     {

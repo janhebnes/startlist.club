@@ -339,6 +339,7 @@ namespace FlightJournal.Web.Controllers
                     Maneuvers = maneuvers,
                     Note = annotation?.Note
                 };
+                m.TrimAll();
             flightModels.Add(m);
             }
             return new TrainingFlightHistoryExportViewModel { Flights = flightModels, Timestamp = DateTimeOffset.Now, ExportingUser = User?.Identity?.Name };
