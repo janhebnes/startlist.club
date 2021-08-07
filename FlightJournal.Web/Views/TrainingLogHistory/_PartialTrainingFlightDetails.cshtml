@@ -7,18 +7,27 @@
 }
 else
 {
-    <table class="table table-striped table-hover table-condensed">
-        <tr><th>@_("Partial Exercises")</th><td></td><td></td></tr>
-        @foreach (var e in Model.Exercises)
+<table class="table table-striped table-hover table-condensed">
+    <tr><th>@_("Partial Exercises")</th><td></td><td></td></tr>
+    @foreach (var e in Model.Exercises)
+    {
+        <tr class="exerciselink clickable" data-id1="@e.LessonId" data-id2="@e.ExerciseId"><td>@e.LessonName</td><td>@e.ExerciseName</td><td>@e.GradingName</td></tr>
+    }
+    <tr><th>@_("Manouvers")</th><td>@Model.Manouvres</td><td></td></tr>
+    @foreach (var e in Model.FlightPhaseAnnotations)
+    {
+        <tr><th>@e.Key</th><td>@Html.Raw(string.Join(", ", e.Value))</td><td></td></tr>
+    }
+    <tr><th>@_("Note")</th><td>@Model.Note</td><td></td></tr>
+    <tr><th>@_("Weather")</th><td>@Model.Weather</td><td></td></tr>
+    @if (!Model.PassesValidation)
+    {
+        <tr><th>@_("Issues")</th><td></td><td></td></tr>
+        foreach (var v in Model.Violations)
         {
-            <tr class="exerciselink clickable" data-id1="@e.LessonId" data-id2="@e.ExerciseId"><td>@e.LessonName</td><td>@e.ExerciseName</td><td>@e.GradingName</td></tr>
+            <tr><th></th><td>@v</td><td></td></tr>
         }
-        <tr><th>@_("Manouvers")</th><td>@Model.Manouvres</td><td></td></tr>
-        @foreach (var e in Model.FlightPhaseAnnotations)
-        {
-            <tr><th>@e.Key</th><td>@Html.Raw(string.Join(", ", e.Value))</td><td></td></tr>
-        }
-        <tr><th>@_("Note")</th><td>@Model.Note</td><td></td></tr>
-        <tr><th>@_("Weather")</th><td>@Model.Weather</td><td></td></tr>
-    </table>
+    }
+
+</table>
 }

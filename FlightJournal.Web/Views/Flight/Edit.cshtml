@@ -381,7 +381,7 @@
             $(".back").click(function() {
                 if (
                     !isDirty
-                    || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
+                    || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
                     isDirty = false;
                     elvisHasLeftTheBuilding = true;
                     window.history.back();
@@ -391,7 +391,7 @@
 
             $(".totraining").click(function() {
                 if (
-                    !isDirty || confirm(@Html.Raw(__("You have unsaved data - do you want to leave the page and lose the changes?")))) {
+                    !isDirty || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
                     isDirty = false;
                     elvisHasLeftTheBuilding = true;
                 } else {
@@ -407,7 +407,7 @@
 
             signalRflightsHub.client.NotifyFlightChanged = function(flightId, originator) {
                 if (flightId === "@Model.FlightId" && !elvisHasLeftTheBuilding) {
-                    alert(@Html.Raw(__("Data for this flight have been edited by someone else, please reload!"))); //TODO: localize
+                    alert(@Html.Raw(RemoveCRLF(__("Data for this flight have been edited by someone else, please reload!")))); 
                 }
             };
         });

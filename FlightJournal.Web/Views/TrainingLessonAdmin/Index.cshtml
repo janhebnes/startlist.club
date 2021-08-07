@@ -24,6 +24,8 @@
             @_("Purpose")
         </th>
         <th>Id for export</th>
+        <th>@_("Can be used for dual flights")</th>
+        <th>@_("Can be used for solo flights")</th>
         <th></th>
         <th></th>
     </tr>
@@ -38,6 +40,8 @@
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td class="display-field">@Html.Raw(@mkd.Transform(item.Purpose))</td>
                 <td class="display-field">@Html.DisplayFor(modelItem=>item.LessonIdForExport)</td>
+                <td class="display-field">@Html.DisplayFor(modelItem=>item.CanHaveDualFlightDuration)</td>
+                <td class="display-field">@Html.DisplayFor(modelItem=>item.CanHaveSoloFlightDuration)</td>
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink(_("Edit"), "Edit", new { trainingProgramId = Model.Training2ProgramId, id = item.Training2LessonId }, new { @class = "btn btn-default" })

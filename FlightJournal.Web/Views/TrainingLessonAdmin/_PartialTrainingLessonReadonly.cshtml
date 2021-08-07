@@ -25,6 +25,14 @@
         <td class="display-label valign-top">@Html.LabelFor(model => model.LessonIdForExport)</td>
         <td class="display-field">@Html.DisplayFor(model => model.LessonIdForExport)</td>
     </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.CanHaveDualFlightDuration)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.CanHaveDualFlightDuration)</td>
+    </tr>
+    <tr>
+        <td class="display-label valign-top">@Html.LabelFor(model => model.CanHaveSoloFlightDuration)</td>
+        <td class="display-field">@Html.DisplayFor(model => model.CanHaveSoloFlightDuration)</td>
+    </tr>
 </table>
 @{
     int tpi = ViewBag.TrainingProgramId;

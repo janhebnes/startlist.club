@@ -44,6 +44,15 @@
 
 
 <div class="editor-label">
+    @Html.LabelFor(model => model.RequireUnionIdsForExport)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RequireUnionIdsForExport)
+    @Html.ValidationMessageFor(model => model.RequireUnionIdsForExport)
+</div>
+
+
+<div class="editor-label">
     @Html.LabelFor(model => model.Url)
 </div>
 <div class="editor-field">

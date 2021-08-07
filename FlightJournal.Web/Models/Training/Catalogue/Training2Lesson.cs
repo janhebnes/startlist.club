@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using FlightJournal.Web.Translations;
 using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Models.Training.Catalogue
@@ -32,6 +33,11 @@ namespace FlightJournal.Web.Models.Training.Catalogue
 
         [AllowHtml]
         public string AcceptanceCriteria { get; set; } = "";
+
+        [LocalizedDisplayName("Valid for dual flights")]
+        public bool CanHaveDualFlightDuration { get; set; } = true;
+        [LocalizedDisplayName("Valid for solo flights")]
+        public bool CanHaveSoloFlightDuration { get; set; } = true;
 
         public int DisplayOrder { get; set; }
 

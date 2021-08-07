@@ -49,11 +49,14 @@
                 <th>@_("Duration")</th>
                 <th>@_("Program")</th>
                 <th>@_("Exercises")</th>
+                <th>@_("Issues")</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var f in Model.Flights)
             {
+                var validationMarker = Html.Raw(f.PassesValidation ? "" : "<i class='fa fa-exclamation-circle validation-summary-errors'></i>");
                 <tr class="clickable detailslink" data-flightid="@f.FlightId">
                     <td data-flightid="@f.FlightId">@f.Timestamp</td>
                     <td>@f.Plane</td>
@@ -63,6 +66,17 @@
                     <td>@f.Duration</td>
                     <td>@f.TrainingProgramName</td>
                     <td>@f.AppliedLessons</td>
+                    <td>@validationMarker</td>
+                    <td>
+                        @if (Request.IsPilot() && f.IsCurrentClubPilots)
+                        {
+                            if (User.IsEditor() || f.Date.AddDays(3) >= DateTime.Now)
+                            {
+                                @Html.ActionLink(_("Edit"), "Edit", "Flight", new { id = f.FlightId }, new { @class = "btn btn-default btn-xs" }, "fa fa-pencil-square-o fa-fw")
+                            }
+                        }
+                    </td>
+
                 </tr>
             }
         </tbody>

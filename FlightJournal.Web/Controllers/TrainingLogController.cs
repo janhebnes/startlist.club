@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Export;
 using FlightJournal.Web.Models.Training.Flight;
 
 namespace FlightJournal.Web.Controllers
@@ -113,8 +114,15 @@ namespace FlightJournal.Web.Controllers
             var originator = Guid.Empty;
             Guid.TryParse(flightData.originator, out originator);
             FlightsHub.NotifyTrainingDataChanged(flightId, originator);
+            var validator =
+                new TrainingFlightExportValidator(flight, db.AppliedExercises.Where(x => x.FlightId.Equals(flightId)));
 
-            return new JsonResult() { @Data = new { Success = true } };
+            return new JsonResult() { @Data = new
+            {
+                Success = true,
+                IsValidForExport = validator.IsValid,
+                ValidationIssues = validator.Violations.ToArray()
+            } };
         }
 
 
@@ -203,7 +211,7 @@ namespace FlightJournal.Web.Controllers
                 : User.Pilot() != null && User.Pilot().IsInstructor
                     ? User.Pilot().PilotId
                     : -1;
-            var model = new TrainingLogViewModel(flight.FlightId, flight.Date, flight.Departure, flight.Landing, pilot, backseatPilotName, new TrainingDataWrapper(db, flight.PilotId, instructorId, flight, trainingProgramId));
+            var model = new TrainingLogViewModel(flight, pilot, backseatPilotName, new TrainingDataWrapper(db, flight.PilotId, instructorId, flight, trainingProgramId));
             return model;
         }
     }
