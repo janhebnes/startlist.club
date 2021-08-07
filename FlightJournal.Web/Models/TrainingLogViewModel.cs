@@ -24,7 +24,7 @@ namespace FlightJournal.Web.Models
         internal TrainingDataWrapper(FlightContext db, int pilotId, int instructorId, Flight flight, int trainingProgramId)
         {
             FlightId = flight.FlightId;
-            PilotFlights = db.Flights.Where(x => x.PilotId == pilotId).Select(x => new PilotFlightView{Flight = x, Timestamp = x.Departure ?? x.Date}).OrderBy(v=>v.Timestamp).ToList();
+            PilotFlights = db.Flights.Where(x => x.Deleted==null && x.PilotId == pilotId).Select(x => new PilotFlightView{Flight = x, Timestamp = x.Departure ?? x.Date}).OrderBy(v=>v.Timestamp).ToList();
             FlightAnnotations = PilotFlights.SelectMany(x => db.TrainingFlightAnnotations.Where(y => y.FlightId == x.Flight.FlightId).OrderBy(y => x.Timestamp)).ToList();
             AppliedExercises = PilotFlights.SelectMany(x => db.AppliedExercises.Where(y => y.FlightId == x.Flight.FlightId).OrderBy(y => x.Timestamp)).ToList();
             if (trainingProgramId == -1)
