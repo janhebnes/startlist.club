@@ -1,0 +1,17 @@
+﻿@using System.Runtime.InteropServices
+@model FlightJournal.Web.Models.ScatterChartDataViewModel
+
+@{
+    System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+}
+
+@{
+    var chartid = "CHART" + Model.Metadata["pilotId"] + "-" + Model.Metadata["programId"];
+    var pilotname = Model.Metadata["pilotName"];
+
+}
+<div class="chart" id="@chartid" >
+    <canvas class="scatterChartDate" style="min-height: 100px;" data-description="@pilotname" data-dataseries='@Html.Raw(serializer.Serialize(Model.DataSeries))' data-ylabel="@Model.YLabel" data-xlabel="@Model.XLabel" data-ylabelmap=@Html.Raw(Json.Encode(Model.ValueLabels)) data-ystep="1" data-miny="0", data-maxy="19" data-chartid="@chartid"></canvas>
+</div>
+
+

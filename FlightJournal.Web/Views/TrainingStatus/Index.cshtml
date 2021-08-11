@@ -1,6 +1,4 @@
-﻿@using FlightJournal.Web.Extensions
-@using FlightJournal.Web.Models
-@using FlightJournal.Web.Models.Training.Flight
+﻿@using FlightJournal.Web.Models
 @using FlightJournal.Web.Views
 @model IEnumerable<FlightJournal.Web.Controllers.TrainingProgramStatus>
 
@@ -12,28 +10,37 @@
 
 @if (Model.Any())
 {
-
     <table class="table table-striped table-hover table-condensed" id="flightstable">
         <thead>
-        <tr>
-            <th>@_("Pilot")</th>
-            <th>@_("Program")</th>
-            <th>@_("Dual hours")</th>
-            <th>@_("Dual flights")</th>
-            <th>@_("Solo hours")</th>
-            <th>@_("Solo flights")</th>
-            <th>@_("Last Flight")</th>
-            <th>@_("Hours in last 60 days")</th>
-            <th>@_("Flights in last 60 days")</th>
-            <th>@_("Status")</th>
-        </tr>
+            <tr class="row1of2">
+                <th></th>
+                <th></th>
+                <th colspan="2" class="bg-info">@_("Dual")</th>
+                <th colspan="2">@_("Solo")</th>
+                <th></th>
+                <th colspan="3" class="bg-info">@_("Last 60 days")</th>
+                <th></th>
+            </tr>
+            <tr class="row2of2">
+                <th>@_("Pilot")</th>
+                <th>@_("Program")</th>
+                <th class="bg-info">@_("Hours")</th>
+                <th class="bg-info">@_("Flights")</th>
+                <th>@_("Hours")</th>
+                <th>@_("Flights")</th>
+                <th>@_("Last")</th>
+                <th class="bg-info">@_("Hours")</th>
+                <th class="bg-info">@_("Flights")</th>
+                <th class="bg-info">@_("Exercises")</th>
+                <th>@_("Status")</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var f in Model)
-        {
-            <tr class="clickable" onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>
-                <td>@f.PilotName</td>
-                <td>@f.ProgramName</td>
+            @foreach (var f in Model)
+            {
+            <tr>
+                <td class="clickable" title=@Html.Raw(__("Click to see training flights on this program")) onclick='window.location="@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId,programId =f.ProgramId})"'>@f.PilotName</td>
+                <td class="clickable" title=@Html.Raw(__("Click to see training status details")) onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>@f.ProgramName</td>
                 <td>@f.DualTime</td>
                 <td>@f.DualFlights</td>
                 <td>@f.SoloTime</td>
@@ -41,6 +48,9 @@
                 <td>@f.LastFlight</td>
                 <td>@f.HoursInLast60Days</td>
                 <td>@f.FlightsInLast60Days</td>
+                <td class="clickable" title=@Html.Raw(__("Click to see all exercises - Click dot to see flight details"))>
+                    @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
+                </td>
                 <td>
                     @foreach (var x in f.LessonsWithStatus)
                     {
@@ -52,15 +62,152 @@
                         }
                         else
                         {
-                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId, lessonId = x.LessonId})>
+                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId, lessonId = x.LessonId}) title=@Html.Raw(__("Click to see flights on the exercise")) >
                                 <label class="clickable bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
                             </a>
                         }
                     }
                 </td>
             </tr>
-        }
+            }
         </tbody>
     </table>
+}
+
+
+<div id="urls" data-details="@Url.Action("GetDetails", "TrainingLogHistory")" data-exercisedetails="@Url.Action("ExerciseDetails", "TrainingLogHistory")"></div>
+
+<div class="modal" tabindex="-1" role="dialog" id="chartmodal">
+    <div class="modal-dialog  wide-modal high-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@_("Time line")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="detailsmodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@_("Details")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="exercisemodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@_("Exercise")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/charting")
+    <script>
+
+        $(document).ready(function () {
+            moment.locale("da");
+            drawScatterDateCharts(moment().subtract(60, 'days'), moment(), onDataPointClick, onChartClick);
+        });
+
+        var onDataPointClick = function (flightId) {
+            console.log("Clicked on flight " + flightId);
+            showFlightDetails(flightId);
+        }
+        var onChartClick = function (id, name) {
+            console.log("Clicked on chart " + id);
+            showFullChart(id, name);
+        }
+
+        var showFullChart = function (chartId, pilotName) {
+            var chartdiv = $("#"+chartId);
+            $("#chartmodal").find(".modal-body").html(chartdiv.html());
+            $("#chartmodal").find(".modal-title").html(pilotName);
+            var canvas = $("#chartmodal").find(".scatterChartDate");
+            canvas.height(window.innerHeight * 0.7);
+            $("#chartmodal").modal();
+            drawScatterDateChart(canvas, null, moment(), onDataPointClick);
+        }
+
+        var showFlightDetails = function (flightid) {
+            var url = $("#urls").data("details");
+            if (!url || !flightid)
+                return;
+            $.ajax({
+                url: url,
+                data: { flightId: flightid },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "html",
+                success: function (v) {
+                    $("#detailsmodal").find(".modal-body").html(v);
+                    $("#detailsmodal").modal();
+
+                    setupExerciseModal();
+                },
+                error: function (a, b, c) {
+
+                },
+
+            });
+        };
+        var setupExerciseModal = function () {
+            $(".exerciselink").on("click",
+                function () {
+                    var url = $("#urls").data("exercisedetails");
+                    var lessonId = $(this).data("id1");
+                    var exerciseId = $(this).data("id2");
+                    if (!url || !lessonId || !exerciseId)
+                        return;
+                    $.ajax({
+                        url: url,
+                        data: {
+                            trainingLessonId: lessonId,
+                            trainingExerciseid: exerciseId
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (v) {
+                            $("#exercisemodal").find(".modal-body").html(v);
+                            $("#exercisemodal").modal();
+                        },
+                        error: function (a, b, c) {
+
+                        },
+
+                    });
+                });
+        }
+    </script>
 }
 

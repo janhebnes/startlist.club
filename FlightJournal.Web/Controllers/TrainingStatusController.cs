@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
+using FlightJournal.Web.Models.Training.Predefined;
+using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -140,22 +144,22 @@ namespace FlightJournal.Web.Controllers
         {
   				var sw = Stopwatch.StartNew();
                 var flightIdsByThisPilot = flightsByPilot.Select(x => x.FlightId).ToList();
-                var trainingFlightsInThisProgramByThisPilot = allExercises
+                var flowExercisesInThisProgramByThisPilot = allExercises
                     .Where(x=>flightIdsByThisPilot.Contains(x.FlightId) 
                            && x.Program.Training2ProgramId == program.Training2ProgramId)
-                    .Select(ae=>new {ae.FlightId, ae.Lesson.Training2LessonId, ae.Exercise.Training2ExerciseId, ae.Grading})
-                    .Distinct()
+                    .Select(ae => new LightWeightFlownExercise(ae.FlightId, ae.Lesson.Training2LessonId, ae.Exercise.Training2ExerciseId, ae.Lesson.Name, ae.Exercise.Name, ae.Grading))
+                    //.DistinctBy(x=>x.FlightId)
                     .ToList();
 
-			    developerInfo.Add($"____got {trainingFlightsInThisProgramByThisPilot.Count} training flights in {program.ShortName} for {p.Name} in {sw.Elapsed}");
-                if (!trainingFlightsInThisProgramByThisPilot.Any())
+			    developerInfo.Add($"____got {flowExercisesInThisProgramByThisPilot.Count} training flights in {program.ShortName} for {p.Name} in {sw.Elapsed}");
+                if (!flowExercisesInThisProgramByThisPilot.Any())
                     return null;
 
                 var lessonStatus = new List<LessonWithStatus>();
 
                 foreach (var lesson in program.Lessons)
                 {
-                    var flownExercisesForThisLesson = trainingFlightsInThisProgramByThisPilot
+                    var flownExercisesForThisLesson = flowExercisesInThisProgramByThisPilot
                         .Where(x => x.Training2LessonId == lesson.Training2LessonId)
                         .ToList();
 
@@ -207,7 +211,7 @@ namespace FlightJournal.Web.Controllers
                 if (lessonStatus.Any(x=>x.Status != TrainingStatus.NotStarted))
                 {
                     var trainingFlightIdsInThisProgramByThisPilot =
-                        trainingFlightsInThisProgramByThisPilot.Select(x => x.FlightId);
+                        flowExercisesInThisProgramByThisPilot.Select(x => x.FlightId).Distinct();
                     var firstDate = DateTime.Now - TimeSpan.FromDays(60);
                     var dualFlights = flightsByPilot
                         .Where(x => x.IsTwoSeat && trainingFlightIdsInThisProgramByThisPilot.Contains(x.FlightId))
@@ -224,8 +228,9 @@ namespace FlightJournal.Web.Controllers
                     var programStatus = new TrainingProgramStatus(
                         p,
                         program,
+                        flightsByPilot,
+                        flowExercisesInThisProgramByThisPilot,
                         lessonStatus.OrderBy(x=>x.DisplayOrder),
-                        flightsByPilot.First().Timestamp,
                         TimeSpan.FromHours(recentTime),
                         recentFlights.Count(),
                         TimeSpan.FromHours(dualTime),
@@ -241,7 +246,7 @@ namespace FlightJournal.Web.Controllers
                 return null;
         }
 
-        private class LightWeightFlight
+        public class LightWeightFlight
         {
             public Guid FlightId { get; }
             public DateTime Timestamp { get; }
@@ -254,6 +259,26 @@ namespace FlightJournal.Web.Controllers
                 Duration = departure.HasValue && landing.HasValue ? (landing.Value - departure.Value) : TimeSpan.Zero;
                 IsTwoSeat = isTwoSeat;
             }
+        }
+
+        public class LightWeightFlownExercise
+        {
+            public LightWeightFlownExercise(Guid flightId, int training2LessonId, int training2ExerciseId, string lessonName, string exerciseName, Grading grading)
+            {
+                FlightId = flightId;
+                this.Training2LessonId = training2LessonId;
+                this.Training2ExerciseId = training2ExerciseId;
+                LessonName = lessonName;
+                ExerciseName = exerciseName;
+                Grading = grading;
+            }
+
+            public Guid FlightId { get; }
+            public int Training2LessonId { get; }
+            public int Training2ExerciseId { get; }
+            public string LessonName { get; }
+            public string ExerciseName { get; }
+            public Grading Grading { get; }
         }
     }
 
@@ -272,13 +297,20 @@ namespace FlightJournal.Web.Controllers
         public int SoloFlights { get; }
         public List<LessonWithStatus> LessonsWithStatus { get; }
 
-        public TrainingProgramStatus(Pilot pilot, Training2Program program, IEnumerable<LessonWithStatus> status, DateTime? lastFlight, TimeSpan flightTimeInLast60days, int flightsInLast60Days, TimeSpan dualTime, int dualFlights, TimeSpan soloTime, int soloFlights)
+        public TrainingTimelineViewModel TrainingTimelineViewModel { get; set; }
+        public TrainingProgramStatus(Pilot pilot, Training2Program program,
+            IReadOnlyList<TrainingStatusController.LightWeightFlight> flightsInThisProgramByThisPilot,
+            IEnumerable<TrainingStatusController.LightWeightFlownExercise> trainingFlightsInThisProgramByThisPilot,
+            IEnumerable<LessonWithStatus> status, 
+            TimeSpan flightTimeInLast60days, int flightsInLast60Days, TimeSpan dualTime, int dualFlights,
+            TimeSpan soloTime, int soloFlights)
         {
             PilotId = pilot.PilotId;
             PilotName = pilot.Name;
             ProgramId = program.Training2ProgramId;
             ProgramName = $"{program.ShortName} {program.Name}";
             LessonsWithStatus = status.ToList();
+            var lastFlight = flightsInThisProgramByThisPilot.FirstOrDefault()?.Timestamp;
             LastFlight = lastFlight.HasValue ? lastFlight.Value.ToShortDateString() : "";
             HoursInLast60Days = flightTimeInLast60days.ToString(@"hh\:mm");
             FlightsInLast60Days = flightsInLast60Days;
@@ -286,6 +318,41 @@ namespace FlightJournal.Web.Controllers
             DualFlights = dualFlights;
             SoloTime = soloTime.ToString(@"hh\:mm"); ;
             SoloFlights = soloFlights;
+            
+            var mapper = new CoarseExerciseToNumberMapper(program.Lessons.SelectMany(x => x.Exercises));
+            var timeSeriesOk = trainingFlightsInThisProgramByThisPilot
+                .Where(x=>x.Grading is { IsOk: true })
+                .Select(x=>new TimestampedValue
+                    {
+                        Timestamp = flightsInThisProgramByThisPilot.First(f=>f.FlightId == x.FlightId).Timestamp, 
+                        Value = mapper.PartialExerciseToNumber(x.Training2ExerciseId),
+                        Note = $"{x.LessonName}-{x.ExerciseName}",
+                        Key = x.FlightId.ToString()
+                    });
+            var timeSeriesInProgress = trainingFlightsInThisProgramByThisPilot
+                .Where(x=> x.Grading is { IsOk: false })
+                .Select(x=>new TimestampedValue
+                    {
+                        Timestamp = flightsInThisProgramByThisPilot.First(f=>f.FlightId == x.FlightId).Timestamp, 
+                        Value = mapper.PartialExerciseToNumber(x.Training2ExerciseId),
+                        Note = $"{x.LessonName}-{x.ExerciseName}\n({x.Grading.Name})",
+                        Key = x.FlightId.ToString()
+                    });
+
+            var metadata = new Dictionary<string, string>();
+            metadata.Add("pilotId", PilotId.ToString());
+            metadata.Add("programId", ProgramId.ToString());
+            metadata.Add("pilotName", PilotName);
+            TrainingTimelineViewModel = new TrainingTimelineViewModel{Data = new ScatterChartDataViewModel(new []
+            {
+                new TimestampedDataSeriesViewModel(new TimeDataSerie(timeSeriesOk, "OK", Color.Lime, Color.Lime, true, false)){PointRadius = 3, PointStyle = "rect"},
+                new TimestampedDataSeriesViewModel(new TimeDataSerie(timeSeriesInProgress, "InProgress", Color.DeepSkyBlue, Color.DeepSkyBlue, true, false)){PointRadius = 3, PointStyle = "rect"}
+            })
+                {
+                    ValueLabels = mapper.Labels, 
+                    Metadata = metadata
+                }
+            };
         }
     }
 
@@ -353,5 +420,6 @@ namespace FlightJournal.Web.Controllers
             DisplayOrder = exercise.DisplayOrder;
         }
     }
+
 
 }

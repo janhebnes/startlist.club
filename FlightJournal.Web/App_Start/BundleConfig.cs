@@ -39,6 +39,14 @@ namespace FlightJournal.Web
                       ));
 
 
+            bundles.Add(new ScriptBundle("~/bundles/charting").Include(
+                      "~/Scripts/moment-with-locales.min.js",
+                      "~/Scripts/chart.min.js",
+                      "~/Scripts/chartjs-plugin-crosshair.js",
+                      "~/Scripts/Charting.js"
+                      ));
+
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

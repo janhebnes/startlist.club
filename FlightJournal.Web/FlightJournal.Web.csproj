@@ -402,6 +402,7 @@
     <Compile Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.designer.cs">
       <DependentUpon>202108040827479_Extra fields for export validation for training programs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\Export\TrainingFlightExportValidator.cs" />
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
     <Compile Include="Controllers\TrainingLogController.cs" />
@@ -442,6 +443,7 @@
     </Compile>
     <Compile Include="Migrations\FlightContext\Configuration.FlightTraining.cs" />
     <Compile Include="Models\ListenerArea.cs" />
+    <Compile Include="Models\ScatterChartDataViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingLessonsInProgramViewModel.cs" />
     <Compile Include="Models\Training\AdminViewModels\TrainingProgramAdminViewModel.cs" />
@@ -466,6 +468,7 @@
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
+    <Compile Include="Models\Training\TrainingTimelineViewModel.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.Designer.cs">
@@ -814,6 +817,10 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chart.js" />
+    <Content Include="Scripts\chart.min.js" />
+    <Content Include="Scripts\Charting.js" />
+    <Content Include="Scripts\chartjs-plugin-crosshair.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -1056,6 +1063,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -1280,6 +1288,7 @@
     <Content Include="Views\TrainingStatus\PilotStatusDetails.cshtml" />
     <Content Include="Views\TrainingLog\SelectTrainingProgram.cshtml" />
     <Content Include="Views\Flight\PartialGrid.cshtml" />
+    <Content Include="Views\TrainingStatus\_PartialTrainingTimeline.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
