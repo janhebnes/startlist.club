@@ -154,7 +154,7 @@
             drawScatterDateCharts(moment().subtract(60, 'days'), moment(), onDataPointClick, onChartClick);
             $(".btnchart").click(function() {
                 var chartid = $(this).data("chartid");
-                var pilotname = $(this).data("pilotname");
+                var pilotname = $(this).data("description");
                 showFullChart(chartid, pilotname);
             });
         });
