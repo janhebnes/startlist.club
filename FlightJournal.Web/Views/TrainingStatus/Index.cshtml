@@ -32,52 +32,55 @@
                 <th class="bg-info">@_("Hours")</th>
                 <th class="bg-info">@_("Flights")</th>
                 <th class="bg-info">@_("Exercises")</th>
-                <th>@_("Status")</th>
+                @*<th>@_("Status")</th>*@
             </tr>
         </thead>
         <tbody>
             @foreach (var f in Model)
             {
-            <tr>
-                <td class="clickable" title=@Html.Raw(__("Click to see training flights on this program")) onclick='window.location="@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId,programId =f.ProgramId})"'>@f.PilotName</td>
-                <td class="clickable" title=@Html.Raw(__("Click to see training status details")) onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>@f.ProgramName</td>
-                <td>@f.DualTime</td>
-                <td>@f.DualFlights</td>
-                <td>@f.SoloTime</td>
-                <td>@f.SoloFlights</td>
-                <td>@f.LastFlight</td>
-                <td>@f.HoursInLast60Days</td>
-                <td>@f.FlightsInLast60Days</td>
-                <td>
-                    <span class="clickable  hidden-xs hidden-sm hidden-md " title=@Html.Raw(__("Click to see all exercises - Click dot to see flight details"))>
-                        @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
-                    </span>
-                    <span class="clickable hidden-lg">
-                        @{
-                            var chartid = "CHART" + f.TrainingTimelineViewModel.Data.Metadata["pilotId"] + "-" + f.TrainingTimelineViewModel.Data.Metadata["programId"];
-                            var pilotname = f.TrainingTimelineViewModel.Data.Metadata["pilotName"];
-                        }
-                        <button class="btnchart" title=@Html.Raw(__("Click to see chart")) data-chartid="@chartid" data-description="@pilotname"><span class="fa fa-line-chart"></span></button>
-                    </span>
-                </td>
-                <td>
-                    @foreach (var x in f.LessonsWithStatus)
-                    {
-                        var clz = CssHelper.CssClassFor(x.Status);
-                        var regressionMarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
-                        if (x.Status == TrainingStatus.NotStarted)
+                <tr>
+                    <td class="clickable" title=@Html.Raw(__("Click to see training flights on this program")) onclick='window.location="@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId,programId =f.ProgramId})"'>@f.PilotName</td>
+                    <td class="clickable" title=@Html.Raw(__("Click to see training status details")) onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'>@f.ProgramName</td>
+                    <td>@f.DualTime</td>
+                    <td>@f.DualFlights</td>
+                    <td>@f.SoloTime</td>
+                    <td>@f.SoloFlights</td>
+                    <td>@f.LastFlight</td>
+                    <td>@f.HoursInLast60Days</td>
+                    <td>@f.FlightsInLast60Days</td>
+                    <td rowspan="2">
+                        <span class="clickable  hidden-xs hidden-sm " title=@Html.Raw(__("Click to see all exercises - Click dot to see flight details"))>
+                            @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
+                        </span>
+                        <span class="clickable hidden-md hidden-lg">
+                            @{
+                                var chartid = "CHART" + f.TrainingTimelineViewModel.Data.Metadata["pilotId"] + "-" + f.TrainingTimelineViewModel.Data.Metadata["programId"];
+                                var pilotname = f.TrainingTimelineViewModel.Data.Metadata["pilotName"];
+                            }
+                            <button class="btnchart" title=@Html.Raw(__("Click to see chart")) data-chartid="@chartid" data-description="@pilotname"><span class="fa fa-line-chart"></span></button>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="8">
+                        @foreach (var x in f.LessonsWithStatus)
                         {
-                            <label class="bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
+                            var clz = CssHelper.CssClassFor(x.Status);
+                            var regressionMarker = x.Regression ? " <i class='fa fa-exclamation-triangle' style=color:yellow ></i>" : "";
+                            if (x.Status == TrainingStatus.NotStarted)
+                            {
+                                <label class="bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
+                            }
+                            else
+                            {
+                                <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new { pilotId = f.PilotId, lessonId = x.LessonId }) title=@Html.Raw(__("Click to see flights on the exercise"))>
+                                    <label class="clickable bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
+                                </a>
+                            }
                         }
-                        else
-                        {
-                            <a href=@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId, lessonId = x.LessonId}) title=@Html.Raw(__("Click to see flights on the exercise")) >
-                                <label class="clickable bordered @clz" style="padding: 2px">@x.LessonShortName@Html.Raw(regressionMarker)</label>
-                            </a>
-                        }
-                    }
-                </td>
-            </tr>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
