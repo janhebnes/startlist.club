@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-08-12 12:09+0200\n"
+"POT-Creation-Date: 2021-08-12 14:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -693,7 +693,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:33
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:102
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:111
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:70
 msgid "Details"
@@ -1604,7 +1604,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:137
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:300
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:111
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:120
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:129
 msgid "Exercise"
 msgstr ""
 
@@ -1847,15 +1847,19 @@ msgstr ""
 msgid "Click to see training status details"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:51
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:52
 msgid "Click to see all exercises - Click dot to see flight details"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:65
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:60
+msgid "Click to see chart"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:74
 msgid "Click to see flights on the exercise"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:84
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:93
 msgid "Time line"
 msgstr ""
 

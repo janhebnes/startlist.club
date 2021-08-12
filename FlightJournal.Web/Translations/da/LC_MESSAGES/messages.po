@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-08-12 12:09+0200\n"
-"PO-Revision-Date: 2021-08-12 12:13+0200\n"
+"POT-Creation-Date: 2021-08-12 14:47+0200\n"
+"PO-Revision-Date: 2021-08-12 14:51+0200\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -700,7 +700,7 @@ msgstr "Vælg Flyveklub (ufiltreret)"
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:33
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:102
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:111
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:70
 msgid "Details"
@@ -1639,7 +1639,7 @@ msgstr "Alle øvelser og deløvelser med status"
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:137
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:300
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:111
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:120
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:129
 msgid "Exercise"
 msgstr "Øvelse"
 
@@ -1891,17 +1891,21 @@ msgstr "Klik for at se flyvninger på dette program"
 msgid "Click to see training status details"
 msgstr "Klik for at se status for programmet"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:51
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:52
 msgid "Click to see all exercises - Click dot to see flight details"
 msgstr ""
 "Klik for at se i større udgave - klik en prik for at se detaljer for den "
 "flyvning"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:65
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:60
+msgid "Click to see chart"
+msgstr "Klik for at se tidsforløb"
+
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:74
 msgid "Click to see flights on the exercise"
 msgstr "Klik for at se flyvninger på denne øvelse"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:84
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:93
 msgid "Time line"
 msgstr "Tid"
 

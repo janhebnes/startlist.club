@@ -315,6 +315,8 @@ var drawScatterDateChart = function (chart,
             datasets: dataSeries
         },
         options: {
+            responsive: true,
+            resizeDelay: 200,
             title: {
                 display: false
             },
