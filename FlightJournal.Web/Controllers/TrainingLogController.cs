@@ -141,10 +141,14 @@ namespace FlightJournal.Web.Controllers
                 .Distinct()
                 .Where(fid=>flightIdsWithThisPilot.Contains(fid))
                 .ToList();
-            var theFlights = flightsWithThisPilot.Where(f => allTrainingFlightIdsForThisPilot.Contains(f.FlightId)).OrderByDescending(x=>x.Landing ?? x.Date);
+            var theFlights = flightsWithThisPilot.Where(f => allTrainingFlightIdsForThisPilot.Contains(f.FlightId)).OrderByDescending(x=>x.Landing ?? x.Date).ToList();
 
-            var model = new List<TrainingFlightWithSomeDetailsViewModel>();
-
+            var model = new TrainingFlightsWithSomeDetailsViewModel
+            {
+                FlightCount = theFlights.Count, 
+                FlightsDuration = TimeSpan.FromMinutes(theFlights.Sum(x => x.Duration.TotalMinutes)).ToString(@"hh\:mm"), 
+                Flights = new List<TrainingFlightWithSomeDetailsViewModel>()
+            };
 
             foreach (var f in theFlights)
             {
@@ -193,7 +197,7 @@ namespace FlightJournal.Web.Controllers
                     Manouvres = string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
                     Note = annotation?.Note
                 };
-                model.Add(m);
+                model.Flights.Add(m);
             }
 
             return PartialView("_PartialTrainingLogView", model);
@@ -271,4 +275,10 @@ namespace FlightJournal.Web.Controllers
         public string Note { get; set; }
     }
 
+    public class TrainingFlightsWithSomeDetailsViewModel
+    {
+        public int FlightCount { get; set; }
+        public string FlightsDuration { get; set; }
+        public List<TrainingFlightWithSomeDetailsViewModel> Flights { get; set; }
+    }
 }

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: startlist.club\n"
 "Report-Msgid-Bugs-To: jan.hebnes@gmail.com\n"
-"POT-Creation-Date: 2021-08-12 14:47+0200\n"
-"PO-Revision-Date: 2021-08-12 14:51+0200\n"
+"POT-Creation-Date: 2021-08-15 11:09+0200\n"
+"PO-Revision-Date: 2021-08-15 11:10+0200\n"
 "Last-Translator: Jan Hebnes <jan.hebnes@gmail.com>\n"
 "Language-Team: da <da@li.org>\n"
 "Language: da\n"
@@ -700,7 +700,7 @@ msgstr "Vælg Flyveklub (ufiltreret)"
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:33
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:111
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:114
 #: FlightJournal.Web\Views\UsersAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:70
 msgid "Details"
@@ -1639,7 +1639,7 @@ msgstr "Alle øvelser og deløvelser med status"
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:137
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:300
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:111
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:129
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:132
 msgid "Exercise"
 msgstr "Øvelse"
 
@@ -1794,6 +1794,11 @@ msgstr "Bagsæde"
 msgid "Annotations"
 msgstr "Bemærkninger"
 
+#: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:37
+#, csharp-format
+msgid "Total: {0} hours, {1} flights"
+msgstr "I alt {0} timer, {1} starter"
+
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:19
 msgid "This Year"
 msgstr "I år"
@@ -1901,11 +1906,11 @@ msgstr ""
 msgid "Click to see chart"
 msgstr "Klik for at se tidsforløb"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:74
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:77
 msgid "Click to see flights on the exercise"
 msgstr "Klik for at se flyvninger på denne øvelse"
 
-#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:93
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:96
 msgid "Time line"
 msgstr "Tid"
 

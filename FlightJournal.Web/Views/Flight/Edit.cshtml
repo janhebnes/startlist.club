@@ -16,7 +16,7 @@
                     <div class="alert alert-danger">
                         <h4>Deleted @Model.Deleted.ToString() by @Model.LastUpdatedBy</h4>
                         <div class="btn-group">
-                            @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger saving" })
+                            @Html.ActionLink(_("Undo Delete"), "Enable", new { id = Model.FlightId, UrlReferrer = ViewBag.UrlReferrer }, new { @class = "btn btn-default btn-danger saving", attr = "disabled"})
                             <a href="@ViewBag.UrlReferrer" class="btn btn-default back">@_("Back")</a>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
             <div class="clearfix visible-sm visible-xs"></div>
             <div class="col-md-4 col-sm-12 visible-sm visible-xs">
                 <div class="btn-group btn-group-lg ">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary saving" />
+                    <input type="submit" value="@_("Save")" class="btn btn-primary saving"  disabled/>
                 </div>
             </div>
 
@@ -156,7 +156,7 @@
         <div class="row" style="margin-top: 30px">
             <div class="col-md-3">
                 <div class="btn-group btn-group-lg">
-                    <input type="submit" value="@_("Save")" class="btn btn-primary saving" />
+                    <input type="submit" value="@_("Save")" class="btn btn-primary saving" disabled/>
                     <a href="@ViewBag.UrlReferrer" class="btn btn-default back">@_("Back")</a>
                 </div>
             </div>
@@ -200,8 +200,8 @@
     <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript">
-    var isDirty = false;
-    var elvisHasLeftTheBuilding = false;
+        var isDirty = false;
+        var elvisHasLeftTheBuilding = false;
         var signalRflightsHub = $.connection.flightsHub;
 
         function resetJsCss() {
@@ -276,7 +276,7 @@
             }
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             if (sessionStorage.getItem("refresh") == "true") {
                 // we came from somewhere that may have updated  our model
                 sessionStorage.removeItem("refresh");
@@ -380,8 +380,7 @@
 
             $(".back").click(function() {
                 if (
-                    !isDirty
-                    || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
+                    !isDirty || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
                     isDirty = false;
                     elvisHasLeftTheBuilding = true;
                     window.history.back();
@@ -394,22 +393,25 @@
                     !isDirty || confirm(@Html.Raw(RemoveCRLF(__("You have unsaved data - do you want to leave the page and lose the changes?"))))) {
                     isDirty = false;
                     elvisHasLeftTheBuilding = true;
+                    $(".saving").attr('disabled', true); // help block premature click on Save when returning
                 } else {
                     event.preventDefault();
                 }
             });
 
 
-            $.connection.hub.start(function () {
+            $.connection.hub.start(function() {
                 console.log("connected");
                 console.log($.connection);
             });
 
             signalRflightsHub.client.NotifyFlightChanged = function(flightId, originator) {
                 if (flightId === "@Model.FlightId" && !elvisHasLeftTheBuilding) {
-                    alert(@Html.Raw(RemoveCRLF(__("Data for this flight have been edited by someone else, please reload!")))); 
+                    alert(@Html.Raw(RemoveCRLF(__("Data for this flight have been edited by someone else, please reload!"))));
                 }
             };
+
+            $(".saving").removeAttr('disabled'); // help block premature click on Save when returning
         });
 
         var setDirty = function() {

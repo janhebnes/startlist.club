@@ -7,11 +7,11 @@
 
 @{
     var chartid = "CHART" + Model.Metadata["pilotId"] + "-" + Model.Metadata["programId"];
-    var pilotname = Model.Metadata["pilotName"];
-
+    var description = Model.Metadata["pilotName"] + " (" + Model.Metadata["programName"] + ")";
+    var labelMap = Html.Raw(Json.Encode(Model.ValueLabels));
 }
 <div class="chart-container" id="@chartid" style="position: relative;" >
-    <canvas class="scatterChartDate" style="min-height: 100px;" data-description="@pilotname" data-dataseries='@Html.Raw(serializer.Serialize(Model.DataSeries))' data-ylabel="@Model.YLabel" data-xlabel="@Model.XLabel" data-ylabelmap=@Html.Raw(Json.Encode(Model.ValueLabels)) data-ystep="1" data-miny="0", data-maxy="19" data-chartid="@chartid"></canvas>
+    <canvas class="scatterChartDate" style="min-height: 100px;" data-description='@description' data-dataseries='@Html.Raw(serializer.Serialize(Model.DataSeries))' data-ylabel='@Model.YLabel' data-xlabel='@Model.XLabel' data-ylabelmap='@labelMap' data-ystep="1" data-miny="0", data-maxy="@(Model.ValueLabels.Count-1)" data-chartid='@chartid'></canvas>
 </div>
 
 

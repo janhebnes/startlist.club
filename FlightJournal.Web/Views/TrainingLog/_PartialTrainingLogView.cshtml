@@ -1,6 +1,6 @@
-﻿@model IEnumerable<FlightJournal.Web.Controllers.TrainingFlightWithSomeDetailsViewModel>
+﻿@model FlightJournal.Web.Controllers.TrainingFlightsWithSomeDetailsViewModel
 
-@if (Model.Any())
+@if (Model.Flights.Any())
 {
 
     <table class="table table-striped table-hover table-condensed" id="flightstable">
@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var f in Model)
+        @foreach (var f in Model.Flights)
         {
             <tr data-flightid="@f.FlightId">
                 <td data-flightid="@f.FlightId">@f.Timestamp</td>
@@ -34,5 +34,6 @@
         }
         </tbody>
     </table>
+    <p>@String.Format(_("Total: {0} hours, {1} flights"), Model.FlightsDuration, Model.FlightCount)</p>
 }
 

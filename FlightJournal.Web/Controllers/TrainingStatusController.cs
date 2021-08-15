@@ -308,7 +308,7 @@ namespace FlightJournal.Web.Controllers
             PilotId = pilot.PilotId;
             PilotName = pilot.Name;
             ProgramId = program.Training2ProgramId;
-            ProgramName = $"{program.ShortName} {program.Name}";
+            ProgramName = $"{program.ShortName}";
             LessonsWithStatus = status.ToList();
             var lastFlight = flightsInThisProgramByThisPilot.FirstOrDefault()?.Timestamp;
             LastFlight = lastFlight.HasValue ? lastFlight.Value.ToShortDateString() : "";
@@ -341,8 +341,9 @@ namespace FlightJournal.Web.Controllers
 
             var metadata = new Dictionary<string, string>();
             metadata.Add("pilotId", PilotId.ToString());
-            metadata.Add("programId", ProgramId.ToString());
             metadata.Add("pilotName", PilotName);
+            metadata.Add("programId", ProgramId.ToString());
+            metadata.Add("programName", ProgramName);
             TrainingTimelineViewModel = new TrainingTimelineViewModel{Data = new ScatterChartDataViewModel(new []
             {
                 new TimestampedDataSeriesViewModel(new TimeDataSerie(timeSeriesOk, "OK", Color.Lime, Color.Lime, true, false)){PointRadius = 3, PointStyle = "rect"},

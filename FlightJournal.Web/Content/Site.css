@@ -354,3 +354,10 @@ tr.row2of2>th {
 th[colspan]:not([colspan="1"]) {
     text-align: center;
 }
+
+th.coltype1 {
+	background-color: #e3f6f5;
+}
+th.coltype2 {
+	background-color: #bae8e8;
+}
