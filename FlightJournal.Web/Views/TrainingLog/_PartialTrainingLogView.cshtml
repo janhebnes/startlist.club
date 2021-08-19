@@ -7,13 +7,11 @@
         <thead>
         <tr>
             <th>@_("Date")</th>
-            <th>@_("Back seat")</th>
             <th>@_("Instructor")</th>
             <th>@_("Airfield")</th>
             <th>@_("Duration")</th>
             <th>@_("Exercises")</th>
-            <th>@_("Manouvres")</th>
-            <th>@_("Annotations")</th>
+            <th  class="hidden-xs hidden-sm hidden-md">@_("Manouvres")</th>
             <th>@_("Note")</th>
         </tr>
         </thead>
@@ -22,14 +20,12 @@
         {
             <tr data-flightid="@f.FlightId">
                 <td data-flightid="@f.FlightId">@f.Timestamp</td>
-                <td>@f.BackSeatOccupant</td>
                 <td>@f.Instructor</td>
                 <td>@f.Airfield</td>
                 <td>@f.Duration</td>
-                <td>@f.AppliedLessons</td>
-                <td>@Html.Raw(f.Manouvres)</td>
-                <td>@Html.Raw(f.Annotations)</td>
-                <td>@f.Note</td>
+                <td><span class="hidden-lg">@f.ExercisesShort</span><span class="hidden-xs hidden-sm hidden-md">@f.ExercisesFull</span></td>
+                <td  class="hidden-xs hidden-sm hidden-md">@Html.Raw(f.Manouvres)</td>
+                <td>@Html.Raw(f.Note)</td>
             </tr>
         }
         </tbody>
