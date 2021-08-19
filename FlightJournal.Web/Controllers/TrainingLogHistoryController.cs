@@ -231,10 +231,11 @@ namespace FlightJournal.Web.Controllers
                     Instructor = instructorNameAndClub,
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
+                    LandingCount = f.LandingCount,
                     TrainingProgramName = programName,
                     PrimaryLessonName = primaryLessonName,
                     AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x=>x.Key.DisplayOrder).Select(x=>x.Key.Name)),
-                    PassesValidation = validator.IsValid
+                    PassesValidation = validator.IsValid,
                 };
                 flightModels.Add(m);
             }
@@ -270,7 +271,7 @@ namespace FlightJournal.Web.Controllers
                 FlightPhaseAnnotations = commentsForAllPhases,
                 Weather = new HtmlString(weather),
                 PassesValidation = validator.IsValid,
-                Violations = validator.Violations
+                Violations = validator.Violations,
             };
             return details;
         }
@@ -337,7 +338,8 @@ namespace FlightJournal.Web.Controllers
                     PartialExercises =  partialExercises,
                     FlightPhaseComments = flightPhaseComments,
                     Maneuvers = maneuvers,
-                    Note = annotation?.Note
+                    Note = annotation?.Note,
+                    LandingCount = f.LandingCount
                 };
                 m.TrimAll();
             flightModels.Add(m);
@@ -434,6 +436,7 @@ namespace FlightJournal.Web.Controllers
         public bool PassesValidation { get; set; }
         public bool IsCurrentClubPilots { get; set; }
         public DateTime Date { get; set; }
+        public int LandingCount { get; set; }
     }
 
     /// <summary>

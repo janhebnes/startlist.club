@@ -186,12 +186,13 @@ namespace FlightJournal.Web.Controllers
                     Instructor = instructorNameAndClub,
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
+                    LandingCount = f.LandingCount,
                     TrainingProgramName = programName,
                     PrimaryLessonName = primaryLessonName,
                     AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x => x.Key.DisplayOrder).Select(x => x.Key.Name)),
                     Annotations = string.Join(", ", phaseComments.Select(x=>$"{x.Key}: {string.Join(",", x.Value)}")),
                     Manouvres = string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
-                    Note = annotation?.Note
+                    Note = annotation?.Note,
                 };
                 model.Add(m);
             }
@@ -269,6 +270,7 @@ namespace FlightJournal.Web.Controllers
         public string Manouvres { get; set; }
         public string Annotations { get; set; }
         public string Note { get; set; }
+        public int LandingCount { get; set; }
     }
 
 }
