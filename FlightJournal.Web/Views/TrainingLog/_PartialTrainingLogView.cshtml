@@ -11,6 +11,7 @@
             <th>@_("Instructor")</th>
             <th>@_("Airfield")</th>
             <th>@_("Duration")</th>
+            <th>#</th>
             <th>@_("Exercises")</th>
             <th>@_("Manouvres")</th>
             <th>@_("Annotations")</th>
@@ -26,6 +27,7 @@
                 <td>@f.Instructor</td>
                 <td>@f.Airfield</td>
                 <td>@f.Duration</td>
+                <td>@(f.LandingCount > 1 ? $"{f.LandingCount}": "")</td>
                 <td>@f.AppliedLessons</td>
                 <td>@Html.Raw(f.Manouvres)</td>
                 <td>@Html.Raw(f.Annotations)</td>

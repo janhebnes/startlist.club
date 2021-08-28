@@ -97,12 +97,12 @@ namespace FlightJournal.Web.Controllers
             var flightsByPilot = allFlights
                 .Where(x => x.Date >= FirstRelevantDate)
                 .Where(f => f.Pilot.PilotId == p.PilotId)
-                .Select(x => new { x.FlightId, x.Departure, x.Landing, x.Date, IsTwoSeat = x.PilotBackseatId != null}) 
+                .Select(x => new { x.FlightId, x.Departure, x.Landing, x.Date, IsTwoSeat = x.PilotBackseatId != null, x.LandingCount}) 
                 .ToList();
 
             var model = new List<TrainingProgramStatus>();
             var flights = flightsByPilot
-                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date, x.IsTwoSeat ))
+                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date, x.IsTwoSeat, x.LandingCount ))
                 .OrderByDescending(x => x.Timestamp)
                 .ToList();
             developerInfo.Add($"__got {flights.Count} flights for pilot {p.Name} in {sw.Elapsed}");
@@ -123,11 +123,11 @@ namespace FlightJournal.Web.Controllers
             var flightsByPilot = allFlights
                 .Where(x => x.Date >= FirstRelevantDate)
                 .Where(f => f.Pilot.PilotId == p.PilotId)
-                .Select(x=>new {x.FlightId, x.Departure, x.Landing, x.Date, IsTwoSeat = x.PilotBackseatId != null })
+                .Select(x=>new {x.FlightId, x.Departure, x.Landing, x.Date, IsTwoSeat = x.PilotBackseatId != null, x.LandingCount })
                 .ToList();
 
             var flights = flightsByPilot
-                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date, x.IsTwoSeat))
+                .Select(x => new LightWeightFlight(x.FlightId, x.Departure, x.Landing, x.Date, x.IsTwoSeat, x.LandingCount))
                 .OrderByDescending(x => x.Timestamp)
                 .ToList();
 
@@ -229,9 +229,9 @@ namespace FlightJournal.Web.Controllers
                         TimeSpan.FromHours(recentTime),
                         recentFlights.Count(),
                         TimeSpan.FromHours(dualTime),
-                        dualFlights.Count,
+                        dualFlights.Sum(x=>x.LandingCount),
                         TimeSpan.FromHours(soloTime),
-                        soloFlights.Count
+                        soloFlights.Sum(x=>x.LandingCount)
                         );
                     developerInfo.Add($"____got data for {program.ShortName} for {p.Name} in {sw.Elapsed}");
                     return programStatus;
@@ -247,12 +247,14 @@ namespace FlightJournal.Web.Controllers
             public DateTime Timestamp { get; }
             public TimeSpan Duration { get; }
             public bool IsTwoSeat { get; }
-            public LightWeightFlight(Guid id, DateTime? departure, DateTime? landing, DateTime date, bool isTwoSeat)
+            public int LandingCount { get; }
+            public LightWeightFlight(Guid id, DateTime? departure, DateTime? landing, DateTime date, bool isTwoSeat, int landingCount)
             {
                 FlightId = id;
                 Timestamp = landing ?? date;
                 Duration = departure.HasValue && landing.HasValue ? (landing.Value - departure.Value) : TimeSpan.Zero;
                 IsTwoSeat = isTwoSeat;
+                LandingCount = landingCount;
             }
         }
     }

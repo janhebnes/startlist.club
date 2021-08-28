@@ -47,6 +47,7 @@
                 <th>@_("Instructor")</th>
                 <th>@_("Airfield")</th>
                 <th>@_("Duration")</th>
+                <th>#</th>
                 <th>@_("Program")</th>
                 <th>@_("Exercises")</th>
                 <th>@_("Issues")</th>
@@ -62,8 +63,9 @@
                     <td>@f.Plane</td>
                     <td>@f.FrontSeatOccupant</td>
                     <td>@f.Instructor</td>
-                    <td>@f.Airfield</td>
+                    <td>@f.Airfield</td>s
                     <td>@f.Duration</td>
+                    <td>@(f.LandingCount > 1 ? $"{f.LandingCount}": "")</td>
                     <td>@f.TrainingProgramName</td>
                     <td>@f.AppliedLessons</td>
                     <td>@validationMarker</td>
