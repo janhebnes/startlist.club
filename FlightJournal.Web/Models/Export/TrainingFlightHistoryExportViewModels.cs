@@ -44,7 +44,7 @@ namespace FlightJournal.Web.Models.Export
         public double DurationInMinutes { get; set; }
         public string TrainingProgramName { get; set; }
         public string TrainingProgramId { get; set; }
-        
+        public int LandingCount { get; set; }
         public string Note { get; set; }
 
         [Ignore] // not in CSV

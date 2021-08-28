@@ -47,6 +47,7 @@
                 <th>@_("Instructor")</th>
                 <th>@_("Airfield")</th>
                 <th>@_("Duration")</th>
+                <th>#</th>
                 <th>@_("Program")</th>
                 <th>@_("Exercises")</th>
                 <th  class="hidden-xs hidden-sm ">@_("Manouvres")</th>
@@ -66,6 +67,7 @@
                     <td>@f.Instructor</td>
                     <td>@f.Airfield</td>
                     <td>@f.Duration</td>
+                    <td>@(f.LandingCount > 1 ? $"{f.LandingCount}": "")</td>
                     <td>@f.TrainingProgramName</td>
                     <td><span class="hidden-lg hidden-md">@f.ExercisesShort</span><span class="hidden-xs hidden-sm ">@f.ExercisesFull</span></td>
                     <td  class="hidden-xs hidden-sm ">@Html.Raw(f.Manouvres)</td>

@@ -194,6 +194,7 @@ namespace FlightJournal.Web.Controllers
                     Instructor = instructorNameAndClub,
                     Airfield = f.StartedFrom.Name,
                     Duration = f.Duration.ToString("hh\\:mm"),
+                    LandingCount = f.LandingCount,
                     TrainingProgramName = programName,
                     ExercisesFull = string.Join(", ", exercisesLong), 
                     ExercisesShort = string.Join(", ", exercisesShort),
@@ -275,6 +276,7 @@ namespace FlightJournal.Web.Controllers
         public string Airfield { get; set; }
         public string Manouvres { get; set; }
         public string Note { get; set; }
+        public int LandingCount { get; set; }
     }
 
     public class TrainingFlightsWithSomeDetailsViewModel
