@@ -50,6 +50,8 @@
                 <th>#</th>
                 <th>@_("Program")</th>
                 <th>@_("Exercises")</th>
+                <th  class="hidden-xs hidden-sm ">@_("Manouvres")</th>
+                <th>@_("Note")</th>
                 <th>@_("Issues")</th>
                 <th></th>
             </tr>
@@ -63,11 +65,13 @@
                     <td>@f.Plane</td>
                     <td>@f.FrontSeatOccupant</td>
                     <td>@f.Instructor</td>
-                    <td>@f.Airfield</td>s
+                    <td>@f.Airfield</td>
                     <td>@f.Duration</td>
                     <td>@(f.LandingCount > 1 ? $"{f.LandingCount}": "")</td>
                     <td>@f.TrainingProgramName</td>
-                    <td>@f.AppliedLessons</td>
+                    <td><span class="hidden-lg hidden-md">@f.ExercisesShort</span><span class="hidden-xs hidden-sm ">@f.ExercisesFull</span></td>
+                    <td  class="hidden-xs hidden-sm ">@Html.Raw(f.Manouvres)</td>
+                    <td>@Html.Raw(f.Note)</td>
                     <td>@validationMarker</td>
                     <td>
                         @if (Request.IsPilot() && f.IsCurrentClubPilots)

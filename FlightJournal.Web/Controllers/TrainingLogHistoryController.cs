@@ -64,7 +64,7 @@ namespace FlightJournal.Web.Controllers
         /// <param name="pilotId"></param>
         /// <param name="lessonId"></param>
         /// <returns></returns>
-        public ActionResult PilotLessons(int pilotId, int lessonId)
+        public ActionResult PilotLessons(int pilotId, int? lessonId, int? programId)
         {
             TrainingFlightHistoryViewModel model;
             
@@ -72,20 +72,56 @@ namespace FlightJournal.Web.Controllers
             if (User.IsAdministrator() || Request.IsPilot() && (Request.Pilot().IsInstructor || Request.Pilot().PilotId == pilotId))
             {
                 var pilot = db.Pilots.SingleOrDefault(p => p.PilotId == pilotId);
-                var lesson = db.TrainingLessons.SingleOrDefault(x => x.Training2LessonId == lessonId);
-                if (pilot == null || lesson == null)
+                if (pilot == null)
                 {
                     model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("Unknown pilot or lesson id") };
                 }
+                else if(programId.HasValue)
+                {
+                    var program = db.TrainingPrograms.SingleOrDefault(x => x.Training2ProgramId == programId.Value);
+                    if(program==null)
+                        model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("Unknown pilot or program id") };
+                    else
+                    {
+                        var flights = GetFlightsFromIdsAndMore(
+                            db.AppliedExercises.Where(x => x.Program.Training2ProgramId == programId.Value)
+                                .Select(x => x.FlightId).Distinct().ToList(),
+                            pilotId,
+                            null,
+                            null);
+                        model = CreateModel(flights);
+                        var template = _("Flights of pilot {0} on program {1}");
+                        model.Message = string.Format(template, pilot.Name, program.Name);
+                    }
+                }
+                else if(lessonId.HasValue)
+                {
+                    var lesson = db.TrainingLessons.SingleOrDefault(x => x.Training2LessonId == lessonId.Value);
+                    if(lesson==null)
+                        model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("Unknown pilot or lesson id") };
+                    else
+                    {
+                        var flights = GetFlightsFromIdsAndMore(
+                            db.AppliedExercises.Where(x => x.Lesson.Training2LessonId == lessonId.Value)
+                                .Select(x => x.FlightId).Distinct().ToList(),
+                            pilotId,
+                            null,
+                            null);
+                        model = CreateModel(flights);
+                        var template = _("Flights of pilot {0} on exercise {1}");
+                        model.Message = string.Format(template, pilot.Name, lesson.Name);
+                    }
+                }
                 else
                 {
-                    var flights = GetFlightsFromIdsAndMore(db.AppliedExercises.Where(x => x.Lesson.Training2LessonId == lessonId).Select(x => x.FlightId).Distinct().ToList(), 
+                    // everything
+                    var flights = GetFlightsFromIdsAndMore(db.AppliedExercises.Select(x => x.FlightId).Distinct().ToList(),
                         pilotId,
                         null,
                         null);
                     model = CreateModel(flights);
-                    var template = _("Flights of pilot {0} on exercise {1}");
-                    model.Message = string.Format(template, pilot.Name, lesson.Name);
+                    var template = _("Flights of pilot {0}");
+                    model.Message = string.Format(template, pilot.Name);
                 }
                 model.IsSinglePilot = true;
                 model.IsSingleExercise = true;
@@ -210,6 +246,7 @@ namespace FlightJournal.Web.Controllers
                 var ae = db.AppliedExercises.Where(x => x.FlightId == f.FlightId).Where(x => x.Grading != null && x.Grading.Value > 0).ToList();
                 var programName = string.Join(", ", ae.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
                 var appliedLessons = ae.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
+                var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
                 var primaryLessonName = "";
                 if (!appliedLessons.IsNullOrEmpty())
                 {
@@ -220,6 +257,23 @@ namespace FlightJournal.Web.Controllers
                 var instructor = ae.FirstOrDefault(x => x.Instructor != null)?.Instructor;
                 var instructorNameAndClub = instructor != null ? $"{instructor.Name} ({instructor.Club.ShortName})" : "";
                 var validator = new TrainingFlightExportValidator(f, ae);
+                var flightPhaseComments = CommentsForFlight(annotation)
+                    .Where(x => x.Value.Any())
+                    .Select(x => new CommentInFlightPhaseExportViewModel(x.Key, x.Value))
+                    .Select(x => $"{x.FlightPhase.Phase}: {string.Join(",", x.Comments.Select(y => y.Comment))}");
+                var allComments = new List<string>();
+                allComments.Add(annotation?.Note);
+                allComments.AddRange(flightPhaseComments);
+                var exercisesLong = ae
+                    .OrderBy(x => x.Lesson.DisplayOrder)
+                    .ThenBy(x => x.Exercise.DisplayOrder)
+                    .Select(x => $"{x.Lesson.Name}-{x.Exercise.Name}").ToList();
+                var exercisesShort = ae
+                    .OrderBy(x => x.Lesson.DisplayOrder)
+                    .Select(x => $"{x.Lesson.Name}")
+                    .Distinct()
+                    .ToList();
+
                 var m = new TrainingFlightViewModel
                 {
                     FlightId = f.FlightId.ToString(),
@@ -234,7 +288,10 @@ namespace FlightJournal.Web.Controllers
                     LandingCount = f.LandingCount,
                     TrainingProgramName = programName,
                     PrimaryLessonName = primaryLessonName,
-                    AppliedLessons = string.Join(", ", appliedLessons.OrderBy(x=>x.Key.DisplayOrder).Select(x=>x.Key.Name)),
+                    ExercisesFull = string.Join(", ", exercisesLong),
+                    ExercisesShort = string.Join(", ", exercisesShort),
+                    Manouvres = string.Join(", ", annotation?.Manouvres.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
+                    Note = string.Join(" - ", allComments.Where(x=>!x.IsNullOrEmpty())),
                     PassesValidation = validator.IsValid,
                 };
                 flightModels.Add(m);
@@ -244,6 +301,7 @@ namespace FlightJournal.Web.Controllers
 
         private TrainingFlightDetailsViewModel CreateDetailsViewModel(Guid id)
         {
+            var timestamp = db.Flights.SingleOrDefault(x => x.FlightId == id)?.Departure;
             var ae = db.AppliedExercises.Where(x => x.FlightId == id).Where(x => x.Grading != null && x.Grading.Value > 0);
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
             var weather = annotation?.WindDirection != null && annotation?.WindSpeed != null ? $"{annotation.WindDirection}­&deg; {annotation.WindSpeed}kn " : "";
@@ -272,6 +330,7 @@ namespace FlightJournal.Web.Controllers
                 Weather = new HtmlString(weather),
                 PassesValidation = validator.IsValid,
                 Violations = validator.Violations,
+                Timestamp = timestamp.HasValue ? timestamp.Value.ToString("F") : ""
             };
             return details;
         }
@@ -430,13 +489,16 @@ namespace FlightJournal.Web.Controllers
         public string TrainingProgramName { get; set; }
 
         public string PrimaryLessonName { get; set; }
-        public string AppliedLessons { get; set; }
+        public string ExercisesFull { get; set; }
+        public string ExercisesShort { get; set; }
+        public string Manouvres { get; set; }
         public string Airfield { get; set; }
 
         public bool PassesValidation { get; set; }
         public bool IsCurrentClubPilots { get; set; }
         public DateTime Date { get; set; }
         public int LandingCount { get; set; }
+        public string Note { get; set; }
     }
 
     /// <summary>
@@ -451,6 +513,7 @@ namespace FlightJournal.Web.Controllers
         public HtmlString Weather { get; set; }
         public bool PassesValidation { get; set; }
         public IEnumerable<string> Violations { get; set; }
+        public string Timestamp { get; set; }
     }
 
     /// <summary>
