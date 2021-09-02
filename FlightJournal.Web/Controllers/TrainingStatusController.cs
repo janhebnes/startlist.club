@@ -190,7 +190,7 @@ namespace FlightJournal.Web.Controllers
                                 if (idOfLatestFlightWithThisExercise != Guid.Empty)
                                 {
                                     var ex = flownExercisesForThisExercise
-                                        .SingleOrDefault(x => x.FlightId == idOfLatestFlightWithThisExercise);
+                                        .FirstOrDefault(x => x.FlightId == idOfLatestFlightWithThisExercise); //Note: Should be SingleOrDefault, but duplicates have been observed in the database (same exercise and grading twice in same flight). No harm done to just pick one.
                                     if (ex?.Grading != null && !ex.Grading.IsOk)
                                     {
                                         regression = true;
