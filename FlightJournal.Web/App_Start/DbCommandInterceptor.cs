@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure.Interception;
+
 using System.Linq;
 using System.Text;
-using System.Web;
+
+
 
 namespace FlightJournal.Web.App_Start
 {
@@ -55,25 +55,41 @@ namespace FlightJournal.Web.App_Start
         private void LogIfNonAsync<TResult>(
             DbCommand command, DbCommandInterceptionContext<TResult> interceptionContext)
         {
+#if (DEBUG)
+            string[] stackTraceLines = Environment.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string compactStackTraceView = string.Join(Environment.NewLine, stackTraceLines.Where(d => d.Contains(":line") && !d.Contains(".DbCommandInterceptor")));
+            if (compactStackTraceView == string.Empty) compactStackTraceView = Environment.StackTrace;
             if (!interceptionContext.IsAsync)
             {
-#if (DEBUG)
-            System.Diagnostics.Trace.WriteLine("Non-async command used: {0}", command.CommandText);
-#endif
+                System.Diagnostics.Trace.WriteLine($"-------{Environment.NewLine}SQL Command executing asynchronously: {Environment.NewLine}{compactStackTraceView}{Environment.NewLine}");
             }
+            else
+            {
+                System.Diagnostics.Trace.WriteLine($"-------{Environment.NewLine}SQL Command executing synchronously: {Environment.NewLine}{compactStackTraceView}{Environment.NewLine}");
+            }
+#endif
         }
 
         private void LogIfError<TResult>(
             DbCommand command, DbCommandInterceptionContext<TResult> interceptionContext)
         {
 #if (DEBUG)
-            System.Diagnostics.Trace.WriteLine($"SQL: {Environment.NewLine}{command.CommandText}{Environment.NewLine}Parameters: {Environment.NewLine}{CommandParametersToString(command.Parameters)}{Environment.NewLine}StackTrace: {Environment.NewLine}{Environment.StackTrace}{Environment.NewLine}");
+            string[] stackTraceLines = Environment.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string compactStackTraceView = string.Join(Environment.NewLine, stackTraceLines.Where(d => d.Contains(":line") && !d.Contains(".DbCommandInterceptor")));
+            if (compactStackTraceView == string.Empty) compactStackTraceView = Environment.StackTrace;
+            System.Diagnostics.Trace.WriteLine($"-------{Environment.NewLine}SQL Command executed: {Environment.NewLine}{compactStackTraceView}{Environment.NewLine}SQL Command:{Environment.NewLine}{command.CommandText}{Environment.NewLine}Parameters: {Environment.NewLine}{CommandParametersToString(command.Parameters)}{Environment.NewLine}");
 #endif
             if (interceptionContext.Exception != null)
             {
                 System.Diagnostics.Trace.TraceError($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
 #if (DEBUG)
                 throw new Exception($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
+#endif
+            }
+            else
+            {
+#if (DEBUG)
+                System.Diagnostics.Trace.WriteLine($"SQL Command completed successfully.{Environment.NewLine}-------");
 #endif
             }
         }
