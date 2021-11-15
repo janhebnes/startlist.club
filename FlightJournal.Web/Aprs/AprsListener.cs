@@ -96,7 +96,7 @@ namespace FlightJournal.Web.Aprs
 
                         FlightContextFactory.Enqueue(positionUpdate);
                     }
-                    catch (NullReferenceException ex)
+                    catch (NullReferenceException)
                     {
                         // ignore
                     }
