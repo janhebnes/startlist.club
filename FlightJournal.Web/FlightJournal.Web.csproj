@@ -402,6 +402,10 @@
     <Compile Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.designer.cs">
       <DependentUpon>202108040827479_Extra fields for export validation for training programs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.cs" />
+    <Compile Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.designer.cs">
+      <DependentUpon>202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\Export\TrainingFlightExportValidator.cs" />
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
@@ -812,6 +816,7 @@
     <Content Include="Migrations\FlightContext\202105270805061_Add note field to ListenerArea.sql" />
     <Content Include="Migrations\FlightContext\202106301334578_Add Flights.HasTrainingData.sql" />
     <Content Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.sql" />
+    <Content Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1364,6 +1369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.resx">
       <DependentUpon>202108040827479_Extra fields for export validation for training programs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.resx">
+      <DependentUpon>202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
