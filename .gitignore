@@ -235,3 +235,5 @@ Translation-inputfiles.txt
 /FlightJournal.Web/Properties/ServiceDependencies/startlist-demo/profile.arm.json
 /FlightJournal.Web/Properties/ServiceDependencies/startlist-dev/profile.arm.json
 /FlightJournal.Web/Properties/serviceDependencies.json
+/FlightJournal.Web/logs/start-and-landing.txt
+/FlightJournal.Web/logs/startlist.txt
