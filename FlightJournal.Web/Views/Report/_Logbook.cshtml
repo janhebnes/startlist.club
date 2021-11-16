@@ -6,7 +6,8 @@
 
 @if (Request.IsClub())
 {
-    bool enableLogStartTypeColumn = Model.ClubFlights.Select(s => s.StartType).Distinct().Count() > 1;
+    //Deleted flights are included when operating on the daily report (removed when evaluating month or year level) so it must be evaluated for at each relavant location
+    bool enableLogStartTypeColumn = Model.ClubFlights.Select(s => s.StartType.StartTypeId).Distinct().Count() > 1;
     bool enableLogTachoColumn = Model.ClubFlights.ToList().Sum(s => s.Tacho) > 0;
 <h2>
     @_("Plane Logbooks") @Model.FormattedDate <small>@(Request.IsClub() ? @Request.Club().Name : string.Empty)</small>
@@ -40,10 +41,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.ClubFlights
+                @foreach (var item in from c in Model.ClubFlights.OrderBy(f=>f.Plane.RenderName).ThenBy(f=>f.Pilot.Name)
                                      where c.Deleted == null
-                                     group c by new { c.Plane, c.Pilot, c.StartType } into g
-                                     select new { Plane = g.Key.Plane, Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g })
+                                     group c by new { c.Plane.PlaneId, c.Pilot.PilotId, c.StartType.StartTypeId } into g
+                                     select new { Plane = g.First().Plane, Pilot = g.First().Pilot, StartType = g.First().StartType, ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -112,11 +113,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in from c in Model.ClubFlights
+                    @foreach (var item in from c in Model.ClubFlights.OrderBy(d=>d.Plane.RenderName).ThenBy(d=>d.PilotBackseat?.Name)
                                          where c.PilotBackseat != null && c.Deleted == null
-                                         group c by new { c.Plane, c.PilotBackseat, c.StartType }
-        into g
-                                         select new { Plane = g.Key.Plane, PilotBackseat = g.Key.PilotBackseat, StartType = g.Key.StartType, ItemFlights = g })
+                                         group c by new { c.Plane.PlaneId, c.PilotBackseat.PilotId, c.StartType.StartTypeId } into g
+                                         select new { Plane = g.First().Plane, PilotBackseat = g.First().PilotBackseat, StartType = g.First().StartType, ItemFlights = g })
                     {
                         <tr>
                             <td>
@@ -162,10 +162,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.ClubFlights
+                @foreach (var item in from c in Model.ClubFlights.OrderBy(f=>f.Plane.RenderName)
                                      where c.Deleted == null
-                                     group c by new { c.Plane, c.StartType } into g
-                                     select new { Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                                     group c by new { c.Plane.PlaneId, c.StartType.StartTypeId } into g
+                                     select new { Plane = g.First().Plane, StartType = g.First().StartType, ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -231,10 +231,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.ClubFlights
+                @foreach (var item in from c in Model.ClubFlights.OrderBy(d=>d.Pilot.Name).ThenBy(d=>d.Plane.RenderName)
                                      where c.Deleted == null
-                                     group c by new { c.Pilot, c.Plane, c.StartType } into g
-                                     select new { Pilot = g.Key.Pilot, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                                     group c by new { c.Pilot.PilotId, c.Plane.PlaneId, c.StartType.StartTypeId } into g
+                                     select new { Pilot = g.First().Pilot, Plane = g.First().Plane, StartType = g.First().StartType, ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -283,10 +283,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.ClubFlights
+                @foreach (var item in from c in Model.ClubFlights.OrderBy(p=>p.PilotBackseat?.Name).ThenBy(d => d.Plane.RenderName)
                                      where c.PilotBackseat != null && c.Deleted == null
-                                     group c by new { c.PilotBackseat, c.Plane, c.StartType } into g
-                                     select new { PilotBackseat = g.Key.PilotBackseat, Plane = g.Key.Plane, StartType = g.Key.StartType, ItemFlights = g })
+                                     group c by new { c.PilotBackseat.PilotId, c.Plane.PlaneId, c.StartType.StartTypeId } into g
+                                     select new { PilotBackseat = g.First().PilotBackseat, Plane = g.First().Plane, StartType = g.First().StartType, ItemFlights = g })
                 {
                     <tr>
                         <td>

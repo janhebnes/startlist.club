@@ -1,4 +1,5 @@
-﻿@using FlightJournal.Web
+﻿@using System.Data
+@using FlightJournal.Web
 @using FlightJournal.Web.Controllers
 @using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Translations
@@ -275,7 +276,7 @@
         {
 
             var startTypeStatistics = new List<string>();
-            foreach (var byStartType in Model.Flights.Where(d => d.StartedFromId == location.LocationId && !d.Deleted.HasValue).GroupBy(f=>f.StartType))
+            foreach (var byStartType in Model.Flights.Where(d => d.StartedFromId == location.LocationId && d.Deleted == null).GroupBy(f=>f.StartType.StartTypeId))
             {
                 int total_starts = byStartType.Count();
                 int total_starts_by_landingCount = total_starts == 0 ? 0 : byStartType.Sum(f => f.LandingCount);
@@ -284,7 +285,7 @@
                 {
                     formatted_total_starts += " (" + total_starts + ")";
                 }
-                startTypeStatistics.Add($"{byStartType.Key.LocalizedShortName}: {formatted_total_starts}");
+                startTypeStatistics.Add($"{byStartType.First().StartType.LocalizedShortName}: {formatted_total_starts}");
             }
             
             <p style="color: silver" class="noprint pull-right">
@@ -305,7 +306,7 @@ if (Request.IsClub())
 else // @if (Request.IsClub())
 {
     <p>
-        @foreach (var club in Model.Flights.Where(f => f.Deleted == null).GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count()))
+        @foreach (var club in Model.Clubs)
         {
             <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM-dd"))" class="btn btn-primary">@Html.Raw(_("{0} logbooks {1} take-offs {2} hours", club.Key.ShortName, club.Sum(f => f.LandingCount), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
         }

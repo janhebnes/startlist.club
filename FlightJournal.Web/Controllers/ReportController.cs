@@ -38,18 +38,20 @@ namespace FlightJournal.Web.Controllers
 
                         // Custom inline Club filtering for allowing maximum performance
                         // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                        rptYear.Flights = this.db.Flights.Where(f => f.Date.Year == rptYear.Date.Year && f.Deleted == null)
-                            .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                        rptYear.QueryableFlights = this.db.Flights
+                            .Where(f => f.Date.Year == rptYear.Date.Year && f.Deleted == null)
+                            .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club")
+                            .Include("PilotBackseat").Include("Betaler").Include("StartType")
                             .Where(f => ClubController.CurrentClub.ShortName == null
-                                || f.StartedFromId == ClubController.CurrentClub.LocationId
-                                || f.LandedOnId == ClubController.CurrentClub.LocationId
-                                || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                                || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                                || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                                        || f.StartedFromId == ClubController.CurrentClub.LocationId
+                                        || f.LandedOnId == ClubController.CurrentClub.LocationId
+                                        || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                                        || (f.PilotBackseat != null &&
+                                            f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                                        || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                             .OrderBy(o => o.Departure)
+                            .AsNoTracking()
                             .AsQueryable();
-
-                        rptYear.DistinctLocations = rptYear.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
 
                         return this.View("year", rptYear);
                     }
@@ -72,8 +74,8 @@ namespace FlightJournal.Web.Controllers
 
                 // Custom inline Club filtering for allowing maximum performance
                 // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                rptMonth.Flights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year && f.Deleted == null)
-                    .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+                rptMonth.QueryableFlights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year && f.Deleted == null)
+                    .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club").Include("PilotBackseat").Include("Betaler").Include("StartType")
                     .Where(f => ClubController.CurrentClub.ShortName == null
                         || f.StartedFromId == ClubController.CurrentClub.LocationId
                         || f.LandedOnId == ClubController.CurrentClub.LocationId
@@ -81,9 +83,8 @@ namespace FlightJournal.Web.Controllers
                         || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
                         || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                     .OrderBy(o => o.Departure)
+                    .AsNoTracking()
                     .AsQueryable();
-
-                rptMonth.DistinctLocations = rptMonth.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name);
 
                 return this.View("month", rptMonth);
             }
@@ -109,18 +110,19 @@ namespace FlightJournal.Web.Controllers
 
             // Custom inline Club filtering for allowing maximum performance
             // A copy of the logic in Flight.IsCurrent(Flight arg) 
-            rpt.Flights = this.db.Flights.Where(f => f.Date == rpt.Date)
-                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
+            rpt.QueryableFlights = this.db.Flights.Where(f => f.Date == rpt.Date)
+                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat")
+                .Include("Betaler").Include("Pilot.Club").Include("StartType")
                 .Where(f => ClubController.CurrentClub.ShortName == null
-                    || f.StartedFromId == ClubController.CurrentClub.LocationId
-                    || f.LandedOnId == ClubController.CurrentClub.LocationId
-                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
+                            || f.StartedFromId == ClubController.CurrentClub.LocationId
+                            || f.LandedOnId == ClubController.CurrentClub.LocationId
+                            || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
+                            || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
+                            || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
                 .OrderBy(o => o.Departure)
-                .AsQueryable();
+                .AsNoTracking();
+                
             // Allow f.Deleted != null
-            rpt.DistinctLocations = rpt.Flights.Select(d => d.StartedFrom).Distinct().OrderBy(d=>d.Name);
 
             return this.View(rpt);
         }

@@ -35,7 +35,7 @@
 @if (Model.Flights.Any())
 {
     var dateCount = Model.Flights.Select(s => s.Date).Distinct().Count();
-    var dates = Model.Flights.Select(s => s.Date).Distinct();
+    var dates = Model.Flights.Select(s => s.Date).Distinct().OrderBy(o => o.Date);
     <h2>
         @_("Statistics for {0}", Model.FormattedDate)
     </h2>
@@ -140,11 +140,11 @@
             <td>
                 @_("Total Pilots")
             </td>
-            <td align="right">@Model.ClubFlights.Select(s => s.Pilot).Union(Model.ClubFlights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()</td>
+            <td align="right">@Model.QueryableClubFlights.Select(s => s.Pilot).Union(Model.QueryableClubFlights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()</td>
             @foreach (var date in dates)
             {
                 <td align="right">
-                    @Model.ClubFlights.Where(s => s.Date == date).Select(s => s.Pilot).Union(Model.ClubFlights.Where(s => s.Date == date && s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
+                    @Model.QueryableClubFlights.Where(s => s.Date == date).Select(s => s.Pilot).Union(Model.QueryableClubFlights.Where(s => s.Date == date && s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
                 </td>
             }
         </tr>
@@ -181,7 +181,7 @@
         }
         @if (!Request.IsClub())
         {
-            foreach (var club in Model.Flights.GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count()))
+            foreach (var club in Model.Clubs)
             {
                 <tr>
                     <td>
@@ -275,9 +275,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in from c in Model.ClubFlights
-                                     group c by new { c.Pilot } into g
-                                     select new { Pilot = g.Key.Pilot, ItemFlights = g })
+                @foreach (var item in from c in Model.ClubFlights.OrderBy(d=>d.Pilot.Name)
+                                     group c by new { c.Pilot.PilotId } into g
+                                     select new { Pilot = g.First().Pilot, ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -312,9 +312,9 @@
                         }
                     </tr>
                 }
-                @foreach (var item in from c in Model.ClubFlights.Where(d => d.PilotBackseat != null)
-                                     group c by new { c.PilotBackseat } into g
-                                     select new { Pilot = g.Key.PilotBackseat, ItemFlights = g })
+                @foreach (var item in from c in Model.ClubFlights.Where(d => d.PilotBackseat != null).OrderBy(d => d.PilotBackseat.Name)
+                                     group c by new { c.PilotBackseat.PilotId } into g
+                                     select new { Pilot = g.First().PilotBackseat, ItemFlights = g })
                 {
                     <tr>
                         <td>
@@ -406,7 +406,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId))
+                    @foreach (var item in Model.ClubFlights.Where(d => d.StartedFromId == location.LocationId).OrderBy(d=>d.Date).ThenBy(d=>d.Departure))
                     {
                         <tr>
                             <td>
@@ -446,7 +446,7 @@
     else // @if (Request.IsClub())
     {
         <p>
-            @foreach (var club in Model.Flights.Where(f => f.Deleted == null).GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count()))
+            @foreach (var club in Model.Clubs)
             {
                 <a href="@Path.Combine(root, club.Key.ShortName, Model.Date.ToString("yyyy-MM"))" class="btn btn-primary">@Html.Raw(_("{0} {1} take-offs {2} hours", club.Key.Name, club.Sum(f => f.LandingCount), club.ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()))</a>
             }
