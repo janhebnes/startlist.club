@@ -145,7 +145,8 @@
                     </td>
                 }
             </tr>
-            <tr>
+            @*Disabled for now until we find more performance over winter*@
+            @*<tr>
                 <td>
                     @_("Total Pilots")
                 </td>
@@ -159,7 +160,7 @@
                         @(count != 0 ? count.ToString() : "")
                     </td>
                 }
-            </tr>
+            </tr>*@
             @if (Model.ClubFlights.Any(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0))
             {
                 <tr>

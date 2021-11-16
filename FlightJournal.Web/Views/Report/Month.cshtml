@@ -136,7 +136,8 @@
                 </td>
             }
         </tr>
-        <tr>
+        @*Disabled for now until we find more performance over winter*@
+        @*<tr>
             <td>
                 @_("Total Pilots")
             </td>
@@ -147,7 +148,7 @@
                     @Model.QueryableClubFlights.Where(s => s.Date == date).Select(s => s.Pilot).Union(Model.QueryableClubFlights.Where(s => s.Date == date && s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
                 </td>
             }
-        </tr>
+        </tr>*@
         @if (Model.ClubFlights.Any(w => w.TaskDistance.HasValue && w.TaskDistance.Value > 0))
         {
             <tr>
