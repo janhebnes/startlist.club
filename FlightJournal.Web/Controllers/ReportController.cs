@@ -4,9 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Mime;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using FlightJournal.Web.Extensions;
-using System.Data.Entity.Infrastructure;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
