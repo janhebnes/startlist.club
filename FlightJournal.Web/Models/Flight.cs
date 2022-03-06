@@ -238,6 +238,39 @@ namespace FlightJournal.Web.Models
             
         }
 
+        public System.Object ToJsonObject()
+        {
+            return new {
+                flight_id = this.FlightId.ToString(),
+                date = this.Date.ToShortDateString(),
+                plane = this.Plane != null ? this.Plane.ToString() : string.Empty,
+                pilot_member_id = this.Pilot != null ? this.Pilot.MemberId : string.Empty,
+                pilot_name = this.Pilot != null ? this.Pilot.Name : string.Empty,
+                pilot_union_id = this.Pilot != null && this.Pilot.UnionId != null ? this.Pilot.UnionId.ToString() : string.Empty,
+                pilot2_member_id = this.PilotBackseat != null ? this.PilotBackseat.MemberId : string.Empty,
+                pilot2_name = this.PilotBackseat != null ? this.PilotBackseat.Name : string.Empty,
+                pilot2_union_id = this.PilotBackseat != null && this.PilotBackseat.UnionId != null ? this.PilotBackseat.UnionId.ToString() : string.Empty,
+                betaler_member_id = this.Betaler != null ? this.Betaler.MemberId : string.Empty,
+                betaler_name = this.Betaler != null ? this.Betaler.Name : string.Empty,
+                betaler_union_id = this.Betaler != null && this.Betaler.UnionId != null ? this.Betaler.UnionId.ToString() : string.Empty,
+                departure = this.Departure.HasValue ? this.Departure.Value.ToString("HH:mm") : string.Empty,
+                landing = this.Landing.HasValue ? this.Landing.Value.ToString("HH:mm") : string.Empty,
+                duration = this.Duration.TotalHoursWithMinutesAsDecimal(),
+                tacho_departure = this.TachoDeparture,
+                tacho_landing = this.TachoLanding,
+                tacho = this.Tacho,
+                description = this.Description,
+                task_distance = this.TaskDistance,
+                start_type = this.StartType.Name,
+                started_from = this.StartedFrom != null ? this.StartedFrom.Name: null,
+                landed_on = this.LandedOn != null ? this.LandedOn.Name : null,
+                pilot_club_name = this.Pilot != null ? this.Pilot.Club.ShortName : string.Empty,
+                last_updated = this.LastUpdated.ToString(),
+                last_updated_by = this.LastUpdatedBy,
+                landing_count = this.LandingCount,
+            };
+        }
+
         [LocalizedDisplayName("Cost")]
         public double TotalCost
         {
