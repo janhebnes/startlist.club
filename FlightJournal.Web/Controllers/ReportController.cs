@@ -4,7 +4,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Mime;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using FlightJournal.Web.Extensions;
+using System.Data.Entity.Infrastructure;
 using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
@@ -141,6 +143,13 @@ namespace FlightJournal.Web.Controllers
                 var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
                 return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + ".csv");
             }
+        }
+
+        public JsonResult ExportJson(int year, int month, int day)
+        {
+            var flights = this.db.Flights.Where(f => f.Date.Day == day && f.Date.Month == month && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
+            var json = Enumerable.Aggregate(flights, new List<Object>(), (current, flight) => current.Append(flight.ToJsonObject()).ToList());
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
 
         private string SafeCSVParser(string input)
