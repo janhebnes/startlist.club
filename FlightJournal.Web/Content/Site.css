@@ -361,3 +361,107 @@ th.coltype1 {
 th.coltype2 {
 	background-color: #bae8e8;
 }
+
+
+
+.lessondetails {
+    padding: 2px;
+    width: 3em;
+}
+
+.currentgrading {
+    padding: 0px;
+}
+
+.lessonscontainer {
+    width: auto;
+}
+
+.gradingselector > .dropdown-toggle {
+    padding: 2px;
+    width: 3em;
+}
+
+.gradingcontainer {
+    width: 7em;
+}
+
+.gradingselector {
+    padding: 2px;
+    max-width: 4em;
+    max-height: 1.5em;
+    margin-top: -1em;
+    margin-left: -1em !important;
+}
+
+.gradingselector > .dropdown-toggle {
+    padding: 2px;
+    max-width: 3em;
+}
+
+
+.gradingselector > .dropdown-toggle .caret {
+    right: 2px;
+}
+
+.gradingunselector {
+    max-height: 1.5em;
+    margin-top: -1em;
+    margin-left: -0.5em;
+    margin-right: -0.5em;
+    float: right;
+}
+
+
+@media(max-width:767px) {
+	/*xs*/
+    .exercise {
+        font-size: smaller;
+    }
+
+    .exercisedetails {
+        padding: 2px;
+        max-width: 18em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .bestgrading {
+        font-size: small;
+    }
+
+    .regressionnmarker {
+        font-size: small;
+    }
+}
+@media(min-width:768px) and (max-width:991px) {
+	/*xs*/
+    .exercise { font-size: medium; }
+
+
+    .exercisedetails {
+        padding: 2px;
+        max-width: 18em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .bestgrading { font-size: small; }
+
+    .regressionnmarker { font-size: small; }
+}
+
+@media(min-width:992px) {
+    /* md,lg*/
+    .exercise {
+        font-size: medium;
+    }
+
+    .exercisedetails {
+        padding: 2px;
+        max-width: 50em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
