@@ -1,5 +1,6 @@
 ﻿@using FlightJournal.Web.Extensions
 @using FlightJournal.Web.Configuration
+@using FlightJournal.Web.Models
 @model FlightJournal.Web.Models.LogbookViewModel
 @{
     var flightsDataset = Model.Flights.Where(f => f.Date.Year == Model.Year);
@@ -30,6 +31,37 @@
             <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> Eksporter startlisten for @Model.Date.ToString("yyyy")</a>
         }*@
 </p>
+@{
+    IHtmlString AddFlightActivityRow(string title, FlightActivityViewModel a)
+    {
+        var since = _("Since");
+        var daysAgo = _("days ago");
+        var first = a.PartialData ? $"({since} {a.FirstFlightDate.ToShortDateString()} - {Math.Floor((DateTime.Now - a.FirstFlightDate).TotalDays)} {daysAgo}) " : "";
+        return Html.Raw($"<tr><td>{title}</td><td>{a.NumberOfFlights}</td><td>{TimeSpan.FromHours(a.Hours)}</td><td>{first}</td><tr>");
+    }
+}
+@if (Model.TrainingBarometerEnabled)
+{
+<h2>@_("Activity") <small>@Model.Pilot.Name</small></h2>
+    <table class="tablesorter table table-striped table-hover table-condensed table-bordered">
+        <thead>
+            <tr><th></th><th>@_("Count")</th><th>@_("Duration")</th><th></th></tr>
+        </thead>
+        <tbody>
+            @AddFlightActivityRow(@_("Last 12 months"), Model.ActivityInLast12Months)
+            @AddFlightActivityRow(@_("Last 24 months"), Model.ActivityInLast24Months)
+            @AddFlightActivityRow(@_("Last 36 months"), Model.ActivityInLast36Months)
+            @if (Model.Pilot.IsInstructor)
+            {
+                <tr><td colspan="4"><i>@_("As instructor")</i></td></tr>
+                @AddFlightActivityRow(@_("Last 12 months"), Model.InstructorActivityInLast12Months)
+                @AddFlightActivityRow(@_("Last 24 months"), Model.InstructorActivityInLast24Months)
+                @AddFlightActivityRow(@_("Last 36 months"), Model.InstructorActivityInLast36Months)
+            }
+        </tbody>
+    </table>
+}
+
 
 <h2>
     @_("Logbook") <small>@Model.Pilot.Name</small>
@@ -244,9 +276,9 @@
     @_("Startlist") <small>@Model.Pilot.Name</small>
 </h2>
 @{
-bool enableLogStartTypeColumn = flightsDataset.Select(s => s.StartType).Distinct().Count() > 1;
-bool enableLogTachoColumn = flightsDataset.ToList().Sum(s => s.Tacho) > 0;
-bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCount != 1);
+    bool enableLogStartTypeColumn = flightsDataset.Select(s => s.StartType).Distinct().Count() > 1;
+    bool enableLogTachoColumn = flightsDataset.ToList().Sum(s => s.Tacho) > 0;
+    bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCount != 1);
 }
 
 <table class="tablesorter table table-responsive table-striped table-hover table-condensed">
@@ -267,18 +299,18 @@ bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCou
             </th>
             @if (enableLandingCountColumn)
             {
-            <th>
-                @_("Landing Count")
-            </th>
+                <th>
+                    @_("Landing Count")
+                </th>
             }
             <th class="hidden-sm">
                 @_("Airfield")
             </th>
             @if (enableLogTachoColumn)
             {
-            <th class="hidden-sm">
-                @_("Tacho")
-            </th>
+                <th class="hidden-sm">
+                    @_("Tacho")
+                </th>
             }
             <th class="hidden-xs">
                 @_("Description")
@@ -308,9 +340,9 @@ bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCou
                 </td>
                 @if (enableLandingCountColumn)
                 {
-                <td>
-                    @Html.DisplayFor(modelItem => item, "LandingCount")
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item, "LandingCount")
+                    </td>
                 }
                 <td class="hidden-sm">
                     @Html.DisplayFor(modelItem => item, "StartedFrom")
@@ -318,9 +350,9 @@ bool enableLandingCountColumn = flightsDataset.ToList().Exists(s => s.LandingCou
                 </td>
                 @if (enableLogTachoColumn)
                 {
-                <td class="hidden-sm text-right">
-                    @Html.DisplayFor(modelItem => item, "Tacho")
-                </td>
+                    <td class="hidden-sm text-right">
+                        @Html.DisplayFor(modelItem => item, "Tacho")
+                    </td>
                 }
                 <td class="hidden-xs">
                     @Html.DisplayFor(modelItem => item.Description, "Description")

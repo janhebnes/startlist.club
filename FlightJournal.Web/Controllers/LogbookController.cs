@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 
@@ -42,11 +43,44 @@ namespace FlightJournal.Web.Controllers
 
             if (model.Year == DateTime.Now.Year)
             {
-                var last12months = DateTime.Now.AddYears(-1);
-                model.TrainingBarometer = GetTrainingBarometer(model.Flights.Where(f => f.Date > last12months));
+                // all flights as PIC
+                var flights = this.db.Flights.Where(f => 
+                        f.Date.Year >= model.Year - 3 
+                        && f.Deleted == null
+                        && (f.PilotId == model.Pilot.PilotId 
+                             || (model.Pilot.IsInstructor 
+                                && f.HasTrainingData 
+                                && f.PilotBackseatId.HasValue 
+                                && f.PilotBackseatId.Value == model.Pilot.PilotId))
+                        && f.Landing.HasValue
+                    )
+                    .OrderBy(f => f.Date)
+                    ;
+
+
+                var last12Months = DateTime.Now.AddMonths(-12);
+                var last24Months = DateTime.Now.AddMonths(-24);
+                var last36Months = DateTime.Now.AddMonths(-36);
+                var flightsInLast12Months = flights.Where(f => f.Date >= last12Months);
+                var flightsInLast24Months = flights.Where(f => f.Date >= last24Months);
+                var flightsInLast36Months = flights.Where(f => f.Date >= last36Months);
+                model.TrainingBarometer = GetTrainingBarometer(flightsInLast12Months.AsQueryable());
                 model.TrainingBarometerEnabled = true;
+
+                var firstFlight = flights.FirstOrDefault()?.Date ?? DateTime.MinValue;
+                model.ActivityInLast12Months = new FlightActivityViewModel(flightsInLast12Months, last12Months, firstFlight);
+                model.ActivityInLast24Months = new FlightActivityViewModel(flightsInLast24Months, last24Months, firstFlight);
+                model.ActivityInLast36Months = new FlightActivityViewModel(flightsInLast36Months, last36Months, firstFlight);
+
+                if (model.Pilot.IsInstructor)
+                {
+                    var firstInstructorFlight = flights.FirstOrDefault(f=> f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == model.Pilot.PilotId)?.Date ?? DateTime.MinValue;
+                    model.InstructorActivityInLast12Months = new FlightActivityViewModel(flightsInLast12Months.Where(f => f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == model.Pilot.PilotId), last12Months, firstInstructorFlight);
+                    model.InstructorActivityInLast24Months = new FlightActivityViewModel(flightsInLast24Months.Where(f => f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == model.Pilot.PilotId), last24Months, firstInstructorFlight);
+                    model.InstructorActivityInLast36Months = new FlightActivityViewModel(flightsInLast36Months.Where(f => f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == model.Pilot.PilotId), last36Months, firstInstructorFlight);
+                }
             }
-            
+
 
             return this.View(model);
         }
