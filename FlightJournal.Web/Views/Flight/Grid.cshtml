@@ -1,8 +1,10 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.Flight>
+﻿@model FlightJournal.Web.Models.GridViewModel
+
 @using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
 @{
     ViewBag.Title = _("Startlist") + " " + ViewBag.Date.ToShortDateString();
-    int startNr = Model != null ? Model.Where(f => !f.Deleted.HasValue).Sum(m => m.LandingCount) : 0;
+    int startNr = Model != null ? Model.Flights.Where(f => !f.Deleted.HasValue).Sum(m => m.LandingCount) : 0;
 }
 <p>
     <div class="btn-group btn-group-lg">
@@ -14,17 +16,17 @@
     </div>
 </p>
 @{
-    var pending = Model.Where(x => x.Deleted == null && x.Departure == null);
-    var flying = Model.Where(x => x.Deleted == null && x.Departure != null && x.Landing == null);
-    var landed = Model.Where(x => x.Deleted == null && x.Departure != null && x.Landing != null);
-    var deleted = Model.Where(x => x.Deleted != null);
+    var pending = new GridViewModel(Model.Flights.Where(x => x.Deleted == null && x.Departure == null), Model.TrainingBarometers);
+    var flying = new GridViewModel(Model.Flights.Where(x => x.Deleted == null && x.Departure != null && x.Landing == null), Model.TrainingBarometers);
+    var landed = new GridViewModel(Model.Flights.Where(x => x.Deleted == null && x.Departure != null && x.Landing != null), Model.TrainingBarometers);
+    var deleted = new GridViewModel(Model.Flights.Where(x => x.Deleted != null), Model.TrainingBarometers);
 }
 <ul class="nav nav-tabs" role="tablist" >
-    <li role="presentation" ><a class="tab" data-toggle="tab" href="#all">@_("All") (@Model.Count())</a></li>
-    <li role="presentation" ><a class="tab" data-toggle="tab" href="#pending">@_("Not started") (@pending.Count())</a></li>
-    <li role="presentation" ><a class="tab" data-toggle="tab" href="#flying">@_("Flying") (@flying.Count())</a></li>
-    <li role="presentation" ><a class="tab" data-toggle="tab" href="#landed">@_("Landed") (@landed.Count())</a></li>
-    <li role="presentation" ><a class="tab" data-toggle="tab" href="#deleted">@_("Deleted") (@deleted.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#all">@_("All") (@Model.Flights.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#pending">@_("Not started") (@pending.Flights.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#flying">@_("Flying") (@flying.Flights.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#landed">@_("Landed") (@landed.Flights.Count())</a></li>
+    <li role="presentation" ><a class="tab" data-toggle="tab" href="#deleted">@_("Deleted") (@deleted.Flights.Count())</a></li>
 </ul>
 
 
