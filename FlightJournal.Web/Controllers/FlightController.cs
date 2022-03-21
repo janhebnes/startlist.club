@@ -10,7 +10,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Controllers
 {
-    public partial class FlightController : Controller
+    public class FlightController : Controller
     {
         /// <summary>
         /// The Db context for the class
@@ -87,9 +87,9 @@ namespace FlightJournal.Web.Controllers
 
             var last12months = DateTime.Now.AddYears(-1);
             var trainingBarometersByPilot = this.db.Flights.Where(f =>
-                f.Date >= last12months
-                && f.Deleted == null
-                && flyingToday.Contains(f.PilotId) 
+                f.Deleted == null
+                && flyingToday.Contains(f.PilotId)
+                && f.Date >= last12months && f.Date < DateTime.Today
                 )
                 .ToList()
                 .GroupBy(f=> f.PilotId)
