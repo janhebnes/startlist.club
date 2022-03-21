@@ -1933,7 +1933,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:78
 #, fuzzy
 msgid "Click to see flights on the exercise"
-msgstr "Tilbake til listen"
+msgstr ""
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:97
 #, fuzzy
