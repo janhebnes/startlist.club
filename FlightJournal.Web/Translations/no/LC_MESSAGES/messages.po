@@ -1924,7 +1924,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:60
 #, fuzzy
 msgid "Click to see training flights on this program"
-msgstr "Alle flyklubber"
+msgstr ""
 
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:65
 msgid "Click to see chart"
