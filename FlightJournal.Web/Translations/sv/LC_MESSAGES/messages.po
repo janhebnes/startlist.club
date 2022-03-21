@@ -1980,7 +1980,7 @@ msgstr "obekräftad"
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:61
 #, fuzzy
 msgid "User not bound to pilot"
-msgstr "Kopplat till pilotId"
+msgstr "Inte kopplat till pilotId"
 
 #, fuzzy
 #~ msgid "Best grading"
