@@ -317,7 +317,7 @@ msgstr "Oprettet"
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:108
 #: FlightJournal.Web\Models\Pilot.cs:32 FlightJournal.Web\Models\Plane.cs:41
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:25
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:249
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:250
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:21
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:54
@@ -886,7 +886,7 @@ msgstr "Opret flyvning"
 #: FlightJournal.Web\Views\Flight\History.cshtml:142
 #: FlightJournal.Web\Views\Location\Edit.cshtml:65
 #: FlightJournal.Web\Views\Pilot\Edit.cshtml:95
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:290
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:291
 #: FlightJournal.Web\Views\TrainingLog\SelectTrainingProgram.cshtml:32
 #: FlightJournal.Web\Views\UsersAdmin\Edit.cshtml:75
 msgid "Back"
@@ -935,7 +935,7 @@ msgstr "Uddannelseslog"
 
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:383
 #: FlightJournal.Web\Views\Flight\Edit.cshtml:393
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:462
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:463
 msgid ""
 "You have unsaved data - do you want to leave the page and lose the changes?"
 msgstr "Du har (muligvis) data som ikke er gemt - vil du forlade siden ?"
@@ -1619,7 +1619,7 @@ msgstr ""
 "flyvningen"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:60
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:220
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:221
 msgid "Maneuvers"
 msgstr "Manøvrer"
 
@@ -1636,7 +1636,7 @@ msgid "Show/hide options for describing the weather during the flight"
 msgstr "Vis/skjul mulighed for at angive vejret for flyvningen"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:62
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:257
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:258
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:22
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:23
 msgid "Weather"
@@ -1675,6 +1675,9 @@ msgid "All exercises and partial exercises with status"
 msgstr "Alle øvelser og deløvelser med status"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:137
+msgid "Ex."
+msgstr "Øv."
+
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:300
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:117
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:133
@@ -1686,26 +1689,26 @@ msgid "Partial Exercise"
 msgstr "Deløvelse"
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:139
-msgid "Best grading"
-msgstr "Bedste karakter"
+msgid "Best"
+msgstr "Bedste"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:141
-msgid "Grading in this flight"
-msgstr "Karakter i denne flyvning"
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:140
+msgid "Current"
+msgstr "Aktuel"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:172
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:174
 msgid "Click here to see a description of the exercise"
 msgstr "Klik for at se en beskrivelse af øvelsen"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:174
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:176
 msgid "Click here to see a description of the partial exercise (if available)"
 msgstr "Klik for at se en beskrivelse af deløvelsen (hvis tilgængelig)"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:180
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:182
 msgid "Best grading on previous flights is shown here"
 msgstr "Den bedste karakter på tidligere flyvninger vises her"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:182
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:184
 msgid ""
 "Marker is shown here if the partial exercise has previously been completed, "
 "graded lower, i.e. a regression"
@@ -1713,7 +1716,7 @@ msgstr ""
 "Der markeres her hvis deløvelsen tidligere har været Ok, men efterfølgende "
 "har være markeret som 'Øvet', dvs et tilbagefald"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:184
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:186
 msgid ""
 "Grade the partial exercise in the flight by selecting a grade here. Leave "
 "empty if not used"
@@ -1721,39 +1724,39 @@ msgstr ""
 "Giv karakter for deløvelsen her. Lad feltet stå tomt hvis flyvningen ikke "
 "har omfattet denne deløvelse"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:186
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:188
 msgid "Click here to clear the selection"
 msgstr "Klik for at nulstille valget"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:196
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:197
 msgid "Select a grading"
 msgstr "Vælg en karakter"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:215
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:216
 msgid "Recent training flights of this pilot"
 msgstr "Nylige uddannelsessflyvninger for denne pilot"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:219
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:220
 msgid "Select the maneuvers performed during the flight"
 msgstr "Vælg de manøvrer som er foretaget under flyvningen"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:221
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:222
 msgid "Select one or more maneuvers"
 msgstr "Vælg en eller flere manøvrer"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:232
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:233
 msgid "Here you can grade, annotate, and comment the phases of the flight "
 msgstr "Her kan du kommentere og vurdere flyvningens faser"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:234
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:235
 msgid "Everything ok"
 msgstr "SFIL ok"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:241
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:242
 msgid "Select one or more comments"
 msgstr "Vælg en eller flere kommentarer"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:250
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:251
 msgid ""
 "If you have comments beyond the predefined selections above, you can enter "
 "them here"
@@ -1761,42 +1764,48 @@ msgstr ""
 "Hvis du har kommentarer som ikke kan udtrykkes med ovennævnte valg, så kan "
 "du skrive dem her"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:256
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:257
 msgid ""
 "In case the weather has been a factor (for better or worse), you can "
 "describe it here"
 msgstr ""
 "Hvis vejret har været en faktor under flyvningen, kan du angive det her"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:258
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:259
 msgid "Wind direction"
 msgstr "Vindretning"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:265
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:266
 msgid "Wind speed"
 msgstr "Vindhastighed"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:275
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:276
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:277
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:10
 #: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:47
 msgid "Instructor"
 msgstr "Instruktør"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:289
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:290
 msgid "Save"
 msgstr "Gem"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:308
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:301
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:117
+#: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:133
+msgid "Exercise"
+msgstr "Øvelse"
+
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:309
 msgid "Preconditions"
 msgstr "Forudsætninger"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:452
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:456
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:453
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:457
 msgid "Unable to save data"
 msgstr "Kunne ikke gemme data"
 
-#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:488
+#: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:489
 msgid ""
 "Training data for this flight have been edited by someone else, please "
 "reload!"
@@ -1991,6 +2000,12 @@ msgstr "ikke bekræftet"
 #: FlightJournal.Web\Views\UsersAdmin\Index.cshtml:61
 msgid "User not bound to pilot"
 msgstr "Ikke bundet til PilotId"
+
+#~ msgid "Best grading"
+#~ msgstr "Bedste karakter"
+
+#~ msgid "Grading in this flight"
+#~ msgstr "Karakter i denne flyvning"
 
 #~ msgid "Back seat"
 #~ msgstr "Bagsæde"

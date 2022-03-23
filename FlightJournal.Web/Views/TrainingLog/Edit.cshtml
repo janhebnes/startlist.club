@@ -98,7 +98,7 @@
                 }
                 var regressionMarker = regressionMarkerIcon(lesson.Exercises.Any(x => x.Regression));
                 <tr class="@Model.TrainingProgram.Id  lessondetails" data-lessonid="@lesson.Id">
-                    <td class="col-xs-2 col-md-5" style="line-height: 0.7;"><span class="visible-xs visible-sm ">@lesson.ShortName</span><span class="hidden-xs hidden-sm">@lesson.Name</span></td>
+                    <td class="col-xs-2 col-md-5" style="line-height: 0.7;"><span class="visible-xs visible-sm visible-md">@lesson.ShortName</span><span class="hidden-xs hidden-sm hidden-md">@lesson.Name</span></td>
                     <td class="progress col-xs-10 col-md-7" style="padding: 0px;">
                         @if (completedpct > 0)
                         {
@@ -131,14 +131,13 @@
 
 
 <div id="lessonscontainer" class="table-responsive lessonscontainer row no-gutter bordered">
-    <table class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All exercises and partial exercises with status"))>
+    <table width="100%" class="table table-condensed col-xs-12 lessonsdetailtable" data-step="30" data-intro=@Html.Raw(__("All exercises and partial exercises with status"))>
         <thead>
             <tr>
-                <th>@_("Exercise")</th>
-                <th>@_("Partial Exercise")</th>
-                <th class="hcenter ">@_("Best grading")</th>
-                <th class="hcenter "></th>
-                <th class="hcenter ">@_("Grading in this flight")</th>
+                <th>@_("Ex.")</th>
+                <th >@_("Partial Exercise")</th>
+                <th class="hcenter ">@_("Best")</th>
+                <th class="hcenter ">@_("Current")</th>
             </tr>
         </thead>
         <tbody>
@@ -151,11 +150,14 @@
             {
                 foreach (var exercise in lesson.Exercises.OrderBy(x => x.DisplayOrder))
                 {
-                    string GradingText(Grading g)
+                    string GradingText(Grading g, bool shortened)
                     {
                         if (g == null){ return "";}
-                        var text = exercise.BriefingOnlyRequired ? g.Name : $"{g.Value}-{g.Name}";
-                        return text;
+                        if (shortened)
+                        {
+                            return $"{g.Value}";
+                        }
+                        return exercise.BriefingOnlyRequired ? g.Name : $"{g.Value}-{g.Name}";
                     }
                     var clz = CssHelper.CssClassFor(exercise.Status);
                     var regressionMarker = regressionMarkerIcon(exercise.Regression);
@@ -188,11 +190,10 @@
                         statusIntroShown = true;
                     }
             <tr class="@Model.TrainingProgram.Id-@lesson.Id exercise" data-programid='@Model.TrainingProgram.Id' data-lessonid='@lesson.Id' data-exerciseid='@exercise.Id'>
-                <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)><span class="visible-xs visible-sm">@lesson.ShortName</span><span class="hidden-xs hidden-sm">@lesson.Name</span></td>
+                <td class="btn-default statusbutton @clz lessondetails" data-lessonid="@lesson.Id" @Html.Raw(introdefL)>@lesson.ShortName</td>
                 <td class="btn-default statusbutton @clz exercisedetails" data-exerciseid="@exercise.Id" @Html.Raw(introdefX)>@exercise.Description @Html.Raw(infoMarker)</td>
-                <td  class="btn-default hcenter @clz" @Html.Raw(introdefGP)>@GradingText(exercise.BestGrading)</td>
-                <td class="btn-default hcenter @clz" @Html.Raw(introdefR0)>@regressionMarker</td>
-                <td class="btn-default hcenter statusbutton annotationcontainer" @Html.Raw(introdefGT)>
+                <td class="btn-default hcenter @clz bestgrading" @Html.Raw(introdefGP)><span class="visible-xs visible-sm  visible-md">@regressionMarker@GradingText(exercise.BestGrading, true)</span><span class="hidden-xs hidden-sm hidden-md">@regressionMarker@GradingText(exercise.BestGrading, false)</span></td>
+                <td class="btn-default hcenter statusbutton annotationcontainer gradingcontainer" @Html.Raw(introdefGT)>
                     <select class="selectpicker gradingselector userselection" title="." @*title=@Html.Raw(__("Select a grading"))*@ data-dropdown-Align-Right="true">
                         @{
                             var gradings = exercise.BriefingOnlyRequired ? Model.GradingsForBriefingPartialExercises : Model.GradingsForPracticalPartialExercises;
@@ -201,7 +202,7 @@
                         {
                             var selected = exercise.GradingInThisFlight != null && grading.GradingId == exercise.GradingInThisFlight.GradingId ? "selected" : "";
 
-                            <option class="grading" value="@grading.GradingId" @selected>@GradingText(grading)</option>
+                            <option class="grading" value="@grading.GradingId" @selected>@GradingText(grading, true)</option>
                         }
                     </select>
                     <div class="btn btn-sm gradingunselector" @Html.Raw(introdefNG)><i class="fa fa-times"></i></div>
