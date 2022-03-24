@@ -51,7 +51,7 @@ namespace FlightJournal.Web.Controllers
             return this.View(model);
         }
 
-        private TrainingBarometerViewModel GetTrainingBarometer(IQueryable<Flight> last12MonthsFlights)
+        public static TrainingBarometerViewModel GetTrainingBarometer(IQueryable<Flight> last12MonthsFlights)
         {
             var result = new TrainingBarometerViewModel();
             if (last12MonthsFlights.Any())

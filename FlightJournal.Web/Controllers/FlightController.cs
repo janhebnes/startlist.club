@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -77,9 +78,24 @@ namespace FlightJournal.Web.Controllers
 
             var flights = this.db.Flights.Where(s => (!locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)) && (date.HasValue ? s.Date == date : s.Date == DateTime.Today))
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType")
-                .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now);
+                .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now)
+                .ToList()
+                .Where(f=>f.IsCurrent())
+                .ToList();
 
-            return View(flights.ToList().Where(f => f.IsCurrent()));
+            var flyingToday = flights.Select(f => f.PilotId).ToList();
+
+            var last12months = DateTime.Now.AddYears(-1);
+            var trainingBarometersByPilot = this.db.Flights.Where(f =>
+                f.Deleted == null
+                && flyingToday.Contains(f.PilotId)
+                && f.Date >= last12months && f.Date < DateTime.Today
+                )
+                .ToList()
+                .GroupBy(f=> f.PilotId)
+                .ToDictionary(a=>a.Key, a=>LogbookController.GetTrainingBarometer(a.AsQueryable()));
+
+            return View(new GridViewModel(flights, trainingBarometersByPilot));
         }
 
         public ViewResult Date(DateTime date)

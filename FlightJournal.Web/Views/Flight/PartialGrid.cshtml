@@ -1,5 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
-@model IEnumerable<FlightJournal.Web.Models.Flight>
+@model FlightJournal.Web.Models.GridViewModel
 
 <table class="table table-responsive table-striped table-hover table-condensed @ViewData["tableclass"]">
     <thead>
@@ -37,9 +37,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Flights)
         {
             var style = new HtmlString(string.Empty);
+            var trainingStatusIndicator = Model.TrainingBarometers.TryGetValue(item.PilotId, out var ts) ? Html.Raw($"<span style='background-color:{ts.BarometerColorCode};'>&nbsp;</span>"): Html.Raw("");
+
             if (item.Deleted.HasValue)
             {
                 style = new HtmlString("style=\"text-decoration: line-through;\"");
@@ -100,6 +102,7 @@
                     @Html.DisplayFor(modelItem => item.Plane, "Plane")
                 </td>
                 <td @style>
+                    @trainingStatusIndicator
                     @Html.DisplayFor(modelItem => item, "Pilots")
                 </td>
                 <td @style>
