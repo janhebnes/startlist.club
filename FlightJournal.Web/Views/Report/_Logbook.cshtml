@@ -61,7 +61,7 @@
                         }
                         @if (enableLogTachoColumn)
                         {
-                            <td class="text-right">
+                            <td class="">
                                 @if (item.ItemFlights.Count() == 1)
                                 {
                                     var tachoFlight = item.ItemFlights.First();
@@ -77,10 +77,10 @@
                                 }
                             </td>
                         }
-                        <td align="right">
+                        <td >
                             @item.ItemFlights.Sum(f => f.LandingCount)
                         </td>
-                        <td align="right">
+                        <td >
                             @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
@@ -131,10 +131,10 @@
                                     @Html.DisplayFor(modelItem => item.StartType, "StartType")
                                 </td>
                             }
-                            <td class="text-right">
+                            <td class="">
                                 @item.ItemFlights.Sum(f => f.LandingCount)
                             </td>
-                            <td class="text-right">
+                            <td class="">
                                 @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                             </td>
                         </tr>
@@ -177,10 +177,10 @@
                                 @Html.DisplayFor(modelItem => item.StartType, "StartType")
                             </td>
                         }
-                        <td class="text-right">
+                        <td class="">
                             @item.ItemFlights.Sum(f => f.LandingCount)
                         </td>
-                        <td class="text-right">
+                        <td class="">
                             @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
@@ -193,10 +193,10 @@
                     {
                         <td class="text-center"></td>
                     }
-                    <td style="color:lightgray;" class="text-right">
+                    <td style="color:lightgray;" class="">
                         @Model.ClubFlights.Where(f => f.Deleted == null).ToList().Sum(f => f.LandingCount)
                     </td>
-                    <td style="color:lightgray;" class="text-right">
+                    <td style="color:lightgray;" class="">
                         @Model.ClubFlights.Where(f => f.Deleted == null).ToList().Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                     </td>
                 </tr>
@@ -249,10 +249,10 @@
                                 @Html.DisplayFor(modelItem => item.StartType, "StartType")
                             </td>
                         }
-                        <td align="right">
+                        <td >
                             @item.ItemFlights.Sum(f => f.LandingCount)
                         </td>
-                        <td align="right">
+                        <td >
                             @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>
@@ -301,10 +301,10 @@
                                 @Html.DisplayFor(modelItem => item.StartType, "StartType")
                             </td>
                         }
-                        <td align="right">
+                        <td >
                             @item.ItemFlights.Sum(f => f.LandingCount)
                         </td>
-                        <td align="right">
+                        <td >
                             @item.ItemFlights.Sum(f => f.Duration.Ticks).TotalHoursWithMinutesAsDecimal()
                         </td>
                     </tr>

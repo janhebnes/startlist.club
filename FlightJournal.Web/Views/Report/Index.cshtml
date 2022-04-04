@@ -215,7 +215,7 @@
                                 <span class="fa fa-trash-o"></span>
                             }
                         </td>
-                        <td @style align="right">
+                        <td @style >
                             @Html.DisplayFor(modelItem => item, "Duration")
                         </td>
                         <td @style>
@@ -231,16 +231,16 @@
                                 <!--@Html.DisplayFor(modelItem => item.StartType, "StartType")-->
                             </td>
                         }
-                        <td @style align="right">
+                        <td @style >
                             @Html.DisplayFor(modelItem => item, "Departure")
                         </td>
-                        <td @style class="hidden-xs text-right">
+                        <td @style class="hidden-xs">
                             @Html.DisplayFor(modelItem => item, "Landing")
                             @Html.DisplayFor(modelItem => item, "LandedOn")
                         </td>
                         @if (enableTachoColumn)
                         {
-                            <td @style class="hidden-xs hidden-sm text-right">
+                            <td @style class="hidden-xs hidden-sm ">
                                 @Html.DisplayFor(modelItem => item, "Tacho")
                             </td>
                         }
@@ -303,7 +303,7 @@ if (Request.IsClub())
 {
     Html.RenderPartial("_Logbook", Model);
 }
-else // @if (Request.IsClub())
+else 
 {
     <p>
         @foreach (var club in Model.Clubs)
