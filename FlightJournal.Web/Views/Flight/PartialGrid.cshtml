@@ -1,4 +1,6 @@
-﻿@using FlightJournal.Web.Extensions
+﻿@using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
 @model FlightJournal.Web.Models.GridViewModel
 
 <table class="table table-responsive table-striped table-hover table-condensed @ViewData["tableclass"]">
@@ -40,7 +42,8 @@
         @foreach (var item in Model.Flights)
         {
             var style = new HtmlString(string.Empty);
-            var trainingStatusIndicator = Model.TrainingBarometers.TryGetValue(item.PilotId, out var ts) ? Html.Raw($"<span style='background-color:{ts.BarometerColorCode};'>&nbsp;</span>"): Html.Raw("");
+            var trainingStatus = Model.TrainingBarometers.TryGetValue(item.PilotId, out var ts) ? ts : LogbookController.GetTrainingBarometer(Enumerable.Empty<Flight>().AsQueryable());
+            var trainingStatusIndicator =  Html.Raw($"<span style='background-color:{trainingStatus.BarometerColorCode};'>&nbsp;</span>");
 
             if (item.Deleted.HasValue)
             {
