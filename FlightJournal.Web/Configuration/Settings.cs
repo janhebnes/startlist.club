@@ -185,5 +185,16 @@ namespace FlightJournal.Web.Configuration
                 return smtpSection.From;
             }
         }
+        public static string ApiKey
+        {
+            get
+            {
+                // Azure Configured Environment AppSettings or fallback to the App_Data folder 
+                if (ConfigurationManager.AppSettings["ApiKey"] != null)
+                    return ConfigurationManager.AppSettings["ApiKey"];
+
+                return null;
+            }
+        }
     }
 }

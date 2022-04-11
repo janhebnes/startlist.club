@@ -171,7 +171,7 @@ namespace FlightJournal.Web.Controllers
             }
 
             var flights = SelectFlights(fromDate.Value, toDate.Value);
-            var model = CreateExportModel(db, flights);
+            var model = CreateExportModel(db, flights, User?.Identity?.Name);
 
             var sb = new StringBuilder();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -197,7 +197,7 @@ namespace FlightJournal.Web.Controllers
             }
 
             var flights = SelectFlights(fromDate.Value, toDate.Value);
-            var viewModel = CreateExportModel(db, flights);
+            var viewModel = CreateExportModel(db, flights, User?.Identity?.Name);
 
             return File(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(viewModel, Formatting.Indented)), System.Net.Mime.MediaTypeNames.Application.Octet, $"TrainingFlights-{fromDate.Value.ToString("yyyyMMdd")}-{toDate.Value.ToString("yyyyMMdd")}.json");
 
@@ -257,7 +257,7 @@ namespace FlightJournal.Web.Controllers
                 var instructor = ae.FirstOrDefault(x => x.Instructor != null)?.Instructor;
                 var instructorNameAndClub = instructor != null ? $"{instructor.Name} ({instructor.Club.ShortName})" : "";
                 var validator = new TrainingFlightExportValidator(f, ae);
-                var flightPhaseComments = CommentsForFlight(annotation)
+                var flightPhaseComments = CommentsForFlight(db, annotation)
                     .Where(x => x.Value.Any())
                     .Select(x => new CommentInFlightPhaseExportViewModel(x.Key, x.Value))
                     .Select(x => $"{x.FlightPhase.Phase}: {string.Join(",", x.Comments.Select(y => y.Comment))}");
@@ -306,7 +306,7 @@ namespace FlightJournal.Web.Controllers
             var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == id);
             var weather = annotation?.WindDirection != null && annotation?.WindSpeed != null ? $"{annotation.WindDirection}­&deg; {annotation.WindSpeed}kn " : "";
            
-            var commentsForAllPhases = CommentsForFlight(annotation)
+            var commentsForAllPhases = CommentsForFlight(db, annotation)
                 .ToDictionary(
                     x=>x.Key.CType, 
                     x=>x.Value.Select(v => new HtmlString(v.Comment)));
@@ -337,7 +337,7 @@ namespace FlightJournal.Web.Controllers
 
 
 
-        private Dictionary<CommentaryType, IEnumerable<Commentary>> CommentsForFlight(TrainingFlightAnnotation annotation)
+        private static Dictionary<CommentaryType, IEnumerable<Commentary>> CommentsForFlight(FlightContext db, TrainingFlightAnnotation annotation)
         {
             var commentsForPhasesInThisFlight = annotation?
                                                     .TrainingFlightAnnotationCommentCommentTypes?
@@ -356,7 +356,7 @@ namespace FlightJournal.Web.Controllers
         }
 
 
-        private TrainingFlightHistoryExportViewModel CreateExportModel(FlightContext db, IEnumerable<Flight> flights)
+        public static TrainingFlightHistoryExportViewModel CreateExportModel(FlightContext db, IEnumerable<Flight> flights, string exportingUser)
         {
             var flightModels = new List<TrainingFlightExportViewModel>();
             foreach (var f in flights)
@@ -366,7 +366,7 @@ namespace FlightJournal.Web.Controllers
                 var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
 
                 var partialExercises = ae.Select(x => new TrainingFlightPartialExerciseExportViewModel(x)).ToList();
-                var flightPhaseComments = CommentsForFlight(annotation)
+                var flightPhaseComments = CommentsForFlight(db, annotation)
                     .Where(x=>x.Value.Any())
                     .Select(x=>new CommentInFlightPhaseExportViewModel(x.Key, x.Value));
                 var maneuvers = annotation != null
@@ -403,7 +403,7 @@ namespace FlightJournal.Web.Controllers
                 m.TrimAll();
             flightModels.Add(m);
             }
-            return new TrainingFlightHistoryExportViewModel { Flights = flightModels, Timestamp = DateTimeOffset.Now, ExportingUser = User?.Identity?.Name };
+            return new TrainingFlightHistoryExportViewModel { Flights = flightModels, Timestamp = DateTimeOffset.Now, ExportingUser = exportingUser};
         }
 
         private static string _(string resourceId)
