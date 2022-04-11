@@ -8,6 +8,8 @@ using FlightJournal.Web.Models;
 using FlightJournal.Web.Validators;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using OGN.FlightLog.Client.Models;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -133,6 +135,29 @@ namespace FlightJournal.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                var oldInfo = new FlightContext().Pilots.SingleOrDefault(x => x.PilotId == pilot.PilotId); // new context!
+                if (oldInfo != null && oldInfo.UnionId != pilot.UnionId)
+                {
+                    // mark all (training) flights where the pilot participated as changed - will ensure re-export to FA
+                    var affectedFlights = db.Flights.Where(f =>
+                        f.Deleted == null 
+                        && (f.PilotId == pilot.PilotId 
+                            || (f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == pilot.PilotId)));
+                    var trainingFlightIds = db.AppliedExercises
+                        .Where(x => x.Grading != null)
+                        .Select(x => x.FlightId)
+                        .Distinct()
+                        .ToList();
+                    affectedFlights = affectedFlights.Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId));
+                    foreach (var f in affectedFlights)
+                    {
+                        db.Entry(f).State = EntityState.Modified;
+                        f.LastUpdated = DateTime.Now;
+                        f.LastUpdatedBy = User.Pilot().ToString();
+                        // don't notify - that would probably create too much noise
+                        // FlightsHub.NotifyFlightChanged(f.FlightId, Guid.Empty);
+                    }
+                }
                 db.Entry(pilot).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

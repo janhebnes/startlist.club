@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Globalization;
-using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Http;
 using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Models;
-using FlightJournal.Web.Translations;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace FlightJournal.Web.Controllers.api
 {
