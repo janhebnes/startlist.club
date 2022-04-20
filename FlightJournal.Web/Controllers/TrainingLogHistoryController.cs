@@ -267,7 +267,7 @@ namespace FlightJournal.Web.Controllers
                 var exercisesLong = ae
                     .OrderBy(x => x.Lesson.DisplayOrder)
                     .ThenBy(x => x.Exercise.DisplayOrder)
-                    .Select(x => $"{x.Lesson.Name}-{x.Exercise.Name}").ToList();
+                    .Select(x => $"{x.Lesson.Name}-{x.Exercise.Name} ({x.Grading?.Value})").ToList();
                 var exercisesShort = ae
                     .OrderBy(x => x.Lesson.DisplayOrder)
                     .Select(x => $"{x.Lesson.Name}")
@@ -321,6 +321,7 @@ namespace FlightJournal.Web.Controllers
                         LessonName = x.Lesson.Name,
                         ExerciseName = x.Exercise.Name,
                         GradingName = x.Grading?.Name,
+                        GradingValue = x.Grading?.Value.ToString() ?? "",
                         LessonId = x.Lesson.Training2LessonId,
                         ExerciseId = x.Exercise.Training2ExerciseId,
                     }),
@@ -524,6 +525,7 @@ namespace FlightJournal.Web.Controllers
         public string LessonName { get; set; }
         public string ExerciseName{ get; set; }
         public string GradingName { get; set; }
+        public string GradingValue { get; set; }
         public int LessonId { get; set; }
         public int ExerciseId { get; set; }
     }

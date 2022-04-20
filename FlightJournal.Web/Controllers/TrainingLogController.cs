@@ -178,7 +178,7 @@ namespace FlightJournal.Web.Controllers
                 var exercisesLong = ae
                     .OrderBy(x => x.Lesson.DisplayOrder)
                     .ThenBy(x => x.Exercise.DisplayOrder)
-                    .Select(x => $"{x.Lesson.Name}-{x.Exercise.Name}").ToList();
+                    .Select(x => $"{x.Lesson.Name}-{x.Exercise.Name} ({x.Grading?.Value})").ToList();
                 var exercisesShort = ae
                     .OrderBy(x => x.Lesson.DisplayOrder)
                     .Select(x => $"{x.Lesson.Name}")

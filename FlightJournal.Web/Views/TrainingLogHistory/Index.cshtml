@@ -28,9 +28,11 @@
     using (Html.BeginForm("Index", "TrainingLogHistory"))
     {
         <fieldset>
-            <input type="submit" value=@_("Between") class="btn btn-default"/>
-            <input type="date" name="fromDate" id="fromDate" value="@Model.FromDate.ToString("yyyy-MM-dd")"/>
-            <input type="date" name="toDate" id="toDate" value="@Model.ToDate.ToString("yyyy-MM-dd")"/>
+            @_("Between")
+            <input type="date" name="fromDate" id="fromDate" value="@Model.FromDate.ToString("yyyy-MM-dd")" />
+            @_("and")
+            <input type="date" name="toDate" id="toDate" value="@Model.ToDate.ToString("yyyy-MM-dd")" />
+            <input type="submit" value=@_("Show!") class="btn btn-default" />
         </fieldset>
     }
 }

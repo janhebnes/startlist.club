@@ -117,7 +117,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:256
 #: FlightJournal.Web\Views\Report\Month.cshtml:382
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:9
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:44
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
 msgid "Date"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgstr ""
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:125
 #: FlightJournal.Web\Views\Flight\History.cshtml:40
 #: FlightJournal.Web\Views\Flight\Index.cshtml:36
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:18
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:20
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:43
 #: FlightJournal.Web\Views\Report\Month.cshtml:391
 msgid "Departure"
@@ -140,7 +140,7 @@ msgstr ""
 #: FlightJournal.Web\Models\FlightVersionHistory.cs:141
 #: FlightJournal.Web\Views\Flight\History.cshtml:43
 #: FlightJournal.Web\Views\Flight\Index.cshtml:39
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:21
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:23
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:46
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:53
 #: FlightJournal.Web\Views\Report\Month.cshtml:394
@@ -157,7 +157,7 @@ msgstr ""
 #: FlightJournal.Web\Models\Flight.cs:113
 #: FlightJournal.Web\Views\Flight\History.cshtml:34
 #: FlightJournal.Web\Views\Flight\Index.cshtml:45
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:12
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:14
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:37
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:153
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:199
@@ -169,7 +169,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:150
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:219
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:271
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:45
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:47
 msgid "Plane"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgstr ""
 #: FlightJournal.Web\Models\Flight.cs:148
 #: FlightJournal.Web\Models\Flight.cs:151
 #: FlightJournal.Web\Views\Flight\History.cshtml:46
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:27
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:29
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:52
 #: FlightJournal.Web\Views\Flight\_ognFlightLog.cshtml:50
 msgid "Take-off"
@@ -236,7 +236,7 @@ msgstr ""
 
 #: FlightJournal.Web\Models\Flight.cs:186
 #: FlightJournal.Web\Models\PilotLogEntry.cs:42
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:27
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:29
 msgid "Deleted"
 msgstr ""
 
@@ -261,7 +261,7 @@ msgstr ""
 #: FlightJournal.Web\Models\Flight.cs:283
 #: FlightJournal.Web\Views\Flight\History.cshtml:49
 #: FlightJournal.Web\Views\Flight\Index.cshtml:54
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:30
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:32
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:55
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:280
 #: FlightJournal.Web\Views\Report\Month.cshtml:400
@@ -271,7 +271,7 @@ msgstr ""
 
 #: FlightJournal.Web\Models\Flight.cs:302
 #: FlightJournal.Web\Views\Flight\Index.cshtml:42
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:24
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:26
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:48
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:163
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:209
@@ -285,7 +285,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:229
 #: FlightJournal.Web\Views\Report\_Logbook.cshtml:281
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:12
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:49
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:51
 msgid "Duration"
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:250
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:21
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:16
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:54
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:56
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:22
 msgid "Note"
 msgstr ""
@@ -656,7 +656,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Club\Details.cshtml:7
 #: FlightJournal.Web\Views\Flight\History.cshtml:124
 #: FlightJournal.Web\Views\Flight\Index.cshtml:104
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:180
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:186
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\GradingAdmin\Index.cshtml:52
@@ -671,7 +671,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:50
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:48
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:99
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:101
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:4
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:7
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:33
@@ -691,7 +691,7 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Details.cshtml:103
 #: FlightJournal.Web\Views\Flight\Details.cshtml:156
 #: FlightJournal.Web\Views\Flight\Index.cshtml:101
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:170
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
 #: FlightJournal.Web\Views\GradingAdmin\Details.cshtml:13
 #: FlightJournal.Web\Views\GradingAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\GradingAdmin\Edit.cshtml:6
@@ -706,7 +706,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingExerciseAdmin\Index.cshtml:49
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Edit.cshtml:7
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:47
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:81
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:83
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:13
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:3
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Edit.cshtml:6
@@ -821,7 +821,7 @@ msgstr ""
 #: FlightJournal.Web\Views\CommentaryAdmin\_PartialItem.cshtml:4
 #: FlightJournal.Web\Views\CommentaryTypeAdmin\_PartialItem.cshtml:4
 #: FlightJournal.Web\Views\Flight\History.cshtml:52
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:33
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:35
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:58
 msgid "Comment"
 msgstr ""
@@ -845,7 +845,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\Flight\Create.cshtml:5
 #: FlightJournal.Web\Views\Flight\Create.cshtml:13
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:11
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:13
 #: FlightJournal.Web\Views\Flight\Index.cshtml:24
 #: FlightJournal.Web\Views\Flight\Index.cshtml:115
 msgid "Create flight"
@@ -918,31 +918,31 @@ msgstr ""
 msgid "Data for this flight have been edited by someone else, please reload!"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:4
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:6
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:244
 #: FlightJournal.Web\Views\Shared\_Layout.cshtml:65
 msgid "Startlist"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:13
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:15
 #: FlightJournal.Web\Views\Flight\Index.cshtml:26
 #: FlightJournal.Web\Views\Flight\Index.cshtml:118
 msgid "Previous flights"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:23
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:25
 msgid "All"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:24
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:26
 msgid "Not started"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:25
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:27
 msgid "Flying"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\Grid.cshtml:26
+#: FlightJournal.Web\Views\Flight\Grid.cshtml:28
 msgid "Landed"
 msgstr ""
 
@@ -998,7 +998,7 @@ msgid "Change history"
 msgstr ""
 
 #: FlightJournal.Web\Views\Flight\Index.cshtml:48
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:15
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:17
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:262
 #: FlightJournal.Web\Views\Report\Index.cshtml:157
 #: FlightJournal.Web\Views\Report\Month.cshtml:388
@@ -1008,23 +1008,23 @@ msgstr ""
 #: FlightJournal.Web\Views\Flight\Index.cshtml:51
 #: FlightJournal.Web\Views\Logbook\Index.cshtml:275
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:11
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:48
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:50
 msgid "Airfield"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:173
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:179
 msgid "Clone"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:174
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:180
 msgid "Copy"
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:182
 msgid " "
 msgstr ""
 
-#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:176
+#: FlightJournal.Web\Views\Flight\PartialGrid.cshtml:182
 msgid "Training"
 msgstr ""
 
@@ -1124,7 +1124,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\ManouvreAdmin\Index.cshtml:5
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:15
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:53
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:55
 msgid "Manouvres"
 msgstr ""
 
@@ -1451,7 +1451,7 @@ msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLessonAdmin\Index.cshtml:12
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:14
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:52
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:54
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Details.cshtml:15
 #: FlightJournal.Web\Views\TrainingProgramAdmin\Index.cshtml:42
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:34
@@ -1679,7 +1679,7 @@ msgstr ""
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:276
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:277
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingLogView.cshtml:10
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:47
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:49
 msgid "Instructor"
 msgstr ""
 
@@ -1688,7 +1688,7 @@ msgid "Save"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\Edit.cshtml:301
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:117
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:119
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:133
 msgid "Exercise"
 msgstr ""
@@ -1723,7 +1723,7 @@ msgid "Manouvers"
 msgstr ""
 
 #: FlightJournal.Web\Views\TrainingLog\_PartialTrainingFlightDetails.cshtml:25
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:55
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:57
 #: FlightJournal.Web\Views\TrainingLogHistory\_PartialTrainingFlightDetails.cshtml:26
 msgid "Issues"
 msgstr ""
@@ -1753,11 +1753,19 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:46
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:33
+msgid "and"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:35
+msgid "Show!"
+msgstr ""
+
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:48
 msgid "Front seat"
 msgstr ""
 
-#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:51
+#: FlightJournal.Web\Views\TrainingLogHistory\Index.cshtml:53
 #: FlightJournal.Web\Views\TrainingStatus\Index.cshtml:26
 msgid "Program"
 msgstr ""
