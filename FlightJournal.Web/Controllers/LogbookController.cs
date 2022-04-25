@@ -34,16 +34,16 @@ namespace FlightJournal.Web.Controllers
             // Custom inline Pilot filtering for allowing maximum performance
             model.Flights = this.db.Flights.Where(f => f.Date.Year >= model.Year - 1 && f.Deleted == null)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
-                .Where(f => (f.Pilot != null && f.Pilot.PilotId == model.Pilot.PilotId)
-                    || (f.PilotBackseat != null && f.PilotBackseat.PilotId == model.Pilot.PilotId)
-                    || (f.Betaler != null && f.Betaler.PilotId == model.Pilot.PilotId))
+                .Where(f => 
+                        (f.Pilot != null && f.Pilot.PilotId == model.Pilot.PilotId)
+                        || (f.PilotBackseat != null && f.PilotBackseat.PilotId == model.Pilot.PilotId)
+                )
                 .OrderByDescending(o => o.Departure)
                 .AsQueryable();
-
             if (model.Year == DateTime.Now.Year)
             {
-                var last12months = DateTime.Now.AddYears(-1);
-                model.TrainingBarometer = GetTrainingBarometer(model.Flights.Where(f => f.Date > last12months));
+                var baroFlights = GetBarometerRelevantFlightsForPilot(db, model.Pilot.PilotId, model.Pilot.IsInstructor);
+                model.TrainingBarometer = GetTrainingBarometer(baroFlights);
                 model.TrainingBarometerEnabled = true;
             }
             
@@ -51,6 +51,19 @@ namespace FlightJournal.Web.Controllers
             return this.View(model);
         }
 
+        public static IQueryable<Flight> GetBarometerRelevantFlightsForPilot(FlightContext db, int pilotId, bool isInstructor)
+        {
+            var today = DateTime.Now.Date;
+            var twelveMonthsAgo = today.AddYears(-1);
+
+            var barometerFlights = db.Flights.Where(f => 
+                f.Deleted == null
+                && f.Date >= twelveMonthsAgo 
+                && f.Date < today
+                && (f.PilotId == pilotId || (f.PilotBackseatId != null && f.PilotBackseatId == pilotId && isInstructor /* && f.HasTrainingData*/)) // should we require this ??
+            );
+            return barometerFlights;
+        }
         public static TrainingBarometerViewModel GetTrainingBarometer(IQueryable<Flight> last12MonthsFlights)
         {
             var result = new TrainingBarometerViewModel();
