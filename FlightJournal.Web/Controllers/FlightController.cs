@@ -76,26 +76,22 @@ namespace FlightJournal.Web.Controllers
             ViewBag.LocationId = locationid.HasValue ? locationid.Value : ClubController.CurrentClub.LocationId;
             ViewBag.FilterLocationId = new SelectList(this.db.Locations, "LocationId", "Name", ViewBag.LocationId);
 
-            var flights = this.db.Flights.Where(s => (!locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)) && (date.HasValue ? s.Date == date : s.Date == DateTime.Today))
+            var flightsToday = this.db.Flights.Where(s => (!locationid.HasValue || (s.LandedOn.LocationId == locationid.Value || s.StartedFrom.LocationId == locationid.Value)) && (date.HasValue ? s.Date == date : s.Date == DateTime.Today))
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler").Include("StartType")
                 .OrderByDescending(s => s.Date).ThenByDescending(s => s.Departure ?? DateTime.Now)
                 .ToList()
                 .Where(f=>f.IsCurrent())
                 .ToList();
 
-            var flyingToday = flights.Select(f => f.PilotId).ToList();
+            var pilotsFlyingToday = flightsToday.Select(f => f.Pilot).DistinctBy(p=>p.PilotId).ToList();
 
-            var last12months = DateTime.Now.AddYears(-1);
-            var trainingBarometersByPilot = this.db.Flights.Where(f =>
-                f.Deleted == null
-                && flyingToday.Contains(f.PilotId)
-                && f.Date >= last12months && f.Date < DateTime.Today
-                )
-                .ToList()
-                .GroupBy(f=> f.PilotId)
-                .ToDictionary(a=>a.Key, a=>LogbookController.GetTrainingBarometer(a.AsQueryable()));
+            var trainingBarometersByPilot =
+                    pilotsFlyingToday
+                        .Select(p => new{p.PilotId, baro=LogbookController.GetTrainingBarometer(LogbookController.GetBarometerRelevantFlightsForPilot(db, p.PilotId, p.IsInstructor))})
+                        .ToDictionary(x=>x.PilotId, x=>x.baro)
+                ;
 
-            return View(new GridViewModel(flights, trainingBarometersByPilot));
+            return View(new GridViewModel(flightsToday, trainingBarometersByPilot));
         }
 
         public ViewResult Date(DateTime date)
