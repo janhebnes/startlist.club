@@ -1,6 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Boerman.AprsClient;
+using FlightJournal.Web.App_Start;
+using WebGrease.Configuration;
 
 namespace FlightJournal.Web
 {
@@ -21,6 +25,7 @@ namespace FlightJournal.Web
             log4net.GlobalContext.Properties["CONFIG"] = ApplicationConfiguration.Config;
 
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

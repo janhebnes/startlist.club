@@ -11,7 +11,7 @@ namespace FlightJournal.Web.Models.Export
     /// <summary>
     /// Export of all flights (used for a specific year)
     /// </summary>
-    internal class TrainingFlightHistoryExportViewModel
+    public class TrainingFlightHistoryExportViewModel
     {
         public DateTimeOffset Timestamp { get; set; }
         public string ExportingUser { get; set; }
@@ -22,7 +22,7 @@ namespace FlightJournal.Web.Models.Export
     /// <summary>
     /// Export of a specific flight
     /// </summary>
-    internal class TrainingFlightExportViewModel
+    public class TrainingFlightExportViewModel
     {
         public string FlightId { get; set; }
         public string Timestamp { get; set; }
