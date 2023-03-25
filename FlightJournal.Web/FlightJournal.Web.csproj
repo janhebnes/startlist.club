@@ -375,6 +375,10 @@
     <Compile Include="Controllers\api\FlightsController.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
+    <Compile Include="Migrations\FlightContext\202303252000296_Add training table for tracking of completed trainings.cs" />
+    <Compile Include="Migrations\FlightContext\202303252000296_Add training table for tracking of completed trainings.designer.cs">
+      <DependentUpon>202303252000296_Add training table for tracking of completed trainings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GridViewModel.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
@@ -475,6 +479,7 @@
     <Compile Include="Models\Training\Catalogue\Training2Exercise.cs" />
     <Compile Include="Models\Training\Catalogue\Training2Lesson.cs" />
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
+    <Compile Include="Models\Training\Flight\Training.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotationCommentCommentType.cs" />
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
@@ -1388,6 +1393,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.resx">
       <DependentUpon>202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202303252000296_Add training table for tracking of completed trainings.resx">
+      <DependentUpon>202303252000296_Add training table for tracking of completed trainings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

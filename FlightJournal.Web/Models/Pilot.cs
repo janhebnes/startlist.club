@@ -97,6 +97,8 @@ namespace FlightJournal.Web.Models
         public virtual ICollection<FlightVersionHistory> FlightHistory_PilotBackseats { get; set; }
         [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_Betalers { get; set; }
+        [XmlIgnore]
+        public virtual ICollection<Training.Flight.Training> Pilot_Trainings { get; set; }
 
     }
 }

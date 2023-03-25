@@ -43,6 +43,7 @@ namespace FlightJournal.Web.Models
         public DbSet<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
         public DbSet<Grading> Gradings { get; set; }
         public DbSet<ListenerArea> ListenerAreas { get; set; }
+        public DbSet<Training.Flight.Training> Trainings { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -176,6 +177,16 @@ namespace FlightJournal.Web.Models
                 .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
                 .HasForeignKey(i => i.CommentaryTypeId);
 
+            modelBuilder.Entity<Training.Flight.Training>()
+                .HasRequired(i => i.Pilot)
+                .WithMany(i => i.Pilot_Trainings)
+                .HasForeignKey(i => i.PilotId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Training.Flight.Training>()
+                .HasRequired(i => i.TrainingProgram);
+              //  .WithRequiredPrincipal(tp => tp.Training)
+               // .WillCascadeOnDelete(false);
         }
     }
 }
