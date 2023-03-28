@@ -184,9 +184,10 @@ namespace FlightJournal.Web.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Training.Flight.Training>()
-                .HasRequired(i => i.TrainingProgram);
-              //  .WithRequiredPrincipal(tp => tp.Training)
-               // .WillCascadeOnDelete(false);
+                .HasRequired(i => i.TrainingProgram)
+                .WithMany(i => i.TrainingProgram_Trainings)
+                .HasForeignKey(i => i.Training2ProgramId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

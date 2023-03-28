@@ -7,13 +7,13 @@ namespace FlightJournal.Web.Migrations.FlightContext
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class Addtrainingtablefortrackingofcompletedtrainings : IMigrationMetadata
+    public sealed partial class AddedFlightTrainingtabletoallowfortrackingofcompletedtrainingprograms : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Addtrainingtablefortrackingofcompletedtrainings));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedFlightTrainingtabletoallowfortrackingofcompletedtrainingprograms));
         
         string IMigrationMetadata.Id
         {
-            get { return "202303252000296_Add training table for tracking of completed trainings"; }
+            get { return "202303281944343_Added Flight Training table to allow for tracking of completed training programs"; }
         }
         
         string IMigrationMetadata.Source

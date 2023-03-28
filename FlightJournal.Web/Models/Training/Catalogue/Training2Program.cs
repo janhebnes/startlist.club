@@ -45,7 +45,8 @@ namespace FlightJournal.Web.Models.Training.Catalogue
         [XmlIgnore]
         public virtual ICollection<Training2Lesson> Lessons { get; set; } // N:M
 
-        public virtual Flight.Training Training { get; set; }
+        [XmlIgnore]
+        public virtual ICollection<Training.Flight.Training> TrainingProgram_Trainings { get; set; }
 
         public Training2Program()
         {
