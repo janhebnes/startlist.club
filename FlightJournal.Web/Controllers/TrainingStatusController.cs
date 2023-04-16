@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -11,12 +12,37 @@ using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
 using Microsoft.Ajax.Utilities;
+using Microsoft.Owin.Security;
 
 namespace FlightJournal.Web.Controllers
 {
+    internal class CachedTrainingProgram
+    {
+        public int Training2ProgramId;
+
+        public List<CachedTrainingLesson> Lessons;
+    }
+
+    internal class CachedTrainingLesson
+    {
+        public int TrainingLessonId;
+        public List<CachedTrainingExercise> Exercises;
+    }
+    internal class CachedTrainingExercise
+    {
+        public int TrainingExerciseId;
+
+    }
+
+
     public class TrainingStatusController : Controller
     {
         private readonly FlightContext db = new FlightContext();
+        private List<Training2Exercise> trainingExercises = new FlightContext().TrainingExercises.ToList();
+        private List<Training2Lesson> trainingLessons = new FlightContext().TrainingLessons.ToList();
+        private readonly List<Training2Program> trainingPrograms = new FlightContext().TrainingPrograms.ToList();
+        private readonly List<Pilot> pilots= new FlightContext().Pilots.ToList();
+        private readonly Club CurrentClub = ClubController.CurrentClub;
 
         private readonly DateTime FirstRelevantDate = DateTime.Now.AddYears(-3); // flights before this are hardly relevant
 
@@ -26,16 +52,19 @@ namespace FlightJournal.Web.Controllers
         public ActionResult Index()
         {
             var sw = Stopwatch.StartNew();
-
             var model = new List<TrainingProgramStatus>();
             // pay up front
+            trainingLessons.ForEach(x=>x.Exercises = trainingExercises.Where(y=>y.Lessons.Select(z=>z.Training2LessonId).Contains(x.Training2LessonId)).ToList());
+            trainingPrograms.ForEach(x=>x.Lessons= trainingLessons.Where(y=>y.Programs.Select(z=>z.Training2ProgramId).Contains(x.Training2ProgramId)).ToList());
+
             var allFlownExercises = db.AppliedExercises.Where(x => x.Grading != null).ToList();
             var allTrainingFlights = GetTrainingFlightsFromIds(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
+            Trace.WriteLine($"## got {allTrainingFlights.Count} flights and {allFlownExercises.Count} exercises in {sw.Elapsed}");
 
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
             {
                 List<Pilot> flyingPilots;
-                if (ClubController.CurrentClub.ShortName == null)
+                if (CurrentClub.ShortName == null)
                 {
                     flyingPilots = allTrainingFlights.Select(f => f.Pilot)
                         .OrderBy(p => p.Name)
@@ -45,17 +74,17 @@ namespace FlightJournal.Web.Controllers
                 else
                 {
                     flyingPilots = allTrainingFlights.Select(f => f.Pilot)
-                        .Where(p => p.ClubId == ClubController.CurrentClub.ClubId)
+                        .Where(p => p.ClubId == CurrentClub.ClubId)
                         .OrderBy(p => p.Name)
                         .Distinct()
                         .ToList();
                 }
-                developerInfo.Add($"Got {flyingPilots.Count()} pilots in {sw.Elapsed}");
+                Trace.WriteLine($"## Got {flyingPilots.Count()} pilots in {sw.Elapsed}");
                 foreach ( var p in flyingPilots)
                 {
                     model.AddRange(GetStatusForPilot(p, allTrainingFlights, allFlownExercises));
                 }
-                developerInfo.Add($"Got all status in {sw.Elapsed}");
+                Trace.WriteLine($"## Got all status in {sw.Elapsed} ({sw.Elapsed.TotalSeconds/flyingPilots.Count()} s/pilot)");
 
             }
             else if (Request.IsPilot())
@@ -68,7 +97,6 @@ namespace FlightJournal.Web.Controllers
             }
 
             ViewBag.DeveloperInfo = developerInfo;
-
             return View(model);
         }
 
@@ -80,8 +108,8 @@ namespace FlightJournal.Web.Controllers
                 var allFlownExercises = db.AppliedExercises.Where(x => x.Grading != null).ToList();
                 var allTrainingFlights = GetTrainingFlightsFromIds(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
 
-                var p = db.Pilots.SingleOrDefault(x => x.PilotId == pilotId);
-                var tp = db.TrainingPrograms.SingleOrDefault(x => x.Training2ProgramId == trainingProgramId);
+                var p = pilots.SingleOrDefault(x => x.PilotId == pilotId);
+                var tp = trainingPrograms.SingleOrDefault(x => x.Training2ProgramId == trainingProgramId);
                 var status = GetStatusForPilot(tp, p, allTrainingFlights, allFlownExercises);
                 var details = new PilotDetailedStatus(tp, p, status.LessonsWithStatus);
                 return View(details);
@@ -90,9 +118,9 @@ namespace FlightJournal.Web.Controllers
             return View((PilotDetailedStatus)null);
         }
 
-        private IEnumerable<Flight> GetTrainingFlightsFromIds(IReadOnlyList<Guid> ids)
+        private IReadOnlyList<Flight> GetTrainingFlightsFromIds(IReadOnlyList<Guid> ids)
         {
-            return db.Flights.Where(x => x.Deleted == null && ids.Contains(x.FlightId)).ToList();
+            return db.Flights.Where(x => x.Deleted == null && x.HasTrainingData && x.Date >= FirstRelevantDate && ids.Contains(x.FlightId)).ToList().Where(x=>x.IsCurrentClubPilots()).ToList();
         }
 
         private IEnumerable<TrainingProgramStatus> GetStatusForPilot(Pilot p, IEnumerable<Flight> allFlights, IEnumerable<AppliedExercise> allExercises)
@@ -111,7 +139,7 @@ namespace FlightJournal.Web.Controllers
                 .ToList();
             developerInfo.Add($"__got {flights.Count} flights for pilot {p.Name} in {sw.Elapsed}");
 
-            foreach (var program in db.TrainingPrograms)
+            foreach (var program in trainingPrograms)
             {
                 var m = GetStatusForPilot(program, p, flights, allExercises);
                 if (m != null)
