@@ -519,6 +519,19 @@ namespace FlightJournal.Web.Controllers
         }
 
 
+        [HttpGet]
+        public JsonResult GetLastLandingTachoForPlane(int planeId)
+        {
+            var lastTacho = this.db.Flights.Where(f => f.PlaneId == planeId && f.TachoLanding.HasValue)
+                .OrderByDescending(f => f.Date).Select(f => f.TachoLanding).FirstOrDefault();
+
+            return Json( new
+            {
+                HasTacho=lastTacho.HasValue, 
+                TachoDeparture=lastTacho ?? 0
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             this.db.Dispose();

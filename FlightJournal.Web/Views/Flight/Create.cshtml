@@ -263,6 +263,19 @@
                         $('#FLARMAircraftFiltered').text("");
                     }
                 }
+
+                //default tacho start from last landing tacho for plane
+                $.ajax({
+                    url: "/Flight/GetLastLandingTachoForPlane",
+                    data: { planeId: $("#PlaneId").val() },
+                    type: "GET",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.HasTacho) {
+                            $("#TachoDeparture").val(result.TachoDeparture);
+                        }
+                    }
+                });
             });
 
             if ($("#flarm")) {
