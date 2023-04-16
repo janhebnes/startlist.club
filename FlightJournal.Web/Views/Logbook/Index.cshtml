@@ -87,7 +87,7 @@
     </thead>
 
     <tbody>
-        @foreach (var item in from c in flightsDataset.Where(f => f.PilotId == Model.Pilot.PilotId)
+        @foreach (var item in from c in flightsDataset.Where(f => f.PilotId == Model.Pilot.PilotId )
                              group c by new { c.Pilot, c.StartType } into g
                              select new { Pilot = g.Key.Pilot, StartType = g.Key.StartType, ItemFlights = g })
         {
@@ -114,7 +114,7 @@
                 }
             </tr>
         }
-        @foreach (var item in from c in flightsDataset.Where(f => f.PilotBackseatId == Model.Pilot.PilotId)
+        @foreach (var item in from c in flightsDataset.Where(f => f.PilotBackseatId == Model.Pilot.PilotId && f.PilotId != Model.Pilot.PilotId)
                              group c by new { c.PilotBackseat, c.StartType } into g
                              select new { Pilot = g.Key.PilotBackseat, StartType = g.Key.StartType, ItemFlights = g })
         {
