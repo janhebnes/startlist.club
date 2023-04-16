@@ -9,18 +9,27 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
+    
+
     public class LogbookController : Controller
     {
+        private Club CurrentClub = ClubController.CurrentClub;
         private FlightContext db = new FlightContext();
 
-        public ActionResult Index(int? year)
+        public ActionResult Index(int? year, int? pilotId)
         {
             if (!Request.IsPilot())
                 return RedirectToAction("PilotNotFound", "Error");
 
             LogbookViewModel model = new LogbookViewModel();
 
-            model.Pilot = Request.Pilot();
+            if (User.IsAdministrator() && pilotId.HasValue)
+                model.Pilot = db.Pilots.SingleOrDefault(p => p.PilotId == pilotId);
+            else
+                model.Pilot = Request.Pilot();
+
+            if(model.Pilot == null)
+                return RedirectToAction("PilotNotFound", "Error");
 
             model.Year = DateTime.Now.Year;
             if (year.HasValue)
@@ -32,14 +41,15 @@ namespace FlightJournal.Web.Controllers
             }
 
             // Custom inline Pilot filtering for allowing maximum performance
-            model.Flights = this.db.Flights.Where(f => f.Date.Year >= model.Year - 1 && f.Deleted == null)
+            model.Flights = this.db.Flights.Where(f => f.Date.Year == model.Year && f.Deleted == null)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat").Include("Betaler")
                 .Where(f => 
                         (f.Pilot != null && f.Pilot.PilotId == model.Pilot.PilotId)
                         || (f.PilotBackseat != null && f.PilotBackseat.PilotId == model.Pilot.PilotId)
                 )
                 .OrderByDescending(o => o.Departure)
-                .AsQueryable();
+                .AsQueryable()
+                ;
             if (model.Year == DateTime.Now.Year)
             {
                 var baroFlights = GetBarometerRelevantFlightsForPilot(db, model.Pilot.PilotId, model.Pilot.IsInstructor);
@@ -51,6 +61,43 @@ namespace FlightJournal.Web.Controllers
             return this.View(model);
         }
 
+        public ActionResult BaroStatus(int? pilotId)
+        {
+            if (User.IsManager() || (Request.IsPilot() && Request.Pilot().IsInstructor))
+            {
+                List<Pilot> pilots;
+
+                if (pilotId.HasValue)
+                {
+                    pilots = db.Pilots.Where(p => p.PilotId == pilotId.Value).ToList();
+                }
+                else
+                {
+                    if (CurrentClub.ShortName == null)
+                    {
+                        pilots = db.Pilots.Where(p=>!p.ExitDate.HasValue).ToList();
+                    }
+                    else
+                    {
+                        pilots = db.Pilots.Where(p=> !p.ExitDate.HasValue && p.ClubId == CurrentClub.ClubId).ToList();
+                    }
+                }
+
+                var model = new BaroStatusViewModel()
+                {
+                    Pilots = pilots.OrderBy(p => p.Name.Trim()).Select(p => new PilotTrainingBarometerViewModel()
+                    {
+                        Pilot = p,
+                        TrainingStatus = GetTrainingBarometer(GetBarometerRelevantFlightsForPilot(db, p.PilotId, p.IsInstructor))
+
+                    })
+                };
+                return View("BaroStatus", model);
+            }
+            else
+                return RedirectToAction("PilotNotFound", "Error");
+
+        }
         public static IQueryable<Flight> GetBarometerRelevantFlightsForPilot(FlightContext db, int pilotId, bool isInstructor)
         {
             var today = DateTime.Now.Date;
@@ -66,11 +113,13 @@ namespace FlightJournal.Web.Controllers
         }
         public static TrainingBarometerViewModel GetTrainingBarometer(IQueryable<Flight> last12MonthsFlights)
         {
+            var f = last12MonthsFlights.ToList();
             var result = new TrainingBarometerViewModel();
-            if (last12MonthsFlights.Any())
+            if (f.Any())
             {
-                result.Last12MonthDepartures = last12MonthsFlights.Sum(f => f.LandingCount);
-                result.Last12MonthDuration = last12MonthsFlights.ToList().Sum(f => f.Duration.Ticks);
+                result.Last12MonthDepartures = f.Sum(f => f.LandingCount);
+                result.Last12MonthDuration = f.ToList().Sum(f => f.Duration.Ticks);
+                result.DateOfLastFlight = f.Max(f => f.Date).ToShortDateString();
             }
             else
             {

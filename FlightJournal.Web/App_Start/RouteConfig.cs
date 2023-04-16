@@ -45,13 +45,19 @@ namespace FlightJournal.Web{
                      , date = new DateRouteConstraint(new DatePathValidator()) }
              );
 
-            // Custom club Urls with default behavior
-            routes.MapRoute(
-                "LogbookWithClubFlavor", // Route name
-                "{club}/logbook/{year}", // URL with parameters
-                new { club = UrlParameter.Optional, controller = "Logbook", action = "Index", year = UrlParameter.Optional },
-                new { club = new ClubRouteConstraint(new ClubValidator()) }
-            );
+            //// Custom club Urls with default behavior
+            //routes.MapRoute(
+            //    "LogbookWithClubFlavor", // Route name
+            //    "{club}/logbook/{year}", // URL with parameters
+            //    new { club = UrlParameter.Optional, controller = "Logbook", action = "Index", year = UrlParameter.Optional },
+            //    new { club = new ClubRouteConstraint(new ClubValidator()) }
+            //);
+            //routes.MapRoute(
+            //    "LogbookWithClubFlavor2", // Route name
+            //    "{club}/logbook", // URL with parameters
+            //    new { club = UrlParameter.Optional, controller = "Logbook", action = "Index"},
+            //    new { club = new ClubRouteConstraint(new ClubValidator()) }
+            //);
 
 
             // Custom club Urls with default behavior

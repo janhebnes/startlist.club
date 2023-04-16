@@ -2,7 +2,7 @@
 @using FlightJournal.Web.Configuration
 @model FlightJournal.Web.Models.LogbookViewModel
 @{
-    var flightsDataset = Model.Flights.Where(f => f.Date.Year == Model.Year);
+    var flightsDataset = Model.Flights.ToList();
 
     ViewBag.Title = _("Logbook") + " " + Model.Year;
 }
