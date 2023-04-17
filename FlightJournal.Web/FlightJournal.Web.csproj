@@ -1090,7 +1090,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
-    <None Include="Views\Logbook\BaroStatus.cshtml" />
+    <Content Include="Views\Logbook\BaroStatus.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Description.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Location.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />
