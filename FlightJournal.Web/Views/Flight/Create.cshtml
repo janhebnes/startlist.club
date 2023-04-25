@@ -157,7 +157,7 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script type="text/javascript">
+    <script type="text/javascript">
         function resetJsCss() {
             $(".custom-combobox-input").css("border", "3px solid #888");
             $(".custom-combobox-toggle").css("border", "3px solid #888");
@@ -242,7 +242,7 @@
                 }
 
                 var defaultStarttype = option.attr('data-defaultstarttype');
-                if (!defaultStarttype.trim()) {
+                if (defaultStarttype.trim()) {
                     $("#StartTypeId").combobox('autocomplete', defaultStarttype);
                 }
 
@@ -263,6 +263,19 @@
                         $('#FLARMAircraftFiltered').text("");
                     }
                 }
+
+                //default tacho start from last landing tacho for plane
+                $.ajax({
+                    url: "/Flight/GetLastLandingTachoForPlane",
+                    data: { planeId: $("#PlaneId").val() },
+                    type: "GET",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.HasTacho) {
+                            $("#TachoDeparture").val(result.TachoDeparture);
+                        }
+                    }
+                });
             });
 
             if ($("#flarm")) {

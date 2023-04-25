@@ -375,6 +375,7 @@
     <Compile Include="Controllers\api\FlightsController.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
+    <Compile Include="Models\BaroStatusViewModel.cs" />
     <Compile Include="Models\GridViewModel.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\LogbookController.cs" />
@@ -1089,6 +1090,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
+    <Content Include="Views\Logbook\BaroStatus.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Description.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\Location.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\_DateTime.ascx" />

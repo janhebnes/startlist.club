@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure.Interception;
 
@@ -16,68 +17,59 @@ namespace FlightJournal.Web.App_Start
     /// <see cref="https://docs.microsoft.com/en-us/ef/ef6/fundamentals/logging-and-interception"/>
     public class DbCommandInterceptor : IDbCommandInterceptor
     {
+        private ConcurrentDictionary<DbCommand, DateTime> commandStartTimes = new();
+
         public void NonQueryExecuting(
             DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
         {
-            LogIfNonAsync(command, interceptionContext);
+            LogStartOfExec(command, interceptionContext);
         }
 
         public void NonQueryExecuted(
             DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
         {
-            LogIfError(command, interceptionContext);
+            LogEndOfExec(command, interceptionContext);
         }
 
         public void ReaderExecuting(
             DbCommand command, DbCommandInterceptionContext<DbDataReader> interceptionContext)
         {
-            LogIfNonAsync(command, interceptionContext);
+            LogStartOfExec(command, interceptionContext);
         }
 
         public void ReaderExecuted(
             DbCommand command, DbCommandInterceptionContext<DbDataReader> interceptionContext)
         {
-            LogIfError(command, interceptionContext);
+            LogEndOfExec(command, interceptionContext);
         }
 
         public void ScalarExecuting(
             DbCommand command, DbCommandInterceptionContext<object> interceptionContext)
         {
-            LogIfNonAsync(command, interceptionContext);
+            LogStartOfExec(command, interceptionContext);
         }
 
         public void ScalarExecuted(
             DbCommand command, DbCommandInterceptionContext<object> interceptionContext)
         {
-            LogIfError(command, interceptionContext);
+            LogEndOfExec(command, interceptionContext);
         }
 
-        private void LogIfNonAsync<TResult>(
-            DbCommand command, DbCommandInterceptionContext<TResult> interceptionContext)
+        private void LogStartOfExec<TResult>(DbCommand command, DbCommandInterceptionContext<TResult> interceptionContext)
         {
 #if (DEBUG)
-            string[] stackTraceLines = Environment.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            string compactStackTraceView = string.Join(Environment.NewLine, stackTraceLines.Where(d => d.Contains(":line") && !d.Contains(".DbCommandInterceptor")));
-            if (compactStackTraceView == string.Empty) compactStackTraceView = Environment.StackTrace;
-            if (!interceptionContext.IsAsync)
-            {
-                System.Diagnostics.Trace.WriteLine($"-------{Environment.NewLine}SQL Command executing asynchronously: {Environment.NewLine}{compactStackTraceView}{Environment.NewLine}");
-            }
-            else
-            {
-                System.Diagnostics.Trace.WriteLine($"-------{Environment.NewLine}SQL Command executing synchronously: {Environment.NewLine}{compactStackTraceView}{Environment.NewLine}");
-            }
+            commandStartTimes.TryAdd(command, DateTime.Now);
 #endif
         }
 
-        private void LogIfError<TResult>(
-            DbCommand command, DbCommandInterceptionContext<TResult> interceptionContext)
+        private void LogEndOfExec<TResult>(DbCommand command, DbCommandInterceptionContext<TResult> interceptionContext)
         {
 #if (DEBUG)
-            string[] stackTraceLines = Environment.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            string compactStackTraceView = string.Join(Environment.NewLine, stackTraceLines.Where(d => d.Contains(":line") && !d.Contains(".DbCommandInterceptor")));
-            if (compactStackTraceView == string.Empty) compactStackTraceView = Environment.StackTrace;
-            System.Diagnostics.Trace.WriteLine($"-------{Environment.NewLine}SQL Command executed: {Environment.NewLine}{compactStackTraceView}{Environment.NewLine}SQL Command:{Environment.NewLine}{command.CommandText}{Environment.NewLine}Parameters: {Environment.NewLine}{CommandParametersToString(command.Parameters)}{Environment.NewLine}");
+            var duration = (commandStartTimes.TryRemove(command, out var startTime))
+                ? (int)(DateTime.Now - startTime).TotalMilliseconds
+                : 0;
+        
+            System.Diagnostics.Trace.WriteLine($"-------{DateTime.Now:HH:mm:ss.fff}{Environment.NewLine}SQL Command executed {(interceptionContext.IsAsync ? "a" : "")}synchronously in {duration}ms: {Environment.NewLine}{OurStackEntries}{Environment.NewLine}SQL Command:{Environment.NewLine}{command.CommandText}{Environment.NewLine}Parameters: {Environment.NewLine}{CommandParametersToString(command.Parameters)}{Environment.NewLine}");
 #endif
             if (interceptionContext.Exception != null)
             {
@@ -116,5 +108,12 @@ namespace FlightJournal.Web.App_Start
 
             return sb.ToString();
         }
+
+
+        private string OurStackEntries =>
+            string.Join(Environment.NewLine, Environment.StackTrace
+            .Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
+            .Where(s => s.Contains("FlightJournal.Web") && !s.Contains(".DbCommandInterceptor"))
+            );
     }
 }
