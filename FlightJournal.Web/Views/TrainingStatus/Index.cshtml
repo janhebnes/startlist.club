@@ -1,6 +1,25 @@
-﻿@using FlightJournal.Web.Models
+﻿@using FlightJournal.Web.Controllers
+@using FlightJournal.Web.Models
 @using FlightJournal.Web.Views
 @model IEnumerable<FlightJournal.Web.Controllers.TrainingProgramStatus>
+
+@functions {
+    private string IconFor(TrainingProgramStatus status)
+    {
+        if (status.DaysSinceLastFlight> 90)
+            return "sedentary.png";
+
+        if (status.DaysSinceLastFlight > 60 || status.FlightsInLast60Days < 5)
+            return "person.png";
+
+        if (status.DaysSinceLastFlight > 30 || status.FlightsInLast60Days < 10)
+        {
+            return "walking.png";
+        }
+        return "running.png";
+    }
+
+}
 
 @{
     ViewBag.Title = _("Training status");
@@ -18,8 +37,8 @@
                 <th class="coltype1" colspan="2" >@_("Dual")</th>
                 <th class="coltype2" colspan="2">@_("Solo")</th>
                 <th class="coltype1"></th>
-                <th class="coltype2" colspan="3">@_("Last 60 days")</th>
-                <th></th>
+                <th class="coltype2" colspan="2">@_("Last 60 days")</th>
+                <th class="coltype1"></th>
             </tr>
             <tr class="row2of2">
                 <th class="coltype1">@_("Pilot")</th>
@@ -31,8 +50,8 @@
                 <th class="coltype1">@_("Last")</th>
                 <th class="coltype2">@_("Hours")</th>
                 <th class="coltype2">@_("Flights")</th>
-                <th class="coltype2 hidden-xs hidden-sm">@_("Exercises")</th>
-@*                <th>@_("Status")</th>*@
+                @*<th class="coltype2 hidden-xs hidden-sm">@_("Exercises")</th>*@
+                <th class="coltype1">@_("Status")</th>
             </tr>
         </thead>
         <tbody>
@@ -53,6 +72,7 @@
                             @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
                         </span>
                     </td>*@
+                <td> @Html.Raw($"<img class='activityicon' src='/content/images/{IconFor(f)}' >") </td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -62,7 +82,7 @@
                             var chartid = "CHART" + f.TrainingTimelineViewModel.Data.Metadata["pilotId"] + "-" + f.TrainingTimelineViewModel.Data.Metadata["programId"];
                             var description = f.TrainingTimelineViewModel.Data.Metadata["pilotName"] +  " (" + f.TrainingTimelineViewModel.Data.Metadata["programName"] + ")";
                         }*@
-                        @*<button class="btn btn-sm btnchart clickable" title=@Html.Raw(__("Click to see chart")) data-chartid="@chartid" data-description="@description"><span class="fa fa-line-chart"></span></button>*@
+                        <button class="btn btn-sm btnchart clickable" title=@Html.Raw(__("Click to see chart")) data-programid="@f.ProgramId" data-pilotid="@f.PilotId" ><span class="fa fa-line-chart"></span></button>
                     </td>
                     <td colspan="7">
                         @foreach (var x in f.LessonsWithStatus)
