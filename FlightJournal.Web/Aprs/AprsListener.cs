@@ -90,13 +90,13 @@ namespace FlightJournal.Web.Aprs
                             e.AprsMessage.ReceivedDate.ToUniversalTime(),
                             e.AprsMessage.Latitude.ToDegreesFixed(),
                             e.AprsMessage.Longitude.ToDegreesFixed(),
-                            e.AprsMessage.Altitude.FeetAboveSeaLevel,
+                            e.AprsMessage.Altitude.MetersAboveSeaLevel,
                             e.AprsMessage.Speed.Knots,
                             e.AprsMessage.Direction.ToDegrees());
 
                         FlightContextFactory.Enqueue(positionUpdate);
                     }
-                    catch (NullReferenceException)
+                    catch (Exception)
                     {
                         // ignore
                     }
@@ -173,15 +173,9 @@ namespace FlightJournal.Web.Aprs
         public static double ToDegreesFixed(this LatitudeLongitudeBase latlong)
         {
             var h = latlong.Vector;
-            if (h.Minutes > 60)
-            {
-                var m = h.Minutes / 100.0;
+            var m = h.Minutes / 100.0;
 
-                return (double)h.Degrees + (double)m / 60.0;
-
-            }
-            else
-                return h.ToDegrees();
+            return (double)h.Degrees + (double)m / 60.0;
         }
     }
 
