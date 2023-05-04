@@ -108,7 +108,11 @@
 }
 
 
-<div id="urls" data-details="@Url.Action("GetDetails", "TrainingLogHistory")" data-exercisedetails="@Url.Action("ExerciseDetails", "TrainingLogHistory")"></div>
+<div id="urls" 
+     data-timeline="@Url.Action("PilotActivityTimeline", "TrainingStatus")" 
+     data-details="@Url.Action("GetDetails", "TrainingLogHistory")" 
+     data-exercisedetails="@Url.Action("ExerciseDetails", "TrainingLogHistory")"
+     ></div>
 
 <div class="modal" tabindex="-1" role="dialog" id="chartmodal">
     <div class="modal-dialog  wide-modal high-modal" role="document">
@@ -172,11 +176,31 @@
 
         $(document).ready(function () {
             moment.locale("da");
-            drawScatterDateCharts(moment().subtract(60, 'days'), moment(), onDataPointClick, onChartClick);
-            $(".btnchart").click(function() {
-                var chartid = $(this).data("chartid");
-                var description = $(this).data("description");
-                showFullChart(chartid, description);
+            $(".btnchart").click(function () {
+                var pilotid = $(this).data("pilotid")
+                var programid = $(this).data("programid")
+
+                var url = $("#urls").data("timeline");
+                if (!url || !pilotid || !programid)
+                    return;
+                var oldcursor = document.body.style.cursor;
+                document.body.style.cursor = 'wait';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        pilotId: pilotid,
+                        trainingProgramId: programid,
+                    },
+                    success: function (html) {
+                        document.body.style.cursor = oldcursor;
+                        showFullChart(html);
+                    },
+                    error: function (xhr, status, error) {
+                        document.body.style.cursor = oldcursor;
+                    }
+
+                });
             });
         });
 
@@ -185,17 +209,13 @@
             console.log("Clicked on flight " + flightId);
             showFlightDetails(flightId);
         }
-        var onChartClick = function (id, description) {
-            console.log("Clicked on chart " + id);
-            showFullChart(id, description);
-        }
 
-        var showFullChart = function (chartId, description) {
-            var chartdiv = $("#"+chartId);
-            $("#chartmodal").find(".modal-body").html(chartdiv.html());
-            $("#chartmodal").find(".modal-title").html(description);
+        var showFullChart = function (html) {
+            $("#chartmodal").find(".modal-body").html(html);
             var canvas = $("#chartmodal").find(".scatterChartDate");
+            var description = canvas.data("description");
             canvas.height(window.innerHeight * 0.7);
+            $("#chartmodal").find(".modal-title").html(description);
             $("#chartmodal").modal();
             drawScatterDateChart(canvas, null, moment(), onDataPointClick);
         }

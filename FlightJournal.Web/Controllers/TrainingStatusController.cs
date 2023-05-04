@@ -153,7 +153,7 @@ namespace FlightJournal.Web.Controllers
             if(flightsByThisPilot.Count == 0) return View((PilotDetailedStatus)null);
 
             var flightIdsByThisPilot = flightsByThisPilot.Select(f => f.FlightId).ToHashSet();
-            var flownExercisesOnThisProgram = allFlownExercises.OnProgram(trainingProgramId).ToList();
+            var flownExercisesOnThisProgram = allFlownExercises.OnProgram(trainingProgramId).AsReadOnlyList();
             var flowExercisesInThisProgramByThisPilot = flownExercisesOnThisProgram
                 .Where(x => flightIdsByThisPilot.Contains(x.FlightId))
                 .AsReadOnlyList();
@@ -171,23 +171,38 @@ namespace FlightJournal.Web.Controllers
         {
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor || Request.Pilot().PilotId == pilotId)
             {
-                var flownExercisesOnThisProgram = db.AppliedExercises.Where(x => x.Grading != null && x.Program.Training2ProgramId == trainingProgramId); //TODO: try ToList() here
-                var trainingFlightIdsOnThisProgram = flownExercisesOnThisProgram.Select(x=>x.FlightId).Distinct().AsReadOnlyList();
+                var program = trainingPrograms.SingleOrDefault(x => x.Training2ProgramId == trainingProgramId);
+                var pilot = pilots.SingleOrDefault(x => x.PilotId == pilotId);
+                if (program != null && pilot != null)
+                {
+                    var flownExercisesOnThisProgram = db.AppliedExercises.Where(x =>
+                        x.Grading != null &&
+                        x.Program.Training2ProgramId == trainingProgramId); //TODO: try ToList() here
+                    var trainingFlightIdsOnThisProgram = flownExercisesOnThisProgram.Select(x => x.FlightId).Distinct()
+                        .AsReadOnlyList();
+                    var allTrainingFlightsOnThisProgram =
+                        GetFlightsFromIds(trainingFlightIdsOnThisProgram).AsReadOnlyList();
+                    var flightsByThisPilotOnThisProgram = allTrainingFlightsOnThisProgram.WithPilot(pilotId);
+                    var flightIdsByThisPilotOnThisProgram =
+                        flightsByThisPilotOnThisProgram.Select(f => f.FlightId).ToHashSet();
 
-                var trainingFlightsByThisPilotOnThisProgram = FlightsByThisPilot(pilotId, trainingFlightIdsOnThisProgram);
-                var flightIdsByThisPilotOnThisProgram = trainingFlightsByThisPilotOnThisProgram.Select(x => x.FlightId).ToHashSet();
+                    var flowExercisesInThisProgramByThisPilot = flownExercisesOnThisProgram
+                        .Where(x => flightIdsByThisPilotOnThisProgram.Contains(x.FlightId))
+                        .AsReadOnlyList()
+                        .Select(ae => new LightWeightFlownExercise(ae.FlightId, ae.Program.Training2ProgramId,
+                            ae.Lesson.Training2LessonId, ae.Exercise.Training2ExerciseId, ae.Lesson.Name,
+                            ae.Exercise.Name, ae.Grading))
+                        .AsReadOnlyList();
 
-                var flowExercisesInThisProgramByThisPilot = flownExercisesOnThisProgram
-                    .Where(x => flightIdsByThisPilotOnThisProgram.Contains(x.FlightId))
-                    .Select(ae => new LightWeightFlownExercise(ae.FlightId, ae.Program.Training2ProgramId, ae.Lesson.Training2LessonId, ae.Exercise.Training2ExerciseId, ae.Lesson.Name, ae.Exercise.Name, ae.Grading))
-                .AsReadOnlyList();
 
-                var mapper = new CoarseExerciseToNumberMapper(db.TrainingExercises.AsReadOnlyList());
+                    var mapper = new CoarseExerciseToNumberMapper(program.Lessons.SelectMany(x=>x.Exercises));
 
-                var model = GetTrainingTimelineForPilot(pilotId, trainingProgramId, mapper, trainingFlightsByThisPilotOnThisProgram, flowExercisesInThisProgramByThisPilot);
-                return Json(model, JsonRequestBehavior.AllowGet);
+                    var model = GetTrainingTimelineForPilot(pilotId, trainingProgramId, mapper,
+                        flightsByThisPilotOnThisProgram, flowExercisesInThisProgramByThisPilot);
+                    return PartialView("_PartialTrainingTimeline", model.Data);
+                }
             }
-            return Json(null, JsonRequestBehavior.AllowGet);
+            return PartialView("_PartialTrainingTimeline", new ScatterChartDataViewModel(Enumerable.Empty<TimestampedDataSeriesViewModel>()));
         }
 
         private IReadOnlyList<LightWeightFlight> GetFlightsFromIds(IReadOnlyList<Guid> ids)
@@ -200,7 +215,6 @@ namespace FlightJournal.Web.Controllers
         private TrainingProgramStatus GetStatusForPilot(Training2Program program, int pilotId, IReadOnlyList<LightWeightFlight> trainingFlightsByThisPilot, IReadOnlyList<AppliedExercise> flownExercisesOnThisProgramByThisPilot)
         {
   				var sw = Stopwatch.StartNew();
-                var flightIdsByThisPilot = trainingFlightsByThisPilot.Select(x => x.FlightId).ToHashSet();
                 var p = pilots.SingleOrDefault(x => x.PilotId == pilotId);
 
 
