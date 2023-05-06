@@ -143,11 +143,11 @@ namespace FlightJournal.Web.Controllers
                         f.Deleted == null 
                         && (f.PilotId == pilot.PilotId 
                             || (f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == pilot.PilotId)));
+                    // paranoia check, HasTrainingData was introduced during 2021  (TODO: script a DB update) - note that this has still been observed, apparently a quick user can still manage to not set HastrainingData.
                     var trainingFlightIds = db.AppliedExercises
-                        .Where(x => x.Grading != null)
                         .Select(x => x.FlightId)
                         .Distinct()
-                        .ToList();
+                        .ToHashSet();
                     affectedFlights = affectedFlights.Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId));
                     foreach (var f in affectedFlights)
                     {

@@ -375,6 +375,7 @@
     <Compile Include="Controllers\api\FlightsController.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
+    <Compile Include="Controllers\DbHelper.cs" />
     <Compile Include="Models\BaroStatusViewModel.cs" />
     <Compile Include="Models\GridViewModel.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
