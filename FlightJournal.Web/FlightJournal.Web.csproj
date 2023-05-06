@@ -376,6 +376,10 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\DbHelper.cs" />
+    <Compile Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.cs" />
+    <Compile Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.designer.cs">
+      <DependentUpon>202305061826179_Adding PilotInTrainingProgram.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BaroStatusViewModel.cs" />
     <Compile Include="Models\GridViewModel.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
@@ -479,6 +483,7 @@
     <Compile Include="Models\Training\Catalogue\Training2Program.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotation.cs" />
     <Compile Include="Models\Training\Flight\TrainingFlightAnnotationCommentCommentType.cs" />
+    <Compile Include="Models\Training\PilotInTrainingProgram.cs" />
     <Compile Include="Models\Training\Predefined\Commentary.cs" />
     <Compile Include="Models\Training\Predefined\CommentaryType.cs" />
     <Compile Include="Models\Training\Predefined\CommentsInFlightPhasesViewModel.cs" />
@@ -836,6 +841,7 @@
     <Content Include="Migrations\FlightContext\202108040827479_Extra fields for export validation for training programs.sql" />
     <Content Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.sql" />
     <Content Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.sql" />
+    <Content Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1395,6 +1401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.resx">
       <DependentUpon>202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.resx">
+      <DependentUpon>202305061826179_Adding PilotInTrainingProgram.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
