@@ -85,6 +85,9 @@ namespace FlightJournal.Web.Aprs
                 case DataType.PositionWithTimestampWithAprsMessaging:
                     try
                     {
+                        if(!e.AprsMessage.IsComplete())
+                            break;
+
                         var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
                             e.AprsMessage.Callsign,
                             e.AprsMessage.ReceivedDate.ToUniversalTime(),
@@ -96,9 +99,9 @@ namespace FlightJournal.Web.Aprs
 
                         FlightContextFactory.Enqueue(positionUpdate);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        // ignore
+                        Log.Exception($"{nameof(AprsListener)} OnAprsPacketReceived", ex);
                     }
                     break;
                 default:
@@ -136,7 +139,7 @@ namespace FlightJournal.Web.Aprs
             }
             catch (Exception ex)
             {
-                Log.Exception($"{nameof(AprsListener)}",  ex);
+                Log.Exception($"{nameof(AprsListener)} OnTakeoff",  ex);
             }
         }
 
@@ -151,7 +154,7 @@ namespace FlightJournal.Web.Aprs
             }
             catch (Exception ex)
             {
-                Log.Exception($"{nameof(AprsListener)}", ex);
+                Log.Exception($"{nameof(AprsListener)} OnLanding", ex);
             }
 
         }
@@ -176,6 +179,21 @@ namespace FlightJournal.Web.Aprs
             var m = h.Minutes / 100.0;
 
             return (double)h.Degrees + (double)m / 60.0;
+        }
+    }
+
+
+    public static class AprsExtensions
+    {
+        public static bool IsComplete(this AprsMessage message)
+        {
+            return message.Latitude != null 
+                   && message.Longitude != null 
+                   && message.Altitude != null 
+                   && message.Speed != null 
+                   && message.Direction != null
+                   && message.Callsign != null
+                   ;
         }
     }
 
