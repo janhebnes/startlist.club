@@ -42,7 +42,7 @@ namespace FlightJournal.Web.Controllers
             Trace.WriteLine($"## TrainingStatusController() took {sw.Elapsed}"); 
         }
         // GET: TrainingStatus
-        public ActionResult Index()
+        public ActionResult Index(bool onlyActive=true)
         {
             var sw = Stopwatch.StartNew();
             var model = new List<TrainingProgramStatus>();
@@ -54,7 +54,13 @@ namespace FlightJournal.Web.Controllers
 
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
             {
-                var idsOfFlyingPilots = allTrainingFlights.GetRelevantPilotIdsFrom(pilots);
+
+                var idsOfFlyingPilots = allTrainingFlights.GetRelevantPilotIdsFrom(pilots).ToHashSet();
+                if (onlyActive)
+                {
+                    var idsOfPilotsInActiveTrainingPrograms = db.PilotsInTrainingPrograms.Where(x => x.EndDate == null).Select(x => x.PilotId).Distinct().ToHashSet();
+                    idsOfFlyingPilots = idsOfFlyingPilots.Intersect(idsOfPilotsInActiveTrainingPrograms).ToHashSet();
+                }
 
                 Trace.WriteLine($"## Got {idsOfFlyingPilots.Count} pilots in {sw.Elapsed}"); // 3.7s
 
@@ -119,6 +125,7 @@ namespace FlightJournal.Web.Controllers
             }
 
             ViewBag.DeveloperInfo = developerInfo;
+            ViewBag.OnlyActive = onlyActive;
             return View(model);
         }
 

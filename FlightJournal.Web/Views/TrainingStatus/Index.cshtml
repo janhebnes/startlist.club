@@ -6,7 +6,7 @@
 @functions {
     private string IconFor(TrainingProgramStatus status)
     {
-        if (status.DaysSinceLastFlight> 90)
+        if (status.DaysSinceLastFlight > 90)
             return "sedentary.png";
 
         if (status.DaysSinceLastFlight > 60 || status.FlightsInLast60Days < 5)
@@ -24,8 +24,16 @@
 @{
     ViewBag.Title = _("Training status");
 }
-<h2>@_("Training status")</h2>
 
+    <h2 class="left" >@_("Training status")</h2>
+    @if (ViewBag.OnlyActive)
+    {
+        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=false}) ' title="@_("Show also completed and aborted training programs")">@_("Show all")</button>
+    }
+    else
+    {
+        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=true})"' title="@_("Show only active training programs")">@_("Show active")</button>
+    }
 
 @if (Model.Any())
 {
@@ -34,7 +42,7 @@
             <tr class="row1of2">
                 <th class="coltype1"></th>
                 <th class="coltype2"></th>
-                <th class="coltype1" colspan="2" >@_("Dual")</th>
+                <th class="coltype1" colspan="2">@_("Dual")</th>
                 <th class="coltype2" colspan="2">@_("Solo")</th>
                 <th class="coltype1"></th>
                 <th class="coltype2" colspan="2">@_("Last 60 days")</th>
@@ -68,21 +76,21 @@
                     <td>@f.HoursInLast60Days</td>
                     <td>@f.FlightsInLast60Days</td>
                     @*<td rowspan="2" class=" hidden-xs hidden-sm ">
-                        <span class="clickable " title=@Html.Raw(__("Click to see all exercises - Click dot to see flight details"))>
-                            @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
-                        </span>
-                    </td>*@
-                <td> @Html.Raw($"<img class='activityicon' src='/content/images/{IconFor(f)}' >") </td>
+                            <span class="clickable " title=@Html.Raw(__("Click to see all exercises - Click dot to see flight details"))>
+                                @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
+                            </span>
+                        </td>*@
+                    <td> @Html.Raw($"<img class='activityicon' src='/content/images/{IconFor(f)}' >") </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <button class="btn btn-sm clickable" class="clickable" title=@Html.Raw(__("Click to see training status details")) onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'><span class="fa fa-list"></span></button>
                         <button class="btn btn-sm clickable" title=@Html.Raw(__("Click to see training flights on this program")) onclick='window.location="@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId,programId =f.ProgramId})"'><span class="fa fa-history"></span></button>
                         @*@{
-                            var chartid = "CHART" + f.TrainingTimelineViewModel.Data.Metadata["pilotId"] + "-" + f.TrainingTimelineViewModel.Data.Metadata["programId"];
-                            var description = f.TrainingTimelineViewModel.Data.Metadata["pilotName"] +  " (" + f.TrainingTimelineViewModel.Data.Metadata["programName"] + ")";
-                        }*@
-                        <button class="btn btn-sm btnchart clickable" title=@Html.Raw(__("Click to see chart")) data-programid="@f.ProgramId" data-pilotid="@f.PilotId" ><span class="fa fa-line-chart"></span></button>
+                                var chartid = "CHART" + f.TrainingTimelineViewModel.Data.Metadata["pilotId"] + "-" + f.TrainingTimelineViewModel.Data.Metadata["programId"];
+                                var description = f.TrainingTimelineViewModel.Data.Metadata["pilotName"] +  " (" + f.TrainingTimelineViewModel.Data.Metadata["programName"] + ")";
+                            }*@
+                        <button class="btn btn-sm btnchart clickable" title=@Html.Raw(__("Click to see chart")) data-programid="@f.ProgramId" data-pilotid="@f.PilotId"><span class="fa fa-line-chart"></span></button>
                     </td>
                     <td colspan="7">
                         @foreach (var x in f.LessonsWithStatus)
@@ -108,11 +116,10 @@
 }
 
 
-<div id="urls" 
-     data-timeline="@Url.Action("PilotActivityTimeline", "TrainingStatus")" 
-     data-details="@Url.Action("GetDetails", "TrainingLogHistory")" 
-     data-exercisedetails="@Url.Action("ExerciseDetails", "TrainingLogHistory")"
-     ></div>
+<div id="urls"
+     data-timeline="@Url.Action("PilotActivityTimeline", "TrainingStatus")"
+     data-details="@Url.Action("GetDetails", "TrainingLogHistory")"
+     data-exercisedetails="@Url.Action("ExerciseDetails", "TrainingLogHistory")"></div>
 
 <div class="modal" tabindex="-1" role="dialog" id="chartmodal">
     <div class="modal-dialog  wide-modal high-modal" role="document">

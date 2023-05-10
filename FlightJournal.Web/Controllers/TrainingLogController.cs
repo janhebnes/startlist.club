@@ -8,6 +8,7 @@ using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Export;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Flight;
 
 namespace FlightJournal.Web.Controllers
@@ -109,6 +110,28 @@ namespace FlightJournal.Web.Controllers
             {
                 flight.HasTrainingData = hasTrainingFlightData;
                 db.SaveChanges();
+            }
+
+            var anExercise = flightData.exercises?.FirstOrDefault();
+            if (anExercise != null)
+            {
+                var pilotId = flight?.PilotId ?? -1;
+                if (pilotId != -1)
+                {
+                    var activeTrainingProgram = db.PilotsInTrainingPrograms.FirstOrDefault(x => x.Training2ProgramId == anExercise.programId && x.PilotId == pilotId);
+                    if (activeTrainingProgram == null)
+                    {
+                        db.PilotsInTrainingPrograms.Add(new PilotInTrainingProgram()
+                        {
+                            PilotId = pilotId,
+                            Training2ProgramId = anExercise.programId,
+                            StartDate = DateTime.Now,
+                            EndDate = null,
+                            IsCompleted = false
+                        });
+                        db.SaveChanges();
+                    }
+                }
             }
 
             var originator = Guid.Empty;

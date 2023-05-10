@@ -376,6 +376,7 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\DbHelper.cs" />
+    <Compile Include="Models\PilotDetailsViewModel.cs" />
     <Compile Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.cs" />
     <Compile Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.designer.cs">
       <DependentUpon>202305061826179_Adding PilotInTrainingProgram.cs</DependentUpon>

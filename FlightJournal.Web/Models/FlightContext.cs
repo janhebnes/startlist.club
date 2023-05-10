@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using CsvHelper.Configuration;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
@@ -179,6 +180,12 @@ namespace FlightJournal.Web.Models
                 .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
                 .HasForeignKey(i => i.CommentaryTypeId);
 
+            //modelBuilder.Entity<AppliedExercise>()
+            //    .HasIndex(ae=>new {ae.FlightId})
+            //    ;
+            //modelBuilder.Entity<Flight>()
+            //    .HasIndex(f=>new {f.PilotId})
+            //    ;
         }
     }
 }
