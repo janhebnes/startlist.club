@@ -28,11 +28,11 @@
     <h2 class="left" >@_("Training status")</h2>
     @if (ViewBag.OnlyActive)
     {
-        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=false}) ' title="@_("Show also completed and aborted training programs")">@_("Show all")</button>
+        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=false})"' title="@_("Show also completed and aborted training programs")">@_("Show all") </button>
     }
     else
     {
-        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=true})"' title="@_("Show only active training programs")">@_("Show active")</button>
+        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=true})"' title="@_("Show only active training programs")">@_("Show active") </button>
     }
 
 @if (Model.Any())
