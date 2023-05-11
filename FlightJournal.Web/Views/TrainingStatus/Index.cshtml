@@ -28,11 +28,13 @@
     <h2 class="left" >@_("Training status")</h2>
     @if (ViewBag.OnlyActive)
     {
-        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=false})"' title="@_("Show also completed and aborted training programs")">@_("Show all") </button>
+        var title = _("Show also completed and aborted training programs");
+        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=false})"' title="@title">@_("Show all") </button>
     }
     else
     {
-        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=true})"' title="@_("Show only active training programs")">@_("Show active") </button>
+        var title = _("Show only active training programs");
+        <button class="btn right h2aligned" onclick='window.location="@Url.Action("Index","TrainingStatus", new{onlyActive=true})"' title="@title">@_("Show active") </button>
     }
 
 @if (Model.Any())
@@ -58,7 +60,6 @@
                 <th class="coltype1">@_("Last")</th>
                 <th class="coltype2">@_("Hours")</th>
                 <th class="coltype2">@_("Flights")</th>
-                @*<th class="coltype2 hidden-xs hidden-sm">@_("Exercises")</th>*@
                 <th class="coltype1">@_("Status")</th>
             </tr>
         </thead>
@@ -75,21 +76,12 @@
                     <td>@f.LastFlight</td>
                     <td>@f.HoursInLast60Days</td>
                     <td>@f.FlightsInLast60Days</td>
-                    @*<td rowspan="2" class=" hidden-xs hidden-sm ">
-                            <span class="clickable " title=@Html.Raw(__("Click to see all exercises - Click dot to see flight details"))>
-                                @Html.Partial("_PartialTrainingTimeline", f.TrainingTimelineViewModel.Data)
-                            </span>
-                        </td>*@
                     <td> @Html.Raw($"<img class='activityicon' src='/content/images/{IconFor(f)}' >") </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <button class="btn btn-sm clickable" class="clickable" title=@Html.Raw(__("Click to see training status details")) onclick='window.location="@Url.Action("PilotStatusDetails", "TrainingStatus", new {trainingProgramId =f.ProgramId, pilotId = f.PilotId})"'><span class="fa fa-list"></span></button>
                         <button class="btn btn-sm clickable" title=@Html.Raw(__("Click to see training flights on this program")) onclick='window.location="@Url.Action("PilotLessons", "TrainingLogHistory", new {pilotId = f.PilotId,programId =f.ProgramId})"'><span class="fa fa-history"></span></button>
-                        @*@{
-                                var chartid = "CHART" + f.TrainingTimelineViewModel.Data.Metadata["pilotId"] + "-" + f.TrainingTimelineViewModel.Data.Metadata["programId"];
-                                var description = f.TrainingTimelineViewModel.Data.Metadata["pilotName"] +  " (" + f.TrainingTimelineViewModel.Data.Metadata["programName"] + ")";
-                            }*@
                         <button class="btn btn-sm btnchart clickable" title=@Html.Raw(__("Click to see chart")) data-programid="@f.ProgramId" data-pilotid="@f.PilotId"><span class="fa fa-line-chart"></span></button>
                     </td>
                     <td colspan="7">
