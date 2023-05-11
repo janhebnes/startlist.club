@@ -22,6 +22,8 @@
             <th>
                 @_("Landing")
             </th>
+            <th class="hidden-sm">
+            </th>
             <th>
                 @_("Duration")
             </th>
@@ -136,6 +138,9 @@
                     {
                         @Html.DisplayFor(modelItem => item, "Landing")
                     }
+                </td>
+                <td @style  class="hidden-sm">
+                    @Html.DisplayFor(modelItem => item.StartType, "StartType")
                 </td>
                 <td @style>
                     @Html.DisplayFor(modelItem => item, "Duration")
