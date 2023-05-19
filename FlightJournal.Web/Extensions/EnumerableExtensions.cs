@@ -24,5 +24,23 @@ namespace FlightJournal.Web.Extensions
         {
             return x.TryGetValue(k, out var v) ? v : defaultValue;
         }
+
+        public static IReadOnlyList<T> AsReadOnlyList<T>(this IEnumerable<T> x)
+        {
+            return x switch
+            {
+                List<T> list => list.AsReadOnly(),
+                IReadOnlyList<T> roList => roList,
+                _ => x.ToList().AsReadOnly()
+            };
+        }
+        public static List<T> AsList<T>(this IEnumerable<T> x)
+        {
+            return x switch
+            {
+                List<T> list => list,
+                _ => x.ToList(),
+            };
+        }
     }
 }

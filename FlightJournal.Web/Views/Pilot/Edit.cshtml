@@ -1,5 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
-@model FlightJournal.Web.Models.Pilot
+@model FlightJournal.Web.Models.PilotDetailsViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -88,6 +88,36 @@
         @Html.EditorFor(model => model.ExitDate)
         @Html.ValidationMessageFor(model => model.ExitDate)
     </div>
+    
+    @if (Model.TrainingPrograms.Any())
+    {
+        <div class="display-label">
+            @_("TrainingPrograms")
+        </div>
+        <div class="editor-field">
+            <table class="small trainingprograms">
+                <thead>
+                <tr>
+                    <th>@_("Program")</th>
+                    <th>@_("From")</th>
+                    <th>@_("To")</th>
+                    <th>@_("Completed")</th>
+                </tr>
+                </thead>
+                @for (var i=0;i<Model.TrainingPrograms.Length; i++)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model=> Model.TrainingPrograms[i].ProgramName)</td>
+                        <td>@Html.DisplayFor(model=> Model.TrainingPrograms[i].StartDate)</td>
+                        <td>@Html.EditorFor(model => Model.TrainingPrograms[i].EndDate)</td>
+                        <td>@Html.EditorFor(model => Model.TrainingPrograms[i].Completed)</td>
+                        <td class="hidden">@Html.HiddenFor(model => Model.TrainingPrograms[i].ProgramId)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
 
     <p style="margin-top: 30px">
         <div class="btn-group">

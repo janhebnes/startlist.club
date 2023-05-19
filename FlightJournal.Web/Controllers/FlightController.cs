@@ -362,13 +362,10 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Edit(Flight flight)
         {
-            bool isEditable = false;
-            if (User.IsAdministrator()) { isEditable = true; }
-            if (User.IsManager()) { isEditable = true; }
-            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
-            {
-                isEditable = true;
-            }
+            var isEditable = User.IsAdministrator()
+                              || User.IsManager()
+                              || (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now);
+
             if (!isEditable)
             {
                 throw new UnauthorizedAccessException(

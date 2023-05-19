@@ -1,4 +1,4 @@
-﻿@model FlightJournal.Web.Models.Pilot
+﻿@model FlightJournal.Web.Models.PilotDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -38,10 +38,10 @@
     </div>
 
     <div class="display-label">
-        @Html.LabelFor(model => model.Club)
+        @Html.LabelFor(model => model.ClubName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Club.ShortName)
+        @Html.DisplayFor(model => model.ClubName)
     </div>
 
     <div class="display-label">
@@ -57,6 +57,34 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.ExitDate)
     </div>
+    
+    @if (Model.TrainingPrograms.Any())
+    {
+        <div class="display-label">
+            @_("TrainingPrograms")
+        </div>
+        <div class="display-field">
+            <table class="small trainingprograms">
+                <thead>
+                <tr>
+                    <th>@_("Program")</th>
+                    <th>@_("From")</th>
+                    <th>@_("To")</th>
+                    <th>@_("Completed")</th>
+                </tr>
+                </thead>
+                @foreach (var p in Model.TrainingPrograms)
+                {
+                    <tr>
+                        <td>@p.ProgramName</td>
+                        <td>@(p.StartDate?.ToString("dd-MMM-yyyy"))</td>
+                        <td>@(p.EndDate?.ToString("dd-MMM-yyyy"))</td>
+                        <td>@(p.Completed  ? _("Yes") : _("No"))</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
 
 </fieldset>
 <p>

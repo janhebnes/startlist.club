@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using FlightJournal.Web.Controllers;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Flight;
 using Newtonsoft.Json;
 
@@ -224,6 +226,34 @@ namespace FlightJournal.Web.Migrations.FlightContext
                 context.SaveChanges();
             }
 
+
+            if (!context.PilotsInTrainingPrograms.Any())
+            {
+                foreach (var program in context.TrainingPrograms)
+                {
+                    var trainingFlightsInThisProgram = DbHelper.IdsOfTrainingFlightsWithProgramId(context, program.Training2ProgramId);
+                    foreach (var pilot in context.Pilots)
+                    {
+                        var firstFlightWithThisPiProgramAndPilot = context.Flights
+                            .Where(x => x.Deleted == null && trainingFlightsInThisProgram.Contains(x.FlightId) &&  x.PilotId == pilot.PilotId)
+                            .OrderBy(x=>x.Date)
+                            .FirstOrDefault();
+
+                        if (firstFlightWithThisPiProgramAndPilot == null) continue;
+
+                        var xxx = new PilotInTrainingProgram()
+                        {
+                            Pilot = pilot,
+                            Program = program,
+                            PilotId = pilot.PilotId,
+                            Training2ProgramId = program.Training2ProgramId,
+                            StartDate = firstFlightWithThisPiProgramAndPilot.Date
+                        };
+                        context.PilotsInTrainingPrograms.Add(xxx);
+                    }
+                }
+                context.SaveChanges();
+            }
             /// This is a temp hack to migrate from the old brief/trained/ok to Gradings (to let testers work with existing data)
             /// Can be removed before deployment to production.
 

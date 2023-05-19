@@ -85,20 +85,23 @@ namespace FlightJournal.Web.Aprs
                 case DataType.PositionWithTimestampWithAprsMessaging:
                     try
                     {
+                        if(!e.AprsMessage.IsComplete())
+                            break;
+
                         var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
                             e.AprsMessage.Callsign,
                             e.AprsMessage.ReceivedDate.ToUniversalTime(),
                             e.AprsMessage.Latitude.ToDegreesFixed(),
                             e.AprsMessage.Longitude.ToDegreesFixed(),
-                            e.AprsMessage.Altitude.FeetAboveSeaLevel,
+                            e.AprsMessage.Altitude.MetersAboveSeaLevel,
                             e.AprsMessage.Speed.Knots,
                             e.AprsMessage.Direction.ToDegrees());
 
                         FlightContextFactory.Enqueue(positionUpdate);
                     }
-                    catch (NullReferenceException)
+                    catch (Exception ex)
                     {
-                        // ignore
+                        Log.Exception($"{nameof(AprsListener)} OnAprsPacketReceived", ex);
                     }
                     break;
                 default:
@@ -136,7 +139,7 @@ namespace FlightJournal.Web.Aprs
             }
             catch (Exception ex)
             {
-                Log.Exception($"{nameof(AprsListener)}",  ex);
+                Log.Exception($"{nameof(AprsListener)} OnTakeoff",  ex);
             }
         }
 
@@ -151,7 +154,7 @@ namespace FlightJournal.Web.Aprs
             }
             catch (Exception ex)
             {
-                Log.Exception($"{nameof(AprsListener)}", ex);
+                Log.Exception($"{nameof(AprsListener)} OnLanding", ex);
             }
 
         }
@@ -173,15 +176,24 @@ namespace FlightJournal.Web.Aprs
         public static double ToDegreesFixed(this LatitudeLongitudeBase latlong)
         {
             var h = latlong.Vector;
-            if (h.Minutes > 60)
-            {
-                var m = h.Minutes / 100.0;
+            var m = h.Minutes / 100.0;
 
-                return (double)h.Degrees + (double)m / 60.0;
+            return (double)h.Degrees + (double)m / 60.0;
+        }
+    }
 
-            }
-            else
-                return h.ToDegrees();
+
+    public static class AprsExtensions
+    {
+        public static bool IsComplete(this AprsMessage message)
+        {
+            return message.Latitude != null 
+                   && message.Longitude != null 
+                   && message.Altitude != null 
+                   && message.Speed != null 
+                   && message.Direction != null
+                   && message.Callsign != null
+                   ;
         }
     }
 

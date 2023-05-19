@@ -2,6 +2,8 @@
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using CsvHelper.Configuration;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
@@ -43,6 +45,8 @@ namespace FlightJournal.Web.Models
         public DbSet<TrainingFlightAnnotationCommentCommentType> TrainingFlightAnnotationCommentCommentTypes { get; set; }
         public DbSet<Grading> Gradings { get; set; }
         public DbSet<ListenerArea> ListenerAreas { get; set; }
+
+        public DbSet<PilotInTrainingProgram> PilotsInTrainingPrograms { get; set; }
 
         /// <summary>
         /// Throw Validation Errors from the Entity as actual Exceptions
@@ -176,6 +180,12 @@ namespace FlightJournal.Web.Models
                 .WithMany(i => i.TrainingFlightAnnotationCommentCommentTypes)
                 .HasForeignKey(i => i.CommentaryTypeId);
 
+            //modelBuilder.Entity<AppliedExercise>()
+            //    .HasIndex(ae=>new {ae.FlightId})
+            //    ;
+            //modelBuilder.Entity<Flight>()
+            //    .HasIndex(f=>new {f.PilotId})
+            //    ;
         }
     }
 }
