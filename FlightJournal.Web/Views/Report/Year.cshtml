@@ -1,4 +1,5 @@
 ﻿@using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
 @model FlightJournal.Web.Models.ReportViewModel
 @{
     var root = "/";
@@ -26,7 +27,7 @@
             <a href="@Path.Combine(root, Model.Date.AddYears(1).ToString("yyyy"))" class="btn btn-default">@Model.Date.AddYears(1).ToString("yyyy")</a>
         }
     </div>
-    @if (Model.Flights.Any())
+    @if (Request.IsPilot() && Model.Flights.Any())
     {
         <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info pull-right"><span class="glyphicon glyphicon-cloud-download"></span> @_("Export startlist for {0}", @Model.FormattedDate)</a>
     }
@@ -307,7 +308,7 @@
                 {
                     <tr>
                         <td>
-                            @item.Pilot.Name
+                            @item.Pilot.MaskedName(Request.IsPilot())
                         </td>
                         <td align="right">
                             @item.ItemFlights.Sum(f => f.LandingCount)
@@ -344,7 +345,7 @@
                 {
                     <tr>
                         <td>
-                            @_("{0} (Co-Pilot)", item.Pilot.Name)
+                            @_("{0} (Co-Pilot)", item.Pilot.MaskedName(Request.IsPilot()))
                         </td>
                         <td align="right">
                             @item.ItemFlights.Sum(f => f.LandingCount)
@@ -380,9 +381,12 @@
 
         Html.RenderPartial("_Logbook", Model);
 
-        <div class="text-center hidden-print">
-            <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> @_("Export startlist for {0}", @Model.FormattedDate)</a>
-        </div>
+        if (Request.IsPilot())
+        {
+            <div class="text-center hidden-print">
+                <a href="@Url.Action("Export", "Report", new { year = Model.Date.Year })" class="btn btn-info"><span class="glyphicon glyphicon-cloud-download"></span> @_("Export startlist for {0}", @Model.FormattedDate)</a>
+            </div>
+        }
         <br style="page-break-after: always;" />
     }
     else //if (Request.IsClub())
