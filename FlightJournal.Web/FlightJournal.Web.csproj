@@ -376,6 +376,10 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\DbHelper.cs" />
+    <Compile Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs" />
+    <Compile Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.designer.cs">
+      <DependentUpon>202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\PilotDetailsViewModel.cs" />
     <Compile Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.cs" />
     <Compile Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.designer.cs">
@@ -1405,6 +1409,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.resx">
       <DependentUpon>202305061826179_Adding PilotInTrainingProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.resx">
+      <DependentUpon>202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

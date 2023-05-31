@@ -10,6 +10,7 @@ using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
+using log4net;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -20,12 +21,11 @@ namespace FlightJournal.Web.Controllers
         private readonly FlightContext db;
         private readonly IReadOnlyList<Training2Program> trainingPrograms;
         private readonly IReadOnlyList<Pilot> pilots;
-        private readonly IReadOnlyList<LightWeightFlight> allFlights;
+        private readonly IReadOnlyList<LightWeightFlight> allTrainingFlights;
 
         private readonly DateTime FirstRelevantDate = DateTime.Now.AddYears(-3); // flights before this are hardly relevant
 
         private readonly IReadOnlyList<string> developerInfo = new List<string>();
-        private readonly HashSet<Guid> trainingFlightIds;
 
         public TrainingStatusController()
         {
@@ -34,13 +34,26 @@ namespace FlightJournal.Web.Controllers
             db = new FlightContext();
             trainingPrograms = db.TrainingPrograms.AsReadOnlyList();
             pilots = db.Pilots.AsReadOnlyList();
-            // paranoia check, HasTrainingData was introduced during 2021  (TODO: script a DB update) - note that this has still been observed, apparently a quick user can still manage to not set HasTrainingData.
-            trainingFlightIds = DbHelper.IdsOfTrainingFlights(db);
-            var fullFlights = db.Flights.Where(x => x.Deleted == null && ( x.HasTrainingData || trainingFlightIds.Contains(x.FlightId)) && x.Date >= FirstRelevantDate).AsReadOnlyList(); 
-            allFlights = fullFlights.Select(x=>new LightWeightFlight(x.PilotId, x.FlightId, x.Departure, x.Landing, x.Date, x.PilotBackseatId != null, x.LandingCount)).AsReadOnlyList();
+            var trainingFlightIds = DbHelper.IdsOfTrainingFlights(db);
+            var fullFlights = db.Flights.Where(x => x.Deleted == null && x.Date >= FirstRelevantDate)
+                .Select(x => new { 
+                    x.PilotId, 
+                    x.FlightId,
+                    x.Departure,
+                    x.Landing,
+                    x.Date,
+                    x.PilotBackseatId,
+                    x.LandingCount
+                } ).AsReadOnlyList(); 
+            allTrainingFlights = fullFlights
+                .Where(f=>trainingFlightIds.Contains(f.FlightId))
+                .Select(x=>new LightWeightFlight(x.PilotId, x.FlightId, x.Departure, x.Landing, x.Date, x.PilotBackseatId != null, x.LandingCount))
+                .AsReadOnlyList();
 
             Trace.WriteLine($"## TrainingStatusController() took {sw.Elapsed}"); 
         }
+
+
         // GET: TrainingStatus
         public ActionResult Index(bool onlyActive=true)
         {
@@ -48,49 +61,37 @@ namespace FlightJournal.Web.Controllers
             var model = new List<TrainingProgramStatus>();
 
             var allFlownExercises = db.AppliedExercises.AsReadOnlyList(); // ToList() here VERY important for speed. However, it does NOT pay to load the full join and cache it.
-            var allTrainingFlights = GetFlightsFromIds(trainingFlightIds).AsReadOnlyList();
 
-            Trace.WriteLine($"## got {allTrainingFlights.Count} flights and {allFlownExercises.Count} exercises in {sw.Elapsed}"); 
-
-            if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
+            if (User.IsAdministrator() || (Request.IsPilot() && Request.Pilot().IsInstructor))
             {
-
-                var idsOfFlyingPilots = allTrainingFlights.GetRelevantPilotIdsFrom(pilots).ToHashSet();
-                if (onlyActive)
-                {
-                    var idsOfPilotsInActiveTrainingPrograms = db.PilotsInTrainingPrograms.Where(x => x.EndDate == null).Select(x => x.PilotId).Distinct().ToHashSet();
-                    idsOfFlyingPilots = idsOfFlyingPilots.Intersect(idsOfPilotsInActiveTrainingPrograms).ToHashSet();
-                }
-
-                Trace.WriteLine($"## Got {idsOfFlyingPilots.Count} pilots in {sw.Elapsed}"); // 3.7s
-
-                var flightsByPilotId = idsOfFlyingPilots.ToDictionary(p => p, p => allTrainingFlights.WithPilot(p));
-                var flightIdsByPilotId = flightsByPilotId.ToDictionary(x => x.Key, x => x.Value.Select(f => f.FlightId).ToHashSet());
+                var filteredIdsOfFlyingPilots = allTrainingFlights.GetRelevantPilotIdsFrom(pilots).ToHashSet(); // filters on club and active pilots
+                var flightsByPilotId = filteredIdsOfFlyingPilots.ToDictionary(p => p, p => allTrainingFlights.WithPilot(p));
+                var pilotsInTrainingPrograms = db.PilotsInTrainingPrograms.AsReadOnlyList();
 
                 foreach (var program in trainingPrograms)
                 {
-                    var flownExercisesOnThisProgram = allFlownExercises.OnProgram(program).ToList();
-                    if(flownExercisesOnThisProgram.Count == 0) continue; // unused program
+                    var flownExercisesOnThisProgram = allFlownExercises.OnProgram(program);
+                    if (flownExercisesOnThisProgram.Count == 0) continue; // unused program
 
-                    foreach ( var p in pilots)
+                    var idsOfPilotsInThisTrainingProgram = pilotsInTrainingPrograms
+                        .Where(x => filteredIdsOfFlyingPilots.Contains(x.PilotId))
+                        .Where(x => x.Training2ProgramId == program.Training2ProgramId && (!onlyActive || x.EndDate == null))
+                        .Select(x => x.PilotId)
+                        .Distinct()
+                        .ToHashSet();
+
+                    foreach ( var pId in idsOfPilotsInThisTrainingProgram)
                     {
-                        if (!flightsByPilotId.TryGetValue(p.PilotId, out var flightsByThisPilot) || flightsByThisPilot.Count==0) continue;
-                        var flightIdsByThisPilot = flightIdsByPilotId[p.PilotId];
+                        if (!flightsByPilotId.TryGetValue(pId, out var flightsByThisPilot) || flightsByThisPilot.Count==0) continue;
 
-                        var flowExercisesInThisProgramByThisPilot = flownExercisesOnThisProgram
-                            .Where(x => flightIdsByThisPilot.Contains(x.FlightId))
-                            .AsReadOnlyList();
-
-                        if(flowExercisesInThisProgramByThisPilot.Count == 0) continue; // unused program by this pilot
-
-                        var status = GetStatusForPilot(program, p.PilotId, flightsByThisPilot, flowExercisesInThisProgramByThisPilot);
+                        var  status = CreateTrainingProgramStatus(program, pId, flightsByThisPilot, flownExercisesOnThisProgram);
                         if(status!=null)
                             model.Add(status);
                     }
                 }
                 model = model.OrderBy(x => x.PilotName).ThenBy(x => x.ProgramName).AsList();
 
-                Trace.WriteLine($"## Got all status for {idsOfFlyingPilots.Count} pilots in {sw.Elapsed} ({sw.ElapsedMilliseconds / idsOfFlyingPilots.Count} ms/pilot)"); // 6.5s (8.5s)
+                Trace.WriteLine($"## Got all status for {filteredIdsOfFlyingPilots.Count} pilots in {sw.Elapsed} ({sw.ElapsedMilliseconds / filteredIdsOfFlyingPilots.Count} ms/pilot)"); // 6.5s (8.5s)
 
             }
             else if (Request.IsPilot())
@@ -99,20 +100,15 @@ namespace FlightJournal.Web.Controllers
                 var flightsByThisPilot = allTrainingFlights.WithPilot(pilot.PilotId);
                 if (flightsByThisPilot.Count > 0)
                 {
-                    var flightIdsByThisPilot = flightsByThisPilot.Select(f=>f.FlightId).ToHashSet();
+                    var pilotsInTrainingPrograms = db.PilotsInTrainingPrograms.AsReadOnlyList();
+                    var relevantPrograms = trainingPrograms
+                        .Where(x => pilotsInTrainingPrograms
+                            .Any(p => p.PilotId == pilot.PilotId && p.Training2ProgramId == x.Training2ProgramId))
+                        .AsReadOnlyList();
 
-                    foreach (var program in trainingPrograms)
+                    foreach (var program in relevantPrograms)
                     {
-                        var flownExercisesOnThisProgram = allFlownExercises.OnProgram(program).ToList();
-                        if (flownExercisesOnThisProgram.Count == 0) continue; // unused program
-
-                        var flowExercisesInThisProgramByThisPilot = flownExercisesOnThisProgram
-                            .Where(x => flightIdsByThisPilot.Contains(x.FlightId))
-                            .AsReadOnlyList();
-
-                        if (flowExercisesInThisProgramByThisPilot.Count == 0) continue; // unused program by this pilot
-
-                        var status = GetStatusForPilot(program, pilot.PilotId, flightsByThisPilot, flowExercisesInThisProgramByThisPilot);
+                        var status = CreateTrainingProgramStatus(program, pilot.PilotId, flightsByThisPilot, allFlownExercises.OnProgram(program));
                         if (status != null)
                             model.Add(status);
                     }
@@ -129,6 +125,24 @@ namespace FlightJournal.Web.Controllers
             return View(model);
         }
 
+
+        private TrainingProgramStatus CreateTrainingProgramStatus(Training2Program program, int pilotId, IReadOnlyList<LightWeightFlight> flightsByThisPilot, IReadOnlyList<AppliedExercise> flownExercisesOnThisProgram)
+        {
+            if (flownExercisesOnThisProgram.Count == 0) return null; // unused program
+
+            var flightIdsByThisPilot = flightsByThisPilot.Select(f => f.FlightId).ToHashSet();
+            
+            var flowExercisesInThisProgramByThisPilot = flownExercisesOnThisProgram
+                .Where(x => flightIdsByThisPilot.Contains(x.FlightId))
+                .AsReadOnlyList();
+
+            if (flowExercisesInThisProgramByThisPilot.Count == 0) return null; // unused program by this pilot
+
+            var status = GetStatusForPilot(program, pilotId, flightsByThisPilot, flowExercisesInThisProgramByThisPilot);
+            return status;
+        }
+
+        // TODO: PilotStatusDetails, PilotActivityTimeline could probably benefit from refactoring (dup code). See also Index()
 
         public ActionResult PilotStatusDetails(int trainingProgramId, int pilotId)
         {
@@ -195,11 +209,11 @@ namespace FlightJournal.Web.Controllers
 
         private IReadOnlyList<LightWeightFlight> GetFlightsFromIds(HashSet<Guid> ids)
         {
-            return allFlights.Where(x => ids.Contains(x.FlightId)).AsReadOnlyList();
+            return allTrainingFlights.Where(x => ids.Contains(x.FlightId)).AsReadOnlyList();
         }
 
 
-
+        // TODO: consider collapsing CreateTrainingProgramStatus into this
         private TrainingProgramStatus GetStatusForPilot(Training2Program program, int pilotId, IReadOnlyList<LightWeightFlight> trainingFlightsByThisPilot, IReadOnlyList<AppliedExercise> flownExercisesOnThisProgramByThisPilot)
         {
   				var sw = Stopwatch.StartNew();
@@ -214,14 +228,14 @@ namespace FlightJournal.Web.Controllers
                 }
                 var lessonStatus = new List<LessonWithStatus>();
 
-                foreach (var lesson in program.Lessons) // query, cached
+                foreach (var lesson in program.Lessons.AsReadOnlyList()) // query, cached
                 {
                     var flownExercisesForThisLesson = flownExercisesOnThisProgramByThisPilot
                         .Where(x => x.Lesson.Training2LessonId == lesson.Training2LessonId)
                         .AsReadOnlyList();
 
                     var statusForExercises = new List<ExerciseWithStatus>();
-                    foreach (var e in lesson.Exercises) // query, cached
+                    foreach (var e in lesson.Exercises.AsReadOnlyList()) // query, cached
                     {
                         var regression = false;
                         var statusForThisExercise = TrainingStatus.NotStarted;

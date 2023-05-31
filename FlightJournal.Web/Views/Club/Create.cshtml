@@ -67,6 +67,13 @@
             @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
             @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+            @Html.ValidationMessageFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+        </div>
         <p>
             <input type="submit" value="Create" />
         </p>

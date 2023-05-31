@@ -43,6 +43,11 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.UseAPRSTakeoffAndLanding)
     </div>
+    
+    <div class="display-label">@Html.LabelFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+    </div>
 </fieldset>
 <p>
     @if (ViewBag.AllowEdit)

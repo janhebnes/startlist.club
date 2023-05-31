@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
 using System.Xml.Serialization;
 using FlightJournal.Web.Extensions;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using FlightJournal.Web.Translations;
 
 namespace FlightJournal.Web.Models
@@ -98,5 +95,24 @@ namespace FlightJournal.Web.Models
         [XmlIgnore]
         public virtual ICollection<FlightVersionHistory> FlightHistory_Betalers { get; set; }
 
+    }
+
+
+
+
+
+    public static class PilotExtensions
+    {
+        public static string MaskedName(this Pilot p, bool isLoggedIn)
+        {
+            if (p == null) 
+                return "";
+
+            if (!isLoggedIn && p.Club.MaskPilotIdentityIfUserIsNotLoggedIn)
+            {
+                return $"N.N ({p.MemberId})";
+            }
+            return p.Name;
+        }
     }
 }

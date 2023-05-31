@@ -127,7 +127,7 @@ input[type="checkbox"].input-validation-error {
 .display-label, .editor-label {
     float:left;
 	clear:both;
-    width:140px;
+    width: 30%;
     text-align:right;
     margin: 1em 1em 0 0;
 }
