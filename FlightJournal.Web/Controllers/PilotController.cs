@@ -178,7 +178,7 @@ namespace FlightJournal.Web.Controllers
                 db.Entry(pilotInDb).State = EntityState.Modified;
                 db.SaveChanges();
 
-                if (vm.TrainingPrograms.Any())
+                if (!vm.TrainingPrograms.IsNullOrEmpty())
                 {
                     foreach (var vmpitp in vm.TrainingPrograms)
                     {
