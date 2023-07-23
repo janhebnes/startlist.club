@@ -753,6 +753,7 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\flags.png" />
+    <Content Include="Content\images\ognicon.png" />
     <Content Include="Content\images\person.png" />
     <Content Include="Content\images\running.png" />
     <Content Include="Content\images\sedentary.png" />
