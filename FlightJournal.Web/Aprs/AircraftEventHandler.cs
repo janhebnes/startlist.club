@@ -42,12 +42,9 @@ namespace FlightJournal.Web.Aprs
 
             if (flights.Count() == 1)
             {
-                // we're assuming that the plane takes off from the location specified in the flight.
-                // Check if any club at that location is using APRSTakeoffAndLanding
-
                 var flight = flights.Single();
                 Log.Information($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time:o}");
-                if (_db.Clubs.Any(c => c.LocationId == flight.StartedFromId && c.UseAPRSTakeoffAndLanding))
+                if (ShouldUseAutoStartAndLanding(flight))
                 {
                     flight.Departure = e.Time ?? DateTime.Now;
                     _db.Entry(flight).State = EntityState.Modified;
@@ -56,7 +53,7 @@ namespace FlightJournal.Web.Aprs
                 }
                 else
                 {
-                    Log.Debug($"{nameof(AircraftEventHandler)}: No clubs at the starting location has APRS autostart enabled - takeoff of {flight.Plane.Registration} ignored");
+                    Log.Debug($"{nameof(AircraftEventHandler)}: APRS autostart not enabled - landing of {flight.Plane.Registration} ignored");
                 }
             }
             else
@@ -85,7 +82,7 @@ namespace FlightJournal.Web.Aprs
             {
                 var flight = flights.Single();
                 Log.Information($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time:o}");
-                if (_db.Clubs.Any(c => c.LocationId == flight.LandedOnId && c.UseAPRSTakeoffAndLanding))
+                if (ShouldUseAutoStartAndLanding(flight))
                 {
                     flight.Landing = e.Time ?? DateTime.Now;
                     _db.Entry(flight).State = EntityState.Modified; 
@@ -94,7 +91,7 @@ namespace FlightJournal.Web.Aprs
                 }
                 else
                 {
-                    Log.Debug($"{nameof(AircraftEventHandler)}: No clubs at the landing location has APRS autostart enabled - landing of {flight.Plane.Registration} ignored");
+                    Log.Debug($"{nameof(AircraftEventHandler)}: APRS autolanding not enabled - landing of {flight.Plane.Registration} ignored");
                 }
             }
             else
@@ -103,6 +100,29 @@ namespace FlightJournal.Web.Aprs
             }
         }
 
+        /// <summary>
+        /// Check if the flight should be autostarted and autolanded.
+        ///
+        /// This is the case if any of the pilots are in a club using this, or if any club on the location is using this.
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        private bool ShouldUseAutoStartAndLanding(Flight f)
+        {
+            try
+            {
+                return f.Pilot.Club.UseAPRSTakeoffAndLanding
+                       || (f.PilotBackseat?.Club.UseAPRSTakeoffAndLanding ?? false)
+                       || _db.Clubs.Any(c =>
+                           (c.LocationId == f.LandedOnId || c.LocationId == f.StartedFromId) 
+                           && c.UseAPRSTakeoffAndLanding)
+                    ;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public void Dispose()
         {
             _aprsListener.OnAircraftTakeoff -= OnAircraftTakeoff;
