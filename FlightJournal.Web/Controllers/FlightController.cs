@@ -574,11 +574,11 @@ namespace FlightJournal.Web.Controllers
                 this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
                 this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.ClubId == clubid).OrderBy(p => p.LocalizedDisplayName), "StartTypeId", "LocalizedDisplayName", (flight == null) ? (object)null : flight.StartTypeId);
 
-                if (Request.Club().Location.RegisteredOgnFlightLogAirfield)
-                {
-                    var ognFlights = GetOGNFlights(flight.Date);
-                    this.ViewBag.OgnFlightLog = ognFlights;
-                }
+                //if (Request.Club().Location.RegisteredOgnFlightLogAirfield)
+                //{
+                //    var ognFlights = GetOGNFlights(flight.Date);
+                //    this.ViewBag.OgnFlightLog = ognFlights;
+                //}
             }
             else
             {
