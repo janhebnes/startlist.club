@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FlightJournal.Web.Models.Location>
+﻿@using FlightJournal.Web.Extensions
+@model IEnumerable<FlightJournal.Web.Models.Location>
 
 @{
     ViewBag.Title = "Landingssteder";
@@ -24,9 +25,9 @@
         <th>
             @Html.DisplayNameFor(d => d.ICAO)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(d => d.RegisteredOgnFlightLogAirfield)
-        </th>
+        </th>*@
         <th></th>
     </tr>
     </thead>
@@ -42,10 +43,14 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ICAO)
-                </td>
-                <td>
+                    @if (!item.ICAO.IsNullOrEmpty())
+                    {
+                        var url = $"https://flightbook.glidernet.org/logbook/{item.ICAO}";
+                        <a href="@url" target="_blank" style="margin-left: 20px"><img src="/Content/images/ognicon.png" height="20px" /></a>
+                    }                </td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.RegisteredOgnFlightLogAirfield)
-                </td>
+                </td>*@
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink("Rediger", "Edit", new { id = item.LocationId }, new { @class = "btn btn-default" })

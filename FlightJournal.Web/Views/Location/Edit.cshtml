@@ -18,6 +18,13 @@
     @Html.HiddenFor(model => model.CreatedBy)
     @Html.HiddenFor(model => model.CreatedTimestamp)
 
+    @*@{
+        var demoIcaoCode = "EKSL";
+        if (!String.IsNullOrWhiteSpace(Model.ICAO))
+        {
+            demoIcaoCode = Model.ICAO;
+        }
+    }*@
     <div class="editor-label">
         @Html.LabelFor(model => model.Name)
     </div>
@@ -31,25 +38,18 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.ICAO)
+        <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark">List of ICAO codes</a>
         @Html.ValidationMessageFor(model => model.ICAO)
     </div>
-    e.g. <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark">https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark</a>
 
-    <div class="editor-label">
+    @*<div class="editor-label">
         @Html.LabelFor(model => model.RegisteredOgnFlightLogAirfield)
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.RegisteredOgnFlightLogAirfield)
         @Html.ValidationMessageFor(model => model.RegisteredOgnFlightLogAirfield)
-    </div>
-    @{
-        var demoUrl = "EKSL";
-        if (!String.IsNullOrWhiteSpace(Model.ICAO))
-        {
-            demoUrl = Model.ICAO;
-        }
-    }
-    e.g. OGN <a href="https://ktrax.kisstech.ch/logbook/?id=@(demoUrl)&tz=2&units=metric&shorthand=true&showtype=true&fstatus=all&ftype=all&disp=cs&showcrew=true">https://ktrax.kisstech.ch/logbook (@(demoUrl))</a>
+    </div>*@
+
 
     <div class="editor-label">
         @Html.LabelFor(model => model.Country)

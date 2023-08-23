@@ -26,18 +26,17 @@
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.ICAO)
+        <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark">List of ICAO codes</a>
         @Html.ValidationMessageFor(model => model.ICAO)
     </div>
-    e.g. <a href="https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark">https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#Denmark</a>
 
-    <div class="editor-label">
+    @*<div class="editor-label">
         @Html.LabelFor(model => model.RegisteredOgnFlightLogAirfield)
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.RegisteredOgnFlightLogAirfield)
         @Html.ValidationMessageFor(model => model.RegisteredOgnFlightLogAirfield)
-    </div>
-    e.g. <a href="http://live.glidernet.org/flightlog/index.php?a=EKSL">http://live.glidernet.org/flightlog/index.php?a=EKSL</a>
+    </div>*@
 
     <div class="editor-label">
         @Html.LabelFor(model => model.Country)

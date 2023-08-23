@@ -40,6 +40,11 @@
                 </div>
                 <div class="editor-field">
                     @Html.EditorFor(model => model.Departure)
+                    @if (!Model.StartedFrom?.ICAO.IsNullOrEmpty() ?? false)
+                    {
+                        var url = $"https://flightbook.glidernet.org/logbook/{Model.StartedFrom?.ICAO}/{Model.Date:yyyy-MM-dd}";
+                        <a href="@url" target="_blank" style="margin-left: 20px"><img src="/Content/images/ognicon.png" height="20px"/></a>
+                    }
                     @Html.ValidationMessageFor(model => model.Departure)
                 </div>
                 <div class="editor-label">
@@ -47,6 +52,11 @@
                 </div>
                 <div class="editor-field">
                     @Html.EditorFor(model => model.Landing)
+                    @if (!Model.LandedOn?.ICAO.IsNullOrEmpty() ?? false)
+                    {
+                        var url = $"https://flightbook.glidernet.org/logbook/{Model.LandedOn?.ICAO}/{Model.Date:yyyy-MM-dd}";
+                        <a href="@url" target="_blank"  style="margin-left: 20px"><img src="/Content/images/ognicon.png" height="20px"/></a>
+                    }
                     @Html.ValidationMessageFor(model => model.Landing)
                 </div>
                 <div class="editor-label">
@@ -188,10 +198,11 @@
     </fieldset>
 }
 @Html.Partial("_changeHistory", (IEnumerable<FlightJournal.Web.Models.FlightVersionHistory>)ViewBag.ChangeHistory)
-@if (ViewBag.OgnFlightLog != null)
+
+@*@if (ViewBag.OgnFlightLog != null)
 {
     @Html.Partial("_ognFlightLog", (IEnumerable<OGN.FlightLog.Client.Models.Flight>)ViewBag.OgnFlightLog)
-}
+}*@
 
 @section scripts
 {
