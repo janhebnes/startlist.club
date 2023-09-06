@@ -196,5 +196,29 @@ namespace FlightJournal.Web.Configuration
                 return null;
             }
         }
+
+        public static Tuple<DateTime, DateTime> AprsListenerActiveHours
+        {
+            get
+            {
+                // Azure Configured Environment AppSettings or fallback to the App_Data folder 
+                var today = DateTime.Now.Date;
+                if (ConfigurationManager.AppSettings["AprsListenerActiveHoursUTC"] != null)
+                {
+                    var hours = ConfigurationManager.AppSettings["AprsListenerActiveHoursUTC"].Split('-');
+                    if (hours.Length == 2)
+                    {
+                        if (TimeSpan.TryParse(hours[0], out TimeSpan start) &&
+                            TimeSpan.TryParse(hours[1], out TimeSpan end))
+                        {
+                            return new Tuple<DateTime, DateTime>(today+start, today+end);
+                        }
+                    }
+                }
+
+                return new Tuple<DateTime, DateTime>(today + TimeSpan.FromHours(8), today + TimeSpan.FromHours(21));
+            }
+        }
+
     }
 }
