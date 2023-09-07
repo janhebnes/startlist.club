@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Logging;
 
@@ -83,7 +84,7 @@ namespace FlightJournal.Web.Aprs
                 }
 
                 var sleeper = new TokenSleeper(_cts.Token);
-                sleeper.Sleep(TimeSpan.FromHours(1));
+                sleeper.Sleep(TimeSpan.FromHours(Settings.OgnCatalogRefreshIntervalInHours));
             }
         }
 

@@ -220,5 +220,20 @@ namespace FlightJournal.Web.Configuration
             }
         }
 
+        public static int OgnCatalogRefreshIntervalInHours
+        {
+            get
+            {
+                // Azure Configured Environment AppSettings or fallback to the App_Data folder 
+                if (ConfigurationManager.AppSettings["OgnCatalogRefreshIntervalInHours"] != null)
+                {
+                    if (int.TryParse(ConfigurationManager.AppSettings["OgnCatalogRefreshIntervalInHours"], out int interval))
+                        return interval;
+                }
+
+                return 4;
+            }
+        }
+
     }
 }
