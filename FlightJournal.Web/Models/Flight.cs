@@ -195,8 +195,7 @@ namespace FlightJournal.Web.Models
 
         public int RecordKey { get; set; }
 
-        [Obsolete]
-        public bool HasTrainingData { get; set; } //apparently, this cannot be trusted! Found +50 training flights where it's false.
+        public bool HasTrainingData { get; set; } 
 
         public static string CsvHeaders
         {

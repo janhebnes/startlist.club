@@ -423,7 +423,10 @@
             };
 
             $(".saving").removeAttr('disabled'); // help block premature click on Save when returning
+
+            reloadOnVisibilityRecoveryIfOnSafari();
         });
+
 
         var setDirty = function() {
             isDirty = true;
