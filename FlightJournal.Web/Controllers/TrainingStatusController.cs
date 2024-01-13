@@ -23,14 +23,22 @@ namespace FlightJournal.Web.Controllers
         private List<string> developerInfo = new List<string>();
 
         // GET: TrainingStatus
-        public ActionResult Index()
+        public ActionResult Index(bool showAll = false)
         {
             var sw = Stopwatch.StartNew();
 
             var model = new List<TrainingProgramStatus>();
             // pay up front
             var allFlownExercises = db.AppliedExercises.Where(x => x.Grading != null).ToList();
-            var allTrainingFlights = GetTrainingFlightsFromIds(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
+            IEnumerable<Flight> allTrainingFlights;
+            if (showAll)
+            {
+                allTrainingFlights = GetTrainingFlightsFromIds(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
+            }
+            else
+            {
+                allTrainingFlights = GetTrainingFlightsFromIdsForActivePilots(allFlownExercises.Select(x => x.FlightId).Distinct().ToList());
+            }
 
             if (User.IsAdministrator() || Request.IsPilot() && Request.Pilot().IsInstructor)
             {
@@ -93,6 +101,15 @@ namespace FlightJournal.Web.Controllers
         private IEnumerable<Flight> GetTrainingFlightsFromIds(IReadOnlyList<Guid> ids)
         {
             return db.Flights.Where(x => x.Deleted == null && ids.Contains(x.FlightId)).ToList();
+        }
+
+        private IEnumerable<Flight> GetTrainingFlightsFromIdsForActivePilots(IReadOnlyList<Guid> ids)
+        {
+            return db.Flights.Join(db.Trainings, 
+                flight => flight.PilotId, 
+                trainings => trainings.PilotId,
+                (flight, trainings) => new { FlightT = flight, TrainingT = trainings }).Where(res => !res.TrainingT.DidComplete && 
+                    ids.Contains(res.FlightT.FlightId)).Select(res => res.FlightT).ToList();
         }
 
         private IEnumerable<TrainingProgramStatus> GetStatusForPilot(Pilot p, IEnumerable<Flight> allFlights, IEnumerable<AppliedExercise> allExercises)

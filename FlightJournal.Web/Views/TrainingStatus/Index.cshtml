@@ -7,6 +7,12 @@
 }
 <h2>@_("Training status")</h2>
 
+<p>
+    <div class="btn-group">
+            @Html.ActionLink(@_("Show All"), "Index", "TrainingStatus", new { showAll = true }, new { @class = "btn btn-info", type = "button" });
+    </div>
+</p>
+
 
 @if (Model.Any())
 {

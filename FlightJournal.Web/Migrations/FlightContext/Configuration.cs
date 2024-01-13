@@ -139,6 +139,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             var pilotStudent = new Pilot { Name = "Mr Demo Student Pilot", MemberId = "9998", Club = club, MobilNumber = "+4500000008" };
             context.Pilots.Add(pilotStudent);
+            var pilotStudent2 = new Pilot { Name = "Mr Demo Student Pilot 2", MemberId = "10000", Club = club, MobilNumber = "+4500000010" };
+            context.Pilots.Add(pilotStudent2);
             var pilotInstructor = new Pilot { Name = "Mr Demo Instructor Pilot", MemberId = "9999", Club = club, MobilNumber = "+4500000009", InstructorId = "Maverick-FI007" };
             context.Pilots.Add(pilotInstructor);
 
@@ -146,6 +148,8 @@ namespace FlightJournal.Web.Migrations.FlightContext
 
             for(DateTime when = DateTime.Now.AddDays(-90); when <= DateTime.Now; when = when.AddDays(1))
                FlightTraining.GenerateTrainingFlights(when, pl2, location, pilotStudent, pilotInstructor, start, context);
+            for (DateTime when = DateTime.Now.AddDays(-91); when <= DateTime.Now; when = when.AddDays(1))
+                FlightTraining.GenerateTrainingFlights(when, pl2, location, pilotStudent2, pilotInstructor, start, context);
         }
 
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
