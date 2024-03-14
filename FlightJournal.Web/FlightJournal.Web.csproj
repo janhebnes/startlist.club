@@ -1326,6 +1326,7 @@
     <Content Include="Views\TrainingLog\SelectTrainingProgram.cshtml" />
     <Content Include="Views\Flight\PartialGrid.cshtml" />
     <Content Include="Views\TrainingStatus\_PartialTrainingTimeline.cshtml" />
+    <Content Include="Views\Language\RedirectNotSupported.cshtml" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

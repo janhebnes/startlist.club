@@ -24,9 +24,9 @@
         <b class="caret"></b>
     </a>
     <ul class="dropdown-menu">
-        <li><a href="@Url.Action("Set","Language", new { languageIsoCode = "en", returnUrl = Request.Url})" title="English"><span class="flag-gb" title="United Kingdom" rel="tooltip"></span> English</a></li>
-        <li><a href="@Url.Action("Set", "Language", new {languageIsoCode = "da", returnUrl = Request.Url})" title="Dansk"><span class="flag-dk" title="Dansk" rel="tooltip"></span> Dansk</a></li>
-        <li><a href="@Url.Action("Set", "Language", new { languageIsoCode = "no", returnUrl = Request.Url})" title="Norsk"><span class="flag-no" title="Norsk" rel="tooltip"></span> Norsk</a></li>
-        <li><a href="@Url.Action("Set", "Language", new { languageIsoCode = "sv", returnUrl = Request.Url})" title="Svensk"><span class="flag-se" title="Svenska" rel="tooltip"></span> Svenska</a></li>
+        <li><a href="@Url.Action("Set","Language", new { languageIsoCode = "en", returnUrl = Request.Url.AbsolutePath })" title="English"><span class="flag-gb" title="United Kingdom" rel="tooltip"></span> English</a></li>
+        <li><a href="@Url.Action("Set", "Language", new {languageIsoCode = "da", returnUrl = Request.Url.AbsolutePath })" title="Dansk"><span class="flag-dk" title="Dansk" rel="tooltip"></span> Dansk</a></li>
+        <li><a href="@Url.Action("Set", "Language", new { languageIsoCode = "no", returnUrl = Request.Url.AbsolutePath })" title="Norsk"><span class="flag-no" title="Norsk" rel="tooltip"></span> Norsk</a></li>
+        <li><a href="@Url.Action("Set", "Language", new { languageIsoCode = "sv", returnUrl = Request.Url.AbsolutePath })" title="Svensk"><span class="flag-se" title="Svenska" rel="tooltip"></span> Svenska</a></li>
     </ul>
 </li>
