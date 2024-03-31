@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Logging;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights;
 
 namespace FlightJournal.Web.Aprs
 {
@@ -53,16 +55,18 @@ namespace FlightJournal.Web.Aprs
 
     public class AircraftCatalog : IAircraftCatalog
     {
+        private TelemetryClient _telemetryClient;
+
         private readonly string _url;
         private List<Aircraft> _catalog = new();
         private readonly object _catalogLock = new object();
         private readonly CancellationTokenSource _cts = new();
         public string DefaultUrl => "https://ddb.glidernet.org/download";
 
-        public AircraftCatalog(string url=null)
+        public AircraftCatalog(string url = null, TelemetryClient telemetryClient = null)
         {
             _url = url.IsNullOrEmpty() ? DefaultUrl : url;
-
+            _telemetryClient = telemetryClient;
             Task.Factory.StartNew(RefreshCatalog, _cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
         public void Dispose()
@@ -73,15 +77,17 @@ namespace FlightJournal.Web.Aprs
         {
             while (!_cts.IsCancellationRequested)
             {
-                var catalog = await LoadAircraftIdentities();
-                if (!catalog.IsNullOrEmpty())
+                using (_telemetryClient.StartOperation<RequestTelemetry>("LoadAircraftIdentitiesFromGliderNet"))
                 {
-                    lock (_catalogLock)
+                    var catalog = await LoadAircraftIdentities();
+                    if (!catalog.IsNullOrEmpty())
                     {
-                        _catalog = catalog.ToList();
+                        lock (_catalogLock)
+                        {
+                            _catalog = catalog.ToList();
+                        }
                     }
                 }
-
                 var sleeper = new TokenSleeper(_cts.Token);
                 sleeper.Sleep(TimeSpan.FromHours(1));
             }

@@ -7,6 +7,9 @@ using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
 using Microsoft.Ajax.Utilities;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Log4NetAppender;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -16,6 +19,7 @@ namespace FlightJournal.Web.Controllers
         /// The Db context for the class
         /// </summary>
         private FlightContext db = new FlightContext();
+        private TelemetryClient telemetryClient = new TelemetryClient();
 
         public ViewResult Index(int? skip, int? take, int? locationid)
         {
@@ -132,15 +136,17 @@ namespace FlightJournal.Web.Controllers
         {
             if (!Request.IsPilot()) return RedirectToAction("Restricted", "Error", new { message = "Pilot binding required to land planes " });
 
-            Flight flight = this.db.Flights.Find(id);
-            if ((flight != null) && (flight.Landing == null))
+            using (telemetryClient.StartOperation<RequestTelemetry>("Land"))
             {
-                flight.Landing = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
-                this.db.Entry(flight).State = EntityState.Modified;
-                this.db.SaveChanges();
-                FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
+                Flight flight = this.db.Flights.Find(id);
+                if ((flight != null) && (flight.Landing == null))
+                {
+                    flight.Landing = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
+                    this.db.Entry(flight).State = EntityState.Modified;
+                    this.db.SaveChanges();
+                    FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
+                }
             }
-
             return RedirectToAction("Grid");
         }
 
@@ -155,13 +161,16 @@ namespace FlightJournal.Web.Controllers
         {
             if (!Request.IsPilot()) return RedirectToAction("Restricted", "Error", new { message = "Pilot binding required to depart planes "});
 
-            Flight flight = this.db.Flights.Find(id);
-            if ((flight != null) && (flight.Landing == null))
+            using (telemetryClient.StartOperation<RequestTelemetry>("Depart"))
             {
-                flight.Departure = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
-                this.db.Entry(flight).State = EntityState.Modified;
-                this.db.SaveChanges();
-                FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
+                Flight flight = this.db.Flights.Find(id);
+                if ((flight != null) && (flight.Landing == null))
+                {
+                    flight.Departure = DateTime.Now.AddMinutes(-1 * offSet.GetValueOrDefault(0));
+                    this.db.Entry(flight).State = EntityState.Modified;
+                    this.db.SaveChanges();
+                    FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
+                }
             }
             return RedirectToAction("Grid");
         }
@@ -277,8 +286,11 @@ namespace FlightJournal.Web.Controllers
 
             if (isEditable)
             {
-                flight.Description = comment;
-                this.db.SaveChanges();
+                using (telemetryClient.StartOperation<RequestTelemetry>("SetComment"))
+                {
+                    flight.Description = comment;
+                    this.db.SaveChanges();
+                }
                 FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
             }
 
@@ -374,11 +386,13 @@ namespace FlightJournal.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                this.db.Entry(flight).State = EntityState.Modified;
-                flight.LastUpdated = DateTime.Now;
-                flight.LastUpdatedBy = User.Pilot().ToString();
-                this.db.SaveChanges();
-
+                using (telemetryClient.StartOperation<RequestTelemetry>("EditFlight"))
+                {
+                    this.db.Entry(flight).State = EntityState.Modified;
+                    flight.LastUpdated = DateTime.Now;
+                    flight.LastUpdatedBy = User.Pilot().ToString();
+                    this.db.SaveChanges();
+                }
                 FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
 
                 ViewBag.UrlReferrer = ResolveUrlReferrer();

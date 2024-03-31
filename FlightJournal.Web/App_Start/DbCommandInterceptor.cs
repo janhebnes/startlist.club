@@ -75,6 +75,7 @@ namespace FlightJournal.Web.App_Start
             {
                 System.Diagnostics.Trace.TraceError($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
 #if (DEBUG)
+                // Note that EF __Migration exception with CreatedOn is related to https://stackoverflow.com/a/20670134 and is being throwned often but captured 
                 throw new Exception($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
 #endif
             }
