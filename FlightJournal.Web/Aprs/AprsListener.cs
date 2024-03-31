@@ -10,9 +10,12 @@ using FlightJournal.Web.Logging;
 using FlightJournal.Web.Models;
 using Skyhop.FlightAnalysis;
 using Skyhop.FlightAnalysis.Models;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace FlightJournal.Web.Aprs
 {
+
     public interface IAprsListener : IDisposable
     {
         EventHandler<AircraftEvent> OnAircraftTakeoff { get; set; }
@@ -33,9 +36,11 @@ namespace FlightJournal.Web.Aprs
         }
     }
 
-    
+
     public class AprsListener : IAprsListener
     {
+        private TelemetryClient _telemetryClient;
+
         private readonly IAircraftCatalog _catalog;
         private static List<Listener> _aprsClients;
         private static readonly FlightContextFactory FlightContextFactory = new();
@@ -44,10 +49,9 @@ namespace FlightJournal.Web.Aprs
         public EventHandler<AircraftEvent> OnAircraftLanding { get; set; }
 
 
-        public AprsListener(IAircraftCatalog catalog, IEnumerable<ListenerArea> ranges)
+        public AprsListener(IAircraftCatalog catalog, IEnumerable<ListenerArea> ranges, TelemetryClient telemetryClient)
         {
             _catalog = catalog;
-
 
             FlightContextFactory.OnTakeoff += OnTakeoff;
             FlightContextFactory.OnLanding += OnLanding;
@@ -55,6 +59,7 @@ namespace FlightJournal.Web.Aprs
             FlightContextFactory.OnContextDispose += OnContactLost;
 
             _aprsClients = ranges.Where(r => r.IsValid).Select(CreateListener).ToList();
+            _telemetryClient = telemetryClient;
         }
 
         private Listener CreateListener(ListenerArea r)
@@ -67,9 +72,10 @@ namespace FlightJournal.Web.Aprs
                 Uri = "aprs.glidernet.org",
                 UseOgnAdditives = true,
                 Port = 14580, //10152: Full feed, 14580: Filtered
-                Filter = $"r/{r.Latitude.ToString(CultureInfo.InvariantCulture)}/{r.Longitude.ToString(CultureInfo.InvariantCulture)}/{r.Radius.ToString(CultureInfo.InvariantCulture)}" 
+                Filter = $"r/{r.Latitude.ToString(CultureInfo.InvariantCulture)}/{r.Longitude.ToString(CultureInfo.InvariantCulture)}/{r.Radius.ToString(CultureInfo.InvariantCulture)}"
             });
 
+            
             aprsClient.DataReceived += OnAprsDataReceived;
             aprsClient.PacketReceived += OnAprsPacketReceived;
             return aprsClient;
@@ -85,7 +91,7 @@ namespace FlightJournal.Web.Aprs
                 case DataType.PositionWithTimestampWithAprsMessaging:
                     try
                     {
-                        if(!e.AprsMessage.IsComplete())
+                        if (!e.AprsMessage.IsComplete())
                             break;
 
                         var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
@@ -107,7 +113,6 @@ namespace FlightJournal.Web.Aprs
                 default:
                     break;
             }
-
         }
 
         private void OnAprsDataReceived(object sender, AprsDataReceivedEventArgs e)
@@ -121,6 +126,7 @@ namespace FlightJournal.Web.Aprs
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
             Log.Debug($"{nameof(AprsListener)}: {lastPositionUpdate.TimeStamp:o}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
         }
+
         private void OnContactLost(object sender, OnContextDisposedEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Context.Flight.Aircraft));
@@ -129,44 +135,60 @@ namespace FlightJournal.Web.Aprs
 
         private void OnTakeoff(object sender, OnTakeoffEventArgs e)
         {
-            var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
+            using (_telemetryClient.StartOperation<RequestTelemetry>("OnTakeoff"))
+            {
+                var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-            var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
-            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
-            try
-            {
-                OnAircraftTakeoff?.Invoke(this, ae);
-            }
-            catch (Exception ex)
-            {
-                Log.Exception($"{nameof(AprsListener)} OnTakeoff",  ex);
+                var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
+#if DEBUG
+                Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
+#endif
+                _telemetryClient.TrackEvent($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
+                try
+                {
+                    OnAircraftTakeoff?.Invoke(this, ae);
+                }
+                catch (Exception ex)
+                {
+                    _telemetryClient.TrackException(ex);
+                    Log.Exception($"{nameof(AprsListener)} OnTakeoff", ex);
+                }
             }
         }
 
         private void OnLanding(object sender, OnLandingEventArgs e)
         {
-            var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
-
-            var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
-            Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
-            try{
-                OnAircraftLanding?.Invoke(this, ae);
-            }
-            catch (Exception ex)
+            using (_telemetryClient.StartOperation<RequestTelemetry>("OnLanding"))
             {
-                Log.Exception($"{nameof(AprsListener)} OnLanding", ex);
+                var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
+
+                var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
+#if DEBUG
+                Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
+#endif
+                _telemetryClient.TrackEvent($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
+                try
+                {
+                    OnAircraftLanding?.Invoke(this, ae);
+                }
+                catch (Exception ex)
+                {
+                    _telemetryClient.TrackException(ex);
+                    Log.Exception($"{nameof(AprsListener)} OnLanding", ex);
+                }
+                
             }
 
         }
 
         public void Start()
         {
-            _aprsClients.ForEach(c=>c.Open());
+            _aprsClients.ForEach(c => c.Open());
         }
 
         public void Dispose()
         {
-            _aprsClients.ForEach(c=>c.Dispose());
+            _aprsClients.ForEach(c => c.Dispose());
         }
     }
 
@@ -187,10 +209,10 @@ namespace FlightJournal.Web.Aprs
     {
         public static bool IsComplete(this AprsMessage message)
         {
-            return message.Latitude != null 
-                   && message.Longitude != null 
-                   && message.Altitude != null 
-                   && message.Speed != null 
+            return message.Latitude != null
+                   && message.Longitude != null
+                   && message.Altitude != null
+                   && message.Speed != null
                    && message.Direction != null
                    && message.Callsign != null
                    ;
