@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
-using FlightJournal.Web.Extensions;
+using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Logging;
 using FlightJournal.Web.Models;
+using Flight = FlightJournal.Web.Models.Flight;
 
 namespace FlightJournal.Web.Aprs
 {
@@ -12,6 +13,7 @@ namespace FlightJournal.Web.Aprs
     {
         private readonly IAprsListener _aprsListener;
         private readonly FlightContext _db;
+        private AprsActivityFilter filter = new ();
 
         public AircraftEventHandler(IAprsListener aprsListener, FlightContext db)
         {
@@ -20,13 +22,26 @@ namespace FlightJournal.Web.Aprs
 
             _aprsListener.OnAircraftTakeoff += OnAircraftTakeoff;
             _aprsListener.OnAircraftLanding += OnAircraftLanding;
+
+
         }
 
+
+        public void Block(bool block)
+        {
+            filter.Block(block);
+        }
 
         private void OnAircraftTakeoff(object sender, AircraftEvent e)
         {
             if (e?.Aircraft == null)
                 return;
+
+            if (!filter.ShouldAcceptFlight(DateTime.Now, Settings.AprsListenerActiveHours, e.LastPositionUpdate.Latitude, e.LastPositionUpdate.Longitude))
+            {
+                Log.Debug($"{nameof(AircraftEventHandler)}: Inactive - ignoring takeoff of {e.Aircraft}");
+                return;
+            }
 
             var planes = _db.Planes.ToList();
             var p = planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
@@ -67,6 +82,12 @@ namespace FlightJournal.Web.Aprs
         {
             if (e?.Aircraft == null)
                 return;
+            if (!filter.ShouldAcceptFlight(DateTime.Now, Settings.AprsListenerActiveHours, e.LastPositionUpdate.Latitude, e.LastPositionUpdate.Longitude))
+            {
+                Log.Debug($"{nameof(AircraftEventHandler)}: Inactive - ignoring landing of {e.Aircraft}");
+                return;
+            }
+
             var planes = _db.Planes.ToList();
             var p = planes.FirstOrDefault(x => x.Registration.ToLower() == e.Aircraft.Registration.ToLower() 
                                                      || x.CompetitionId.ToLower() == e.Aircraft.CompetitionId.ToLower());

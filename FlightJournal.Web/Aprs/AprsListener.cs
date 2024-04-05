@@ -24,11 +24,13 @@ namespace FlightJournal.Web.Aprs
     public class AircraftEvent
     {
         public Aircraft Aircraft { get; }
+        public PositionUpdate LastPositionUpdate { get; }
         public DateTime? Time { get; }
 
-        public AircraftEvent(Aircraft a, DateTime? t)
+        public AircraftEvent(Aircraft a, DateTime? t, PositionUpdate lastPositionUpdate)
         {
             Aircraft = a;
+            LastPositionUpdate = lastPositionUpdate;
             Time = t?.ToLocalTime();
         }
     }
@@ -85,7 +87,7 @@ namespace FlightJournal.Web.Aprs
                 case DataType.PositionWithTimestampWithAprsMessaging:
                     try
                     {
-                        if(!e.AprsMessage.IsComplete())
+                        if (!e.AprsMessage.IsComplete())
                             break;
 
                         var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
@@ -98,6 +100,10 @@ namespace FlightJournal.Web.Aprs
                             e.AprsMessage.Direction.ToDegrees());
 
                         FlightContextFactory.Enqueue(positionUpdate);
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        // ignore - happens pretty frequently. Consider replacing with DIY takeoff/landing detection
                     }
                     catch (Exception ex)
                     {
@@ -117,21 +123,29 @@ namespace FlightJournal.Web.Aprs
 
         private void OnRadarContact(object sender, OnRadarContactEventArgs e)
         {
-            var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).First();
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
+            if (aircraft == null)
+                return; // ignore non OGN aircraft
+            var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).First();
+
             Log.Debug($"{nameof(AprsListener)}: {lastPositionUpdate.TimeStamp:o}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
         }
         private void OnContactLost(object sender, OnContextDisposedEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Context.Flight.Aircraft));
+            if (aircraft == null)
+                return; // ignore non OGN aircraft
             Log.Debug($"{nameof(AprsListener)}: {e.Context.Flight.Aircraft} {aircraft.Info()} - contact lost");
         }
 
         private void OnTakeoff(object sender, OnTakeoffEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
-
-            var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
+            if (aircraft == null) 
+                return; // ignore non OGN aircraft
+                        // 
+            var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).FirstOrDefault();
+            var ae = new AircraftEvent(aircraft, e.Flight.StartTime, lastPositionUpdate);
             Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
             try
             {
@@ -146,8 +160,11 @@ namespace FlightJournal.Web.Aprs
         private void OnLanding(object sender, OnLandingEventArgs e)
         {
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
+            if (aircraft == null)
+                return; // ignore non OGN aircraft
 
-            var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
+            var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).FirstOrDefault();
+            var ae = new AircraftEvent(aircraft, e.Flight.EndTime, lastPositionUpdate);
             Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
             try{
                 OnAircraftLanding?.Invoke(this, ae);
