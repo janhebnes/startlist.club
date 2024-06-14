@@ -166,6 +166,7 @@ namespace FlightJournal.Web.Controllers
                     foreach (var f in affectedFlights)
                     {
                         db.Entry(f).State = EntityState.Modified;
+                        f.HasTrainingData = true;
                         f.LastUpdated = DateTime.Now;
                         f.LastUpdatedBy = User.Pilot().ToString();
                         // don't notify - that would probably create too much noise
