@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class ImportController : Controller
     {

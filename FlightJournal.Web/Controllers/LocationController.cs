@@ -10,6 +10,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator,Manager,Editor")]
     public class LocationController : Controller
     {
@@ -34,7 +35,6 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Location/Create
-
         public ActionResult Create()
         {
             PopulateViewBag(null);

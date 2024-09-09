@@ -400,6 +400,7 @@
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\DbHelper.cs" />
+    <Compile Include="Filters\NoCacheAttribute.cs" />
     <Compile Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs" />
     <Compile Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.designer.cs">
       <DependentUpon>202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs</DependentUpon>
