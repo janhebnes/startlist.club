@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class RolesAdminController : Controller
     {

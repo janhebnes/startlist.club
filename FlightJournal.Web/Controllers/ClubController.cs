@@ -222,6 +222,7 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Club/Edit/5
+        [NoCache]
         public ActionResult Edit(int id)
         {
             Club club = db.Clubs.Find(id);
@@ -231,7 +232,6 @@ namespace FlightJournal.Web.Controllers
 
         //
         // POST: /Club/Edit/5
-
         [HttpPost]
         public ActionResult Edit(Club club)
         {
@@ -247,6 +247,7 @@ namespace FlightJournal.Web.Controllers
 
         //
         // GET: /Club/Delete/5
+        [NoCache]
         public ActionResult Delete(int id)
         {
             Club club = db.Clubs.Find(id);

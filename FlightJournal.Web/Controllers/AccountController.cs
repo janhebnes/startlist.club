@@ -17,6 +17,7 @@ using SignInStatus = FlightJournal.Web.Models.SignInStatus;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize]
     public class AccountController : Controller
     {

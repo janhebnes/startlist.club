@@ -7,6 +7,7 @@ using FlightJournal.Web.Models.Training.Catalogue;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class TrainingLessonAdminController : Controller
     {
