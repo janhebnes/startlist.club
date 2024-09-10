@@ -1,78 +1,90 @@
-﻿using System.Linq.Expressions;
-using System.Security.Policy;
+﻿using FlightJournal.Web.Constraints;
+using FlightJournal.Web.Repositories;
+using FlightJournal.Web.Validators;
 using System.Web.Mvc;
 using System.Web.Routing;
-using FlightJournal.Web.Constraints;
-using FlightJournal.Web.Validators;
 
-namespace FlightJournal.Web{
+namespace FlightJournal.Web
+{
     public class RouteConfig {
-        public static void RegisterRoutes(RouteCollection routes, bool unittest = false) {
+        public static void RegisterRoutes(RouteCollection routes, IClubRepository clubRepository, bool unittest = false) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             if (!unittest)
                 routes.MapMvcAttributeRoutes();
 
-            //// Custom club Urls
-            //routes.MapRoute(
-            //    name: "Root", // Route name
-            //    url: "", // URL with parameters
-            //    defaults: new { controller = "Home", action = "Index" }
-            //);
+            // Specific routes to avoid HttpException with The controller for path e.g. '/.well-known/traffic-advice' was not found or does not implement IController.
+            // Array of URLs to handle as 404
+            string[] notFoundUrls = {
+                "NaN-NaN-NaN/Index",
+                "sql/Index",
+                ".well-known/traffic-advice",
+                ".well-known/apple-app-site-association",
+                "app/Index",
+                "actuator;/env;",
+                "Admin/ashx",
+                "old/Index",
+                "root/Index",
+                "'123/Index",
+                "includ/Index",
+                "wordpress/Index",
+                "actuator/heapdump",
+                "apple-app-site-association/Index" // Assuming no Apple app association
+            };
+            foreach (var url in notFoundUrls) // Generate routes for known 404 URLs - avoiding validation in ClubRouteConstraint 
+            {
+                routes.MapRoute(
+                    name: url.Replace("/", "").Replace(";", ""), // Generate a unique name for each route
+                    url: url,
+                    defaults: new { controller = "Error", action = "PageNotFound" }
+                );
+            }
 
             // Custom club Urls
             routes.MapRoute(
-                "RootClub", // Route name
-                "{club}", // URL with parameters
-                new { controller = "Report", action = "Index" },
-                new { club = new ClubRouteConstraint(new ClubValidator()) }
+                name: "GetReportByClub",
+                url: "{club}", 
+                defaults: new { controller = "Report", action = "Index" },
+                constraints: new { club = new ClubRouteConstraint(new ClubValidator(clubRepository)), controller = "Report" }
             );
 
             // Custom report url /{yyyy} or /{yyyy-MM} or startlist on date {yyyy-MM-dd}
             routes.MapRoute(
-                "ReportingDate", // Route name
-                "{date}", // URL with parameters
-                new { controller = "Report", action = "Index" },
-                new { date = new DateRouteConstraint(new DatePathValidator()) }
+                name: "GetReportByDate", 
+                url: "{date}", 
+                defaults: new { controller = "Report", action = "Index" },
+                constraints: new { date = new DateRouteConstraint(new DatePathValidator()), controller = "Report" }
             );
 
             // Custom club Urls with custom Date
             routes.MapRoute(
-                 "ReportingClubDate", // Route name
-                 "{club}/{date}", // URL with parameters
-                 new { controller = "Report", action = "Index" },
-                 new { club = new ClubRouteConstraint(new ClubValidator())
-                     , date = new DateRouteConstraint(new DatePathValidator()) }
+                 name: "GetReportByClubByDate", 
+                 url: "{club}/{date}",
+                 defaults: new { controller = "Report", action = "Index" },
+                 constraints: new { club = new ClubRouteConstraint(new ClubValidator(clubRepository)), date = new DateRouteConstraint(new DatePathValidator()), controller = "Report" }
              );
-
-            //// Custom club Urls with default behavior
-            //routes.MapRoute(
-            //    "LogbookWithClubFlavor", // Route name
-            //    "{club}/logbook/{year}", // URL with parameters
-            //    new { club = UrlParameter.Optional, controller = "Logbook", action = "Index", year = UrlParameter.Optional },
-            //    new { club = new ClubRouteConstraint(new ClubValidator()) }
-            //);
-            //routes.MapRoute(
-            //    "LogbookWithClubFlavor2", // Route name
-            //    "{club}/logbook", // URL with parameters
-            //    new { club = UrlParameter.Optional, controller = "Logbook", action = "Index"},
-            //    new { club = new ClubRouteConstraint(new ClubValidator()) }
-            //);
-
 
             // Custom club Urls with default behavior
             routes.MapRoute(
-                "DefaultWithClubFlavor", // Route name
-                "{club}/{controller}/{action}/{id}", // URL with parameters
-                new { club = UrlParameter.Optional, controller = "Report", action = "Index", id = UrlParameter.Optional },
-                new { club = new ClubRouteConstraint(new ClubValidator()) }
+                name: "GetDefaultByClub", // Route name
+                url: "{club}/{controller}/{action}/{id}", // URL with parameters
+                defaults: new { club = UrlParameter.Optional, controller = "Report", action = "Index", id = UrlParameter.Optional },
+                constraints: new { club = new ClubRouteConstraint(new ClubValidator(clubRepository)), controller = "Report|About|Account|Club|CodePlayGround|CommentaryAdmin|CommentaryTypeAdmin|Error|Flight|GradingAdmin|Import|Language|Location|Logbook|Manage|ManouvreAdmin|Pilot|PilotStatus|Plane|Report|RolesAdmin|StartType|TrainingExerciseAdmin|TrainingLessonAdmin|TrainingLogAdmin|TrainingLogHistoryAdmin|TrainingProgramAdmin|TrainingStatus|UsersAdmin" } // Constraint to club and all known controllers
             );
 
             // Default behaviour
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Report", action = "Index", id = UrlParameter.Optional },
+                constraints: new { controller = "Report|About|Account|Club|CodePlayGround|CommentaryAdmin|CommentaryTypeAdmin|Error|Flight|GradingAdmin|Import|Language|Location|Logbook|Manage|ManouvreAdmin|Pilot|PilotStatus|Plane|Report|RolesAdmin|StartType|TrainingExerciseAdmin|TrainingLessonAdmin|TrainingLogAdmin|TrainingLogHistoryAdmin|TrainingProgramAdmin|TrainingStatus|UsersAdmin" } // Constraint to all known controllers
+            );
+
+            // Catch-all route for unmatched URLs
+            routes.MapRoute(
+                name: "NotFound",
+                url: "{*url}", // Matches any unmatched URL
+                defaults: new { controller = "Error", action = "PageNotFound" }
             );
         }
     }

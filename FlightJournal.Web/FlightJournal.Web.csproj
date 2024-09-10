@@ -568,6 +568,7 @@
     <Compile Include="Translations\Localization.cs" />
     <Compile Include="Translations\LocalizedDisplayNameAttribute.cs" />
     <Compile Include="Translations\Message.cs" />
+    <Compile Include="Repositories\ClubRepository.cs" />
     <Compile Include="Validators\EmailValidator.cs" />
     <Compile Include="Validators\MobilNumberValidator.cs" />
     <Compile Include="Validators\ClubValidator.cs" />

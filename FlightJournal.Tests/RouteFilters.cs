@@ -13,6 +13,8 @@ using System.Web.Routing;
 using FakeItEasy;
 using FlightJournal.Web;
 using FlightJournal.Web.Controllers;
+using FlightJournal.Web.Models;
+using FlightJournal.Web.Repositories;
 using FlightJournal.Web.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,11 +23,25 @@ namespace FlightJournal.Tests
     [TestClass]
     public class RouteFilters
     {
+        public class TestClubRepository : IClubRepository
+        {
+            public bool ClubExists(string shortName)
+            {
+                return shortName == "ØSF" || shortName == "AASVK";
+            }
+
+            public Club CloneClubByShortName(string shortName)
+            {
+                return new Club() { ShortName = shortName };
+            }
+        }
+
         [TestInitialize]
         public void init()
         {
             var folder = System.IO.Directory.GetDirectoryRoot(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\FlightJournal.Web\\App_Data"));
             AppDomain.CurrentDomain.SetData("DataDirectory", folder.ToString());
+            
         }
 
         [TestMethod]
@@ -111,10 +127,26 @@ namespace FlightJournal.Tests
         
         [TestMethod]
         [TestCategory("Routes")]
-        public void Root_and_a_non_existing_club_should_send_to_non_existing_controller_and_index_action()
+        public void Root_and_a_non_existing_club_should_send_to_pagenotfound_error_controller_and_index_action()
         {
             // Will send through the route pipeline and land on the controller default route (missingclub does not exist and will result in a 404)
-            should_return_expected_controller_and_action("~/MISSINGCLUB", "missingclub", "Index");
+            should_return_expected_controller_and_action("~/MISSINGCLUB", "error", "pagenotfound");
+        }
+
+        [TestMethod]
+        [TestCategory("Routes")]
+        public void Root_valid_controller_should_send_to_pagenotfound_error_controller_and_index_action()
+        {
+            should_return_expected_controller_and_action("~/admin", "error", "pagenotfound");
+            should_return_expected_controller_and_action("~/logbook", "logbook", "index");
+        }
+
+        [TestMethod]
+        [TestCategory("Routes")]
+        public void Root_club_valid_controller_should_send_to_pagenotfound_error_controller_and_index_action()
+        {
+            should_return_expected_controller_and_action("~/ØSF/admin", "error", "pagenotfound");
+            should_return_expected_controller_and_action("~/ØSF/logbook", "logbook", "index");
         }
 
         [TestMethod]
@@ -130,7 +162,7 @@ namespace FlightJournal.Tests
         [TestCategory("Routes")]
         public void RouteConstrint_Club_validator_test()
         {
-            var validator = new ClubValidator();
+            var validator = new ClubValidator(new TestClubRepository());
 
             // Valid Country
             Assert.IsTrue(validator.IsValid("ØSF"), "ØSF should be valid");
@@ -216,7 +248,7 @@ namespace FlightJournal.Tests
         {
             // attempting with https://gist.github.com/ExploreMqt/3719348 for getting access to route 
             var collection = new RouteCollection();
-            RouteConfig.RegisterRoutes(collection, true);
+            RouteConfig.RegisterRoutes(collection, new TestClubRepository(), true);
 
             var httpContext = A.Fake<HttpContextBase>();
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
@@ -228,7 +260,7 @@ namespace FlightJournal.Tests
         public void should_return_expected_controller_and_action(string path, string expectedController, string expectedAction)
         {
             var collection = new RouteCollection();
-            RouteConfig.RegisterRoutes(collection, true);
+            RouteConfig.RegisterRoutes(collection, new TestClubRepository(), true);
 
             var httpContext = A.Fake<HttpContextBase>();
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
@@ -241,14 +273,14 @@ namespace FlightJournal.Tests
         public void should_return_expected_club(string path, string expectedClub)
         {
             var collection = new RouteCollection();
-            RouteConfig.RegisterRoutes(collection, true);
+            RouteConfig.RegisterRoutes(collection, new TestClubRepository(), true);
 
             var httpContext = A.Fake<HttpContextBase>();
             A.CallTo(() => httpContext.Request.AppRelativeCurrentExecutionFilePath).Returns(path);
             A.CallTo(() => httpContext.Request.Url).Returns(new Uri("http://localhost/" + path.Replace("~/", string.Empty)));
             var routeData = collection.GetRouteData(httpContext);
             Assert.IsNotNull(routeData);
-            var currentClub = ClubController.GetCurrentClub(httpContext, routeData);
+            var currentClub = ClubController.GetCurrentClub(httpContext, routeData, new TestClubRepository());
             Assert.IsNotNull(currentClub);
             Assert.AreEqual(expectedClub, currentClub.ShortName);
         }

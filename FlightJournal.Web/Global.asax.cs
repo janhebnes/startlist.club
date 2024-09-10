@@ -1,9 +1,11 @@
-﻿using System.Web.Http;
+﻿using System.Web.Helpers;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Boerman.AprsClient;
 using FlightJournal.Web.App_Start;
+using FlightJournal.Web.Repositories;
 using WebGrease.Configuration;
 
 namespace FlightJournal.Web
@@ -27,7 +29,7 @@ namespace FlightJournal.Web
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RouteConfig.RegisterRoutes(RouteTable.Routes, new ClubRepository(() => new FlightJournal.Web.Models.FlightContext()));
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }

@@ -1,6 +1,5 @@
-﻿using System.Linq;
+﻿using FlightJournal.Web.Repositories;
 using System.Web;
-using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Validators
 {
@@ -11,6 +10,12 @@ namespace FlightJournal.Web.Validators
 
     public class ClubValidator : IClubValidator
     {
+        private readonly IClubRepository _clubRepository;
+        public ClubValidator(IClubRepository clubRepository)
+        {
+            _clubRepository = clubRepository;
+        }
+
         public bool IsValid(string club)
         {
             if (System.Web.HttpContext.Current == null)
@@ -31,10 +36,7 @@ namespace FlightJournal.Web.Validators
 
             bool Any(string s)
             {
-                using (var shortDb = new FlightContext())
-                {
-                    return (shortDb.Clubs.Any(d => d.ShortName == s));
-                }
+                return _clubRepository.ClubExists(s);
             }
         }
     }

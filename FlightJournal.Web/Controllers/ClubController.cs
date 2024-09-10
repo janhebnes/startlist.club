@@ -1,13 +1,11 @@
-﻿using System;
+﻿using FlightJournal.Web.Models;
+using FlightJournal.Web.Repositories;
 using System.Data;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -29,9 +27,8 @@ namespace FlightJournal.Web.Controllers
         /// <param name="context"></param>
         /// <param name="routeData"></param>
         /// <returns></returns>
-        public static Club GetCurrentClub(HttpContextBase context, RouteData routeData)
+        public static Club GetCurrentClub(HttpContextBase context, RouteData routeData, IClubRepository clubRepository)
         {
-            
             // Fetch from URL 
             var urlClubFilter = routeData.Values["club"] as string;
 
@@ -60,36 +57,14 @@ namespace FlightJournal.Web.Controllers
             // Read Url
             if (urlClubFilter != null && !string.IsNullOrWhiteSpace(urlClubFilter))
             {
-                Club ghost = new Club();
-                using (var shortDb = new FlightContext())
-                {
-                    var club = shortDb.Clubs.SingleOrDefault(d => d.ShortName == urlClubFilter);
-                    if (club != null)
-                    {
-                        ghost = new Club();
-                        ghost.LocationId = club.LocationId;
-                        ghost.Location = club.Location; // for allowing country
-                        ghost.ContactInformation = club.ContactInformation;
-                        ghost.ShortName = club.ShortName;
-                        ghost.Name = club.Name;
-                        if (club.Website != null && (club.Website.StartsWith("http://") || club.Website.StartsWith("https://")))
-                        {
-                            ghost.Website = club.Website;
-                        }
-                        else if (club.Website != null)
-                        {
-                            ghost.Website = "http://" + club.Website;
-                        }
-                        ghost.ClubId = club.ClubId;
-                    }
-                }
+                var clubCopy = clubRepository.CloneClubByShortName(urlClubFilter);
 
                 // Set Session Cache
                 context.Items.Remove("CurrentClub");
-                context.Items.Add("CurrentClub", ghost);
+                context.Items.Add("CurrentClub", clubCopy);
 
                 // Return Current Club
-                return ghost;
+                return clubCopy;
             }
             return new Club();
         }
@@ -104,7 +79,7 @@ namespace FlightJournal.Web.Controllers
                 return new Club();
             }
 
-            return GetCurrentClub(context, routeData);
+            return GetCurrentClub(context, routeData, new ClubRepository(() => new FlightJournal.Web.Models.FlightContext()));
         }
 
         /// <summary>
