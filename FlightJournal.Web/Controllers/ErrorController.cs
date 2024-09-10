@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -10,8 +6,8 @@ namespace FlightJournal.Web.Controllers
     {
         public ActionResult PageNotFound()
         {
-            Response.StatusCode = 404;
-            return View();
+            Response.StatusCode = 404; // Set the 404 status code
+            return new ContentResult { Content = "<pre> ________________________________________ \r\n<br/>< 404 Page Not Found - <em>Udelanding</em>!  >\r\n<br/> ---------------------------------------- \r\n<br/>        \\   ^__^\r\n<br/>         \\  (oo)\\_______\r\n<br/>            (__)\\       )\\/\\\r\n<br/>                ||----w |\r\n<br/>                ||     ||\r\n<br/>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⣽⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⢀⣾⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⣠⣾⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⠀⣠⣾⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣻⣾⡍⠻⣿⣿⣿⠟⠁⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡙⠁⠀⠈⠻⣧⡀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠈⠻⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠉⠻⣦⡀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⠀⣠⣾⣿⣷⣤⡀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣦⡀⢈⣿⠟⠉⠉⢻⣿⣿⣿\r\n⣿⣿⣿⣿⣿⠏⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⢀⣴⣿⣿⣿⣿\r\n⣿⣿⣿⠟⠁⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⢀⣴⣿⣿⣿⣿⣿⣿\r\n⣿⣟⠁⠀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿</pre>" }; // Return an empty ContentResult
         }
 
         public ActionResult PilotNotFound()
