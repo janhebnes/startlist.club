@@ -19,6 +19,8 @@ using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Validators;
 using Microsoft.Ajax.Utilities;
 using Twilio;
+using Twilio.Types;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace FlightJournal.Web.Models
 {
@@ -198,11 +200,19 @@ namespace FlightJournal.Web.Models
                 && !string.IsNullOrWhiteSpace(Settings.TwilioAuthToken)
                 && !string.IsNullOrWhiteSpace(Settings.TwilioFromNumber))
             {
-
                 // Find your Account Sid and Auth Token at twilio.com/user/account 
-                var twilio = new TwilioRestClient(Settings.TwilioAccountSid, Settings.TwilioAuthToken);
+                TwilioClient.Init(Settings.TwilioAccountSid, Settings.TwilioAuthToken);
 
-                var smsmessage = twilio.SendMessage(Settings.TwilioFromNumber, message.Destination, message.Body);
+                var smsmessage = MessageResource.Create(
+                    message.Destination,
+                    from: Settings.TwilioFromNumber,
+                    body: message.Body
+                );
+
+                // v3 API 
+                //var twilio = new TwilioRestClient(Settings.TwilioAccountSid, Settings.TwilioAuthToken);
+                //var smsmessage = twilio.SendMessage(Settings.TwilioFromNumber, message.Destination, message.Body);
+
                 if (smsmessage.Sid == null)
                 {
                     Task.FromResult(1);
