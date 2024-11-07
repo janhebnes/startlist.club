@@ -6,6 +6,7 @@ using FlightJournal.Web.Models;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class StartTypeController : Controller
     {

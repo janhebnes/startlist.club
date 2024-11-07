@@ -127,7 +127,7 @@ input[type="checkbox"].input-validation-error {
 .display-label, .editor-label {
     float:left;
 	clear:both;
-    width:140px;
+    width: 30%;
     text-align:right;
     margin: 1em 1em 0 0;
 }
@@ -465,3 +465,26 @@ th.coltype2 {
     }
 }
 
+.activityicon {
+    width: 2em;
+    height: 2em;
+}
+
+.trainingprograms td {
+    padding-left: 1em;
+    padding-right: 1em;
+	border: 1px lightgray solid;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+.align-bottom {
+    vertical-align: bottom;
+}
+.h2aligned {
+    margin-top: 25px;
+}

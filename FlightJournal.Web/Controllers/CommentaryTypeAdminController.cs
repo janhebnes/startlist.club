@@ -6,6 +6,7 @@ using FlightJournal.Web.Models.Training.Predefined;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class CommentaryTypeAdminController : Controller
     {

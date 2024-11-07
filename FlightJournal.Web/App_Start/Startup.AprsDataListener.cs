@@ -13,12 +13,13 @@ namespace FlightJournal.Web
 
         public void ConfigureAprsDataListener()
         {
+            var tc = new Microsoft.ApplicationInsights.TelemetryClient();
             var db = new FlightContext();
             Log.Information("Setting up APRS data listener chain");
-            _catalog = new AircraftCatalog();
-            _aprsListener = new AprsListener(_catalog, db.ListenerAreas);
+            _catalog = new AircraftCatalog(null, tc);
+            _aprsListener = new AprsListener(_catalog, db.ListenerAreas, tc);
 
-            _aircraftEventHandler = new AircraftEventHandler(_aprsListener, db);
+            _aircraftEventHandler = new AircraftEventHandler(_aprsListener, db, tc);
 
             _aprsListener.Start();
                       

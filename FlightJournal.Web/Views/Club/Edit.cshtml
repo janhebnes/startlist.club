@@ -11,72 +11,79 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>@_("Club")</legend>
+<fieldset>
+    <legend>@_("Club")</legend>
 
-        @Html.HiddenFor(model => model.ClubId)
+    @Html.HiddenFor(model => model.ClubId)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ShortName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ShortName)
-            @Html.ValidationMessageFor(model => model.ShortName)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShortName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShortName)
+        @Html.ValidationMessageFor(model => model.ShortName)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Website)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Website)
-            @Html.ValidationMessageFor(model => model.Website)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ContactInformation)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ContactInformation)
-            @Html.ValidationMessageFor(model => model.ContactInformation)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Website)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Website)
+        @Html.ValidationMessageFor(model => model.Website)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.LocationId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("LocationId")
-            @Html.ValidationMessageFor(model => model.LocationId)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ContactInformation)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ContactInformation)
+        @Html.ValidationMessageFor(model => model.ContactInformation)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Visible)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Visible)
-            @Html.ValidationMessageFor(model => model.Visible)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.LocationId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("LocationId")
+        @Html.ValidationMessageFor(model => model.LocationId)
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
-            @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
-        </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Visible)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Visible)
+        @Html.ValidationMessageFor(model => model.Visible)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.UseAPRSTakeoffAndLanding)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.UseAPRSTakeoffAndLanding)
+        @Html.ValidationMessageFor(model => model.UseAPRSTakeoffAndLanding)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+        @Html.ValidationMessageFor(model => model.MaskPilotIdentityIfUserIsNotLoggedIn)
+    </div>
 
 
-        <p>
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </p>
-    </fieldset>
+    <p>
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </p>
+</fieldset>
 }
 
 <div>

@@ -14,6 +14,7 @@ using FlightJournal.Web.Validators;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class UsersAdminController : Controller
     {

@@ -1,9 +1,9 @@
 ﻿@using FlightJournal.Web
 @using FlightJournal.Web.Controllers
 @using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
 @using FlightJournal.Web.Translations
 @model FlightJournal.Web.Models.ReportViewModel
-
 @if (Request.IsClub())
 {
     //Deleted flights are included when operating on the daily report (removed when evaluating month or year level) so it must be evaluated for at each relavant location
@@ -51,7 +51,7 @@
                             @Html.DisplayFor(modelItem => item.Plane)
                         </td>
                         <td>
-                            @item.Pilot.Name
+                            @item.Pilot.MaskedName(Request.IsPilot())
                         </td>
                         @if (enableLogStartTypeColumn)
                         {
@@ -123,7 +123,7 @@
                                 @Html.DisplayFor(modelItem => item.Plane)
                             </td>
                             <td>
-                                @item.PilotBackseat.Name
+                                @item.PilotBackseat.MaskedName(Request.IsPilot())
                             </td>
                             @if (enableLogStartTypeColumn)
                             {
@@ -238,7 +238,7 @@
                 {
                     <tr>
                         <td>
-                            @item.Pilot.Name
+                            @item.Pilot.MaskedName(Request.IsPilot())
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Plane)
@@ -290,7 +290,7 @@
                 {
                     <tr>
                         <td>
-                            @item.PilotBackseat.Name
+                            @item.PilotBackseat.MaskedName(Request.IsPilot())
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Plane)

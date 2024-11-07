@@ -50,10 +50,9 @@ namespace FlightJournal.Web.Controllers.api
             {
                 // paranoia check, HasTrainingData was introduced during 2021  (TODO: script a DB update) - note that this has still been observed, apparently a quick user can still manage to not set HastrainingData.
                 var trainingFlightIds = _db.AppliedExercises
-                    .Where(x => x.Grading != null)
                     .Select(x => x.FlightId)
                     .Distinct()
-                    .ToList();
+                    .ToHashSet();
                 flights = flights.Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId));
             }
 

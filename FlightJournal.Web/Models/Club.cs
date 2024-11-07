@@ -32,6 +32,7 @@ namespace FlightJournal.Web.Models
         [LocalizedDisplayName("Use APRS-based registration of takeoff and landing")]
         public bool UseAPRSTakeoffAndLanding { get; set; }
 
+        public bool MaskPilotIdentityIfUserIsNotLoggedIn { get; set; }  
 
         [XmlIgnore]
         public virtual ICollection<StartType> StartTypes { get; set; }

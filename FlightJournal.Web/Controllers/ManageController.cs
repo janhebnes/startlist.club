@@ -15,6 +15,7 @@ using FlightJournal.Web.Extensions;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize]
     public class ManageController : Controller
     {

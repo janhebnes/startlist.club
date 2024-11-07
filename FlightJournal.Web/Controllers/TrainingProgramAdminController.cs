@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace FlightJournal.Web.Controllers
 {
+    [NoCache]
     [Authorize(Roles = "Administrator")]
     public class TrainingProgramAdminController : Controller
     {

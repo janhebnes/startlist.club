@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Validators;
+using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using OGN.FlightLog.Client.Models;
@@ -43,7 +45,9 @@ namespace FlightJournal.Web.Controllers
             if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
 
             Pilot pilot = db.Pilots.Find(id);
-            return View(pilot);
+            var trainingProgramsForPilot = db.PilotsInTrainingPrograms.Where(x => x.PilotId == pilot.PilotId);
+            var vm = new PilotDetailsViewModel(pilot, trainingProgramsForPilot);
+            return View(vm);
         }
 
         //
@@ -103,16 +107,22 @@ namespace FlightJournal.Web.Controllers
 
             Pilot pilot = db.Pilots.Find(id);
             ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ShortName", pilot.ClubId);
-            return View(pilot);
+
+            var trainingProgramsForPilot = db.PilotsInTrainingPrograms.Where(x => x.PilotId == pilot.PilotId);
+            var vm = new PilotDetailsViewModel(pilot, trainingProgramsForPilot);
+
+            return View(vm);
         }
 
         //
         // POST: /Pilot/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Pilot pilot)
+        public ActionResult Edit(PilotDetailsViewModel vm)
         {
             if (!User.IsManager()) return RedirectToAction("Restricted", "Error", new { message = "Restricted to your own club" });
+
+
 
             if (Request.IsClub())
             {
@@ -121,33 +131,37 @@ namespace FlightJournal.Web.Controllers
                 ModelState.Remove("Club");
             }
 
-            if (!string.IsNullOrWhiteSpace(pilot.MobilNumber))
+            var pilotInDb = db.Pilots.SingleOrDefault(x => x.PilotId == vm.PilotId); 
+            if(pilotInDb == null)
+                return RedirectToAction("Index");
+
+
+            if (!string.IsNullOrWhiteSpace(vm.MobilNumber))
             {
-                if (!MobilNumberValidator.IsValid(pilot.MobilNumber, false))
+                if (!MobilNumberValidator.IsValid(vm.MobilNumber, false))
                 {
                     ModelState.AddModelError("MobilNumber", "Invalid format, please use the format "+ Request.PhoneNumberInternationalPrefix() + "12345678");
                 }
                 else
                 {
-                    pilot.MobilNumber = MobilNumberValidator.ParseMobilNumber(pilot.MobilNumber);
+                    pilotInDb.MobilNumber = MobilNumberValidator.ParseMobilNumber(vm.MobilNumber);
                 }
             }
 
             if (ModelState.IsValid)
             {
-                var oldInfo = new FlightContext().Pilots.SingleOrDefault(x => x.PilotId == pilot.PilotId); // new context!
-                if (oldInfo != null && oldInfo.UnionId != pilot.UnionId)
+                if (pilotInDb.UnionId != vm.UnionId)
                 {
                     // mark all (training) flights where the pilot participated as changed - will ensure re-export to FA
                     var affectedFlights = db.Flights.Where(f =>
                         f.Deleted == null 
-                        && (f.PilotId == pilot.PilotId 
-                            || (f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == pilot.PilotId)));
+                        && (f.PilotId == vm.PilotId 
+                            || (f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == vm.PilotId)));
+                    // paranoia check, HasTrainingData was introduced during 2021  (TODO: script a DB update) - note that this has still been observed, apparently a quick user can still manage to not set HastrainingData.
                     var trainingFlightIds = db.AppliedExercises
-                        .Where(x => x.Grading != null)
                         .Select(x => x.FlightId)
                         .Distinct()
-                        .ToList();
+                        .ToHashSet();
                     affectedFlights = affectedFlights.Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId));
                     foreach (var f in affectedFlights)
                     {
@@ -158,12 +172,30 @@ namespace FlightJournal.Web.Controllers
                         // FlightsHub.NotifyFlightChanged(f.FlightId, Guid.Empty);
                     }
                 }
-                db.Entry(pilot).State = EntityState.Modified;
+
+                vm.Update(pilotInDb);
+
+                db.Entry(pilotInDb).State = EntityState.Modified;
                 db.SaveChanges();
+
+                if (!vm.TrainingPrograms.IsNullOrEmpty())
+                {
+                    foreach (var vmpitp in vm.TrainingPrograms)
+                    {
+                        var dbtp = db.PilotsInTrainingPrograms.Where(x => x.PilotId == pilotInDb.PilotId && x.Training2ProgramId == vmpitp.ProgramId);
+                        foreach (var pitp in dbtp)
+                        {
+                            vmpitp.Update(pitp);
+                            db.Entry(pitp).State = EntityState.Modified;
+                        }
+                    }
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index");
             }
-            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ShortName", pilot.ClubId);
-            return View(pilot);
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ShortName", pilotInDb.ClubId);
+            return View(vm);
         }
 
         [Authorize]

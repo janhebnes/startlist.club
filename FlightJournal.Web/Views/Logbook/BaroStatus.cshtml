@@ -1,0 +1,46 @@
+﻿@model FlightJournal.Web.Models.BaroStatusViewModel
+
+
+<h2>
+    @_("Training barometer status for pilots (flights/hours in last 12 months)")
+</h2>
+<table class="tablesorter table table-striped table-hover table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @_("Pilot")
+            </th>
+            <th>
+                @_("Flights")
+            </th>
+            <th>
+                @_("Hours")
+            </th>
+            <th>
+                @_("Status")
+            </th>
+            <th>@_("Last")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.Pilots)
+        {
+            var c = p.TrainingStatus.BarometerColorCode;
+        <tr>
+            <td>
+                @p.Pilot.Name
+            </td>
+            <td>
+                @p.TrainingStatus.Last12MonthDepartures
+            </td>
+            <td>
+                @p.TrainingStatus.Last12MonthHours.ToString("F1")
+            </td>
+            <td style='color: @c'>
+                @p.TrainingStatus.BarometerLabel
+            </td>
+            <td>@p.TrainingStatus.DateOfLastFlight</td>
+        </tr>
+        }
+
+</table>

@@ -82,6 +82,10 @@
                                 {
                                     <li>@Html.MenuLink(_("Logbook"), "Index", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
                                 }
+                                @if (User.IsManager() || (Request.IsPilot() && Request.Pilot().IsInstructor))
+                                {
+                                    <li>@Html.MenuLink(_("Barometer status"), "BaroStatus", "Logbook", new { club = Request.Pilot().Club.ShortName })</li>
+                                }
                                 <li>@Html.MenuLink(_("Training flights"), "Index", "TrainingLogHistory")</li>
                                 <li>@Html.MenuLink(_("Training status"), "Index", "TrainingStatus")</li>
                             </ul>
@@ -167,6 +171,7 @@
 <div class="container footer-content">
     <footer>
         <p class="pull-right btn-xs">
+
             @if (ViewBag.DeveloperInfo != null && User.IsAdministrator())
             {
                 <i class="fa fa-info-circle" id="showdeveloperinfo"></i>

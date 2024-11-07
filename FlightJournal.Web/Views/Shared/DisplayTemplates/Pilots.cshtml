@@ -1,27 +1,38 @@
 ﻿@model FlightJournal.Web.Models.Flight
 @using FlightJournal.Web.Extensions
+@using FlightJournal.Web.Models
+@{
+    var pilotName = Model.Pilot.MaskedName(Request.IsPilot());
+    var pilotBackseatName = Model.PilotBackseat.MaskedName(Request.IsPilot());
+    var payerName = pilotName;
+    if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
+    {
+        payerName = Model.Betaler.MaskedName(Request.IsPilot());
+    }
+}
+
 @if (Model.Pilot != null)
 {
-    @Model.Pilot.Name
+    @pilotName
     if (Model.PilotBackseat != null)
     {
         <text>/ </text>
-        @Model.PilotBackseat.Name
+        @pilotBackseatName
     }
     if (Model.IsCurrentClubPilots())
     {
         if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
         {
-            @Html.Raw(string.Format(" " + _("(payed by {0})"), Model.Betaler.Name))
+            @Html.Raw(string.Format(" " + _("(payed by {0})"), payerName))
         }
         if ((Model.Betaler == null) && (Model.Pilot != null))
         {
-            <text> </text>
-            @_("(missing payer)")
-        }
+        <text> </text>
+        @_("(missing payer)")
     }
+}
     if (!Request.IsClub() || !Model.IsCurrentClubPilots())
     {
-        @Html.Raw(string.Format(" [{0}]", @Model.Pilot.Club.ShortName))
+@Html.Raw(string.Format(" [{0}]", @Model.Pilot.Club.ShortName))
     }
 }

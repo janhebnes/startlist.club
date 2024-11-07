@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Export;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Flight;
 
 namespace FlightJournal.Web.Controllers
@@ -105,10 +107,36 @@ namespace FlightJournal.Web.Controllers
             db.SaveChanges();
 
             var flight = db.Flights.SingleOrDefault(f => f.FlightId == flightId);
-            if (flight != null && hasTrainingFlightData != flight.HasTrainingData)
+            if (flight != null )
             {
+                // updating training data implies updating the flight
                 flight.HasTrainingData = hasTrainingFlightData;
+                flight.LastUpdated = DateTime.Now;
+                flight.LastUpdatedBy = User.Pilot().ToString();
+                db.Entry(flight).State = EntityState.Modified;
                 db.SaveChanges();
+            }
+
+            var anExercise = flightData.exercises?.FirstOrDefault();
+            if (anExercise != null)
+            {
+                var pilotId = flight?.PilotId ?? -1;
+                if (pilotId != -1)
+                {
+                    var activeTrainingProgram = db.PilotsInTrainingPrograms.FirstOrDefault(x => x.Training2ProgramId == anExercise.programId && x.PilotId == pilotId);
+                    if (activeTrainingProgram == null)
+                    {
+                        db.PilotsInTrainingPrograms.Add(new PilotInTrainingProgram()
+                        {
+                            PilotId = pilotId,
+                            Training2ProgramId = anExercise.programId,
+                            StartDate = DateTime.Now,
+                            EndDate = null,
+                            IsCompleted = false
+                        });
+                        db.SaveChanges();
+                    }
+                }
             }
 
             var originator = Guid.Empty;
