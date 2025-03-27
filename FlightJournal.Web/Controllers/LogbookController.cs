@@ -127,19 +127,17 @@ namespace FlightJournal.Web.Controllers
                 result.Last12MonthDuration = 0;
             }
 
-            // The following section is based on the uhb599 from DSvU Træningsbarometer
-            // Duration is weighted 0,75 of start amount 
+            // The following section is based on the uhb599 from DSvU Træningsbarometer  (note that start count / duration was swapped at some time - this reflects the method as of March 2025)
             var duration = new TimeSpan(result.Last12MonthDuration).TotalHours;
-            var weightedDuration = 0.75 * duration;
-            var meanFlightFitnessIndex = (result.Last12MonthDepartures + weightedDuration) / 2;
+            var meanFlightFitnessIndex = (result.Last12MonthDepartures * 30.0/40.5 + duration) / 2;  // the scaling factor is read off UHB599
 
-            if (meanFlightFitnessIndex > 20.5)
+            if (meanFlightFitnessIndex > 20.9)
             {
                 result.BarometerColorCode = "#339933";
                 result.BarometerLabel = "Grønt område";
                 result.BarometerRecommendation = "Du er i god flyvetræning, men pas på !!";
             }
-            else if (meanFlightFitnessIndex > 10.5)
+            else if (meanFlightFitnessIndex > 10.8)
             {
                 result.BarometerColorCode = "#ffcc00";
                 result.BarometerLabel = "Gult område";
