@@ -23,7 +23,6 @@ namespace FlightJournal.Web.Controllers
         private readonly IReadOnlyList<Pilot> pilots;
         private readonly IReadOnlyList<LightWeightFlight> allTrainingFlights;
 
-        private readonly DateTime FirstRelevantDate = DateTime.Now.AddYears(-3); // flights before this are hardly relevant
 
         private readonly IReadOnlyList<string> developerInfo = new List<string>();
 
@@ -35,7 +34,7 @@ namespace FlightJournal.Web.Controllers
             trainingPrograms = db.TrainingPrograms.AsReadOnlyList();
             pilots = db.Pilots.AsReadOnlyList();
             var trainingFlightIds = DbHelper.IdsOfTrainingFlights(db);
-            var fullFlights = db.Flights.Where(x => x.Deleted == null && x.Date >= FirstRelevantDate)
+            var fullFlights = db.Flights.Where(x => x.Deleted == null)
                 .Select(x => new { 
                     x.PilotId, 
                     x.FlightId,
