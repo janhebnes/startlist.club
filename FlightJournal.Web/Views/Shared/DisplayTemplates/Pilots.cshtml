@@ -23,7 +23,7 @@
     {
         if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
         {
-            @Html.Raw(string.Format(" " + _("(payed by {0})"), payerName))
+            @Html.Raw(string.Format(" " + _("(paid by {0})"), payerName))
         }
         if ((Model.Betaler == null) && (Model.Pilot != null))
         {
