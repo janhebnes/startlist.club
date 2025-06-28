@@ -86,7 +86,7 @@
                         }
                         if ((item.Betaler != null) && (item.Betaler != item.Pilot))
                         {
-                            @Html.Raw(string.Format(" " + _("(payed by {0})"), item.Betaler.Name))
+                            @Html.Raw(string.Format(" " + _("(paid by {0})"), item.Betaler.Name))
                         }
                         if ((item.Betaler == null) && (item.Pilot != null))
                         {
