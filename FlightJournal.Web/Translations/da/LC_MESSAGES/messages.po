@@ -1007,7 +1007,7 @@ msgstr "Handling"
 #: FlightJournal.Web\Views\Flight\_changeHistory.cshtml:89
 #: FlightJournal.Web\Views\Shared\DisplayTemplates\Pilots.cshtml:15
 #, csharp-format
-msgid "paid by {0})"
+msgid "(paid by {0})"
 msgstr "(betalt af {0})"
 
 #: FlightJournal.Web\Views\Flight\History.cshtml:94
