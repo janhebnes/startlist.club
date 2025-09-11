@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <OutputType>Library</OutputType>
-    <RootNamespace>FlightJournal.Web</RootNamespace>
-    <AssemblyName>FlightJournal.Web</AssemblyName>
     <UseIISExpress>true</UseIISExpress>
     <MvcBuildViews>false</MvcBuildViews>
     <ApplicationInsightsResourceId>/subscriptions/1a421708-aaa3-47f8-b711-0e675e83197e/resourceGroups/rg-startlist.club/providers/microsoft.insights/components/appi-startlist</ApplicationInsightsResourceId>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
-    <EnableDefaultContentItems>false</EnableDefaultContentItems>
-    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <UseWebFormsDesignerDefaultCompilationMode>true</UseWebFormsDesignerDefaultCompilationMode>
+    <DefaultItemExcludes>$(DefaultItemExcludes);*.user;packages\**;bin\**;obj\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -144,32 +139,15 @@
 
   <ItemGroup>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Web.config" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="**\*.config" />
-    <Content Include="**\*.asax" />
-    <Content Include="**\*.aspx" />
-    <Content Include="**\*.master" />
-    <Content Include="**\*.ascx" />
-    <Content Include="Views\**\*.cshtml" />
-    <Content Include="Content\**\*" />
-    <Content Include="Scripts\**\*" />
-    <Content Include="fonts\**\*" />
-    <Content Include="favicon.ico" />
-    <Content Include="libman.json" />
-    <Content Include="ApplicationInsights.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\**\*.resx" />
   </ItemGroup>
 
 </Project>
