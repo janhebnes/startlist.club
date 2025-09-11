@@ -4,9 +4,10 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <OutputType>Library</OutputType>
     <RootNamespace>FlightJournal.Web</RootNamespace>
     <AssemblyName>FlightJournal.Web</AssemblyName>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
     <UseIISExpress>true</UseIISExpress>
     <MvcBuildViews>false</MvcBuildViews>
     <ApplicationInsightsResourceId>/subscriptions/1a421708-aaa3-47f8-b711-0e675e83197e/resourceGroups/rg-startlist.club/providers/microsoft.insights/components/appi-startlist</ApplicationInsightsResourceId>
