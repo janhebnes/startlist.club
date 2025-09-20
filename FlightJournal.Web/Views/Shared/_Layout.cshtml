@@ -14,7 +14,6 @@
     @*<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" type="text/css">*@
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    @Scripts.Render("~/bundles/modernizr")
     @RenderSection("head", required: false)
     @Html.Action("GoogleAnalyticsPartial", "About")
 </head>
@@ -182,14 +181,12 @@
     </footer>
 </div>
 
-
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jqueryui")
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/intro")
 @Scripts.Render("~/bundles/datatables")
 @RenderSection("scripts", required: false)
-
 
 <script type="text/javascript">
 

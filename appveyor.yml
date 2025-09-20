@@ -1,7 +1,37 @@
 version: 1.0.{build}
+image: Visual Studio 2022
+
+# Environment hardening / consistency
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+# Cache NuGet packages to speed builds
+cache:
+- '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+
+# (Optional) show SDK info for diagnostics
+install:
+- cmd: dotnet --info
+
+# Restore using dotnet (works for mixed SDK + legacy if any remain)
 before_build:
-- cmd: nuget restore
-build:
-  project: FlightJournal.sln
-  verbosity: minimal
-test: off
+- cmd: dotnet restore FlightJournal.sln
+
+# Use explicit build script (more control than legacy build: section)
+build_script:
+- cmd: dotnet build FlightJournal.sln -c Release -warnaserror
+
+# Enable tests (adjust project path if multiple test projects later)
+# If tests not yet convertible, comment out this block.
+test_script:
+- cmd: dotnet test FlightJournal.Tests/FlightJournal.Tests.csproj -c Release --no-build --logger "trx;LogFileName=TestResults.trx"
+
+# (Optional) collect artifacts (uncomment if you produce publish output)
+# after_build:
+# - cmd: dotnet publish FlightJournal.WebCore/FlightJournal.WebCore.csproj -c Release -o publish
+# artifacts:
+# - path: publish
+#   name: site
+
+# Fail fast if any step errors (default behavior).

@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Browse :5000 (Chrome)",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/",
+            "preLaunchTask": "run-host",
+            "webRoot": "${workspaceFolder}/FlightJournal.Web"
+        }
+    ]
+}
