@@ -1,0 +1,27 @@
+2025-09-20 17:22:59,560Z ERROR - AprsListener OnAprsPacketReceived
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at System.Collections.Generic.List`1.Add(T item)
+   at NetTopologySuite.Index.Quadtree.Root`1.InsertContained(Node`1 tree, Envelope itemEnv, T item)
+   at Skyhop.FlightAnalysis.FlightContextFactory.Enqueue(IEnumerable`1 positionUpdates)
+   at FlightJournal.Web.Aprs.AprsListener.OnAprsPacketReceived(Object sender, PacketReceivedEventArgs e) in B:\Code\github.com\janhebnes\startlist.club\FlightJournal.Web\Aprs\AprsListener.cs:line 106
+2025-09-20 17:22:59,608Z ERROR - AprsListener OnAprsPacketReceived
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at System.Collections.Generic.List`1.Contains(T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at Skyhop.FlightAnalysis.FlightContextFactory.Enqueue(IEnumerable`1 positionUpdates)
+   at FlightJournal.Web.Aprs.AprsListener.OnAprsPacketReceived(Object sender, PacketReceivedEventArgs e) in B:\Code\github.com\janhebnes\startlist.club\FlightJournal.Web\Aprs\AprsListener.cs:line 106
+2025-09-20 17:36:27,207Z ERROR - AprsListener OnAprsPacketReceived
+System.ArgumentOutOfRangeException: Count must be positive and count must refer to a location within the string/array/collection.
+Parameter name: count
+   at System.Array.IndexOf[T](T[] array, T value, Int32 startIndex, Int32 count)
+   at System.Collections.Generic.List`1.IndexOf(T item)
+   at System.Collections.Generic.List`1.Remove(T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(Envelope itemEnv, T item)
+   at Skyhop.FlightAnalysis.FlightContextFactory.Enqueue(IEnumerable`1 positionUpdates)
+   at FlightJournal.Web.Aprs.AprsListener.OnAprsPacketReceived(Object sender, PacketReceivedEventArgs e) in B:\Code\github.com\janhebnes\startlist.club\FlightJournal.Web\Aprs\AprsListener.cs:line 106

@@ -24,20 +24,28 @@ namespace FlightJournal.Web
                         "~/Scripts/jquery.validate.unobtrusive.js",
                         "~/Scripts/jquery.autocomplete-combobox.js"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
-
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js",
                       "~/Scripts/bootstrap-select.js"));
 
+            // Core DataTables + required extensions (only those we actively use)
             bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
-                      "~/Scripts/DataTables/jQuery.dataTables.min.js"
+                      "~/Scripts/DataTables/jquery.dataTables.min.js",
+                      "~/Scripts/DataTables/dataTables.bootstrap.min.js",
+                      // Core feature extensions
+                      "~/Scripts/DataTables/dataTables.responsive.min.js",
+                      "~/Scripts/DataTables/dataTables.buttons.min.js",
+                      "~/Scripts/DataTables/dataTables.colReorder.min.js",
+                      "~/Scripts/DataTables/dataTables.fixedHeader.min.js",
+                      "~/Scripts/DataTables/dataTables.keyTable.min.js",
+                      // Additional requested extensions
+                      "~/Scripts/DataTables/dataTables.rowGroup.min.js",
+                      "~/Scripts/DataTables/dataTables.rowReorder.min.js",
+                      "~/Scripts/DataTables/dataTables.scroller.min.js",
+                      "~/Scripts/DataTables/dataTables.select.min.js",
+                      "~/Scripts/DataTables/dataTables.autoFill.min.js",
+                      "~/Scripts/DataTables/dataTables.fixedColumns.min.js"
                       ));
-
 
             bundles.Add(new ScriptBundle("~/bundles/charting").Include(
                       "~/Scripts/moment-with-locales.min.js",
@@ -45,8 +53,6 @@ namespace FlightJournal.Web
                       "~/Scripts/chartjs-plugin-crosshair.js",
                       "~/Scripts/Charting.js"
                       ));
-
-
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
@@ -57,21 +63,27 @@ namespace FlightJournal.Web
                       "~/Content/themes/base/theme.css",
                       "~/Content/site.css",
                       "~/Content/introjs/introjs.min.css",
-                      "~/Content/dataTables/css/jQuery.dataTables.min.css"
+                      // DataTables styling (core + extensions used)
+                      "~/Content/DataTables/css/jquery.dataTables.min.css",
+                      "~/Content/DataTables/css/dataTables.bootstrap.min.css",
+                      "~/Content/DataTables/css/responsive.dataTables.min.css",
+                      "~/Content/DataTables/css/buttons.dataTables.min.css",
+                      "~/Content/DataTables/css/colReorder.dataTables.min.css",
+                      "~/Content/DataTables/css/fixedHeader.dataTables.min.css",
+                      "~/Content/DataTables/css/keyTable.dataTables.min.css",
+                      // Additional requested extensions
+                      "~/Content/DataTables/css/rowGroup.dataTables.min.css",
+                      "~/Content/DataTables/css/rowReorder.dataTables.min.css",
+                      "~/Content/DataTables/css/scroller.dataTables.min.css",
+                      "~/Content/DataTables/css/select.dataTables.min.css",
+                      "~/Content/DataTables/css/autoFill.dataTables.min.css",
+                      "~/Content/DataTables/css/fixedColumns.dataTables.min.css"
                       ));
-            //"~/Content/themes/base/resizable.css",
-            //"~/Content/themes/base/selectable.css",
-            //"~/Content/themes/base/accordion.css",
-            //"~/Content/themes/base/button.css",
-            //"~/Content/themes/base/dialog.css",
-            //"~/Content/themes/base/slider.css",
-            //"~/Content/themes/base/tabs.css",                      
-            //"~/Content/themes/base/progressbar.css",
-            //"~/Content/themes/base/theme.css"
 
-            //// When running release it is expected that the bundling automatically takes place
-            //// BundleTable.EnableOptimizations = true;
-
+#if CFG_RELEASE
+            // Enable minification + bundling in release
+            BundleTable.EnableOptimizations = true;
+#endif
         }
     }
 }
