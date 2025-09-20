@@ -121,7 +121,7 @@ namespace FlightJournal.Host
             {
                 if (a.StartsWith("--port="))
                 {
-                    if (int.TryParse(a.Substring(8), out var p)) return p;
+                    if (int.TryParse(a.Substring(7), out var p)) return p;
                 }
             }
             return null;
