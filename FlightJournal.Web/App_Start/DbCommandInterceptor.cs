@@ -73,11 +73,20 @@ namespace FlightJournal.Web.App_Start
 #endif
             if (interceptionContext.Exception != null)
             {
-                System.Diagnostics.Trace.TraceError($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
+                // Check for the specific error about 'CreatedOn' in '__MigrationHistory' that is a check done by EF between 4.3 and 5 on init of databases
+                if (command.CommandText.Contains("SELECT TOP (1) \r\n    [c].[CreatedOn] AS [CreatedOn]\r\n    FROM [dbo].[__MigrationHistory] AS [c]"))
+                {
+                    // Ignore this specific exception
+                    // EF __Migration exception with CreatedOn is related to https://stackoverflow.com/a/20670134 and is being throwned often but captured 
+                }
+                else
+                {
+                    System.Diagnostics.Trace.TraceError($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
 #if (DEBUG)
-                // Note that EF __Migration exception with CreatedOn is related to https://stackoverflow.com/a/20670134 and is being throwned often but captured 
-                throw new Exception($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
+                    throw new Exception($"Command {command.CommandText} failed with exception {interceptionContext.Exception}");
 #endif
+                }
+
             }
             else
             {
