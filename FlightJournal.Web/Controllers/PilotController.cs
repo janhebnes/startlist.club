@@ -153,22 +153,29 @@ namespace FlightJournal.Web.Controllers
                 if (pilotInDb.UnionId != vm.UnionId)
                 {
                     // mark all (training) flights where the pilot participated as changed - will ensure re-export to FA
-                    var affectedFlights = db.Flights.Where(f =>
-                        f.Deleted == null 
-                        && (f.PilotId == vm.PilotId 
-                            || (f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == vm.PilotId)));
-                    // paranoia check, HasTrainingData was introduced during 2021  (TODO: script a DB update) - note that this has still been observed, apparently a quick user can still manage to not set HastrainingData.
+                    var affectedFlights = db.Flights
+                        .Where(f => f.Deleted == null &&
+                                    (f.PilotId == vm.PilotId ||
+                                        (f.PilotBackseatId.HasValue && f.PilotBackseatId.Value == vm.PilotId)))
+                        .ToList(); // Materialize the query to avoid multiple enumerations
+
+                    // paranoia check, HasTrainingData was introduced during 2021
                     var trainingFlightIds = db.AppliedExercises
                         .Select(x => x.FlightId)
                         .Distinct()
                         .ToHashSet();
-                    affectedFlights = affectedFlights.Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId));
-                    foreach (var f in affectedFlights)
+
+                    // Filter affected flights based on HasTrainingData or trainingFlightIds
+                    var validAffectedFlights = affectedFlights
+                        .Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId))
+                        .ToList(); // Materialize the filtered results
+
+                    foreach (var f in validAffectedFlights)
                     {
                         db.Entry(f).State = EntityState.Modified;
                         f.LastUpdated = DateTime.Now;
                         f.LastUpdatedBy = User.Pilot().ToString();
-                        // don't notify - that would probably create too much noise
+                        // don't notify - would create too much noise when done in a mass edit
                         // FlightsHub.NotifyFlightChanged(f.FlightId, Guid.Empty);
                     }
                 }
