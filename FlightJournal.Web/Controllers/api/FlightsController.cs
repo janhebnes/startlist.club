@@ -45,6 +45,7 @@ namespace FlightJournal.Web.Controllers.api
             if (unionId != null)
                 flights = flights.Where(f => f.Pilot.UnionId == unionId);
 
+            var affectedFlights = flights.ToList(); // Materialize the query to avoid multiple enumerations
 
             if (training)
             {
@@ -53,11 +54,13 @@ namespace FlightJournal.Web.Controllers.api
                     .Select(x => x.FlightId)
                     .Distinct()
                     .ToHashSet();
-                flights = flights.Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId));
+                
+                affectedFlights = affectedFlights
+                        .Where(x => x.HasTrainingData || trainingFlightIds.Contains(x.FlightId))
+                        .ToList(); // Materialize the filtered results
             }
 
-            var models = TrainingLogHistoryController.CreateExportModel(_db, flights, "");
-
+            var models = TrainingLogHistoryController.CreateExportModel(_db, affectedFlights, "");
             return Json(JsonConvert.SerializeObject(models, Formatting.None));
         }
 
@@ -66,7 +69,35 @@ namespace FlightJournal.Web.Controllers.api
             public string t;
             public string id;
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("query")]
+        public IHttpActionResult GetApiQuery()
+        {
+            var html = @"
+        <html>
+            <head><title>Flights API Test Query</title></head>
+            <body>
+                <h1>Flights API Test</h1>
+                <form method='get' action='/api/flights'>
+                    <label>API Key: <input name='key' /></label><br/>
+                    <label>From (yyyyMMdd): <input name='from' /></label><br/>
+                    <label>To (yyyyMMdd): <input name='to' /></label><br/>
+                    <label>Updated Since (yyyyMMdd): <input name='updatedSince' /></label><br/>
+                    <label>Training: <input type='checkbox' name='training' value='true' /></label><br/>
+                    <label>Pilot ID: <input name='pilotId' type='number' /></label><br/>
+                    <label>Union ID: <input name='unionId' /></label><br/>
+                    <input type='submit' value='Check API' />
+                </form>
+                <p>Results will be shown as JSON.</p>
+            </body>
+        </html>";
+            return new System.Web.Http.Results.ResponseMessageResult(
+                new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new System.Net.Http.StringContent(html, System.Text.Encoding.UTF8, "text/html")
+                });
+        }
     }
-
-
 }
