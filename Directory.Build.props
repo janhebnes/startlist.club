@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Authors>startlist.club</Authors>
+    <Company>startlist.club</Company>
+    <RepositoryUrl>https://github.com/janhebnes/startlist.club</RepositoryUrl>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <SkipEnsureBindingRedirects>true</SkipEnsureBindingRedirects>
+  </PropertyGroup>
+</Project>

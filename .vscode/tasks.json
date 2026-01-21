@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-web",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "FlightJournal.Web/FlightJournal.Web.csproj",
+                "--configuration",
+                "Debug"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-host",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "FlightJournal.Host/FlightJournal.Host.csproj",
+                "--",
+                "--port=8080"
+            ],
+            "dependsOn": "build-web",
+            "problemMatcher": "$msCompile",
+            "isBackground": true
+        }
+    ]
+}
