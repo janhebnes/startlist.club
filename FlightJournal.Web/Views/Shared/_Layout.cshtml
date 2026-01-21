@@ -233,6 +233,26 @@
             $("#developerinfo").show();
         });
     });
+
+
+    var isHidden = false;
+    var reloadOnVisibilityRecoveryIfOnSafari = function () {
+        // Safari / iOS is apparently not good at retaining signalR connection across visibily transitions, so brute-force a reload when recovering (user may still cancel)
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.platform);
+        if (isIOS) {
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden) {
+                    isHidden = true;
+                } else {
+                    if (isHidden) {
+                        isHidden = false; // probably redundant, but...
+                        location.reload();
+                    }
+                }
+            })
+        };
+    };
+
 </script>
 
 

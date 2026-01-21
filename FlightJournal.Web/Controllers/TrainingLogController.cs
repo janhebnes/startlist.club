@@ -107,14 +107,16 @@ namespace FlightJournal.Web.Controllers
             db.SaveChanges();
 
             var flight = db.Flights.SingleOrDefault(f => f.FlightId == flightId);
-            if (flight != null )
+            if (flight != null && (!flight.HasTrainingData || flight.LastUpdated.Date < DateTime.Now.Date) )
             {
-                // updating training data implies updating the flight
+                // editing the grading later than the flights date (i.e., flight has already been transferred to FA, so ensure that it is updated)
                 flight.HasTrainingData = hasTrainingFlightData;
                 flight.LastUpdated = DateTime.Now;
                 flight.LastUpdatedBy = User.Pilot().ToString();
                 db.Entry(flight).State = EntityState.Modified;
                 db.SaveChanges();
+
+                FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty); // just in case someone is actually editing this flight that late
             }
 
             var anExercise = flightData.exercises?.FirstOrDefault();
