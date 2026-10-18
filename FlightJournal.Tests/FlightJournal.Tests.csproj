@@ -196,6 +196,8 @@
     <Compile Include="Controllers\TrainingLogControllerSecurityTest.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttributeTest.cs" />
     <Compile Include="Models\TrainingDataPolicyTest.cs" />
+    <Compile Include="Controllers\FlightControllerEditAuthorizationTest.cs" />
+    <Compile Include="Models\FlightEditPolicyTest.cs" />
     <Compile Include="Controllers\LanguageControllerTest.cs" />
     <Compile Include="Integration\AvailableDatesCacheTest.cs" />
     <Compile Include="Integration\DemoTrainingSeederTest.cs" />

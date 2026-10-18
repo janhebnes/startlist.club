@@ -267,34 +267,29 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult SetComment(Guid id, string comment)
         {
-            bool isEditable = false;
-            if (User.IsManager()) { isEditable = true; }
-
             Flight flight = this.db.Flights.Find(id);
+            if (flight == null)
+                return HttpNotFound();
 
-            if (flight != null && flight.Date.AddDays(3) >= DateTime.Now)
-            {
-                isEditable = true;
-            }
+            if (!FlightEditPolicy.CanEdit(flight.Date, User.IsEditor(), DateTime.Now))
+                return EditDenied("SetComment");
 
-            if (!isEditable)
+            using (telemetryClient.StartOperation<RequestTelemetry>("SetComment"))
             {
-                // TODO: Evaluate security error handling procedure vs. error controller and generel logging model of the platform
-                throw new UnauthorizedAccessException(
-                    string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
+                flight.Description = comment;
+                this.db.SaveChanges();
             }
-
-            if (isEditable)
-            {
-                using (telemetryClient.StartOperation<RequestTelemetry>("SetComment"))
-                {
-                    flight.Description = comment;
-                    this.db.SaveChanges();
-                }
-                FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
-            }
+            FlightsHub.NotifyFlightChanged(flight.FlightId, Guid.Empty);
 
             return RedirectToAction("Grid");
+        }
+
+        internal ActionResult EditDenied(string action)
+        {
+            // Count-only signal; never attach user or flight identifiers
+            telemetryClient.TrackEvent("FlightEditDenied",
+                new Dictionary<string, string> { { "Action", action } });
+            return RedirectToAction("Restricted", "Error", new { message = FlightEditPolicy.DeniedMessage });
         }
 
         //
@@ -339,19 +334,12 @@ namespace FlightJournal.Web.Controllers
             if(!id.HasValue)
                 return RedirectToAction("Grid");
 
-            bool isEditable = User.IsEditor();
-            
             Flight flight = this.db.Flights.Find(id);
+            if (flight == null)
+                return HttpNotFound();
 
-            if (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now)
-            {
-                isEditable = true;
-            }
-            if (!isEditable)
-            {
-                throw new UnauthorizedAccessException(
-                    string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
-            }
+            if (!FlightEditPolicy.CanEdit(flight.Date, User.IsEditor(), DateTime.Now))
+                return EditDenied("Edit");
 
             ViewBag.FlightId = id.Value;
             ViewBag.ChangeHistory = this.GetChangeHistory(id.Value);
@@ -367,15 +355,16 @@ namespace FlightJournal.Web.Controllers
         [Authorize]
         public ActionResult Edit(Flight flight)
         {
-            var isEditable = User.IsAdministrator()
-                              || User.IsManager()
-                              || (flight.Date != null && flight.Date.AddDays(3) >= DateTime.Now);
+            // Authorize against the stored date, never the posted one
+            var storedDate = this.db.Flights
+                .Where(f => f.FlightId == flight.FlightId)
+                .Select(f => (DateTime?)f.Date)
+                .SingleOrDefault();
+            if (storedDate == null)
+                return HttpNotFound();
 
-            if (!isEditable)
-            {
-                throw new UnauthorizedAccessException(
-                    string.Format("User {0} not allowed to edit this flight", this.Request.RequestContext.HttpContext.User.Identity.Name));
-            }
+            if (!FlightEditPolicy.CanEdit(storedDate.Value, User.IsEditor(), DateTime.Now))
+                return EditDenied("Edit");
 
             if (ModelState.IsValid)
             {

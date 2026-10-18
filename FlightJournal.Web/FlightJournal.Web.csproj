@@ -625,6 +625,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Models\Club.cs" />
     <Compile Include="Models\Flight.cs" />
+    <Compile Include="Models\FlightEditPolicy.cs" />
     <Compile Include="Models\FlightContext.cs" />
     <Compile Include="Models\FlightVersionHistory.cs" />
     <Compile Include="Models\Location.cs" />
