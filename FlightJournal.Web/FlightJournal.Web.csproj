@@ -412,6 +412,7 @@
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
     <Compile Include="Controllers\DbHelper.cs" />
     <Compile Include="Filters\NoCacheAttribute.cs" />
+    <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs" />
     <Compile Include="Migrations\FlightContext\202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.designer.cs">
       <DependentUpon>202305211838246_Add club option to mask pilot identities is user is not logged in %28NSF%29.cs</DependentUpon>
@@ -536,6 +537,7 @@
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
+    <Compile Include="Models\Training\TrainingDataPolicy.cs" />
     <Compile Include="Models\Training\TrainingHistoryQuery.cs" />
     <Compile Include="Models\Training\TrainingTimelineViewModel.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />

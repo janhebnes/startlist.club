@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
+using FlightJournal.Web.Filters;
 using FlightJournal.Web.Hubs;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Export;
@@ -14,16 +16,20 @@ using FlightJournal.Web.Models.Training.Flight;
 
 namespace FlightJournal.Web.Controllers
 {
+    [Authorize]
     public class TrainingLogController : Controller
     {
         private readonly FlightContext db = new FlightContext();
 
-        [Authorize]
         public ActionResult Edit(Guid? flightId, int trainingProgramId = -1)
         {
             if (!flightId.HasValue)
                 return RedirectToAction("Grid", "Flight");
+            if (!TrainingDataPolicy.CanAccess(Request.IsInstructor(), User.IsAdministrator()))
+                return RedirectToAction("Restricted", "Error", new { message = "Training log is restricted to instructors." });
             var flight = db.Flights.SingleOrDefault(x => x.FlightId == flightId.Value);
+            if (flight == null)
+                return HttpNotFound();
             var model = BuildTrainingLogViewModel(flight, trainingProgramId);
             if (model.TrainingProgram.Id != -1)
                 return View(model);
@@ -32,11 +38,23 @@ namespace FlightJournal.Web.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateJsonAntiForgeryToken]
         public ActionResult UpdateTrainingFlight(FlightData flightData)
         {
+            if (!TrainingDataPolicy.CanAccess(Request.IsInstructor(), User.IsAdministrator()))
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             //update data models based on flightData.
-            if (!Guid.TryParse(flightData.flightId, out var flightId))
-                return new JsonResult();
+            if (flightData == null || !Guid.TryParse(flightData.flightId, out var flightId))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var flight = db.Flights.SingleOrDefault(f => f.FlightId == flightId && f.Deleted == null);
+            if (flight == null)
+                return HttpNotFound();
+
+            var instructorId = TrainingDataPolicy.ResolveInstructorId(
+                db.Pilots.SingleOrDefault(p => p.PilotId == flight.PilotBackseatId), User.Pilot());
 
             // Upsert exercise for this flight. Note that flightData.exercises holds data for this flight only  (including any edits)
             var currentExercisesForThisFlight = db.AppliedExercises.Where(x => x.FlightId.Equals(flightId));
@@ -56,7 +74,7 @@ namespace FlightJournal.Web.Controllers
                         Program = db.TrainingPrograms.FirstOrDefault(p => p.Training2ProgramId == e.programId),
                         Lesson = db.TrainingLessons.FirstOrDefault(p => p.Training2LessonId == e.lessonId),
                         Exercise = db.TrainingExercises.FirstOrDefault(p => p.Training2ExerciseId == e.exerciseId),
-                        Instructor = db.Pilots.FirstOrDefault(p=>p.PilotId == flightData.instructorId)
+                        Instructor = db.Pilots.FirstOrDefault(p=>p.PilotId == instructorId)
                     };
                     if (e.gradingId.HasValue)
                     {
@@ -106,16 +124,12 @@ namespace FlightJournal.Web.Controllers
 
             db.SaveChanges();
 
-            var flight = db.Flights.SingleOrDefault(f => f.FlightId == flightId);
-            if (flight != null )
-            {
-                // updating training data implies updating the flight
-                flight.HasTrainingData = hasTrainingFlightData;
-                flight.LastUpdated = DateTime.Now;
-                flight.LastUpdatedBy = User.Pilot().ToString();
-                db.Entry(flight).State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            // updating training data implies updating the flight
+            flight.HasTrainingData = hasTrainingFlightData;
+            flight.LastUpdated = DateTime.Now;
+            flight.LastUpdatedBy = User.Pilot().ToString();
+            db.Entry(flight).State = EntityState.Modified;
+            db.SaveChanges();
 
             var anExercise = flightData.exercises?.FirstOrDefault();
             if (anExercise != null)
@@ -154,8 +168,11 @@ namespace FlightJournal.Web.Controllers
         }
 
 
-        public PartialViewResult GetRecentFlights(string flightId)
+        public ActionResult GetRecentFlights(string flightId)
         {
+            if (!TrainingDataPolicy.CanAccess(Request.IsInstructor(), User.IsAdministrator()))
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
             if (!Guid.TryParse(flightId, out var id)) return PartialView("_PartialTrainingLogView", null);
 
             var frontSeatPilotId = db.Flights.SingleOrDefault(x => x.Deleted == null && x.FlightId == id)?.Pilot.PilotId;
@@ -242,11 +259,7 @@ namespace FlightJournal.Web.Controllers
             var pilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotId)?.Name ?? "(??)";
             var backseatPilot = db.Pilots.SingleOrDefault(x => x.PilotId == flight.PilotBackseatId);
             var backseatPilotName = backseatPilot?.Name ?? "(??)";
-            var instructorId = backseatPilot != null && backseatPilot.IsInstructor
-                ? backseatPilot.PilotId
-                : User.Pilot() != null && User.Pilot().IsInstructor
-                    ? User.Pilot().PilotId
-                    : -1;
+            var instructorId = TrainingDataPolicy.ResolveInstructorId(backseatPilot, User.Pilot());
             var model = new TrainingLogViewModel(flight, pilot, backseatPilotName, new TrainingDataWrapper(db, flight.PilotId, instructorId, flight, trainingProgramId));
             return model;
         }
@@ -258,7 +271,6 @@ namespace FlightJournal.Web.Controllers
         public string originator { get; set; }
         // ref to Flight
         public string flightId { get; set; }
-        public int instructorId { get; set; }
         // exercise applied in this flight. Should go into AppliedExercises
         public Exercise[] exercises { get; set; }
 
