@@ -329,6 +329,7 @@
 <div id="urls"
      data-saveflight="@Url.Action("UpdateTrainingFlight", "TrainingLog")"
      data-recentflights="@Url.Action("GetRecentFlights", "TrainingLog")">
+    @Html.AntiForgeryToken()
 </div>
 
 
@@ -589,7 +590,6 @@
             var flightData = JSON.stringify({
                 originator: "@SessionId",
                 flightId: "@Model.FlightId",
-                instructorId: $("option.instructor:selected").val(),
                 exercises: exercises,
                 manouverIds: manouverIds,
                 note: $("#flightnotes").val(),
@@ -604,6 +604,7 @@
                 url: url,
                 data: flightData,
                 contentType: "application/json; charset=utf-8",
+                headers: { "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 type: "POST",
                 dataType: "json",
                 success: function(d) {
