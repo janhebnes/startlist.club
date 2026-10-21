@@ -402,6 +402,9 @@
     <Compile Include="Aprs\AircraftCatalog.cs" />
     <Compile Include="Aprs\AircraftEventHandler.cs" />
     <Compile Include="Aprs\AprsListener.cs" />
+    <Compile Include="Aprs\FlightAnalysisWorker.cs" />
+    <Compile Include="Aprs\FlightAnalysisWorkerOptions.cs" />
+    <Compile Include="Aprs\IFlightAnalysisEngine.cs" />
     <Compile Include="Aprs\TokenSleeper.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Configuration\Settings.cs" />

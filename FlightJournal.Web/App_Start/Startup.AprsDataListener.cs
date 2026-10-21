@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using FlightJournal.Web.Aprs;
 using FlightJournal.Web.Logging;
@@ -21,15 +23,35 @@ namespace FlightJournal.Web
             }
 
             var tc = new Microsoft.ApplicationInsights.TelemetryClient();
-            var db = new FlightContext();
             Log.Information("Setting up APRS data listener chain");
-            _catalog = new AircraftCatalog(null, tc);
-            _aprsListener = new AprsListener(_catalog, db.ListenerAreas, tc);
 
-            _aircraftEventHandler = new AircraftEventHandler(_aprsListener, db, tc);
+            List<ListenerArea> areas;
+            using (var db = new FlightContext())
+            {
+                areas = db.ListenerAreas.ToList();
+            }
+
+            _catalog = new AircraftCatalog(null, tc);
+            var worker = new FlightAnalysisWorker(
+                () => new SkyhopFlightAnalysisEngine(),
+                tc,
+                () => DateTime.UtcNow,
+                new FlightAnalysisWorkerOptions { RecycleHourUtc = AprsRecycleHourUtc() });
+            _aprsListener = new AprsListener(_catalog, areas, worker, tc);
+
+            _aircraftEventHandler = new AircraftEventHandler(_aprsListener, tc);
 
             _aprsListener.Start();
 
+        }
+
+        /// <summary>UTC hour of the nightly flight-analysis recycle (app setting AprsRecycleHourUtc, default 2).</summary>
+        private static int AprsRecycleHourUtc()
+        {
+            var value = ConfigurationManager.AppSettings["AprsRecycleHourUtc"];
+            return int.TryParse(value, out var hour) && hour >= 0 && hour <= 23
+                ? hour
+                : new FlightAnalysisWorkerOptions().RecycleHourUtc;
         }
 
         /// <summary>

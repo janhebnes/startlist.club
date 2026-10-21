@@ -42,21 +42,22 @@ namespace FlightJournal.Web.Aprs
         private TelemetryClient _telemetryClient;
 
         private readonly IAircraftCatalog _catalog;
-        private static List<Listener> _aprsClients;
-        private static readonly FlightContextFactory FlightContextFactory = new();
+        private readonly List<Listener> _aprsClients;
+        private readonly FlightAnalysisWorker _worker;
 
         public EventHandler<AircraftEvent> OnAircraftTakeoff { get; set; }
         public EventHandler<AircraftEvent> OnAircraftLanding { get; set; }
 
 
-        public AprsListener(IAircraftCatalog catalog, IEnumerable<ListenerArea> ranges, TelemetryClient telemetryClient)
+        public AprsListener(IAircraftCatalog catalog, IEnumerable<ListenerArea> ranges, FlightAnalysisWorker worker, TelemetryClient telemetryClient)
         {
             _catalog = catalog;
+            _worker = worker;
 
-            FlightContextFactory.OnTakeoff += OnTakeoff;
-            FlightContextFactory.OnLanding += OnLanding;
-            FlightContextFactory.OnRadarContact += OnRadarContact;
-            FlightContextFactory.OnContextDispose += OnContactLost;
+            _worker.OnTakeoff += OnTakeoff;
+            _worker.OnLanding += OnLanding;
+            _worker.OnRadarContact += OnRadarContact;
+            _worker.OnContextDispose += OnContactLost;
 
             _aprsClients = ranges.Where(r => r.IsValid).Select(CreateListener).ToList();
             _telemetryClient = telemetryClient;
@@ -89,12 +90,13 @@ namespace FlightJournal.Web.Aprs
                     break;
                 case DataType.PositionWithTimestampNoAprsMessaging:
                 case DataType.PositionWithTimestampWithAprsMessaging:
+                    PositionUpdate positionUpdate;
                     try
                     {
                         if (!e.AprsMessage.IsComplete())
                             break;
 
-                        var positionUpdate = new Skyhop.FlightAnalysis.Models.PositionUpdate(
+                        positionUpdate = new PositionUpdate(
                             e.AprsMessage.Callsign,
                             e.AprsMessage.ReceivedDate.ToUniversalTime(),
                             e.AprsMessage.Latitude.ToDegreesFixed(),
@@ -102,13 +104,15 @@ namespace FlightJournal.Web.Aprs
                             e.AprsMessage.Altitude.MetersAboveSeaLevel,
                             e.AprsMessage.Speed.Knots,
                             e.AprsMessage.Direction.ToDegrees());
-
-                        FlightContextFactory.Enqueue(positionUpdate);
                     }
                     catch (Exception ex)
                     {
                         Log.Exception($"{nameof(AprsListener)} OnAprsPacketReceived", ex);
+                        break;
                     }
+
+                    // Listener threads only hand off; the worker is the single owner of flight analysis
+                    _worker.Post(positionUpdate);
                     break;
                 default:
                     break;
@@ -122,7 +126,10 @@ namespace FlightJournal.Web.Aprs
 
         private void OnRadarContact(object sender, OnRadarContactEventArgs e)
         {
-            var lastPositionUpdate = e.Flight.PositionUpdates.OrderByDescending(q => q.TimeStamp).First();
+            // With minified memory pressure the library may already have trimmed the position history
+            var lastPositionUpdate = e.Flight.PositionUpdates?.OrderByDescending(q => q.TimeStamp).FirstOrDefault();
+            if (lastPositionUpdate == null)
+                return;
             var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
             Log.Debug($"{nameof(AprsListener)}: {lastPositionUpdate.TimeStamp:o}: {e.Flight.Aircraft} {aircraft.Info()} - Radar contact at ({lastPositionUpdate.Latitude:N4}, {lastPositionUpdate.Longitude:N4}) @ {lastPositionUpdate.Altitude:N0}ft");
         }
@@ -183,12 +190,14 @@ namespace FlightJournal.Web.Aprs
 
         public void Start()
         {
+            _worker.Start();
             _aprsClients.ForEach(c => c.Open());
         }
 
         public void Dispose()
         {
             _aprsClients.ForEach(c => c.Dispose());
+            _worker.Dispose();
         }
     }
 
