@@ -29,9 +29,6 @@ namespace FlightJournal.Web.Controllers
     [Authorize]
     public class TrainingLogHistoryController : Controller
     {
-        /// <summary>Longest date range served in one request; longer ranges are clamped.</summary>
-        private const int MaxRangeDays = 366;
-
         private readonly FlightContext db = new ();
         public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
@@ -44,7 +41,7 @@ namespace FlightJournal.Web.Controllers
                 fromDate = now.AddDays(-now.Day + 1); // this month
                 toDate = now;
             }
-            var clamped = ClampRange(fromDate.Value, toDate.Value, out var from);
+            var clamped = TrainingHistoryRange.Clamp(fromDate.Value, toDate.Value, out var from);
 
             TrainingFlightHistoryViewModel model;
             var currentClub = SelectedClub();
@@ -64,20 +61,10 @@ namespace FlightJournal.Web.Controllers
                     break;
             }
             if (clamped)
-                model.Message += " " + string.Format(_("The date range was limited to {0} days, ending on the selected end date."), MaxRangeDays);
+                model.Message += " " + string.Format(_("The date range was limited to {0} days, ending on the selected end date."), TrainingHistoryRange.MaxDays);
             model.FromDate = from;
             model.ToDate = toDate.Value;
             return View(model);
-        }
-
-        /// <summary>Limits a custom range to <see cref="MaxRangeDays"/> by moving its start; returns true when it did.</summary>
-        private static bool ClampRange(DateTime fromDate, DateTime toDate, out DateTime clampedFrom)
-        {
-            clampedFrom = fromDate;
-            if ((toDate - fromDate).TotalDays <= MaxRangeDays)
-                return false;
-            clampedFrom = toDate.AddDays(-MaxRangeDays);
-            return true;
         }
 
         /// <summary>The selected club, captured once; null when no club is selected.</summary>
@@ -169,6 +156,10 @@ namespace FlightJournal.Web.Controllers
                 toDate = now;
             }
 
+            // Same bound as the history page: at most MaxDays, ending on the selected end date
+            TrainingHistoryRange.Clamp(fromDate.Value, toDate.Value, out var from);
+            fromDate = from;
+
             var flights = SelectFlights(fromDate.Value, toDate.Value);
             var model = CreateExportModel(db, flights, User?.Identity?.Name);
 
@@ -194,6 +185,10 @@ namespace FlightJournal.Web.Controllers
                 fromDate = now.AddDays(-now.Day + 1); // this month
                 toDate = now;
             }
+
+            // Same bound as the history page: at most MaxDays, ending on the selected end date
+            TrainingHistoryRange.Clamp(fromDate.Value, toDate.Value, out var from);
+            fromDate = from;
 
             var flights = SelectFlights(fromDate.Value, toDate.Value);
             var viewModel = CreateExportModel(db, flights, User?.Identity?.Name);

@@ -190,6 +190,7 @@
     <Compile Include="Controllers\LanguageControllerTest.cs" />
     <Compile Include="Integration\TrainingHistoryQueryTest.cs" />
     <Compile Include="Models\TrainingFlightValidationTest.cs" />
+    <Compile Include="Models\TrainingHistoryRangeTest.cs" />
     <Compile Include="Models\TrainingHistoryRowBuilderTest.cs" />
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\SmtpTest.cs" />

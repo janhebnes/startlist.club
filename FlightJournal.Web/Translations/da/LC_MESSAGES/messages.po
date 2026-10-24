@@ -30,6 +30,11 @@ msgstr "Dine uddannelsesflyvninger"
 msgid "You do not have access to training flight logs"
 msgstr "Du har ikke adgang til at se uddannelsesflyvninger"
 
+#: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:64
+#, csharp-format
+msgid "The date range was limited to {0} days, ending on the selected end date."
+msgstr "Perioden er begrænset til {0} dage og slutter på den valgte slutdato."
+
 #: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:77
 #: FlightJournal.Web\Controllers\TrainingLogHistoryController.cs:101
 msgid "Unknown pilot or lesson id"

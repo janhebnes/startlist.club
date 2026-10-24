@@ -17,6 +17,23 @@ namespace FlightJournal.Web.Models.Training
         public ClubScope Club { get; set; }           // null = unfiltered; values captured, never the static
     }
 
+    /// <summary>Bounds a requested date range, so no single request reads unlimited history.</summary>
+    public static class TrainingHistoryRange
+    {
+        /// <summary>Longest date range served in one request; longer ranges are clamped.</summary>
+        public const int MaxDays = 366;
+
+        /// <summary>Limits the range to <see cref="MaxDays"/> by moving its start (the end date is kept); returns true when it did.</summary>
+        public static bool Clamp(DateTime fromDate, DateTime toDate, out DateTime clampedFrom)
+        {
+            clampedFrom = fromDate;
+            if ((toDate - fromDate).TotalDays <= MaxDays)
+                return false;
+            clampedFrom = toDate.AddDays(-MaxDays);
+            return true;
+        }
+    }
+
     public sealed class ClubScope
     {
         public int ClubId { get; set; }
