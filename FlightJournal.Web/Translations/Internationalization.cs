@@ -195,7 +195,10 @@ namespace FlightJournal.Web.Translations
 
                 HttpCookie cookie = new HttpCookie(Settings.LanguageCodeCookieKey);
                 cookie.Value = value.ToLower();
-                cookie.Expires = DateTime.Now.AddMonths(36);
+                cookie.Expires = DateTime.Now.AddMonths(12);
+                cookie.HttpOnly = true; // read server-side only
+                cookie.Secure = HttpContext.Current.Request.IsSecureConnection; // secure in production, still usable on local http
+                cookie.SameSite = SameSiteMode.Lax;
                 HttpContext.Current.Response.Cookies.Add(cookie);
                 HttpContext.Current.Items[Settings.LanguageCodeCookieKey] = value.ToLower();
             }
