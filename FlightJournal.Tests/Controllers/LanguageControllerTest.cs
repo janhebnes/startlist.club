@@ -1,6 +1,8 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FlightJournal.Web.Controllers;
@@ -27,14 +29,64 @@ namespace FlightJournal.Tests.Controllers
             HttpContext.Current = null;
         }
 
-        private static LanguageController CreateControllerWithHttpContext()
+        private static LanguageController CreateControllerWithHttpContext(bool secureConnection = false)
         {
-            HttpContext.Current = new HttpContext(new HttpRequest("", "http://localhost/", ""), new HttpResponse(new StringWriter()));
+            HttpContext.Current = secureConnection
+                ? new HttpContext(new SecureWorkerRequest())
+                : new HttpContext(new HttpRequest("", "http://localhost/", ""), new HttpResponse(new StringWriter()));
             var wrapper = new HttpContextWrapper(HttpContext.Current);
             var controller = new LanguageController();
             controller.ControllerContext = new ControllerContext(wrapper, new RouteData(), controller);
             controller.Url = new UrlHelper(new RequestContext(wrapper, new RouteData()));
             return controller;
+        }
+
+        /// <summary>A request that reports an HTTPS connection (HttpRequest built from a URL never does).</summary>
+        private sealed class SecureWorkerRequest : SimpleWorkerRequest
+        {
+            public SecureWorkerRequest() : base("/", Path.GetTempPath(), "", "", new StringWriter())
+            {
+            }
+
+            public override bool IsSecure()
+            {
+                return true;
+            }
+        }
+
+        private static HttpCookie LanguageCookie()
+        {
+            var cookies = HttpContext.Current.Response.Cookies;
+            Assert.IsTrue(cookies.AllKeys.Contains(Internationalization.Settings.LanguageCodeCookieKey), "Language cookie was not set");
+            return cookies[Internationalization.Settings.LanguageCodeCookieKey];
+        }
+
+        private static void AssertHardened(HttpCookie cookie)
+        {
+            Assert.IsTrue(cookie.HttpOnly, "HttpOnly");
+            Assert.AreEqual(SameSiteMode.Lax, cookie.SameSite, "SameSite");
+            var expected = DateTime.Now.AddMonths(12);
+            Assert.IsTrue(Math.Abs((cookie.Expires - expected).TotalDays) < 1, $"Expected about 12 months, got {cookie.Expires:o}");
+        }
+
+        [TestMethod]
+        public void Set_SupportedCode_CookieHardened_OverHttp_NotSecure()
+        {
+            CreateControllerWithHttpContext().Set("da", "/");
+
+            var cookie = LanguageCookie();
+            AssertHardened(cookie);
+            Assert.IsFalse(cookie.Secure, "Secure must follow the connection, so local http still works");
+        }
+
+        [TestMethod]
+        public void Set_SupportedCode_CookieHardened_OverHttps_Secure()
+        {
+            CreateControllerWithHttpContext(secureConnection: true).Set("da", "/");
+
+            var cookie = LanguageCookie();
+            AssertHardened(cookie);
+            Assert.IsTrue(cookie.Secure, "Secure");
         }
 
         private static void AssertBadRequest(ActionResult result)
