@@ -64,7 +64,7 @@ namespace FlightJournal.Web.Controllers
                     break;
             }
             if (clamped)
-                model.Message += " " + string.Format(_("The date range was limited to the last {0} days."), MaxRangeDays);
+                model.Message += " " + string.Format(_("The date range was limited to {0} days, ending on the selected end date."), MaxRangeDays);
             model.FromDate = from;
             model.ToDate = toDate.Value;
             return View(model);
