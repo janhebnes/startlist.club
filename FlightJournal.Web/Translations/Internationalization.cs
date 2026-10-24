@@ -92,6 +92,13 @@ namespace FlightJournal.Web.Translations
 
         #region public methods
 
+        /// <summary>True when the code maps to a loaded localization. Null/blank safe; never touches the DB.</summary>
+        public static bool IsSupported(string languageCode)
+        {
+            return !string.IsNullOrWhiteSpace(languageCode)
+                && Localizations.ContainsKey(languageCode.Trim().ToLower());
+        }
+
         /// <summary>
         /// Get a translated version of the supplied text message.
         /// </summary>
@@ -183,13 +190,13 @@ namespace FlightJournal.Web.Translations
             }
             set
             {
-                if (Localizations.ContainsKey(value.ToLower()))
-                {
-                    HttpCookie cookie = new HttpCookie(Settings.LanguageCodeCookieKey);
-                    cookie.Value = value.ToLower();
-                    cookie.Expires = DateTime.Now.AddMonths(36);
-                    HttpContext.Current.Response.Cookies.Add(cookie);
-                }
+                if (!IsSupported(value))
+                    return;
+
+                HttpCookie cookie = new HttpCookie(Settings.LanguageCodeCookieKey);
+                cookie.Value = value.ToLower();
+                cookie.Expires = DateTime.Now.AddMonths(36);
+                HttpContext.Current.Response.Cookies.Add(cookie);
                 HttpContext.Current.Items[Settings.LanguageCodeCookieKey] = value.ToLower();
             }
         }

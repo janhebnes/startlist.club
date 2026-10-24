@@ -1267,7 +1267,6 @@
     <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
     <Content Include="Views\Flight\Disable.cshtml" />
     <Content Include="Views\About\License.cshtml" />
-    <Content Include="Views\Language\LanguageNotSupported.cshtml" />
     <Content Include="Views\Shared\_LanguagePartial.cshtml" />
     <Content Include="Translations\da\LC_MESSAGES\messages.po" />
     <Content Include="Translations\en\LC_MESSAGES\messages.po" />
@@ -1363,7 +1362,6 @@
     <Content Include="Views\TrainingLog\SelectTrainingProgram.cshtml" />
     <Content Include="Views\Flight\PartialGrid.cshtml" />
     <Content Include="Views\TrainingStatus\_PartialTrainingTimeline.cshtml" />
-    <Content Include="Views\Language\RedirectNotSupported.cshtml" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
