@@ -37,22 +37,28 @@ namespace FlightJournal.Tests.Models
         }
 
         [TestMethod]
-        public void ResolveInstructorId_BackseatInstructor_Wins()
+        public void ResolveInstructorId_CurrentUserInstructor_Wins()
         {
-            Assert.AreEqual(11, TrainingDataPolicy.ResolveInstructorId(Instructor(11), Instructor(22)));
+            // Both are instructors: the signed-in instructor entering the record is credited
+            Assert.AreEqual(22, TrainingDataPolicy.ResolveInstructorId(Instructor(11), Instructor(22)));
+            Assert.AreEqual(22, TrainingDataPolicy.ResolveInstructorId(PlainPilot(11), Instructor(22)));
+            Assert.AreEqual(22, TrainingDataPolicy.ResolveInstructorId(null, Instructor(22)));
         }
 
         [TestMethod]
-        public void ResolveInstructorId_CurrentUserInstructor_WhenBackseatNot()
+        public void ResolveInstructorId_BackseatInstructor_WhenCurrentUserNotInstructor()
         {
-            Assert.AreEqual(22, TrainingDataPolicy.ResolveInstructorId(PlainPilot(11), Instructor(22)));
-            Assert.AreEqual(22, TrainingDataPolicy.ResolveInstructorId(null, Instructor(22)));
+            // e.g. an administrator who is not an instructor correcting the record
+            Assert.AreEqual(11, TrainingDataPolicy.ResolveInstructorId(Instructor(11), PlainPilot(22)));
+            Assert.AreEqual(11, TrainingDataPolicy.ResolveInstructorId(Instructor(11), null));
         }
 
         [TestMethod]
         public void ResolveInstructorId_NoInstructor_ReturnsMinusOne()
         {
             Assert.AreEqual(-1, TrainingDataPolicy.ResolveInstructorId(PlainPilot(11), PlainPilot(22)));
+            Assert.AreEqual(-1, TrainingDataPolicy.ResolveInstructorId(null, PlainPilot(22)));
+            Assert.AreEqual(-1, TrainingDataPolicy.ResolveInstructorId(PlainPilot(11), null));
             Assert.AreEqual(-1, TrainingDataPolicy.ResolveInstructorId(null, null));
         }
     }
