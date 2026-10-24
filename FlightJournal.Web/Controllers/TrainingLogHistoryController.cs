@@ -11,6 +11,7 @@ using CsvHelper.Configuration;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
 using FlightJournal.Web.Models.Export;
+using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
 using FlightJournal.Web.Models.Training.Predefined;
@@ -25,36 +26,65 @@ namespace FlightJournal.Web.Controllers
     ///
     /// Depending on user permissions, the data may cover multiple pilots.
     /// </summary>
+    [Authorize]
     public class TrainingLogHistoryController : Controller
     {
+        /// <summary>Longest date range served in one request; longer ranges are clamped.</summary>
+        private const int MaxRangeDays = 366;
+
         private readonly FlightContext db = new ();
         public ActionResult Index(DateTime? fromDate, DateTime? toDate)
         {
+            // Access is decided before any training data is queried
+            var scope = UsersAccessScope();
+
             if (!fromDate.HasValue || !toDate.HasValue)
             {
                 var now = DateTime.Now.Date;
                 fromDate = now.AddDays(-now.Day + 1); // this month
                 toDate = now;
             }
+            var clamped = ClampRange(fromDate.Value, toDate.Value, out var from);
 
-            var flights = SelectFlights(fromDate.Value, toDate.Value);
-            var model = CreateModel(flights.AsList());
-            model.FromDate = fromDate.Value;
-            model.ToDate = toDate.Value;
-
-            switch (UsersAccessScope())
+            TrainingFlightHistoryViewModel model;
+            var currentClub = SelectedClub();
+            switch (scope)
             {
                 case AccessScope.AllFlights:
+                    model = CreateModel(new TrainingHistoryFilter { From = from, To = toDate.Value, Club = currentClub }, currentClub);
                     model.Message = _("All training flights");
                     break;
                 case AccessScope.OwnFlights:
+                    model = CreateModel(new TrainingHistoryFilter { From = from, To = toDate.Value, PilotId = Request.Pilot().PilotId }, currentClub);
                     model.Message = _("Your training flights");
                     break;
                 default:
+                    model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>() };
                     model.Message = _("You do not have access to training flight logs");
                     break;
             }
+            if (clamped)
+                model.Message += " " + string.Format(_("The date range was limited to the last {0} days."), MaxRangeDays);
+            model.FromDate = from;
+            model.ToDate = toDate.Value;
             return View(model);
+        }
+
+        /// <summary>Limits a custom range to <see cref="MaxRangeDays"/> by moving its start; returns true when it did.</summary>
+        private static bool ClampRange(DateTime fromDate, DateTime toDate, out DateTime clampedFrom)
+        {
+            clampedFrom = fromDate;
+            if ((toDate - fromDate).TotalDays <= MaxRangeDays)
+                return false;
+            clampedFrom = toDate.AddDays(-MaxRangeDays);
+            return true;
+        }
+
+        /// <summary>The selected club, captured once; null when no club is selected.</summary>
+        private static ClubScope SelectedClub()
+        {
+            var club = ClubController.CurrentClub;
+            return club.ShortName != null ? new ClubScope { ClubId = club.ClubId, LocationId = club.LocationId } : null;
         }
 
 
@@ -83,13 +113,7 @@ namespace FlightJournal.Web.Controllers
                         model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("Unknown pilot or program id") };
                     else
                     {
-                        var flightIds = DbHelper.IdsOfTrainingFlightsWithProgramId(db, programId.Value);
-                        var flights = GetFlightsFromIdsAndMore(
-                            flightIds,
-                            pilotId,
-                            null,
-                            null);
-                        model = CreateModel(flights.AsList());
+                        model = CreateModel(new TrainingHistoryFilter { PilotId = pilotId, ProgramId = programId.Value }, SelectedClub());
                         var template = _("Flights of pilot {0} on program {1}");
                         model.Message = string.Format(template, pilot.Name, program.Name);
                     }
@@ -101,13 +125,7 @@ namespace FlightJournal.Web.Controllers
                         model = new TrainingFlightHistoryViewModel { Flights = Enumerable.Empty<TrainingFlightViewModel>(), Message = _("Unknown pilot or lesson id") };
                     else
                     {
-                        var flightIds = DbHelper.IdsOfTrainingFlightsWithLesson(db, lessonId.Value);
-                        var flights = GetFlightsFromIdsAndMore(
-                            flightIds,
-                            pilotId,
-                            null,
-                            null);
-                        model = CreateModel(flights.AsList());
+                        model = CreateModel(new TrainingHistoryFilter { PilotId = pilotId, LessonId = lessonId.Value }, SelectedClub());
                         var template = _("Flights of pilot {0} on exercise {1}");
                         model.Message = string.Format(template, pilot.Name, lesson.Name);
                     }
@@ -115,13 +133,7 @@ namespace FlightJournal.Web.Controllers
                 else
                 {
                     // everything
-                    var flightIds = DbHelper.IdsOfTrainingFlights(db);
-                    var flights = GetFlightsFromIdsAndMore(
-                        flightIds,
-                        pilotId,
-                        null,
-                        null);
-                    model = CreateModel(flights.AsList());
+                    model = CreateModel(new TrainingHistoryFilter { PilotId = pilotId }, SelectedClub());
                     var template = _("Flights of pilot {0}");
                     model.Message = string.Format(template, pilot.Name);
                 }
@@ -137,20 +149,6 @@ namespace FlightJournal.Web.Controllers
 
             return View("Index", model);
         }
-
-        private IEnumerable<Flight> GetFlightsFromIdsAndMore(HashSet<Guid> ids, int pilotId, DateTime? fromDate, DateTime? toDate)
-        {
-            var result =  db.Flights.Where(x => x.Deleted == null && ids.Contains(x.FlightId));
-            if(pilotId > -1)
-                result = result.Where(x=>x.PilotId == pilotId || x.PilotBackseatId == pilotId);
-            if (fromDate.HasValue)
-                result = result.Where(x => x.Date >= fromDate.Value);
-            if (toDate.HasValue)
-                result = result.Where(x => x.Date <= toDate.Value);
-
-            return result;
-        }
-
 
         public PartialViewResult GetDetails(string flightId)
         {
@@ -205,104 +203,47 @@ namespace FlightJournal.Web.Controllers
         }
 
 
-        private IEnumerable<Flight> SelectFlights(DateTime fromDate, DateTime toDate)
+        /// <summary>Set-based selection for the exports (no id list); access is decided before the query is built.</summary>
+        private IQueryable<Flight> SelectFlights(DateTime fromDate, DateTime toDate)
         {
-            IEnumerable<Flight> flights;
-            var trainingFlightIds = DbHelper.IdsOfTrainingFlights(db);
-
+            var query = new TrainingHistoryQuery(db);
             switch (UsersAccessScope())
             {
                 case AccessScope.AllFlights:
-                    flights = GetFlightsFromIdsAndMore(trainingFlightIds, -1, fromDate, toDate);
-                    if (ClubController.CurrentClub.ShortName != null)
-                    {
-                        flights = flights.Where(f =>
-                            f.StartedFromId == ClubController.CurrentClub.LocationId
-                            || f.LandedOnId == ClubController.CurrentClub.LocationId
-                            || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                            || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                            || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId));
-                    }
-                    break;
+                    return query.TrainingFlights(new TrainingHistoryFilter { From = fromDate, To = toDate, Club = SelectedClub() });
                 case AccessScope.OwnFlights:
-                    var pilotId = Request.Pilot().PilotId;
-                    flights = GetFlightsFromIdsAndMore(trainingFlightIds, pilotId, fromDate, toDate);
-                    break;
+                    return query.TrainingFlights(new TrainingHistoryFilter { From = fromDate, To = toDate, PilotId = Request.Pilot().PilotId });
                 default:
-                    flights = Enumerable.Empty<Flight>();
-                    break;
+                    return Enumerable.Empty<Flight>().AsQueryable();
             }
-            return flights;
         }
 
 
-        private TrainingFlightHistoryViewModel CreateModel(IEnumerable<Flight> flights)
+        /// <summary>Loads flat rows in a fixed number of queries and maps them to the (unchanged) view model.</summary>
+        private TrainingFlightHistoryViewModel CreateModel(TrainingHistoryFilter filter, ClubScope currentClub)
         {
-            var flightModels = new List<TrainingFlightViewModel>();
-            var flightIds = flights.Select(x => x.FlightId).ToHashSet();
-            var exercisesForTheseFlights = db.AppliedExercises
-                    .Where(x => flightIds.Contains(x.FlightId))
-                    .AsReadOnlyList();
-
-            foreach (var f in flights)
-            {
-                var exercisesForThisFlight = exercisesForTheseFlights.Where(x => x.FlightId == f.FlightId).AsReadOnlyList();
-                var programName = string.Join(", ", exercisesForThisFlight.Select(x => x.Program.ShortName).Distinct()); // should be only one on a single flight, but...
-                var lessonsForThisFlight = exercisesForThisFlight.Select(x => x.Lesson).GroupBy(a => a).ToDictionary((g) => g.Key, g => g.Count()).OrderByDescending(d => d.Value).ToList();
-                var annotation = db.TrainingFlightAnnotations.FirstOrDefault(x => x.FlightId == f.FlightId);
-                var primaryLessonName = "";
-                if (!lessonsForThisFlight.IsNullOrEmpty())
+            var flightModels = new TrainingHistoryQuery(db).Load(filter, currentClub)
+                .Select(r => new TrainingFlightViewModel
                 {
-                    var primaryLesson = lessonsForThisFlight.Where(x => x.Value == lessonsForThisFlight.First().Value)
-                        .OrderBy(x => x.Key.DisplayOrder).Last();
-                    primaryLessonName = primaryLesson.Key.Name;
-                }
-                var instructor = exercisesForThisFlight.FirstOrDefault(x => x.Instructor != null)?.Instructor;
-                var instructorNameAndClub = instructor != null ? $"{instructor.Name} ({instructor.Club.ShortName})" : "";
-                var validator = new TrainingFlightExportValidator(f, exercisesForThisFlight);
-                var flightPhaseComments = CommentsForFlight(db, annotation)
-                    .Where(x => x.Value.Any())
-                    .Select(x => new CommentInFlightPhaseExportViewModel(x.Key, x.Value))
-                    .Select(x => $"{x.FlightPhase.Phase}: {string.Join(",", x.Comments.Select(y => y.Comment))}");
-                var allComments = new List<string> { annotation?.Note };
-                allComments.AddRange(flightPhaseComments);
-                var exercisesLong = exercisesForThisFlight
-                    .OrderBy(x => x.Lesson.DisplayOrder)
-                    .ThenBy(x => x.Exercise.DisplayOrder)
-                    .Select(x => $"{x.Lesson.Name}-{x.Exercise.Name} ({x.Grading?.Value})").ToList();
-                var exercisesShort = exercisesForThisFlight
-                    .OrderBy(x => x.Lesson.DisplayOrder)
-                    .Select(x => $"{x.Lesson.Name}")
-                    .Distinct()
-                    .ToList();
-
-                var plane = f.Plane;
-                var pilot = f.Pilot;
-                var startedFrom = f.StartedFrom;
-                var manouvres = annotation?.Manouvres;
-
-                var m = new TrainingFlightViewModel
-                {
-                    FlightId = f.FlightId.ToString(),
-                    IsCurrentClubPilots = f.IsCurrentClubPilots(),
-                    Timestamp = (f.Landing ?? f.Date).ToString("yyyy-MM-dd HH:mm"),
-                    Date = f.Date,
-                    Plane = $"{plane.CompetitionId} ({plane.Registration})",
-                    FrontSeatOccupant = $"{pilot.Name} ({pilot.MemberId})",
-                    Instructor = instructorNameAndClub,
-                    Airfield = startedFrom.Name,
-                    Duration = f.Duration.ToString("hh\\:mm"),
-                    LandingCount = f.LandingCount,
-                    TrainingProgramName = programName,
-                    PrimaryLessonName = primaryLessonName,
-                    ExercisesFull = string.Join(", ", exercisesLong),
-                    ExercisesShort = string.Join(", ", exercisesShort),
-                    Manouvres = string.Join(", ", manouvres?.Select(x => $"<i class='{x.IconCssClass}'></i>{new HtmlString(x.ManouvreItem)}") ?? Enumerable.Empty<string>()),
-                    Note = string.Join(" - ", allComments.Where(x=>!x.IsNullOrEmpty())),
-                    PassesValidation = validator.IsValid,
-                };
-                flightModels.Add(m);
-            }
+                    FlightId = r.FlightId.ToString(),
+                    IsCurrentClubPilots = r.IsCurrentClubPilots,
+                    Timestamp = r.Timestamp,
+                    Date = r.Date,
+                    Plane = r.Plane,
+                    FrontSeatOccupant = r.FrontSeatOccupant,
+                    Instructor = r.Instructor,
+                    Airfield = r.Airfield,
+                    Duration = r.Duration,
+                    LandingCount = r.LandingCount,
+                    TrainingProgramName = r.TrainingProgramName,
+                    PrimaryLessonName = r.PrimaryLessonName,
+                    ExercisesFull = r.ExercisesFull,
+                    ExercisesShort = r.ExercisesShort,
+                    Manouvres = r.Manouvres,
+                    Note = r.Note,
+                    PassesValidation = r.PassesValidation,
+                })
+                .ToList();
             return new TrainingFlightHistoryViewModel { Flights = flightModels, Message = flightModels.Any() ? "" : _("No flights") };
         }
 

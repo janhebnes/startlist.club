@@ -463,6 +463,10 @@
     <Compile Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.designer.cs">
       <DependentUpon>202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.cs" />
+    <Compile Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.Designer.cs">
+      <DependentUpon>202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\Export\TrainingFlightExportValidator.cs" />
     <Compile Include="Models\Export\TrainingFlightHistoryExportViewModels.cs" />
@@ -530,6 +534,7 @@
     <Compile Include="Models\Training\Predefined\Manouvre.cs" />
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
+    <Compile Include="Models\Training\TrainingHistoryQuery.cs" />
     <Compile Include="Models\Training\TrainingTimelineViewModel.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
@@ -877,6 +882,7 @@
     <Content Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.sql" />
     <Content Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.sql" />
     <Content Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.sql" />
+    <Content Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1446,6 +1452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.resx">
       <DependentUpon>202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.resx">
+      <DependentUpon>202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.resx">
       <DependentUpon>202305061826179_Adding PilotInTrainingProgram.cs</DependentUpon>
