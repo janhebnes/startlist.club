@@ -65,7 +65,10 @@ namespace FlightJournal.Web.Configuration
                     new DemoMembership(string.Empty, "pilot-of-other-club@demo.startlist.club", "pilot", "+4500000007"),
                     // Users related to flight training 
                     new DemoMembership(string.Empty, "student-pilot@demo.startlist.club", "pilot", "+4500000008"),
-                    new DemoMembership(string.Empty, "instructor-pilot@demo.startlist.club", "pilot", "+4500000009", "Maverick-FI007")
+                    new DemoMembership(string.Empty, "instructor-pilot@demo.startlist.club", "pilot", "+4500000009", "Maverick-FI007"),
+                    new DemoMembership(string.Empty, "student-b@demo.startlist.club", "pilot", "+4500000010"),
+                    new DemoMembership(string.Empty, "student-other-club@demo.startlist.club", "pilot", "+4500000011"),
+                    new DemoMembership(string.Empty, "instructor-other-club@demo.startlist.club", "pilot", "+4500000012", "Goose-FI008")
                 };
             }
         }
