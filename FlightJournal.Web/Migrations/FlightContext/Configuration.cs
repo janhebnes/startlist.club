@@ -97,7 +97,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.SaveChanges();
 
             // Pilots
-            var pilot = new Pilot { Name = "Jan Hebnes", MemberId = "1241", Club = club, Email = "jan.hebnes@gmail.com", MobilNumber = "+4500000000" };
+            var pilot = new Pilot { Name = "Mr Demo Admin", MemberId = "1241", Club = club, MobilNumber = "+4500000000" };
             context.Pilots.Add(pilot);
             var pilot1 = new Pilot { Name = "Mr Demo Manager", MemberId = "9991", Club = club, MobilNumber = "+4500000001" };
             context.Pilots.Add(pilot1);
