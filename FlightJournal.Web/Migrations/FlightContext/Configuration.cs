@@ -97,7 +97,7 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.SaveChanges();
 
             // Pilots
-            var pilot = new Pilot { Name = "Jan Hebnes", MemberId = "1241", Club = club, Email = "jan.hebnes@gmail.com", MobilNumber = "+4500000000" };
+            var pilot = new Pilot { Name = "Mr Demo Admin", MemberId = "1241", Club = club, MobilNumber = "+4500000000" };
             context.Pilots.Add(pilot);
             var pilot1 = new Pilot { Name = "Mr Demo Manager", MemberId = "9991", Club = club, MobilNumber = "+4500000001" };
             context.Pilots.Add(pilot1);
@@ -143,11 +143,31 @@ namespace FlightJournal.Web.Migrations.FlightContext
             context.Pilots.Add(pilotStudent);
             var pilotInstructor = new Pilot { Name = "Mr Demo Instructor Pilot", MemberId = "9999", Club = club, MobilNumber = "+4500000009", InstructorId = "Maverick-FI007" };
             context.Pilots.Add(pilotInstructor);
+            var pilotStudentB = new Pilot { Name = "Ms Demo Student Pilot B", MemberId = "9980", Club = club, MobilNumber = "+4500000010" };
+            context.Pilots.Add(pilotStudentB);
+            var pilotStudentOther = new Pilot { Name = "Mr Demo Student Pilot OtherClub", MemberId = "9981", Club = club3, MobilNumber = "+4500000011" };
+            context.Pilots.Add(pilotStudentOther);
+            var pilotInstructorOther = new Pilot { Name = "Ms Demo Instructor Pilot OtherClub", MemberId = "9982", Club = club3, MobilNumber = "+4500000012", InstructorId = "Goose-FI008" };
+            context.Pilots.Add(pilotInstructorOther);
 
             context.SaveChanges();
 
-            for(DateTime when = DateTime.Now.AddDays(-90); when <= DateTime.Now; when = when.AddDays(1))
-               FlightTraining.GenerateTrainingFlights(when, pl2, location, pilotStudent, pilotInstructor, start, context);
+            // About two years of deterministic training flights relative to today (none when no training programmes are loaded)
+            var actors = new Dictionary<string, Pilot>
+            {
+                { TrainingScenarioActors.StudentA, pilotStudent },
+                { TrainingScenarioActors.StudentB, pilotStudentB },
+                { TrainingScenarioActors.StudentOther, pilotStudentOther },
+                { TrainingScenarioActors.InstructorA, pilotInstructor },
+                { TrainingScenarioActors.InstructorOther, pilotInstructorOther }
+            };
+            var locations = new Dictionary<string, Location>
+            {
+                { TrainingScenarioActors.MainLocation, location },
+                { TrainingScenarioActors.OtherLocation, location3 }
+            };
+            // pl1 (LS6) is the single-seater for solo flights
+            DemoTrainingSeeder.Apply(context, DemoTrainingScenario.Plan(DateTime.Today), actors, locations, pl2, pl1, start);
         }
 
         protected override void Seed(FlightJournal.Web.Models.FlightContext context)
