@@ -98,6 +98,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=8.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.8.2.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
@@ -187,6 +188,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\AboutControllerTest.cs" />
     <Compile Include="Controllers\LanguageControllerTest.cs" />
+    <Compile Include="Integration\TrainingHistoryQueryTest.cs" />
+    <Compile Include="Models\TrainingFlightValidationTest.cs" />
+    <Compile Include="Models\TrainingHistoryRangeTest.cs" />
+    <Compile Include="Models\TrainingHistoryRowBuilderTest.cs" />
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\SmtpTest.cs" />
     <Compile Include="ServiceProviders\TwilioTest.cs" />
