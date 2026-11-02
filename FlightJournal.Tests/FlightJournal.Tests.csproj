@@ -193,6 +193,7 @@
     <Compile Include="Integration\SqlCommandCounter.cs" />
     <Compile Include="Integration\TrainingHistoryQueryTest.cs" />
     <Compile Include="Migrations\DemoTrainingScenarioTest.cs" />
+    <Compile Include="Models\PayerDisplayTest.cs" />
     <Compile Include="Models\ReportPeriodTest.cs" />
     <Compile Include="Models\TrainingFlightValidationTest.cs" />
     <Compile Include="Models\TrainingHistoryRangeTest.cs" />
