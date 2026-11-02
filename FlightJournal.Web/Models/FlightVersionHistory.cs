@@ -75,6 +75,13 @@ namespace FlightJournal.Web.Models
         public StartType StartType { get; set; }
         public int BetalerId { get; set; }
         public virtual Pilot Betaler { get; set; }
+
+        /// <summary>True when the payer is not the pilot (rendered as "paid by"); see <see cref="Flight.HasSeparatePayer(Pilot, int, int)"/>.</summary>
+        public bool HasSeparatePayer()
+        {
+            return Flight.HasSeparatePayer(this.Betaler, this.BetalerId, this.PilotId);
+        }
+
         public int StartedFromId { get; set; }
         [ForeignKey("StartedFromId")]
         public virtual Location StartedFrom { get; set; }
