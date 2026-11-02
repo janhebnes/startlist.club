@@ -147,6 +147,8 @@ namespace FlightJournal.Tests.Integration
                 touched.Add(f.Pilot.MaskedName(false) + f.PilotBackseat.MaskedName(false) + f.Pilot.MaskedName(true) + f.PilotBackseat.MaskedName(true));
                 touched.Add(f.Pilot.Club.ShortName + f.PilotBackseat?.Club.ShortName + f.Pilot.Name + f.PilotBackseat?.Name);
                 touched.Add(f.Plane.RenderName + f.StartType.ShortName + f.StartType.StartTypeId + f.StartedFrom.Name + f.LandedOn?.Name + f.Betaler.Name);
+                // DisplayTemplates/Pilots.cshtml: the payer's masked name (reads Betaler.Club) and the pilot's club short name
+                touched.Add(f.Betaler.MaskedName(false) + f.Betaler.MaskedName(true) + f.Betaler.Club.ShortName + f.Pilot.Club.ShortName);
             }
             Assert.IsTrue(touched.Count > 0, period.Kind.ToString());
         }
@@ -212,6 +214,41 @@ namespace FlightJournal.Tests.Integration
             Assert.AreEqual(2, rpt.Flights.Count);
             Assert.IsTrue(rpt.Flights.All(f => f.PilotBackseat.MaskedName(false).StartsWith("N.N")));
             Assert.AreEqual(1, _counter.Count, "Only the load itself; no lazy loads:\n" + string.Join("\n---\n", _counter.Commands));
+        }
+
+        /// <summary>
+        /// Day page and root (the unfiltered day page): every navigation the day views and the Pilots display template read,
+        /// including the payer's club, is loaded by the one query, whatever the number of flights.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void DayAndRoot_PayerClubLoaded_OneCommand_ConstantInFlights()
+        {
+            var data = SyntheticReportData.Create(_db);
+            // Masked clubs, so MaskedName(false) has to read the payer's Club; the payer is in another club than the pilot
+            data.HomeClub.MaskPilotIdentityIfUserIsNotLoggedIn = true;
+            data.AwayClub.MaskPilotIdentityIfUserIsNotLoggedIn = true;
+            _db.SaveChanges();
+            var date = new DateTime(Year, 11, 1);
+            var counts = new List<string>();
+            var added = 0;
+            foreach (var total in new[] { 3, 30 })
+            {
+                for (; added < total; added++)
+                    data.AddFlight(_db, date, data.Home, data.HomePilot, data.HomePilot2, data.AwayPilot2);
+                _db.SaveChanges();
+
+                foreach (var club in new[] { data.HomeFilter, ReportClubFilter.Unfiltered })
+                {
+                    var rpt = LoadAndRender(ReportPeriod.ForDay(date), club, excludeDeleted: false);
+                    var ours = rpt.Flights.Where(f => f.PilotId == data.HomePilot.PilotId).ToList();
+                    Assert.AreEqual(total, ours.Count);
+                    Assert.IsTrue(ours.All(f => f.Betaler.MaskedName(false).StartsWith("N.N")));
+                    counts.Add($"{(club.IsUnfiltered ? "root" : "club")} N={total}: {_counter.Count}");
+                    Assert.AreEqual(1, _counter.Count, $"{counts.Last()}; no lazy loads expected:\n" + string.Join("\n---\n", _counter.Commands.Skip(1).Take(3)));
+                }
+            }
+            Console.WriteLine("Day SQL commands: " + string.Join(", ", counts));
         }
 
         [TestMethod]
