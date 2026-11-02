@@ -189,8 +189,12 @@
     <Compile Include="Controllers\AboutControllerTest.cs" />
     <Compile Include="Controllers\LanguageControllerTest.cs" />
     <Compile Include="Integration\DemoTrainingSeederTest.cs" />
+    <Compile Include="Integration\ReportLoadTest.cs" />
+    <Compile Include="Integration\SqlCommandCounter.cs" />
     <Compile Include="Integration\TrainingHistoryQueryTest.cs" />
     <Compile Include="Migrations\DemoTrainingScenarioTest.cs" />
+    <Compile Include="Models\PayerDisplayTest.cs" />
+    <Compile Include="Models\ReportPeriodTest.cs" />
     <Compile Include="Models\TrainingFlightValidationTest.cs" />
     <Compile Include="Models\TrainingHistoryRangeTest.cs" />
     <Compile Include="Models\TrainingHistoryRowBuilderTest.cs" />

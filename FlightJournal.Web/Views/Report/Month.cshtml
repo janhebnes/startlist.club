@@ -142,11 +142,11 @@
             <td>
                 @_("Total Pilots")
             </td>
-            <td align="right">@Model.QueryableClubFlights.Select(s => s.Pilot).Union(Model.QueryableClubFlights.Where(s => s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()</td>
+            <td align="right">@Model.DistinctClubPilotCount()</td>
             @foreach (var date in dates)
             {
                 <td align="right">
-                    @Model.QueryableClubFlights.Where(s => s.Date == date).Select(s => s.Pilot).Union(Model.QueryableClubFlights.Where(s => s.Date == date && s.PilotBackseat != null).Select(s => s.PilotBackseat).Distinct()).Distinct().Count()
+                    @Model.DistinctClubPilotCount(s => s.Date == date)
                 </td>
             }
         </tr>*@

@@ -1,14 +1,13 @@
-﻿using FlightJournal.Web.Controllers;
+﻿using FlightJournal.Web.Models.Report;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace FlightJournal.Web.Models
 {
     public class ReportViewModel
     {
-        private IQueryable<Flight> _flights;
         public DateTime Date { get; set; }
 
         public string FormattedDate { get; set; }
@@ -16,36 +15,63 @@ namespace FlightJournal.Web.Models
         public Dictionary<DateTime, int> AvailableDates { get; set; }
 
         public List<Models.Flight> Flights { get; private set; }
-        
-        public IQueryable<Flight> QueryableFlights
-        {
-            get => _flights;
-            set
-            {
-                _flights = value;
-                
-                Flights = value.ToList();
 
-                QueryableClubFlights = value.Where(f =>
-                    ClubController.CurrentClub.ShortName == null // allowing ClubFlights to list all pilots if no filtering is active
-                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.Pilot == null && f.PilotBackseat == null && f.Betaler == null)); // allowing editing of empty unknown flights assigned to the location }
-                
-                ClubFlights = QueryableClubFlights.ToList();
-
-                Clubs = QueryableClubFlights.Where(f => f.Deleted == null).GroupBy(f => f.Pilot.Club).OrderByDescending(o => o.Count());
-
-                DistinctLocations = QueryableClubFlights.Select(d => d.StartedFrom).Distinct().OrderBy(d => d.Name).ToList();
-            }
-        }
-
-        public IQueryable<Models.Flight> QueryableClubFlights { get; private set; }
         public List<Models.Flight> ClubFlights { get; private set; }
 
         public IEnumerable<IGrouping<Club,Flight>> Clubs { get; private set; }
 
         public List<Models.Location> DistinctLocations { get; set; }
+
+        /// <summary>
+        /// Computes everything the report views read from the flights loaded by ReportDataLoader, in memory,
+        /// so rendering a report never goes back to the database.
+        /// </summary>
+        public void Load(List<Flight> flights, ReportClubFilter club)
+        {
+            Flights = flights;
+
+            ClubFlights = flights.Where(club.IsClubFlight).ToList();
+
+            // Grouped by id: AsNoTracking gives each flight its own Club instance
+            Clubs = ClubFlights.Where(f => f.Deleted == null && f.Pilot != null)
+                .GroupBy(f => f.Pilot.ClubId)
+                .Select(g => (IGrouping<Club, Flight>)new ClubGrouping(g.First().Pilot.Club, g.ToList()))
+                .OrderByDescending(o => o.Count())
+                .ToList();
+
+            DistinctLocations = ClubFlights.Select(d => d.StartedFrom)
+                .GroupBy(l => l.LocationId)
+                .Select(g => g.First())
+                .OrderBy(d => d.Name)
+                .ToList();
+        }
+
+        /// <summary>The number of distinct people in either seat of the club flights matching <paramref name="where"/>.</summary>
+        public int DistinctClubPilotCount(Func<Flight, bool> where = null)
+        {
+            var flights = where == null ? ClubFlights : ClubFlights.Where(where);
+            return flights.Select(f => (int?)f.PilotId)
+                .Concat(flights.Select(f => f.PilotBackseatId))
+                .Where(id => id.HasValue)
+                .Distinct()
+                .Count();
+        }
+
+        private sealed class ClubGrouping : IGrouping<Club, Flight>
+        {
+            private readonly IReadOnlyList<Flight> _flights;
+
+            public ClubGrouping(Club key, IReadOnlyList<Flight> flights)
+            {
+                Key = key;
+                _flights = flights;
+            }
+
+            public Club Key { get; }
+
+            public IEnumerator<Flight> GetEnumerator() => _flights.GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
     }
 }

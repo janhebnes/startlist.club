@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Report;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -24,6 +25,9 @@ namespace FlightJournal.Web.Controllers
             var raw = RouteData.Values["date"];
             int year = 0;
 
+            // Captured once, so the flight query uses plain values instead of re-resolving the current club
+            var clubFilter = ReportClubFilter.From(ClubController.CurrentClub);
+
             // YEAR Statistics
             if (!date.HasValue && raw != null)
             {
@@ -34,23 +38,7 @@ namespace FlightJournal.Web.Controllers
                         var rptYear = new ReportViewModel();
                         rptYear.Date = new DateTime(year, 1, 1);
                         rptYear.FormattedDate = rptYear.Date.ToString("yyyy");
-
-                        // Custom inline Club filtering for allowing maximum performance
-                        // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                        rptYear.QueryableFlights = this.db.Flights
-                            .Where(f => f.Date.Year == rptYear.Date.Year && f.Deleted == null)
-                            .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club")
-                            .Include("PilotBackseat").Include("Betaler").Include("StartType")
-                            .Where(f => ClubController.CurrentClub.ShortName == null
-                                        || f.StartedFromId == ClubController.CurrentClub.LocationId
-                                        || f.LandedOnId == ClubController.CurrentClub.LocationId
-                                        || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                                        || (f.PilotBackseat != null &&
-                                            f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                                        || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                            .OrderBy(o => o.Departure)
-                            .AsNoTracking()
-                            .AsQueryable();
+                        rptYear.Load(ReportDataLoader.LoadFlights(this.db, ReportPeriod.ForYear(year), clubFilter, excludeDeleted: true), clubFilter);
 
                         return this.View("year", rptYear);
                     }
@@ -71,19 +59,7 @@ namespace FlightJournal.Web.Controllers
                     throw new ArgumentException(string.Format("Invalid date input in url: {0}", raw));
                 }
 
-                // Custom inline Club filtering for allowing maximum performance
-                // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                rptMonth.QueryableFlights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year && f.Deleted == null)
-                    .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club").Include("PilotBackseat").Include("Betaler").Include("StartType")
-                    .Where(f => ClubController.CurrentClub.ShortName == null
-                        || f.StartedFromId == ClubController.CurrentClub.LocationId
-                        || f.LandedOnId == ClubController.CurrentClub.LocationId
-                        || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                        || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                        || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                    .OrderBy(o => o.Departure)
-                    .AsNoTracking()
-                    .AsQueryable();
+                rptMonth.Load(ReportDataLoader.LoadFlights(this.db, ReportPeriod.ForMonth(rptMonth.Date.Year, rptMonth.Date.Month), clubFilter, excludeDeleted: true), clubFilter);
 
                 return this.View("month", rptMonth);
             }
@@ -107,21 +83,8 @@ namespace FlightJournal.Web.Controllers
 
             rpt.FormattedDate = rpt.Date.ToShortDateString();
 
-            // Custom inline Club filtering for allowing maximum performance
-            // A copy of the logic in Flight.IsCurrent(Flight arg) 
-            rpt.QueryableFlights = this.db.Flights.Where(f => f.Date == rpt.Date)
-                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat")
-                .Include("Betaler").Include("Pilot.Club").Include("StartType")
-                .Where(f => ClubController.CurrentClub.ShortName == null
-                            || f.StartedFromId == ClubController.CurrentClub.LocationId
-                            || f.LandedOnId == ClubController.CurrentClub.LocationId
-                            || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                            || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                            || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                .OrderBy(o => o.Departure)
-                .AsNoTracking();
-                
             // Allow f.Deleted != null
+            rpt.Load(ReportDataLoader.LoadFlights(this.db, ReportPeriod.ForDay(rpt.Date), clubFilter, excludeDeleted: false), clubFilter);
 
             return this.View(rpt);
         }
