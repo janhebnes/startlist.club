@@ -99,7 +99,7 @@ namespace FlightJournal.Web.Models.Report
 
             return flights
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club")
-                .Include("PilotBackseat").Include("PilotBackseat.Club").Include("Betaler").Include("StartType")
+                .Include("PilotBackseat").Include("PilotBackseat.Club").Include("Betaler").Include("Betaler.Club").Include("StartType")
                 .OrderBy(o => o.Departure)
                 .AsNoTracking()
                 .ToList();
