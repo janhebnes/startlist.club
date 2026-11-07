@@ -613,7 +613,9 @@
     <Compile Include="Models\FlightViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Report\AvailableDatesCache.cs" />
     <Compile Include="Models\Report\ReportDataLoader.cs" />
+    <Compile Include="Models\Report\ReportDataStamp.cs" />
     <Compile Include="Models\ReportViewModels.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\Club.cs" />

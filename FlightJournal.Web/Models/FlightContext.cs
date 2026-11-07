@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using CsvHelper.Configuration;
+using FlightJournal.Web.Models.Report;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
@@ -73,7 +75,45 @@ namespace FlightJournal.Web.Models
                                     .ToList<DbEntityEntry<Flight>>()
                                     .ForEach((c => this.FlightVersions.Add(new FlightVersionHistory((Flight)c.Entity, c.State))));
 
-            return base.SaveChanges();
+            var changedDates = this.ChangedFlightDates();
+            var result = base.SaveChanges();
+            ReportDataStamp.Touch(changedDates);
+            return result;
+        }
+
+        /// <summary>The dates of added, modified and deleted flights, including the old date when a flight moves to another day.</summary>
+        private List<DateTime> ChangedFlightDates()
+        {
+            var dates = new List<DateTime>();
+            foreach (var entry in this.ChangeTracker.Entries<Flight>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        dates.Add(entry.Entity.Date);
+                        break;
+                    case EntityState.Deleted:
+                        dates.Add(entry.OriginalValues.GetValue<DateTime>(nameof(Flight.Date)));
+                        break;
+                    case EntityState.Modified:
+                        var current = entry.Entity.Date;
+                        var original = entry.OriginalValues.GetValue<DateTime>(nameof(Flight.Date));
+                        dates.Add(current);
+                        if (original != current)
+                        {
+                            dates.Add(original);
+                        }
+                        else if (entry.Property(f => f.Date).IsModified)
+                        {
+                            // A disconnected entity attached as Modified (FlightController.Edit) has no real original values
+                            var stored = entry.GetDatabaseValues();
+                            if (stored != null)
+                                dates.Add(stored.GetValue<DateTime>(nameof(Flight.Date)));
+                        }
+                        break;
+                }
+            }
+            return dates;
         }
 
         /// <summary>

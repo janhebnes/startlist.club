@@ -65,9 +65,8 @@ namespace FlightJournal.Web.Controllers
             }
             
             var rpt = new ReportViewModel();
-            rpt.AvailableDates = this.AvailableDates();
-            if (rpt.AvailableDates != null 
-                && rpt.AvailableDates.Count > 0 
+            rpt.AvailableDates = AvailableDatesCache.Get(this.db, clubFilter);
+            if (rpt.AvailableDates.Count > 0 
                 && !date.HasValue)
             {
                 rpt.Date = rpt.AvailableDates.Max(d => d.Key);
@@ -123,83 +122,6 @@ namespace FlightJournal.Web.Controllers
             csv = csv.Replace("Å", "AA");
             csv = csv.Replace("é", "e");
             return csv;
-        }
-
-        internal DateTime GetCentralEuropeStandardTimeNow()
-        {
-            DateTime timeUtc = DateTime.UtcNow;
-            try
-            {
-                TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-                DateTime cestTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
-                return cestTime;
-
-            }
-            catch (TimeZoneNotFoundException tzex)
-            {
-                throw new Exception("The registry does not define the Central European Standard Time zone.", tzex);
-            }
-            catch (InvalidTimeZoneException ivex)
-            {
-                throw new Exception("Registry data on the Central European Standard Time zone has been corrupted.", ivex);
-            }
-        }
-
-        public Dictionary<DateTime, int> AvailableDates()
-        {
-            // Cleared by the Flight Controller Create action if a creation is done on another day than the last creation
-            if (HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] != null)
-            {
-                var cache = HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
-
-                var todaysDate = GetCentralEuropeStandardTimeNow().Date;
-
-                // we always check todays flights
-                var todaysFlights = this.db.Flights.Where(f => f.Deleted == null && f.Date == todaysDate)
-                .Include("Pilot").Include("PilotBackseat").Include("Betaler")
-                .Where(f => ClubController.CurrentClub.ShortName == null
-                    || f.StartedFromId == ClubController.CurrentClub.LocationId
-                    || f.LandedOnId == ClubController.CurrentClub.LocationId
-                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId));
-
-                if (todaysFlights.Any())
-                {
-                    cache.Remove(todaysDate);
-                    cache.Add(todaysDate, todaysFlights.Count());
-                }
-
-                return HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
-            }
-
-            // Original implementation
-            //var availableDates = this.db.Flights.GroupBy(p => p.Date).Select(g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
-            //return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(x => x.Date, x => x.Hours);
-
-            // Tweaked implementation that did not perform good enough
-            ////var availableDates = this.db.Flights.ToList().Where(f => f.IsCurrent()).GroupBy(p => p.Date).Select(
-            ////    g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
-
-            // Custom inline Club filtering for allowing maximum performance (SQL Profiler is your friend LINQpad4 did not work with this entity version)
-            // A copy of the logic in Flight.IsCurrent(Flight arg) 
-            var availableDates = this.db.Flights.Where(f=>f.Deleted == null)
-                .Include("Pilot").Include("PilotBackseat").Include("Betaler")
-                .Where(f => ClubController.CurrentClub.ShortName == null 
-                    || f.StartedFromId == ClubController.CurrentClub.LocationId
-                    || f.LandedOnId == ClubController.CurrentClub.LocationId 
-                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId) 
-                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId) 
-                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                    .GroupBy(p => p.Date);
-
-            if (availableDates.Any())
-            {
-                HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() }).ToDictionary(x => x.Date, x => x.FlightCount);
-                return HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
-            }
-
-            return null;
         }
     }
 }

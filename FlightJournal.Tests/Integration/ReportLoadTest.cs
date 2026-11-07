@@ -423,6 +423,163 @@ namespace FlightJournal.Tests.Integration
             Assert.IsFalse(month.Flights.Any(f => f.FlightId == before.FlightId || f.FlightId == after.FlightId));
         }
 
+        // ---- PERF-001 step 2: ReportDataStamp (SaveChanges hook) and AvailableDatesCache ----
+
+        private static void AssertTouchedAt(long stamp, params DateTime[] dates)
+        {
+            foreach (var date in dates)
+                Assert.AreEqual(stamp, ReportDataStamp.LastChange(ReportPeriod.ForDay(date)), "Stamp for " + date.ToShortDateString());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void SaveChanges_AddedModifiedDeleted_TouchesDates()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var d1 = new DateTime(Year, 11, 1);
+            var d2 = new DateTime(Year, 11, 2);
+            var d3 = new DateTime(Year, 11, 3);
+            var d4 = new DateTime(Year, 11, 4);
+
+            // Added
+            var before = ReportDataStamp.Current;
+            var flight = data.AddFlight(_db, d1, data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            Assert.IsTrue(ReportDataStamp.Current > before);
+            AssertTouchedAt(ReportDataStamp.Current, d1);
+
+            // Modified, tracked entity: a date move touches the old and the new date
+            flight.Date = d2;
+            _db.SaveChanges();
+            AssertTouchedAt(ReportDataStamp.Current, d1, d2);
+
+            // Modified, disconnected entity (as FlightController.Edit attaches it): the old date comes from the database
+            Detach();
+            var posted = _db.Flights.AsNoTracking().Single(f => f.FlightId == flight.FlightId);
+            posted.Date = d3;
+            _db.Entry(posted).State = EntityState.Modified;
+            _db.SaveChanges();
+            AssertTouchedAt(ReportDataStamp.Current, d2, d3);
+
+            // Soft delete (Deleted set) is a modification of the same date
+            posted.Deleted = d3;
+            _db.SaveChanges();
+            AssertTouchedAt(ReportDataStamp.Current, d3);
+
+            // Hard delete
+            var other = data.AddFlight(_db, d4, data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            var afterAdd = ReportDataStamp.Current;
+            _db.Flights.Remove(other);
+            _db.SaveChanges();
+            Assert.IsTrue(ReportDataStamp.Current > afterAdd);
+            AssertTouchedAt(ReportDataStamp.Current, d4);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void SaveChanges_UnchangedTrackedFlight_NoTouch()
+        {
+            var data = SyntheticReportData.Create(_db);
+            data.AddFlight(_db, new DateTime(Year, 11, 5), data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            var stamp = ReportDataStamp.Current;
+
+            _db.Pilots.Find(data.HomePilot.PilotId).Name += " renamed";
+            _db.SaveChanges();
+
+            Assert.AreEqual(stamp, ReportDataStamp.Current, "Saving without flight changes does not invalidate report data");
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void SaveChanges_Failure_DoesNotTouch()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var flight = data.AddFlight(_db, new DateTime(Year, 11, 6), data.Home, data.HomePilot, null, data.HomePilot);
+            flight.PlaneId = -1; // FK violation: the save fails in SQL
+            var stamp = ReportDataStamp.Current;
+
+            try
+            {
+                _db.SaveChanges();
+                Assert.Fail("Expected the save to fail");
+            }
+            catch (Exception ex) when (!(ex is AssertFailedException))
+            {
+            }
+
+            Assert.AreEqual(stamp, ReportDataStamp.Current);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void AvailableDates_Warm_ZeroCommands_OneRebuildAfterChange()
+        {
+            var data = SyntheticReportData.Create(_db);
+            data.AddFlightsOverDays(_db, Year, 5, 4);
+            Detach();
+
+            _counter.Reset();
+            var cold = AvailableDatesCache.Get(_db, data.HomeFilter);
+            Assert.AreEqual(1, _counter.Count, "Cold: one GROUP BY projection");
+            Assert.AreEqual(4, cold.Count);
+
+            _counter.Reset();
+            var warm = AvailableDatesCache.Get(_db, data.HomeFilter);
+            Assert.AreEqual(0, _counter.Count, "Warm: no SQL");
+            Assert.AreSame(cold, warm);
+
+            data.AddFlight(_db, new DateTime(Year, 5, 4), data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            Detach();
+
+            _counter.Reset();
+            var rebuilt = AvailableDatesCache.Get(_db, data.HomeFilter);
+            Assert.AreEqual(1, _counter.Count, "A flight change triggers exactly one rebuild");
+            Assert.AreEqual(2, rebuilt[new DateTime(Year, 5, 4)]);
+
+            _counter.Reset();
+            AvailableDatesCache.Get(_db, data.HomeFilter);
+            Assert.AreEqual(0, _counter.Count, "Warm again");
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void AvailableDates_ClubFilter_MatchesLegacy_ExcludesDeleted()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var date = new DateTime(Year, 12, 1);
+            var next = new DateTime(Year, 12, 2);
+            data.AddFlight(_db, date, data.Away, data.HomePilot, null, data.HomePilot);       // home pilot away
+            data.AddFlight(_db, date, data.Away, data.AwayPilot, data.HomePilot, data.AwayPilot); // home backseat
+            data.AddFlight(_db, date, data.Away, data.AwayPilot, null, data.HomePilot);       // home pays
+            data.AddFlight(_db, next, data.Home, data.AwayPilot, null, data.AwayPilot);       // away pilot at home
+            data.AddFlight(_db, next, data.Away, data.AwayPilot, data.AwayPilot2, data.AwayPilot); // not ours
+            var deleted = data.AddFlight(_db, next, data.Home, data.HomePilot, null, data.HomePilot);
+            deleted.Deleted = next;
+            _db.SaveChanges();
+            Detach();
+
+            // The pre-step-2 ReportController.AvailableDates query, with captured values
+            var clubId = data.HomeClub.ClubId;
+            var locationId = data.Home.LocationId;
+            var legacy = _db.Flights.Where(f => f.Deleted == null)
+                .Where(f => f.StartedFromId == locationId || f.LandedOnId == locationId
+                            || (f.Pilot != null && f.Pilot.ClubId == clubId)
+                            || (f.PilotBackseat != null && f.PilotBackseat.ClubId == clubId)
+                            || (f.Betaler != null && f.Betaler.ClubId == clubId))
+                .GroupBy(p => p.Date)
+                .Select(g => new { Date = g.Key, FlightCount = g.Count() })
+                .ToDictionary(x => x.Date, x => x.FlightCount);
+
+            var dates = AvailableDatesCache.Get(_db, data.HomeFilter);
+
+            CollectionAssert.AreEquivalent(legacy.ToList(), dates.ToList());
+            Assert.AreEqual(3, dates[date]);
+            Assert.AreEqual(1, dates[next], "Deleted flights are not counted");
+        }
+
         /// <summary>Forget tracked entities, so later reads go to the database (as a fresh request would).</summary>
         private void Detach()
         {
