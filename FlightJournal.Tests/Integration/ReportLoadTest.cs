@@ -423,6 +423,103 @@ namespace FlightJournal.Tests.Integration
             Assert.IsFalse(month.Flights.Any(f => f.FlightId == before.FlightId || f.FlightId == after.FlightId));
         }
 
+        // GH #281: the year export loads all clubs' flights with DATEPART, filters in memory with lazy loads and concatenates quadratically
+
+        private static string LegacyCsv(IEnumerable<Flight> flights)
+        {
+            Func<string, string> safe = s => s.Replace("æ", "ae").Replace("Æ", "AE").Replace("ø", "oe").Replace("Ø", "OE").Replace("å", "aa").Replace("Å", "AA").Replace("é", "e");
+            return flights.Aggregate(safe(Flight.CsvHeaders), (current, flight) => current + safe(flight.ToCsvString()));
+        }
+
+        private List<Flight> AddExportFlights(SyntheticReportData data)
+        {
+            var date = new DateTime(Year, 8, 1);
+            var flights = new List<Flight>
+            {
+                data.AddFlight(_db, date, data.Away, data.HomePilot, null, data.HomePilot),
+                data.AddFlight(_db, date, data.Away, data.AwayPilot, data.HomePilot, data.AwayPilot),
+                data.AddFlight(_db, date.AddMonths(1), data.Away, data.AwayPilot, null, data.HomePilot),
+                data.AddFlight(_db, date, data.Home, data.AwayPilot, data.AwayPilot2, data.AwayPilot),
+                data.AddFlight(_db, date.AddMonths(2), data.Away, data.AwayPilot, null, data.AwayPilot),
+                data.AddFlight(_db, date, data.Home, data.HomePilot2, data.HomePilot3, data.HomePilot2)
+            };
+            for (var i = 0; i < flights.Count; i++)
+                flights[i].Departure = flights[i].Date.AddHours(9).AddMinutes(i);
+            flights[0].Description = "Rødby Æblevej Ørsted Ås é";
+            flights[0].TaskDistance = 123;
+            flights[5].Deleted = new DateTime(Year, 8, 2);
+            _db.SaveChanges();
+            Detach();
+            return flights;
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Export_Year_OneCommand_DateRange_ConstantInFlights()
+        {
+            var data = SyntheticReportData.Create(_db);
+            data.AddFlightsOverYear(_db, Year, 5);
+            Detach();
+            _counter.Reset();
+            var csv = ReportExport.ToCsv(ReportExport.LoadFlights(_db, ReportPeriod.ForYear(Year), data.HomeFilter));
+            Assert.AreEqual(1, _counter.Count, string.Join("\n---\n", _counter.Commands));
+            var sql = _counter.Commands.Single();
+            StringAssert.Contains(sql, "[Date] >= ");
+            Assert.IsFalse(sql.Contains("DATEPART"), sql);
+            Assert.AreEqual(6, csv.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Length);
+
+            data.AddFlightsOverYear(_db, Year, 40);
+            Detach();
+            _counter.Reset();
+            csv = ReportExport.ToCsv(ReportExport.LoadFlights(_db, ReportPeriod.ForYear(Year), data.HomeFilter));
+            Assert.AreEqual(1, _counter.Count, string.Join("\n---\n", _counter.Commands));
+            Assert.AreEqual(46, csv.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Export_ClubPilotsFilter_MatchesLegacy_ExcludesDeleted()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var f = AddExportFlights(data);
+
+            var exported = ReportExport.LoadFlights(_db, ReportPeriod.ForYear(Year), data.HomeFilter).Select(x => x.FlightId).ToList();
+
+            // Club pilots only: a foreign flight at the home field is not exported, unlike the report's location rule
+            CollectionAssert.AreEquivalent(new[] { f[0].FlightId, f[1].FlightId, f[2].FlightId }, exported);
+            var start = new DateTime(Year, 1, 1);
+            var end = start.AddYears(1);
+            var legacy = LegacyClubFlights(_db.Flights.Where(x => x.Date >= start && x.Date < end && x.Deleted == null), data.HomeClub.ClubId).Select(x => x.FlightId).ToList();
+            CollectionAssert.AreEquivalent(legacy, exported);
+
+            var unfiltered = ReportExport.LoadFlights(_db, ReportPeriod.ForYear(Year), ReportClubFilter.Unfiltered).Select(x => x.FlightId).ToList();
+            CollectionAssert.IsSubsetOf(new[] { f[0].FlightId, f[1].FlightId, f[2].FlightId, f[3].FlightId, f[4].FlightId }, unfiltered);
+            Assert.IsFalse(unfiltered.Contains(f[5].FlightId));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Export_Csv_MatchesLegacyOutput()
+        {
+            var data = SyntheticReportData.Create(_db);
+            AddExportFlights(data);
+
+            foreach (var period in new[] { ReportPeriod.ForYear(Year), ReportPeriod.ForMonth(Year, 8) })
+            {
+                var end = period.EndExclusive;
+                var from = period.Start;
+                var legacyFlights = LegacyClubFlights(_db.Flights.Where(x => x.Date >= from && x.Date < end && x.Deleted == null), data.HomeClub.ClubId)
+                    .OrderBy(o => o.Departure).ToList();
+                var expected = LegacyCsv(legacyFlights);
+                Detach();
+
+                var actual = ReportExport.ToCsv(ReportExport.LoadFlights(_db, period, data.HomeFilter));
+
+                Assert.AreEqual(expected, actual, period.Kind.ToString());
+                StringAssert.Contains(actual, "Roedby AEblevej OErsted AAs e");
+            }
+        }
+
         /// <summary>Forget tracked entities, so later reads go to the database (as a fresh request would).</summary>
         private void Detach()
         {
