@@ -85,24 +85,27 @@ namespace FlightJournal.Web.Models.Report
             if (excludeDeleted)
                 flights = flights.Where(f => f.Deleted == null);
 
-            if (!club.IsUnfiltered)
-            {
-                // A copy of the logic in Flight.IsCurrent(Flight arg)
-                var clubId = club.ClubId;
-                var locationId = club.LocationId;
-                flights = flights.Where(f => f.StartedFromId == locationId
-                                             || f.LandedOnId == locationId
-                                             || (f.Pilot != null && f.Pilot.ClubId == clubId)
-                                             || (f.PilotBackseat != null && f.PilotBackseat.ClubId == clubId)
-                                             || (f.Betaler != null && f.Betaler.ClubId == clubId));
-            }
-
-            return flights
+            return WhereClub(flights, club)
                 .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club")
                 .Include("PilotBackseat").Include("PilotBackseat.Club").Include("Betaler").Include("Betaler.Club").Include("StartType")
                 .OrderBy(o => o.Departure)
                 .AsNoTracking()
                 .ToList();
+        }
+
+        /// <summary>The report's club filter in SQL (a copy of the logic in Flight.IsCurrent), using captured values only.</summary>
+        public static IQueryable<Flight> WhereClub(IQueryable<Flight> flights, ReportClubFilter club)
+        {
+            if (club.IsUnfiltered)
+                return flights;
+
+            var clubId = club.ClubId;
+            var locationId = club.LocationId;
+            return flights.Where(f => f.StartedFromId == locationId
+                                      || f.LandedOnId == locationId
+                                      || (f.Pilot != null && f.Pilot.ClubId == clubId)
+                                      || (f.PilotBackseat != null && f.PilotBackseat.ClubId == clubId)
+                                      || (f.Betaler != null && f.Betaler.ClubId == clubId));
         }
     }
 }
