@@ -17,6 +17,65 @@ namespace FlightJournal.Tests.ServiceProviders
         private const string KeySecret = "fake-key-secret";
         private const string FromNumber = "+4600000000";
 
+        // Blank values: null, empty and whitespace all count as blank
+        private static readonly string[] Blanks = { null, "", "   " };
+
+        private static bool CanSend(string accountSid, string authToken, string fromNumber,
+                                    string region, string edge, string apiKeySid, string apiKeySecret)
+        {
+            return TwilioSmsConfig.Resolve(accountSid, authToken, fromNumber, region, edge, apiKeySid, apiKeySecret).CanSend;
+        }
+
+        [TestMethod]
+        public void CanSend_CompleteRegional_True()
+        {
+            Assert.IsTrue(CanSend(AccountSid, AuthToken, FromNumber, "ie1", "dublin", KeySid, KeySecret));
+            Assert.IsTrue(CanSend(AccountSid, null, FromNumber, "ie1", null, KeySid, KeySecret), "ie1 needs neither an auth token nor an explicit edge");
+        }
+
+        [TestMethod]
+        public void CanSend_CompleteLegacy_True()
+        {
+            Assert.IsTrue(CanSend(AccountSid, AuthToken, FromNumber, null, null, null, null));
+        }
+
+        [TestMethod]
+        public void CanSend_RegionalWithAnyRequiredFieldBlank_False()
+        {
+            foreach (var blank in Blanks)
+            {
+                Assert.IsFalse(CanSend(blank, AuthToken, FromNumber, "ie1", "dublin", KeySid, KeySecret), $"account SID '{blank}'");
+                Assert.IsFalse(CanSend(AccountSid, AuthToken, blank, "ie1", "dublin", KeySid, KeySecret), $"from number '{blank}'");
+                Assert.IsFalse(CanSend(AccountSid, AuthToken, FromNumber, "ie1", "dublin", blank, KeySecret), $"API key SID '{blank}'");
+                Assert.IsFalse(CanSend(AccountSid, AuthToken, FromNumber, "ie1", "dublin", KeySid, blank), $"API key secret '{blank}'");
+            }
+        }
+
+        [TestMethod]
+        public void CanSend_LegacyWithAnyRequiredFieldBlank_False()
+        {
+            foreach (var blank in Blanks)
+            {
+                Assert.IsFalse(CanSend(blank, AuthToken, FromNumber, null, null, null, null), $"account SID '{blank}'");
+                Assert.IsFalse(CanSend(AccountSid, blank, FromNumber, null, null, null, null), $"auth token '{blank}'");
+                Assert.IsFalse(CanSend(AccountSid, AuthToken, blank, null, null, null, null), $"from number '{blank}'");
+            }
+        }
+
+        [TestMethod]
+        public void CanSend_Misconfigured_False()
+        {
+            Assert.IsFalse(CanSend(AccountSid, AuthToken, FromNumber, "au1", "   ", KeySid, KeySecret), "region other than ie1 without an edge");
+            Assert.IsFalse(CanSend(AccountSid, AuthToken, FromNumber, null, null, KeySid, KeySecret), "API key without a region");
+        }
+
+        [TestMethod]
+        public void CanSend_NothingConfigured_False()
+        {
+            Assert.IsFalse(CanSend(null, null, null, null, null, null, null));
+            Assert.IsFalse(CanSend("  ", "  ", "  ", "  ", "  ", "  ", "  "));
+        }
+
         [TestMethod]
         public void Regional_Ie1_UsesApiKey_WithAccountSid()
         {
