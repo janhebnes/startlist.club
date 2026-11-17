@@ -23,5 +23,12 @@ namespace FlightJournal.Web.Configuration
         /// </summary>
         public static SmsDeliveryException From(ApiException ex, TwilioSmsConfig config)
             => new SmsDeliveryException(ex.Code, ex.Status, config.Mode, config.Region, inner: null);
+
+        /// <summary>
+        /// Other Twilio failures (connection, timeout, authentication) carry no Twilio code or status.
+        /// As above, the Twilio exception and its text are not kept.
+        /// </summary>
+        public static SmsDeliveryException From(TwilioException ex, TwilioSmsConfig config)
+            => new SmsDeliveryException(null, null, config.Mode, config.Region, inner: null);
     }
 }

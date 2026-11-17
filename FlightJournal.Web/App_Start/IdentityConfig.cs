@@ -217,6 +217,12 @@ namespace FlightJournal.Web.Models
             {
                 throw Report(SmsDeliveryException.From(ex, config), null);
             }
+            catch (TwilioException ex)
+            {
+                // Connection, timeout or authentication failure; after ApiException, which is the more specific type.
+                // Only the exception type name is reported, never its message.
+                throw Report(SmsDeliveryException.From(ex, config), ex.GetType().Name);
+            }
         }
 
         /// <summary>One telemetry record per failure: codes only, no phone number, body or Twilio message text.</summary>
