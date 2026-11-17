@@ -69,6 +69,52 @@ namespace FlightJournal.Tests.ServiceProviders
             StringAssert.StartsWith(TwilioSmsConfig.Resolve(null, null, null, null, null, null, null).Describe(), "SMS login: mode=NotConfigured");
         }
 
+        private static string DescribeOf(string accountSid, string authToken, string fromNumber,
+                                         string region, string edge, string apiKeySid, string apiKeySecret)
+        {
+            var line = TwilioSmsConfig.Resolve(accountSid, authToken, fromNumber, region, edge, apiKeySid, apiKeySecret).Describe();
+            AssertNoValues(line);
+            return line;
+        }
+
+        [TestMethod]
+        public void Describe_NotConfigured_DemoCombination_NamesMissingRegionalSettings()
+        {
+            // Region, edge and sender number set: a regional setup, missing the account SID and the API key
+            StringAssert.Contains(DescribeOf(null, null, FromNumber, "ie1", "dublin", null, null),
+                "missing=TwilioAccountSid,TwilioApiKeySid,TwilioApiKeySecret");
+        }
+
+        [TestMethod]
+        public void Describe_NotConfigured_NothingSet_NamesTheRecommendedRegionalSettings()
+        {
+            StringAssert.Contains(DescribeOf(null, null, null, null, null, null, null),
+                "missing=TwilioAccountSid,TwilioFromNumber,TwilioRegion,TwilioApiKeySid,TwilioApiKeySecret");
+        }
+
+        [TestMethod]
+        public void Describe_NotConfigured_LegacyAttempt_NamesMissingLegacySettings()
+        {
+            // Only the auth token points to the legacy US1 mode
+            StringAssert.Contains(DescribeOf(null, AuthToken, FromNumber, null, null, null, null), "missing=TwilioAccountSid");
+            StringAssert.Contains(DescribeOf(AccountSid, AuthToken, "  ", null, null, null, null), "missing=TwilioFromNumber");
+        }
+
+        [TestMethod]
+        public void Describe_Misconfigured_NamesMissingSettings()
+        {
+            StringAssert.Contains(DescribeOf(AccountSid, AuthToken, FromNumber, "ie1", "dublin", KeySid, null), "missing=TwilioApiKeySecret");
+            StringAssert.Contains(DescribeOf(AccountSid, AuthToken, FromNumber, "au1", null, KeySid, KeySecret), "missing=TwilioEdge");
+            StringAssert.Contains(DescribeOf(AccountSid, AuthToken, FromNumber, null, null, KeySid, KeySecret), "missing=TwilioRegion");
+        }
+
+        [TestMethod]
+        public void Describe_Sending_HasNoMissingPart()
+        {
+            Assert.IsFalse(DescribeOf(AccountSid, AuthToken, FromNumber, "ie1", "dublin", KeySid, KeySecret).Contains("missing="));
+            Assert.IsFalse(DescribeOf(AccountSid, AuthToken, FromNumber, null, null, null, null).Contains("missing="));
+        }
+
         [TestMethod]
         public void TwilioSms_IsResolvedOnce_ThenReused()
         {
