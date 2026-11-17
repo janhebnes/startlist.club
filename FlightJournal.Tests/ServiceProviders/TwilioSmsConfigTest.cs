@@ -129,5 +129,23 @@ namespace FlightJournal.Tests.ServiceProviders
             Assert.IsFalse(ex.Message.Contains("routing"), "The message must not carry Twilio's text");
             Assert.IsNull(ex.InnerException, "Twilio's text (which can contain the From number) is not kept, so it never reaches telemetry");
         }
+
+        [TestMethod]
+        public void SmsDeliveryException_FromConnectionFailure_NoCodes_NotTwilioText()
+        {
+            // Network/timeout and authentication failures are TwilioExceptions but not ApiExceptions
+            var config = TwilioSmsConfig.Resolve(AccountSid, AuthToken, FromNumber, "ie1", "dublin", KeySid, KeySecret);
+            var twilioError = new ApiConnectionException("Connection error sending to +46000: routing timeout");
+
+            var ex = SmsDeliveryException.From(twilioError, config);
+
+            Assert.IsNull(ex.TwilioCode);
+            Assert.IsNull(ex.TwilioStatus);
+            Assert.AreEqual(TwilioSmsMode.RegionalApiKey, ex.Mode);
+            Assert.AreEqual("ie1", ex.Region);
+            Assert.IsFalse(ex.Message.Contains("+46000"), "The message must not carry the phone number");
+            Assert.IsFalse(ex.Message.Contains("routing") || ex.Message.Contains("timeout"), "The message must not carry Twilio's text");
+            Assert.IsNull(ex.InnerException, "Twilio's text is not kept, so it never reaches telemetry");
+        }
     }
 }
