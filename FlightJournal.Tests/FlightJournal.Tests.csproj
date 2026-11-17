@@ -200,6 +200,7 @@
     <Compile Include="Models\TrainingHistoryRowBuilderTest.cs" />
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\SmtpTest.cs" />
+    <Compile Include="ServiceProviders\TwilioSettingsFallbackTest.cs" />
     <Compile Include="ServiceProviders\TwilioSmsConfigTest.cs" />
     <Compile Include="ServiceProviders\TwilioTest.cs" />
   </ItemGroup>
