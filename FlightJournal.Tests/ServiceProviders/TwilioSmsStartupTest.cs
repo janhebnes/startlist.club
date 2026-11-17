@@ -145,6 +145,41 @@ namespace FlightJournal.Tests.ServiceProviders
         }
 
         [TestMethod]
+        public void TwilioSms_AnyResolveError_IsMisconfigured_WithTypeNameOnly()
+        {
+            // Not only configuration errors: any failure while resolving makes SMS unavailable instead of failing every access
+            Settings.ResetTwilioSms(() => throw new InvalidOperationException("detail with " + FromNumber));
+
+            var config = Settings.TwilioSms;
+
+            Assert.AreEqual(TwilioSmsMode.Misconfigured, config.Mode);
+            Assert.IsFalse(config.CanSend);
+            var line = config.Describe();
+            StringAssert.Contains(line, "InvalidOperationException");
+            Assert.IsFalse(line.Contains("detail with"), "The exception message is never logged");
+            AssertNoValues(line);
+        }
+
+        [TestMethod]
+        public void StartupLine_WhenResolvingThrows_LogsTypeNameOnly_AndDoesNotThrow()
+        {
+            var line = FlightJournal.Web.Startup.SmsLoginStartupLine(() => throw new InvalidOperationException("detail with " + FromNumber));
+
+            StringAssert.StartsWith(line, "SMS login:");
+            StringAssert.Contains(line, "InvalidOperationException");
+            Assert.IsFalse(line.Contains("detail with"), "The exception message is never logged");
+            AssertNoValues(line);
+        }
+
+        [TestMethod]
+        public void StartupLine_Normally_IsTheDescription()
+        {
+            var config = TwilioSmsConfig.Resolve(AccountSid, AuthToken, FromNumber, "ie1", "dublin", KeySid, KeySecret);
+
+            Assert.AreEqual(config.Describe(), FlightJournal.Web.Startup.SmsLoginStartupLine(() => config));
+        }
+
+        [TestMethod]
         public void PhoneCodeProvider_IsAlwaysRegistered_EvenWhenSmsCannotSend()
         {
             // PhoneCode must stay registered unconditionally. If it were only registered when SMS can send,
