@@ -144,8 +144,8 @@ namespace FlightJournal.Web.Configuration
         /// </summary>
         public static TwilioSmsConfig TwilioSms => _twilioSms.Value;
 
-        /// <summary>Resolve again on next use. Tests pass their own resolver so no configuration is read.</summary>
-        public static void ResetTwilioSms(Func<TwilioSmsConfig> resolver = null)
+        /// <summary>Resolve again on next use. Tests only (internal); they pass their own resolver so no configuration is read.</summary>
+        internal static void ResetTwilioSms(Func<TwilioSmsConfig> resolver = null)
         {
             _twilioSms = NewTwilioSms(resolver ?? ResolveTwilioSmsFromSettings);
         }
@@ -158,10 +158,11 @@ namespace FlightJournal.Web.Configuration
                 {
                     return resolver();
                 }
-                catch (ConfigurationErrorsException)
+                catch (Exception ex)
                 {
-                    // Resolving happens at startup: a configuration error hides SMS instead of stopping the site
-                    return TwilioSmsConfig.Unreadable("The Twilio settings could not be read (serviceCredentials configuration)");
+                    // Resolving happens at startup, and Lazy would otherwise rethrow the error on every access:
+                    // any failure hides SMS instead of stopping the site. Only the exception type is kept, never its message.
+                    return TwilioSmsConfig.Unreadable("The Twilio settings could not be read (" + ex.GetType().Name + ")");
                 }
             }, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
