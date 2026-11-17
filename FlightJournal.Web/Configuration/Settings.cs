@@ -136,9 +136,41 @@ namespace FlightJournal.Web.Configuration
             return appSettingValue ?? fallback();
         }
 
-        /// <summary>How SMS is sent; see <see cref="TwilioSmsConfig.Resolve"/>.</summary>
-        public static TwilioSmsConfig TwilioSms => TwilioSmsConfig.Resolve(
-            TwilioAccountSid, TwilioAuthToken, TwilioFromNumber, TwilioRegion, TwilioEdge, TwilioApiKeySid, TwilioApiKeySecret);
+        private static volatile Lazy<TwilioSmsConfig> _twilioSms = NewTwilioSms(ResolveTwilioSmsFromSettings);
+
+        /// <summary>
+        /// How SMS is sent; see <see cref="TwilioSmsConfig.Resolve"/>. Resolved once (at startup or on first use) and then
+        /// shared by the login page, the SMS guards and the SMS service. Changing an app setting restarts the app, which resolves it again.
+        /// </summary>
+        public static TwilioSmsConfig TwilioSms => _twilioSms.Value;
+
+        /// <summary>Resolve again on next use. Tests pass their own resolver so no configuration is read.</summary>
+        public static void ResetTwilioSms(Func<TwilioSmsConfig> resolver = null)
+        {
+            _twilioSms = NewTwilioSms(resolver ?? ResolveTwilioSmsFromSettings);
+        }
+
+        private static Lazy<TwilioSmsConfig> NewTwilioSms(Func<TwilioSmsConfig> resolver)
+        {
+            return new Lazy<TwilioSmsConfig>(() =>
+            {
+                try
+                {
+                    return resolver();
+                }
+                catch (ConfigurationErrorsException)
+                {
+                    // Resolving happens at startup: a configuration error hides SMS instead of stopping the site
+                    return TwilioSmsConfig.Unreadable("The Twilio settings could not be read (serviceCredentials configuration)");
+                }
+            }, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
+        private static TwilioSmsConfig ResolveTwilioSmsFromSettings()
+        {
+            return TwilioSmsConfig.Resolve(
+                TwilioAccountSid, TwilioAuthToken, TwilioFromNumber, TwilioRegion, TwilioEdge, TwilioApiKeySid, TwilioApiKeySecret);
+        }
 
         public static string MailSmtpHost
         {
