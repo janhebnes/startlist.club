@@ -27,6 +27,12 @@ namespace FlightJournal.Web.Configuration
         public string FromNumber { get; }
         public string Problem { get; }    // why Misconfigured; setting names only, never values
 
+        /// <summary>
+        /// True only when every required setting is present (regional API key or legacy auth token).
+        /// The single rule for whether SMS may be offered or attempted; blank or whitespace in any required field means false.
+        /// </summary>
+        public bool CanSend => Mode == TwilioSmsMode.RegionalApiKey || Mode == TwilioSmsMode.LegacyUs1AuthToken;
+
         public static TwilioSmsConfig Resolve(string accountSid, string authToken, string fromNumber,
                                               string region, string edge, string apiKeySid, string apiKeySecret)
         {
@@ -56,7 +62,7 @@ namespace FlightJournal.Web.Configuration
         /// <summary>Only for Modes that send; no network until a request is made.</summary>
         public TwilioRestClient CreateClient()
         {
-            if (Mode != TwilioSmsMode.RegionalApiKey && Mode != TwilioSmsMode.LegacyUs1AuthToken)
+            if (!CanSend)
                 throw new InvalidOperationException("Twilio SMS is " + Mode);
             // Positional, in the documented order: (username, password, accountSid, region, httpClient, edge)
             return new TwilioRestClient(Username, Password, AccountSid, Region, null, Edge);

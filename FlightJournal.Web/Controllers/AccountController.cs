@@ -43,6 +43,11 @@ namespace FlightJournal.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// SMS login and the SMS code are only offered when every required Twilio setting is present.
+        /// </summary>
+        private bool SmsAvailable => UserManager.TwoFactorProviders.ContainsKey("PhoneCode") && Settings.TwilioSms.CanSend;
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -51,7 +56,7 @@ namespace FlightJournal.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
             ViewBag.EnableDemo = Demo.IsDemoEnvironment();
-            ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+            ViewBag.EnableMobil = SmsAvailable;
 
             var initialModel = new LoginViewModel()
             {
@@ -108,7 +113,7 @@ namespace FlightJournal.Web.Controllers
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
                 ViewBag.EnableDemo = Demo.IsDemoEnvironment();
-                ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+                ViewBag.EnableMobil = SmsAvailable;
                 model.LoginState = LoginViewModel.State.Login;
                 return View(model);
             }
@@ -136,7 +141,7 @@ namespace FlightJournal.Web.Controllers
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
                     ViewBag.EnableDemo = Demo.IsDemoEnvironment();
-                    ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+                    ViewBag.EnableMobil = SmsAvailable;
                     model.LoginState = LoginViewModel.State.Login;
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
@@ -151,8 +156,16 @@ namespace FlightJournal.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.LiveDemoMemberships = Demo.GetLiveDemoMemberships();
             ViewBag.EnableDemo = Demo.IsDemoEnvironment();
-            ViewBag.EnableMobil = UserManager.TwoFactorProviders.ContainsKey("PhoneCode");
+            ViewBag.EnableMobil = SmsAvailable;
             model.LoginState = LoginViewModel.State.TokenLogin;
+
+            // The tab is hidden when SMS is not usable; refuse a direct POST before any code is generated or sent
+            if (!SmsAvailable)
+            {
+                model.LoginState = LoginViewModel.State.Login;
+                ModelState.AddModelError("", "Log ind med SMS er ikke tilgængeligt. Log ind med e-mail.");
+                return View("Login", model);
+            }
 
             if (!model.MobilNumberValidated)
             {
@@ -544,7 +557,9 @@ namespace FlightJournal.Web.Controllers
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+            var factorOptions = userFactors
+                .Where(purpose => purpose != "PhoneCode" || SmsAvailable)
+                .Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl });
         }
 
@@ -559,6 +574,12 @@ namespace FlightJournal.Web.Controllers
             if (!ModelState.IsValid)
             {
                 return View();
+            }
+
+            // PhoneCode is not offered when SMS is not usable; refuse a direct POST without generating or sending a code
+            if (model.SelectedProvider == "PhoneCode" && !SmsAvailable)
+            {
+                return View("Error");
             }
 
             if (!await SignInHelper.SendTwoFactorCode(model.SelectedProvider))
