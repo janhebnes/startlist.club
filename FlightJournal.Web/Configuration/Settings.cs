@@ -122,11 +122,19 @@ namespace FlightJournal.Web.Configuration
             }
         }
 
-        // Regional Twilio settings: Azure app settings only, no App_Data fallback
-        public static string TwilioRegion => ConfigurationManager.AppSettings["TwilioRegion"];
-        public static string TwilioEdge => ConfigurationManager.AppSettings["TwilioEdge"];
-        public static string TwilioApiKeySid => ConfigurationManager.AppSettings["TwilioApiKeySid"];
-        public static string TwilioApiKeySecret => ConfigurationManager.AppSettings["TwilioApiKeySecret"];
+        // Regional Twilio settings: Azure app settings, or fallback to the App_Data folder (like the other Twilio settings)
+        public static string TwilioRegion => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioRegion"], () => ServiceCredentials.TwilioRegion);
+        public static string TwilioEdge => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioEdge"], () => ServiceCredentials.TwilioEdge);
+        public static string TwilioApiKeySid => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioApiKeySid"], () => ServiceCredentials.TwilioApiKeySid);
+        public static string TwilioApiKeySecret => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioApiKeySecret"], () => ServiceCredentials.TwilioApiKeySecret);
+
+        /// <summary>
+        /// The app setting when it exists (even if empty); otherwise the fallback, which is only read in that case.
+        /// </summary>
+        public static string AppSettingOrFallback(string appSettingValue, Func<string> fallback)
+        {
+            return appSettingValue ?? fallback();
+        }
 
         /// <summary>How SMS is sent; see <see cref="TwilioSmsConfig.Resolve"/>.</summary>
         public static TwilioSmsConfig TwilioSms => TwilioSmsConfig.Resolve(
