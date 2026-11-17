@@ -18,7 +18,7 @@ using System.Web;
 using FlightJournal.Web.Configuration;
 using FlightJournal.Web.Validators;
 using Microsoft.Ajax.Utilities;
-using Twilio;
+using Twilio.Exceptions;
 using Twilio.Types;
 using Twilio.Rest.Api.V2010.Account;
 
@@ -194,45 +194,45 @@ namespace FlightJournal.Web.Models
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your sms service here to send a text message.
-            
-            if (!string.IsNullOrWhiteSpace(Settings.TwilioAccountSid)
-                && !string.IsNullOrWhiteSpace(Settings.TwilioAuthToken)
-                && !string.IsNullOrWhiteSpace(Settings.TwilioFromNumber))
+            var config = Settings.TwilioSms;
+            if (config.Mode == TwilioSmsMode.NotConfigured)
+                return Task.FromResult(1);                       // unchanged: no SMS configured
+            if (config.Mode == TwilioSmsMode.Misconfigured)
+                throw Report(new SmsDeliveryException(null, null, config.Mode, null), config.Problem);
+
+            try
             {
-                // Find your Account Sid and Auth Token at twilio.com/user/account 
-                TwilioClient.Init(Settings.TwilioAccountSid, Settings.TwilioAuthToken);
-
-                var smsmessage = MessageResource.Create(
-                    message.Destination,
-                    from: Settings.TwilioFromNumber,
-                    body: message.Body
-                );
-
-                // v3 API 
-                //var twilio = new TwilioRestClient(Settings.TwilioAccountSid, Settings.TwilioAuthToken);
-                //var smsmessage = twilio.SendMessage(Settings.TwilioFromNumber, message.Destination, message.Body);
-
-                if (smsmessage.Sid == null)
+                var options = new CreateMessageOptions(new PhoneNumber(message.Destination))
                 {
-                    Task.FromResult(1);
-
-                    System.Diagnostics.Trace.TraceError($"Twilio did not respond with a valid message sid when sending to destination {message.Destination} - no sms sent");
-                    throw new Exception($"Twilio did not respond with a valid message sid when sending to destination {message.Destination} - no sms sent");
-                }
-                if (smsmessage.ErrorMessage != null)
-                {
-                    Task.FromResult(1);
-
-                    System.Diagnostics.Trace.TraceError(smsmessage.ErrorMessage);
-                    throw new Exception(smsmessage.ErrorMessage);
-                }
+                    From = new PhoneNumber(config.FromNumber),
+                    Body = message.Body
+                };
+                // An explicit client per send: region and edge stay local to this request (the static Twilio client is process-wide)
+                var sent = MessageResource.Create(options, client: config.CreateClient());
+                if (sent.Sid == null || sent.ErrorCode != null)
+                    throw Report(new SmsDeliveryException(sent.ErrorCode, null, config.Mode, config.Region), null);
                 return Task.FromResult(0);
             }
-            else
+            catch (ApiException ex)
             {
-                return Task.FromResult(1);    
+                throw Report(SmsDeliveryException.From(ex, config), null);
             }
+        }
+
+        /// <summary>One telemetry record per failure: codes only, no phone number, body or Twilio message text.</summary>
+        private static SmsDeliveryException Report(SmsDeliveryException ex, string problem)
+        {
+            var props = new Dictionary<string, string>
+            {
+                ["twilioCode"] = ex.TwilioCode?.ToString() ?? "",
+                ["twilioStatus"] = ex.TwilioStatus?.ToString() ?? "",
+                ["twilioMode"] = ex.Mode.ToString(),
+                ["twilioRegion"] = ex.Region ?? "us1",
+                ["problem"] = problem ?? ""
+            };
+            new Microsoft.ApplicationInsights.TelemetryClient().TrackException(ex, props);
+            System.Diagnostics.Trace.TraceError(ex.Message + (problem != null ? " " + problem : ""));
+            return ex;
         }
     }
 
@@ -289,7 +289,14 @@ namespace FlightJournal.Web.Models
 
             var token = await UserManager.GenerateTwoFactorTokenAsync(userId, provider);
             // See IdentityConfig.cs to plug in Email/SMS services to actually send the code
-            await UserManager.NotifyTwoFactorTokenAsync(userId, provider, token);
+            try
+            {
+                await UserManager.NotifyTwoFactorTokenAsync(userId, provider, token);
+            }
+            catch (SmsDeliveryException)
+            {
+                return false;   // already reported with codes in SmsService; the caller shows "unable to send"
+            }
             return true;
         }
 

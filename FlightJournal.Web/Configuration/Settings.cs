@@ -121,6 +121,17 @@ namespace FlightJournal.Web.Configuration
                 return ServiceCredentials.TwilioFromNumber;
             }
         }
+
+        // Regional Twilio settings: Azure app settings only, no App_Data fallback
+        public static string TwilioRegion => ConfigurationManager.AppSettings["TwilioRegion"];
+        public static string TwilioEdge => ConfigurationManager.AppSettings["TwilioEdge"];
+        public static string TwilioApiKeySid => ConfigurationManager.AppSettings["TwilioApiKeySid"];
+        public static string TwilioApiKeySecret => ConfigurationManager.AppSettings["TwilioApiKeySecret"];
+
+        /// <summary>How SMS is sent; see <see cref="TwilioSmsConfig.Resolve"/>.</summary>
+        public static TwilioSmsConfig TwilioSms => TwilioSmsConfig.Resolve(
+            TwilioAccountSid, TwilioAuthToken, TwilioFromNumber, TwilioRegion, TwilioEdge, TwilioApiKeySid, TwilioApiKeySecret);
+
         public static string MailSmtpHost
         {
             get

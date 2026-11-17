@@ -197,7 +197,7 @@ namespace FlightJournal.Web.Controllers
                             if (!await SignInHelper.SendTwoFactorCode("PhoneCode", userId))
                             {
                                 model.MobilNumberValidated = false;
-                                ModelState.AddModelError("MobilNumber", "Unable to send verification code");
+                                ModelState.AddModelError("MobilNumber", "SMS-koden kunne ikke sendes lige nu. Prøv igen senere.");
                                 return View("Login", model);
                             }
 
