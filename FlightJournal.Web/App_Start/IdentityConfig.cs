@@ -55,8 +55,27 @@ namespace FlightJournal.Web.Models
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
-            // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
-            // You can write your own provider and plug in here.
+            RegisterTwoFactorProviders(manager);
+            manager.EmailService = new EmailService();
+            manager.SmsService = new SmsService();
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+            }
+            return manager;
+        }
+
+        /// <summary>
+        /// Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user.
+        /// </summary>
+        /// <remarks>
+        /// PhoneCode is registered unconditionally, also when SMS cannot send. If it were only registered when SMS works,
+        /// ASP.NET Identity would no longer count it as a valid second factor and would skip two-factor authentication for
+        /// users whose only second factor is SMS. When SMS is not usable it is hidden in the UI and refused server-side instead.
+        /// </remarks>
+        public static void RegisterTwoFactorProviders(ApplicationUserManager manager)
+        {
             manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is: {0}"
@@ -66,14 +85,6 @@ namespace FlightJournal.Web.Models
                 Subject = "SecurityCode",
                 BodyFormat = "Your security code is {0}"
             });
-            manager.EmailService = new EmailService();
-            manager.SmsService = new SmsService();
-            var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
-            {
-                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
-            }
-            return manager;
         }
 
         /// <summary>

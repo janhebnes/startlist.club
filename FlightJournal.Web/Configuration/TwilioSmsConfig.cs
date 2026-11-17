@@ -68,6 +68,24 @@ namespace FlightJournal.Web.Configuration
             return new TwilioRestClient(Username, Password, AccountSid, Region, null, Edge);
         }
 
+        /// <summary>A configuration that could not be read at all; SMS is then not offered.</summary>
+        public static TwilioSmsConfig Unreadable(string problem) => Misconfigured(problem);
+
+        /// <summary>
+        /// One line for the startup log: mode, region and, when misconfigured, which settings are involved.
+        /// Never a phone number, SID, key, secret or token.
+        /// </summary>
+        public string Describe()
+        {
+            var region = Region ?? (Mode == TwilioSmsMode.LegacyUs1AuthToken ? "us1" : "-");
+            var line = $"SMS login: mode={Mode}, region={region}";
+            if (Edge != null)
+                line += $", edge={Edge}";
+            if (Problem != null)
+                line += $", problem={Problem}";
+            return line;
+        }
+
         private static string DefaultEdge(string region) => region == "ie1" ? "dublin" : null;
         private static bool IsBlank(string s) => string.IsNullOrWhiteSpace(s);
         private static TwilioSmsConfig NotConfigured() => new TwilioSmsConfig(TwilioSmsMode.NotConfigured, null, null, null, null, null, null, null);

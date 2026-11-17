@@ -15,9 +15,21 @@ namespace FlightJournal.Web
             System.Data.SqlClient.SqlAuthenticationProvider.SetProvider(System.Data.SqlClient.SqlAuthenticationMethod.ActiveDirectoryInteractive, new SqlAppAuthenticationProvider());
 
             ConfigureAuth(app);
+            ConfigureSmsLogin();
             //ConfigureOpenGliderNetworkFlightLogMonitor(app);
             ConfigureAprsDataListener();
             app.MapSignalR();
+        }
+
+        /// <summary>
+        /// Resolve the SMS configuration once at startup and log how SMS login is set up: mode and region, and for a
+        /// misconfiguration the setting names involved. Never a phone number, SID, key or token.
+        /// </summary>
+        private static void ConfigureSmsLogin()
+        {
+            var line = FlightJournal.Web.Configuration.Settings.TwilioSms.Describe();
+            System.Diagnostics.Trace.TraceInformation(line);
+            new Microsoft.ApplicationInsights.TelemetryClient().TrackTrace(line);
         }
     }
 }
