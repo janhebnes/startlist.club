@@ -69,6 +69,73 @@ namespace FlightJournal.Tests.ServiceProviders
             Assert.IsFalse(CanSend(AccountSid, AuthToken, FromNumber, null, null, KeySid, KeySecret), "API key without a region");
         }
 
+        // A setting that does not exist reaches Resolve as null (no app setting) or "" (the App_Data fallback's default)
+        private static readonly string[] Absent = { null, "" };
+
+        /// <summary>No client can be built, so nothing can be sent.</summary>
+        private static void AssertNoClient(TwilioSmsConfig config)
+        {
+            try
+            {
+                config.CreateClient();
+            }
+            catch (System.InvalidOperationException)
+            {
+                return;
+            }
+            Assert.Fail("A client was built for mode " + config.Mode);
+        }
+
+        [TestMethod]
+        public void CanSend_DemoCombination_RegionEdgeAndFromOnly_NotUsable_AndNoClient()
+        {
+            // As on demo: TwilioRegion, TwilioEdge and TwilioFromNumber exist; account SID, auth token and API key do not
+            foreach (var missing in Absent)
+            {
+                var config = TwilioSmsConfig.Resolve(missing, missing, FromNumber, "ie1", "dublin", missing, missing);
+
+                Assert.AreEqual(TwilioSmsMode.NotConfigured, config.Mode, $"missing as '{missing}'");
+                Assert.IsFalse(config.CanSend);
+                AssertNoClient(config);
+            }
+        }
+
+        [TestMethod]
+        public void CanSend_RegionWithAccountSidButKeyAbsent_Misconfigured_AndNoClient()
+        {
+            foreach (var missing in Absent)
+            {
+                var config = TwilioSmsConfig.Resolve(AccountSid, missing, FromNumber, "ie1", "dublin", missing, missing);
+
+                Assert.AreEqual(TwilioSmsMode.Misconfigured, config.Mode, $"missing as '{missing}'");
+                Assert.IsFalse(config.CanSend);
+                AssertNoClient(config);
+            }
+        }
+
+        [TestMethod]
+        public void CanSend_RegionalWithAnyRequiredFieldAbsent_False()
+        {
+            foreach (var missing in Absent)
+            {
+                Assert.IsFalse(CanSend(missing, missing, FromNumber, "ie1", "dublin", KeySid, KeySecret), $"account SID '{missing}'");
+                Assert.IsFalse(CanSend(AccountSid, missing, missing, "ie1", "dublin", KeySid, KeySecret), $"from number '{missing}'");
+                Assert.IsFalse(CanSend(AccountSid, missing, FromNumber, "ie1", "dublin", missing, KeySecret), $"API key SID '{missing}'");
+                Assert.IsFalse(CanSend(AccountSid, missing, FromNumber, "ie1", "dublin", KeySid, missing), $"API key secret '{missing}'");
+            }
+        }
+
+        [TestMethod]
+        public void CanSend_LegacyWithAnyRequiredFieldAbsent_False()
+        {
+            foreach (var missing in Absent)
+            {
+                Assert.IsFalse(CanSend(missing, AuthToken, FromNumber, missing, missing, missing, missing), $"account SID '{missing}'");
+                Assert.IsFalse(CanSend(AccountSid, missing, FromNumber, missing, missing, missing, missing), $"auth token '{missing}'");
+                Assert.IsFalse(CanSend(AccountSid, AuthToken, missing, missing, missing, missing, missing), $"from number '{missing}'");
+            }
+        }
+
         [TestMethod]
         public void CanSend_NothingConfigured_False()
         {
