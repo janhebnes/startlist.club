@@ -68,5 +68,33 @@ namespace FlightJournal.Web.Configuration
             get { return (string)this["TwilioFromNumber"]; }
             set { this["TwilioFromNumber"] = value; }
         }
+
+        [ConfigurationProperty("TwilioRegion", DefaultValue = "")]
+        public string TwilioRegion
+        {
+            get { return (string)this["TwilioRegion"]; }
+            set { this["TwilioRegion"] = value; }
+        }
+
+        [ConfigurationProperty("TwilioEdge", DefaultValue = "")]
+        public string TwilioEdge
+        {
+            get { return (string)this["TwilioEdge"]; }
+            set { this["TwilioEdge"] = value; }
+        }
+
+        [ConfigurationProperty("TwilioApiKeySid", DefaultValue = "")]
+        public string TwilioApiKeySid
+        {
+            get { return (string)this["TwilioApiKeySid"]; }
+            set { this["TwilioApiKeySid"] = value; }
+        }
+
+        [ConfigurationProperty("TwilioApiKeySecret", DefaultValue = "")]
+        public string TwilioApiKeySecret
+        {
+            get { return (string)this["TwilioApiKeySecret"]; }
+            set { this["TwilioApiKeySecret"] = value; }
+        }
     }
 }
