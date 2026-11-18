@@ -89,40 +89,21 @@ namespace FlightJournal.Web.Controllers
             return this.View(rpt);
         }
 
-        public FileContentResult Export(int year, int? month)
+        public ActionResult Export(int year, int? month)
         {
-            if (month.HasValue)
-            {
-                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
-                var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
-                return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + "-" + month + ".csv");
-            }
-            else
-            {
-                var flights = this.db.Flights.Where(f => f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
-                var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
-                return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + ".csv");
-            }
+            if (!ReportExport.TryGetPeriod(year, month, null, out var period))
+                return HttpNotFound();
+            var flights = ReportExport.LoadFlights(this.db, period, ReportClubFilter.From(ClubController.CurrentClub));
+            var fileName = month.HasValue ? "Startlist-" + year + "-" + month + ".csv" : "Startlist-" + year + ".csv";
+            return File(new System.Text.UTF8Encoding().GetBytes(ReportExport.ToCsv(flights)), "text/csv", fileName);
         }
 
-        public JsonResult ExportJson(int year, int month, int day)
+        public ActionResult ExportJson(int year, int month, int day)
         {
-            var flights = this.db.Flights.Where(f => f.Date.Day == day && f.Date.Month == month && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
-            var json = Enumerable.Aggregate(flights, new List<Object>(), (current, flight) => current.Append(flight.ToJsonObject()).ToList());
-            return Json(json, JsonRequestBehavior.AllowGet);
-        }
-
-        private string SafeCSVParser(string input)
-        {
-            // HACK: Fix for Encoding Issue with Danish letters and not wanting to use a component for creating the csv.
-            var csv = input.Replace("æ", "ae");
-            csv = csv.Replace("Æ", "AE");
-            csv = csv.Replace("ø", "oe");
-            csv = csv.Replace("Ø", "OE");
-            csv = csv.Replace("å", "aa");
-            csv = csv.Replace("Å", "AA");
-            csv = csv.Replace("é", "e");
-            return csv;
+            if (!ReportExport.TryGetPeriod(year, month, day, out var period))
+                return HttpNotFound();
+            var flights = ReportExport.LoadFlights(this.db, period, ReportClubFilter.From(ClubController.CurrentClub));
+            return Json(flights.Select(f => f.ToJsonObject()).ToList(), JsonRequestBehavior.AllowGet);
         }
 
         internal DateTime GetCentralEuropeStandardTimeNow()
