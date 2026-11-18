@@ -14,7 +14,7 @@ using SyntheticReportData = FlightJournal.Tests.Integration.ReportLoadTest.Synth
 namespace FlightJournal.Tests.Integration
 {
     /// <summary>
-    /// The report data stamp hook in FlightContext.SaveChanges and the AvailableDates snapshot (BUG-0730b3). Runs against the
+    /// The report data stamp hook in FlightContext.SaveChanges and the AvailableDates snapshot, which must reflect saved flight changes. Runs against the
     /// LocalDB development database. Every test works inside a TransactionScope that is never completed, so all synthetic
     /// data is rolled back. The stamp is process-wide, so tests compare deltas and per-date stamps.
     /// </summary>
