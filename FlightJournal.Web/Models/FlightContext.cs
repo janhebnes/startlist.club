@@ -88,9 +88,24 @@ namespace FlightJournal.Web.Models
         }
 
         /// <summary>
-        /// The flight dates this save changes: Added gives the date, Deleted the original date, and Modified the current date plus
-        /// the original when it differs. A disconnected flight attached as Modified (as FlightController.Edit does) has original
-        /// values equal to the current ones, so when its Date is marked modified the old date is read from the database.
+        /// The flight properties the per-date report counts depend on: the date grouped on, the deleted filter, and the
+        /// columns of the club filter (ReportDataLoader.WhereClub: locations, and the pilot, back seat and payer whose
+        /// Pilot.ClubId is matched). Times, landing counts, costs and texts don't change any count.
+        /// </summary>
+        private static readonly string[] CountRelevantProperties =
+        {
+            nameof(Flight.Date), nameof(Flight.Deleted),
+            nameof(Flight.PilotId), nameof(Flight.PilotBackseatId), nameof(Flight.BetalerId),
+            nameof(Flight.StartedFromId), nameof(Flight.LandedOnId)
+        };
+
+        /// <summary>
+        /// The flight dates this save changes the counts of: Added gives the date, Deleted the original date, and Modified
+        /// the current date plus the previous one, but only when a count-relevant property changed value.
+        /// Setting State = Modified marks every property modified, so values are compared, not IsModified flags:
+        /// - A tracked flight (as the tracking takeoff/landing handler saves) has original values from its load, compared directly.
+        /// - A disconnected flight attached as Modified (as FlightController.Edit does) has original values equal to the
+        ///   current ones in every property, so it is compared with the database row instead (one SELECT).
         /// </summary>
         private List<DateTime> ChangedFlightDates()
         {
@@ -106,23 +121,31 @@ namespace FlightJournal.Web.Models
                         dates.Add((DateTime)entry.OriginalValues["Date"]);
                         break;
                     case EntityState.Modified:
-                        var current = entry.Entity.Date;
-                        var original = (DateTime)entry.OriginalValues["Date"];
-                        dates.Add(current);
-                        if (original != current)
+                        var previous = IsDisconnected(entry) ? entry.GetDatabaseValues() : entry.OriginalValues;
+                        if (previous == null)
                         {
-                            dates.Add(original);
+                            dates.Add(entry.Entity.Date); // the row is gone; the save will fail, so this is never applied
                         }
-                        else if (entry.Property(f => f.Date).IsModified)
+                        else if (CountRelevantProperties.Any(p => !Equals(previous[p], entry.CurrentValues[p])))
                         {
-                            var databaseValues = entry.GetDatabaseValues();
-                            if (databaseValues != null)
-                                dates.Add((DateTime)databaseValues["Date"]);
+                            dates.Add(entry.Entity.Date);
+                            dates.Add((DateTime)previous["Date"]);
                         }
                         break;
                 }
             }
             return dates;
+        }
+
+        /// <summary>
+        /// Attached as Modified without a load: properties are marked modified, yet every original value equals the current
+        /// one, so the original values say nothing about the stored row.
+        /// </summary>
+        private static bool IsDisconnected(DbEntityEntry<Flight> entry)
+        {
+            var names = entry.CurrentValues.PropertyNames;
+            return names.Any(p => entry.Property(p).IsModified)
+                   && names.All(p => Equals(entry.OriginalValues[p], entry.CurrentValues[p]));
         }
 
         /// <summary>
