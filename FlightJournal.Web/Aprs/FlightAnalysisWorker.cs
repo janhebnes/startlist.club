@@ -184,7 +184,11 @@ namespace FlightJournal.Web.Aprs
                 Interlocked.Increment(ref _processed);
         }
 
-        /// <summary>Runs an engine call; an index fault recycles the engine, any other failure is counted.</summary>
+        /// <summary>
+        /// Runs an engine call. A fault inside the library's spatial index recycles the engine, because the index stays
+        /// corrupt; any other failure (such as an out-of-range read of a single aircraft's positions) is counted as a
+        /// per-packet failure, so tracked aircraft keep their context.
+        /// </summary>
         private bool CallEngine(Action<IFlightAnalysisEngine> call)
         {
             try
@@ -192,17 +196,26 @@ namespace FlightJournal.Web.Aprs
                 call(_engine);
                 return true;
             }
-            catch (Exception ex) when (ex is IndexOutOfRangeException || ex is ArgumentOutOfRangeException)
-            {
-                RecordFailure(ex);
-                OnIndexFault();
-                return false;
-            }
             catch (Exception ex)
             {
                 RecordFailure(ex);
+                if (IsSpatialIndexFault(ex))
+                    OnIndexFault();
                 return false;
             }
+        }
+
+        private const string SpatialIndexNamespace = "NetTopologySuite.Index.Quadtree.";
+
+        /// <summary>True when the exception (or an inner one) was thrown with a frame inside the library's quadtree index.</summary>
+        internal static bool IsSpatialIndexFault(Exception ex)
+        {
+            for (var e = ex; e != null; e = e.InnerException)
+            {
+                if (e.StackTrace != null && e.StackTrace.Contains(SpatialIndexNamespace))
+                    return true;
+            }
+            return false;
         }
 
         private void RunMaintenance()
