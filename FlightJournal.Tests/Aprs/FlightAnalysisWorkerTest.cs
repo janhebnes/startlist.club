@@ -166,15 +166,42 @@ namespace FlightJournal.Tests.Aprs
         }
 
         [TestMethod]
-        public void IdleAircraft_DetachedAfterExpiry()
+        public void IdleAircraft_SilentJustOverSixHours_Detached()
         {
             CreateWorker();
 
             PostAndWait(Update("TEST01", 1));
-            _clock.Advance(TimeSpan.FromMinutes(61));
+            _clock.Advance(TimeSpan.FromHours(6).Add(TimeSpan.FromMinutes(1)));
             PostAndWait(Update("TEST02", 2));
 
             CollectionAssert.AreEqual(new[] { "TEST01" }, _engines[0].Detached.ToArray());
+        }
+
+        [TestMethod]
+        public void IdleAircraft_SilentJustUnderSixHours_StillTracked()
+        {
+            // A cross-country flight can be out of receiver range for hours before it returns to land
+            CreateWorker();
+
+            PostAndWait(Update("TEST01", 1));
+            _clock.Advance(TimeSpan.FromHours(6).Subtract(TimeSpan.FromMinutes(1)));
+            PostAndWait(Update("TEST02", 2));
+
+            Assert.AreEqual(0, _engines[0].Detached.Count, "Detached: " + string.Join(", ", _engines[0].Detached));
+        }
+
+        [TestMethod]
+        public void ContextIdleExpirySetting_DefaultsToSixHours_ClampedToOneToTwentyFour()
+        {
+            var expected = new Dictionary<string, int>
+            {
+                { "", 6 }, { "six", 6 }, { "2.5", 6 },
+                { "-3", 1 }, { "0", 1 }, { "1", 1 }, { "12", 12 }, { " 8 ", 8 }, { "24", 24 }, { "25", 24 }, { "1000", 24 }
+            };
+            Assert.AreEqual(TimeSpan.FromHours(6), FlightAnalysisWorkerOptions.ContextIdleExpiryFromSetting(null), "missing");
+            foreach (var pair in expected)
+                Assert.AreEqual(TimeSpan.FromHours(pair.Value), FlightAnalysisWorkerOptions.ContextIdleExpiryFromSetting(pair.Key), "'" + pair.Key + "'");
+            Assert.AreEqual(TimeSpan.FromHours(6), new FlightAnalysisWorkerOptions().ContextIdleExpiry, "default option");
         }
 
         [TestMethod]

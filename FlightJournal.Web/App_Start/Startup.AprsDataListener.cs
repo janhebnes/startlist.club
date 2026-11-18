@@ -36,7 +36,11 @@ namespace FlightJournal.Web
                 () => new SkyhopFlightAnalysisEngine(),
                 tc,
                 () => DateTime.UtcNow,
-                new FlightAnalysisWorkerOptions { RecycleHourUtc = AprsRecycleHourUtc() });
+                new FlightAnalysisWorkerOptions
+                {
+                    RecycleHourUtc = AprsRecycleHourUtc(),
+                    ContextIdleExpiry = AprsContextIdleExpiry()
+                });
             _aprsListener = new AprsListener(_catalog, areas, worker, tc);
 
             _aircraftEventHandler = new AircraftEventHandler(_aprsListener, tc);
@@ -52,6 +56,15 @@ namespace FlightJournal.Web
             return int.TryParse(value, out var hour) && hour >= 0 && hour <= 23
                 ? hour
                 : new FlightAnalysisWorkerOptions().RecycleHourUtc;
+        }
+
+        /// <summary>
+        /// How long a silent aircraft keeps its flight context (app setting AprsContextIdleExpiryHours, whole hours,
+        /// default 6, clamped to 1..24).
+        /// </summary>
+        private static TimeSpan AprsContextIdleExpiry()
+        {
+            return FlightAnalysisWorkerOptions.ContextIdleExpiryFromSetting(ConfigurationManager.AppSettings["AprsContextIdleExpiryHours"]);
         }
 
         /// <summary>
