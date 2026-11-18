@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using FlightJournal.Web.Extensions;
@@ -38,7 +39,7 @@ namespace FlightJournal.Web.Aprs
                 if (p == null)
                 {
                     Log.Debug($"{nameof(AircraftEventHandler)}: starting {e.Aircraft} not in DB - ignored");
-                    _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)}: starting {e.Aircraft} not in DB - ignored");
+                    TrackIgnored(Takeoff, "UnknownAircraft");
                     return;
                 }
 
@@ -48,25 +49,26 @@ namespace FlightJournal.Web.Aprs
                 if (flights.Count() == 1)
                 {
                     var flight = flights.Single();
-                    Log.Information($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time:o}");
-                    _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time:o}");
+                    Log.Debug($"{nameof(AircraftEventHandler)} TAKEOFF: {flight.Plane.Registration} took off at {e.Time:o}");
                     if (ShouldUseAutoStartAndLanding(flight, db))
                     {
                         flight.Departure = e.Time ?? DateTime.Now;
                         db.Entry(flight).State = EntityState.Modified;
                         db.SaveChanges();
+                        Log.Information($"{nameof(AircraftEventHandler)}: takeoff registered");
+                        _telemetryClient.TrackEvent("AprsTakeoffRegistered");
                         FlightsHub.NotifyFlightStarted(flight.FlightId, Guid.Empty);
                     }
                     else
                     {
-                        Log.Debug($"{nameof(AircraftEventHandler)}: APRS autostart not enabled - landing of {flight.Plane.Registration} ignored");
-                        _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)}: APRS autostart not enabled - landing of {flight.Plane.Registration} ignored");
+                        Log.Debug($"{nameof(AircraftEventHandler)}: APRS autostart not enabled - takeoff of {flight.Plane.Registration} ignored");
+                        TrackIgnored(Takeoff, "AutoStartNotEnabled");
                     }
                 }
                 else
                 {
                     Log.Debug($"{nameof(AircraftEventHandler)}: {flights.Count()} pending flights matching {p.Registration} - unable to autostart");
-                    _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)}: {flights.Count()} pending flights matching {p.Registration} - unable to autostart");
+                    TrackIgnored(Takeoff, "NoSingleMatch", flights.Count());
                 }
             }
         }
@@ -83,7 +85,7 @@ namespace FlightJournal.Web.Aprs
                 if (p == null)
                 {
                     Log.Debug($"{nameof(AircraftEventHandler)}: landing {e.Aircraft} not in DB - ignored");
-                    _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)}: landing {e.Aircraft} not in DB - ignored");
+                    TrackIgnored(Landing, "UnknownAircraft");
                     return;
                 }
 
@@ -92,27 +94,43 @@ namespace FlightJournal.Web.Aprs
                 if (flights.Count() == 1)
                 {
                     var flight = flights.Single();
-                    Log.Information($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time:o}");
-                    _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time:o}");
+                    Log.Debug($"{nameof(AircraftEventHandler)} LANDING: {flight.Plane.Registration} landed at {e.Time:o}");
                     if (ShouldUseAutoStartAndLanding(flight, db))
                     {
                         flight.Landing = e.Time ?? DateTime.Now;
                         db.Entry(flight).State = EntityState.Modified;
                         db.SaveChanges();
+                        Log.Information($"{nameof(AircraftEventHandler)}: landing registered");
+                        _telemetryClient.TrackEvent("AprsLandingRegistered");
                         FlightsHub.NotifyFlightLanded(flight.FlightId, Guid.Empty);
                     }
                     else
                     {
                         Log.Debug($"{nameof(AircraftEventHandler)}: APRS autolanding not enabled - landing of {flight.Plane.Registration} ignored");
-                        _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)}: APRS autolanding not enabled - landing of {flight.Plane.Registration} ignored");
+                        TrackIgnored(Landing, "AutoLandingNotEnabled");
                     }
                 }
                 else
                 {
                     Log.Debug($"{nameof(AircraftEventHandler)}: {flights.Count()} airborne flights matching {p.Registration} - unable to autoland");
-                    _telemetryClient.TrackEvent($"{nameof(AircraftEventHandler)}: {flights.Count()} airborne flights matching {p.Registration} - unable to autoland");
+                    TrackIgnored(Landing, "NoSingleMatch", flights.Count());
                 }
             }
+        }
+
+        private const string Takeoff = "Takeoff";
+        private const string Landing = "Landing";
+
+        /// <summary>
+        /// A detection that didn't update a flight. The event name is constant and the properties carry no aircraft
+        /// identifiers, registrations or positions; those stay in debug-level log lines only.
+        /// </summary>
+        private void TrackIgnored(string detection, string reason, int? matchCount = null)
+        {
+            var properties = new Dictionary<string, string> { { "Event", detection }, { "Reason", reason } };
+            if (matchCount.HasValue)
+                properties.Add("MatchCount", matchCount.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            _telemetryClient.TrackEvent("AprsEventIgnored", properties);
         }
 
         /// <summary>

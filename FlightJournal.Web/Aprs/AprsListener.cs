@@ -150,7 +150,7 @@ namespace FlightJournal.Web.Aprs
 #if DEBUG
                 Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
 #endif
-                _telemetryClient.TrackEvent($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
+                _telemetryClient.TrackEvent("AprsTakeoffDetected");
                 try
                 {
                     OnAircraftTakeoff?.Invoke(this, ae);
@@ -173,7 +173,7 @@ namespace FlightJournal.Web.Aprs
 #if DEBUG
                 Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
 #endif
-                _telemetryClient.TrackEvent($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
+                _telemetryClient.TrackEvent("AprsLandingDetected");
                 try
                 {
                     OnAircraftLanding?.Invoke(this, ae);
