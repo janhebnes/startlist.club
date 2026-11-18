@@ -100,35 +100,40 @@ namespace FlightJournal.Tests.Integration
             return flights.Aggregate(LegacySafeCsv(Flight.CsvHeaders), (current, flight) => current + LegacySafeCsv(flight.ToCsvString()));
         }
 
+        private string AllCommands() => string.Join("\n---\n", _counter.Commands);
+
         [TestMethod]
         [TestCategory("Integration")]
-        public void Export_Year_OneCommand_DateRange_ConstantInFlights()
+        public void Export_Year_ConstantCommands_NoPilotJoin()
         {
             var data = SyntheticReportData.Create(_db);
-            var counts = new List<int>();
             var added = 0;
             foreach (var total in new[] { 5, 45 })
             {
                 data.AddFlightsOverYear(_db, Year, total - added);
                 added = total;
 
-                var flights = Load(ReportPeriod.ForYear(Year), data.HomeFilter);
-                var csv = ReportExport.ToCsv(flights);
+                foreach (var (club, expectedCommands) in new[] { (data.HomeFilter, 6), (ReportClubFilter.Unfiltered, 5) })
+                {
+                    var flights = Load(ReportPeriod.ForYear(Year), club);
+                    var csv = ReportExport.ToCsv(flights);
+                    var label = $"N={total}, {(club.IsUnfiltered ? "unfiltered" : "club")}";
 
-                Assert.AreEqual(total, flights.Count);
-                Assert.IsTrue(csv.Length > 0);
-                counts.Add(_counter.Count);
-                Assert.AreEqual(1, _counter.Count, $"N={total}:\n" + string.Join("\n---\n", _counter.Commands));
-                var sql = _counter.Commands.Single();
-                StringAssert.Contains(sql, "[Date] >= ");
-                Assert.IsFalse(sql.Contains("DATEPART"), "The export must use an index-friendly date range:\n" + sql);
+                    Assert.IsTrue(flights.Count >= total, label);
+                    Assert.IsTrue(csv.Length > 0);
+                    Assert.AreEqual(expectedCommands, _counter.Count, label + ":\n" + AllCommands());
+                    var flightQuery = _counter.Commands.Single(c => c.Contains("[Flights]"));
+                    StringAssert.Contains(flightQuery, "[Date] >= ");
+                    Assert.IsFalse(flightQuery.Contains("DATEPART"), "The export must use an index-friendly date range:\n" + flightQuery);
+                    Assert.IsFalse(_counter.Commands.Any(c => c.Contains("[Flights]") && c.Contains("[Pilots]")),
+                        label + ": no command joins Flights to Pilots:\n" + AllCommands());
+                }
             }
-            Console.WriteLine("Year export SQL commands: N=5 -> " + counts[0] + ", N=45 -> " + counts[1]);
         }
 
         [TestMethod]
         [TestCategory("Integration")]
-        public void Export_NoLazyLoads_AfterLoad()
+        public void Export_NoFurtherCommands_AfterLoad()
         {
             var data = SyntheticReportData.Create(_db);
             var date = new DateTime(Year, 5, 1);
@@ -138,10 +143,98 @@ namespace FlightJournal.Tests.Integration
             _db.SaveChanges();
 
             var flights = Load(ReportPeriod.ForDay(date), data.HomeFilter);
+            var afterLoad = _counter.Count;
             var touched = flights.Select(f => f.ToCsvString() + new JavaScriptSerializer().Serialize(f.ToJsonObject())).ToList();
 
             Assert.AreEqual(3, touched.Count);
-            Assert.AreEqual(1, _counter.Count, "Only the load itself; no lazy loads:\n" + string.Join("\n---\n", _counter.Commands));
+            Assert.AreEqual(afterLoad, _counter.Count, "No lazy loads after the load:\n" + AllCommands());
+            foreach (var flight in flights)
+                Assert.AreEqual(typeof(Flight), flight.GetType(), "Plain flights, not lazy-loading proxies");
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Export_NullableNavigations_MatchLegacy()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var date = new DateTime(Year, 8, 1);
+            var noLanding = data.AddFlight(_db, date, data.Home, data.HomePilot, null, data.HomePilot);
+            noLanding.LandedOnId = null;
+            noLanding.Departure = date.AddHours(9);
+            var otherPayer = data.AddFlight(_db, date, data.Away, data.HomePilot2, null, data.AwayPilot);
+            otherPayer.Departure = date.AddHours(10);
+            var backseatPays = data.AddFlight(_db, date, data.Home, data.AwayPilot, data.HomePilot3, data.HomePilot3);
+            backseatPays.Departure = date.AddHours(11);
+            _db.SaveChanges();
+            var dayPredicate = (Expression<Func<Flight, bool>>)(f => f.Date.Day == 1 && f.Date.Month == 8 && f.Date.Year == Year);
+            var serializer = new JavaScriptSerializer();
+
+            var flights = Load(ReportPeriod.ForDay(date), data.HomeFilter);
+            var csv = ReportExport.ToCsv(flights);
+            var json = serializer.Serialize(flights.Select(f => f.ToJsonObject()).ToList());
+            var legacy = LegacyFlights(dayPredicate, data.HomeFilter);
+
+            Assert.AreEqual(3, flights.Count);
+            Assert.IsNull(flights.Single(f => f.FlightId == noLanding.FlightId).LandedOn);
+            Assert.IsNull(flights.Single(f => f.FlightId == noLanding.FlightId).PilotBackseat);
+            Assert.AreEqual(LegacyCsv(legacy), csv);
+            Assert.AreEqual(serializer.Serialize(legacy.Select(f => f.ToJsonObject()).ToList()), json);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Export_ScalarColumns_EqualEntity()
+        {
+            var data = SyntheticReportData.Create(_db);
+            AddCsvFlights(data);
+            var withTraining = data.AddFlight(_db, new DateTime(Year, 3, 20), data.Home, data.HomePilot, data.HomePilot2, data.HomePilot3);
+            withTraining.HasTrainingData = true;
+            withTraining.TachoDeparture = 12.5;
+            withTraining.TachoLanding = 13.25;
+            withTraining.TaskDistance = 300;
+            withTraining.StartCost = 1.5;
+            withTraining.FlightCost = 2.5;
+            withTraining.TachoCost = 3.5;
+            withTraining.LandingCount = 2;
+            _db.SaveChanges();
+
+            var scalars = typeof(Flight).GetProperties()
+                .Where(p => p.CanWrite && p.GetSetMethod() != null && p.GetIndexParameters().Length == 0
+                            && (p.PropertyType.IsValueType || p.PropertyType == typeof(string)))
+                .ToList();
+            var compared = scalars.Where(p => p.Name != nameof(Flight.HasTrainingData)).ToList();
+            Assert.AreEqual(scalars.Count - 1, compared.Count, "HasTrainingData is the only excluded scalar");
+
+            var exported = Load(ReportPeriod.ForYear(Year), data.HomeFilter);
+            Assert.AreEqual(6, exported.Count);
+            foreach (var flight in exported)
+            {
+                var id = flight.FlightId;
+                var entity = _db.Flights.AsNoTracking().Single(f => f.FlightId == id);
+                foreach (var property in compared)
+                    Assert.AreEqual(property.GetValue(entity), property.GetValue(flight), property.Name + " of " + id);
+            }
+            Assert.IsFalse(exported.Single(f => f.FlightId == withTraining.FlightId).HasTrainingData,
+                "HasTrainingData isn't loaded by the export (it isn't covered by the date index and isn't exported)");
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Export_ClubWithoutFlights_HeaderOnly_FewCommands()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var date = new DateTime(Year, 9, 1);
+            data.AddFlight(_db, date, data.Away, data.AwayPilot, null, data.AwayPilot); // another club's flight in the period
+            _db.SaveChanges();
+
+            var flights = Load(ReportPeriod.ForDay(date), data.HomeFilter);
+            var commands = _counter.Count;
+            var csv = ReportExport.ToCsv(flights);
+
+            Assert.AreEqual(0, flights.Count);
+            Assert.AreEqual(LegacyCsv(LegacyFlights(f => f.Date.Day == 1 && f.Date.Month == 9 && f.Date.Year == Year, data.HomeFilter)), csv);
+            Assert.AreEqual(LegacySafeCsv(Flight.CsvHeaders), csv, "Header only");
+            Assert.IsTrue(commands <= 2, "Club pilots and flights only:\n" + AllCommands());
         }
 
         [TestMethod]
