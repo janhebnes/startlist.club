@@ -195,6 +195,7 @@
     <Compile Include="Controllers\AboutControllerTest.cs" />
     <Compile Include="Controllers\LanguageControllerTest.cs" />
     <Compile Include="Integration\DemoTrainingSeederTest.cs" />
+    <Compile Include="Integration\ReportExportTest.cs" />
     <Compile Include="Integration\ReportLoadTest.cs" />
     <Compile Include="Integration\SqlCommandCounter.cs" />
     <Compile Include="Integration\TrainingHistoryQueryTest.cs" />
