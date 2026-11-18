@@ -7,8 +7,11 @@ using System.Threading;
 namespace FlightJournal.Web.Models.Report
 {
     /// <summary>
-    /// The single invalidation signal for report data: a counter bumped after every successful save that changes report
-    /// data (FlightContext.SaveChanges), plus the last stamp per flight date.
+    /// The invalidation signal for the per-date flight counts (AvailableDates): a counter bumped after a successful save
+    /// (FlightContext.SaveChanges) that can change those counts, plus the last stamp per flight date.
+    /// It only moves on count-relevant changes (date, deleted, pilots, payer, locations, club membership); edits such as
+    /// times, landing counts, costs or notes leave it unchanged. So it must not be used to cache report pages or exported
+    /// contents: that needs a separate stamp bumped on every flight change.
     /// Per process: this assumes a single app instance, like the Application dictionary it replaces.
     /// </summary>
     public static class ReportDataStamp
