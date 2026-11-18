@@ -35,3 +35,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "web.config")]
+
+// Test seams (for example Settings.ResetTwilioSms) are internal and only visible to the test project
+[assembly: InternalsVisibleTo("FlightJournal.Tests")]

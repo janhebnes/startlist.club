@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FlightJournal.Web.Extensions;
 using FlightJournal.Web.Models;
+using FlightJournal.Web.Models.Report;
 
 namespace FlightJournal.Web.Controllers
 {
@@ -24,6 +25,9 @@ namespace FlightJournal.Web.Controllers
             var raw = RouteData.Values["date"];
             int year = 0;
 
+            // Captured once, so the flight query uses plain values instead of re-resolving the current club
+            var clubFilter = ReportClubFilter.From(ClubController.CurrentClub);
+
             // YEAR Statistics
             if (!date.HasValue && raw != null)
             {
@@ -34,23 +38,7 @@ namespace FlightJournal.Web.Controllers
                         var rptYear = new ReportViewModel();
                         rptYear.Date = new DateTime(year, 1, 1);
                         rptYear.FormattedDate = rptYear.Date.ToString("yyyy");
-
-                        // Custom inline Club filtering for allowing maximum performance
-                        // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                        rptYear.QueryableFlights = this.db.Flights
-                            .Where(f => f.Date.Year == rptYear.Date.Year && f.Deleted == null)
-                            .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club")
-                            .Include("PilotBackseat").Include("Betaler").Include("StartType")
-                            .Where(f => ClubController.CurrentClub.ShortName == null
-                                        || f.StartedFromId == ClubController.CurrentClub.LocationId
-                                        || f.LandedOnId == ClubController.CurrentClub.LocationId
-                                        || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                                        || (f.PilotBackseat != null &&
-                                            f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                                        || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                            .OrderBy(o => o.Departure)
-                            .AsNoTracking()
-                            .AsQueryable();
+                        rptYear.Load(ReportDataLoader.LoadFlights(this.db, ReportPeriod.ForYear(year), clubFilter, excludeDeleted: true), clubFilter);
 
                         return this.View("year", rptYear);
                     }
@@ -71,27 +59,14 @@ namespace FlightJournal.Web.Controllers
                     throw new ArgumentException(string.Format("Invalid date input in url: {0}", raw));
                 }
 
-                // Custom inline Club filtering for allowing maximum performance
-                // A copy of the logic in Flight.IsCurrent(Flight arg) 
-                rptMonth.QueryableFlights = this.db.Flights.Where(f => f.Date.Month == rptMonth.Date.Month && f.Date.Year == rptMonth.Date.Year && f.Deleted == null)
-                    .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("Pilot.Club").Include("PilotBackseat").Include("Betaler").Include("StartType")
-                    .Where(f => ClubController.CurrentClub.ShortName == null
-                        || f.StartedFromId == ClubController.CurrentClub.LocationId
-                        || f.LandedOnId == ClubController.CurrentClub.LocationId
-                        || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                        || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                        || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                    .OrderBy(o => o.Departure)
-                    .AsNoTracking()
-                    .AsQueryable();
+                rptMonth.Load(ReportDataLoader.LoadFlights(this.db, ReportPeriod.ForMonth(rptMonth.Date.Year, rptMonth.Date.Month), clubFilter, excludeDeleted: true), clubFilter);
 
                 return this.View("month", rptMonth);
             }
             
             var rpt = new ReportViewModel();
-            rpt.AvailableDates = this.AvailableDates();
-            if (rpt.AvailableDates != null 
-                && rpt.AvailableDates.Count > 0 
+            rpt.AvailableDates = AvailableDatesCache.Get(this.db, clubFilter);
+            if (rpt.AvailableDates.Count > 0
                 && !date.HasValue)
             {
                 rpt.Date = rpt.AvailableDates.Max(d => d.Key);
@@ -107,59 +82,27 @@ namespace FlightJournal.Web.Controllers
 
             rpt.FormattedDate = rpt.Date.ToShortDateString();
 
-            // Custom inline Club filtering for allowing maximum performance
-            // A copy of the logic in Flight.IsCurrent(Flight arg) 
-            rpt.QueryableFlights = this.db.Flights.Where(f => f.Date == rpt.Date)
-                .Include("Plane").Include("StartedFrom").Include("LandedOn").Include("Pilot").Include("PilotBackseat")
-                .Include("Betaler").Include("Pilot.Club").Include("StartType")
-                .Where(f => ClubController.CurrentClub.ShortName == null
-                            || f.StartedFromId == ClubController.CurrentClub.LocationId
-                            || f.LandedOnId == ClubController.CurrentClub.LocationId
-                            || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                            || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                            || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                .OrderBy(o => o.Departure)
-                .AsNoTracking();
-                
             // Allow f.Deleted != null
+            rpt.Load(ReportDataLoader.LoadFlights(this.db, ReportPeriod.ForDay(rpt.Date), clubFilter, excludeDeleted: false), clubFilter);
 
             return this.View(rpt);
         }
 
-        public FileContentResult Export(int year, int? month)
+        public ActionResult Export(int year, int? month)
         {
-            if (month.HasValue)
-            {
-                var flights = this.db.Flights.Where(f => f.Date.Month == month.Value && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
-                var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
-                return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + "-" + month + ".csv");
-            }
-            else
-            {
-                var flights = this.db.Flights.Where(f => f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
-                var csv = Enumerable.Aggregate(flights, this.SafeCSVParser(Flight.CsvHeaders), (current, flight) => current + this.SafeCSVParser(flight.ToCsvString()));
-                return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Startlist-" + year + ".csv");
-            }
+            if (!ReportExport.TryGetPeriod(year, month, null, out var period))
+                return HttpNotFound();
+            var flights = ReportExport.LoadFlights(this.db, period, ReportClubFilter.From(ClubController.CurrentClub));
+            var fileName = month.HasValue ? "Startlist-" + year + "-" + month + ".csv" : "Startlist-" + year + ".csv";
+            return File(new System.Text.UTF8Encoding().GetBytes(ReportExport.ToCsv(flights)), "text/csv", fileName);
         }
 
-        public JsonResult ExportJson(int year, int month, int day)
+        public ActionResult ExportJson(int year, int month, int day)
         {
-            var flights = this.db.Flights.Where(f => f.Date.Day == day && f.Date.Month == month && f.Date.Year == year && f.Deleted == null).OrderBy(o => o.Departure).ToList().Where(f => f.IsCurrentClubPilots());
-            var json = Enumerable.Aggregate(flights, new List<Object>(), (current, flight) => current.Append(flight.ToJsonObject()).ToList());
-            return Json(json, JsonRequestBehavior.AllowGet);
-        }
-
-        private string SafeCSVParser(string input)
-        {
-            // HACK: Fix for Encoding Issue with Danish letters and not wanting to use a component for creating the csv.
-            var csv = input.Replace("æ", "ae");
-            csv = csv.Replace("Æ", "AE");
-            csv = csv.Replace("ø", "oe");
-            csv = csv.Replace("Ø", "OE");
-            csv = csv.Replace("å", "aa");
-            csv = csv.Replace("Å", "AA");
-            csv = csv.Replace("é", "e");
-            return csv;
+            if (!ReportExport.TryGetPeriod(year, month, day, out var period))
+                return HttpNotFound();
+            var flights = ReportExport.LoadFlights(this.db, period, ReportClubFilter.From(ClubController.CurrentClub));
+            return Json(flights.Select(f => f.ToJsonObject()).ToList(), JsonRequestBehavior.AllowGet);
         }
 
         internal DateTime GetCentralEuropeStandardTimeNow()
@@ -180,63 +123,6 @@ namespace FlightJournal.Web.Controllers
             {
                 throw new Exception("Registry data on the Central European Standard Time zone has been corrupted.", ivex);
             }
-        }
-
-        public Dictionary<DateTime, int> AvailableDates()
-        {
-            // Cleared by the Flight Controller Create action if a creation is done on another day than the last creation
-            if (HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] != null)
-            {
-                var cache = HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
-
-                var todaysDate = GetCentralEuropeStandardTimeNow().Date;
-
-                // we always check todays flights
-                var todaysFlights = this.db.Flights.Where(f => f.Deleted == null && f.Date == todaysDate)
-                .Include("Pilot").Include("PilotBackseat").Include("Betaler")
-                .Where(f => ClubController.CurrentClub.ShortName == null
-                    || f.StartedFromId == ClubController.CurrentClub.LocationId
-                    || f.LandedOnId == ClubController.CurrentClub.LocationId
-                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId)
-                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId));
-
-                if (todaysFlights.Any())
-                {
-                    cache.Remove(todaysDate);
-                    cache.Add(todaysDate, todaysFlights.Count());
-                }
-
-                return HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
-            }
-
-            // Original implementation
-            //var availableDates = this.db.Flights.GroupBy(p => p.Date).Select(g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
-            //return availableDates.Select(d => new { d.Date, Hours = d.Flights.Count() }).ToDictionary(x => x.Date, x => x.Hours);
-
-            // Tweaked implementation that did not perform good enough
-            ////var availableDates = this.db.Flights.ToList().Where(f => f.IsCurrent()).GroupBy(p => p.Date).Select(
-            ////    g => new { Date = g.Key, Flights = this.db.Flights.Where(d => d.Date == g.Key) });
-
-            // Custom inline Club filtering for allowing maximum performance (SQL Profiler is your friend LINQpad4 did not work with this entity version)
-            // A copy of the logic in Flight.IsCurrent(Flight arg) 
-            var availableDates = this.db.Flights.Where(f=>f.Deleted == null)
-                .Include("Pilot").Include("PilotBackseat").Include("Betaler")
-                .Where(f => ClubController.CurrentClub.ShortName == null 
-                    || f.StartedFromId == ClubController.CurrentClub.LocationId
-                    || f.LandedOnId == ClubController.CurrentClub.LocationId 
-                    || (f.Pilot != null && f.Pilot.ClubId == ClubController.CurrentClub.ClubId) 
-                    || (f.PilotBackseat != null && f.PilotBackseat.ClubId == ClubController.CurrentClub.ClubId) 
-                    || (f.Betaler != null && f.Betaler.ClubId == ClubController.CurrentClub.ClubId))
-                    .GroupBy(p => p.Date);
-
-            if (availableDates.Any())
-            {
-                HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = availableDates.Select(g => new { Date = g.Key, FlightCount = g.Count() }).ToDictionary(x => x.Date, x => x.FlightCount);
-                return HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] as Dictionary<DateTime, int>;
-            }
-
-            return null;
         }
     }
 }

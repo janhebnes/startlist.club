@@ -5,7 +5,7 @@
     var pilotName = Model.Pilot.MaskedName(Request.IsPilot());
     var pilotBackseatName = Model.PilotBackseat.MaskedName(Request.IsPilot());
     var payerName = pilotName;
-    if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
+    if (Model.HasSeparatePayer())
     {
         payerName = Model.Betaler.MaskedName(Request.IsPilot());
     }
@@ -21,7 +21,7 @@
     }
     if (Model.IsCurrentClubPilots())
     {
-        if ((Model.Betaler != null) && (Model.Betaler != Model.Pilot))
+        if (Model.HasSeparatePayer())
         {
             @Html.Raw(string.Format(" " + _("(paid by {0})"), payerName))
         }

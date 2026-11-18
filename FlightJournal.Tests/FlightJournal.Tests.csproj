@@ -50,6 +50,12 @@
     <Reference Include="FakeItEasy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
       <HintPath>..\packages\FakeItEasy.8.3.0\lib\net462\FakeItEasy.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.4\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -98,6 +104,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=8.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.8.2.0\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
@@ -189,8 +196,25 @@
     <Compile Include="Controllers\TrainingLogControllerSecurityTest.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttributeTest.cs" />
     <Compile Include="Models\TrainingDataPolicyTest.cs" />
+    <Compile Include="Controllers\LanguageControllerTest.cs" />
+    <Compile Include="Integration\AvailableDatesCacheTest.cs" />
+    <Compile Include="Integration\DemoTrainingSeederTest.cs" />
+    <Compile Include="Integration\ReportExportTest.cs" />
+    <Compile Include="Integration\ReportLoadTest.cs" />
+    <Compile Include="Integration\SqlCommandCounter.cs" />
+    <Compile Include="Integration\TrainingHistoryQueryTest.cs" />
+    <Compile Include="Migrations\DemoTrainingScenarioTest.cs" />
+    <Compile Include="Models\PayerDisplayTest.cs" />
+    <Compile Include="Models\ReportDataStampTest.cs" />
+    <Compile Include="Models\ReportPeriodTest.cs" />
+    <Compile Include="Models\TrainingFlightValidationTest.cs" />
+    <Compile Include="Models\TrainingHistoryRangeTest.cs" />
+    <Compile Include="Models\TrainingHistoryRowBuilderTest.cs" />
     <Compile Include="RouteFilters.cs" />
     <Compile Include="ServiceProviders\SmtpTest.cs" />
+    <Compile Include="ServiceProviders\TwilioSettingsFallbackTest.cs" />
+    <Compile Include="ServiceProviders\TwilioSmsConfigTest.cs" />
+    <Compile Include="ServiceProviders\TwilioSmsStartupTest.cs" />
     <Compile Include="ServiceProviders\TwilioTest.cs" />
   </ItemGroup>
   <ItemGroup>

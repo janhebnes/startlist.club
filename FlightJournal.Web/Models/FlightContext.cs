@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using CsvHelper.Configuration;
+using FlightJournal.Web.Models.Report;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
@@ -73,7 +75,89 @@ namespace FlightJournal.Web.Models
                                     .ToList<DbEntityEntry<Flight>>()
                                     .ForEach((c => this.FlightVersions.Add(new FlightVersionHistory((Flight)c.Entity, c.State))));
 
-            return base.SaveChanges();
+            // Report data invalidation: collected before the save, applied only after it succeeded
+            var changedDates = ChangedFlightDates();
+            var clubCountsChanged = ChangesClubMembershipOrLocation();
+
+            var result = base.SaveChanges();
+
+            ReportDataStamp.Touch(changedDates);
+            if (clubCountsChanged)
+                ReportDataStamp.TouchAll();
+            return result;
+        }
+
+        /// <summary>
+        /// The flight properties the per-date report counts depend on: the date grouped on, the deleted filter, and the
+        /// columns of the club filter (ReportDataLoader.WhereClub: locations, and the pilot, back seat and payer whose
+        /// Pilot.ClubId is matched). Times, landing counts, costs and texts don't change any count.
+        /// </summary>
+        private static readonly string[] CountRelevantProperties =
+        {
+            nameof(Flight.Date), nameof(Flight.Deleted),
+            nameof(Flight.PilotId), nameof(Flight.PilotBackseatId), nameof(Flight.BetalerId),
+            nameof(Flight.StartedFromId), nameof(Flight.LandedOnId)
+        };
+
+        /// <summary>
+        /// The flight dates this save changes the counts of: Added gives the date, Deleted the original date, and Modified
+        /// the current date plus the previous one, but only when a count-relevant property changed value.
+        /// Setting State = Modified marks every property modified, so values are compared, not IsModified flags:
+        /// - A tracked flight (as the tracking takeoff/landing handler saves) has original values from its load, compared directly.
+        /// - A disconnected flight attached as Modified (as FlightController.Edit does) has original values equal to the
+        ///   current ones in every property, so it is compared with the database row instead (one SELECT).
+        /// </summary>
+        private List<DateTime> ChangedFlightDates()
+        {
+            var dates = new List<DateTime>();
+            foreach (var entry in this.ChangeTracker.Entries<Flight>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        dates.Add(entry.Entity.Date);
+                        break;
+                    case EntityState.Deleted:
+                        dates.Add((DateTime)entry.OriginalValues["Date"]);
+                        break;
+                    case EntityState.Modified:
+                        var previous = IsDisconnected(entry) ? entry.GetDatabaseValues() : entry.OriginalValues;
+                        if (previous == null)
+                        {
+                            dates.Add(entry.Entity.Date); // the row is gone; the save will fail, so this is never applied
+                        }
+                        else if (CountRelevantProperties.Any(p => !Equals(previous[p], entry.CurrentValues[p])))
+                        {
+                            dates.Add(entry.Entity.Date);
+                            dates.Add((DateTime)previous["Date"]);
+                        }
+                        break;
+                }
+            }
+            return dates;
+        }
+
+        /// <summary>
+        /// Attached as Modified without a load: properties are marked modified, yet every original value equals the current
+        /// one, so the original values say nothing about the stored row.
+        /// </summary>
+        private static bool IsDisconnected(DbEntityEntry<Flight> entry)
+        {
+            var names = entry.CurrentValues.PropertyNames;
+            return names.Any(p => entry.Property(p).IsModified)
+                   && names.All(p => Equals(entry.OriginalValues[p], entry.CurrentValues[p]));
+        }
+
+        /// <summary>
+        /// A club's report counts depend on Pilot.ClubId (pilot, back seat, payer) and Club.LocationId. A disconnected entity
+        /// attached as Modified marks every property, so it conservatively counts as a change. Added pilots and clubs have no flights yet.
+        /// </summary>
+        private bool ChangesClubMembershipOrLocation()
+        {
+            return this.ChangeTracker.Entries<Pilot>().Any(e => e.State == EntityState.Deleted
+                                                                || (e.State == EntityState.Modified && e.Property(p => p.ClubId).IsModified))
+                   || this.ChangeTracker.Entries<Club>().Any(e => e.State == EntityState.Deleted
+                                                                  || (e.State == EntityState.Modified && e.Property(c => c.LocationId).IsModified));
         }
 
         /// <summary>

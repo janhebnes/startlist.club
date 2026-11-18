@@ -121,6 +121,58 @@ namespace FlightJournal.Web.Configuration
                 return ServiceCredentials.TwilioFromNumber;
             }
         }
+
+        // Regional Twilio settings: Azure app settings, or fallback to the App_Data folder (like the other Twilio settings)
+        public static string TwilioRegion => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioRegion"], () => ServiceCredentials.TwilioRegion);
+        public static string TwilioEdge => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioEdge"], () => ServiceCredentials.TwilioEdge);
+        public static string TwilioApiKeySid => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioApiKeySid"], () => ServiceCredentials.TwilioApiKeySid);
+        public static string TwilioApiKeySecret => AppSettingOrFallback(ConfigurationManager.AppSettings["TwilioApiKeySecret"], () => ServiceCredentials.TwilioApiKeySecret);
+
+        /// <summary>
+        /// The app setting when it exists (even if empty); otherwise the fallback, which is only read in that case.
+        /// </summary>
+        public static string AppSettingOrFallback(string appSettingValue, Func<string> fallback)
+        {
+            return appSettingValue ?? fallback();
+        }
+
+        private static volatile Lazy<TwilioSmsConfig> _twilioSms = NewTwilioSms(ResolveTwilioSmsFromSettings);
+
+        /// <summary>
+        /// How SMS is sent; see <see cref="TwilioSmsConfig.Resolve"/>. Resolved once (at startup or on first use) and then
+        /// shared by the login page, the SMS guards and the SMS service. Changing an app setting restarts the app, which resolves it again.
+        /// </summary>
+        public static TwilioSmsConfig TwilioSms => _twilioSms.Value;
+
+        /// <summary>Resolve again on next use. Tests only (internal); they pass their own resolver so no configuration is read.</summary>
+        internal static void ResetTwilioSms(Func<TwilioSmsConfig> resolver = null)
+        {
+            _twilioSms = NewTwilioSms(resolver ?? ResolveTwilioSmsFromSettings);
+        }
+
+        private static Lazy<TwilioSmsConfig> NewTwilioSms(Func<TwilioSmsConfig> resolver)
+        {
+            return new Lazy<TwilioSmsConfig>(() =>
+            {
+                try
+                {
+                    return resolver();
+                }
+                catch (Exception ex)
+                {
+                    // Resolving happens at startup, and Lazy would otherwise rethrow the error on every access:
+                    // any failure hides SMS instead of stopping the site. Only the exception type is kept, never its message.
+                    return TwilioSmsConfig.Unreadable("The Twilio settings could not be read (" + ex.GetType().Name + ")");
+                }
+            }, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        }
+
+        private static TwilioSmsConfig ResolveTwilioSmsFromSettings()
+        {
+            return TwilioSmsConfig.Resolve(
+                TwilioAccountSid, TwilioAuthToken, TwilioFromNumber, TwilioRegion, TwilioEdge, TwilioApiKeySid, TwilioApiKeySecret);
+        }
+
         public static string MailSmtpHost
         {
             get

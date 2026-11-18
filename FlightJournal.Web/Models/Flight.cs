@@ -348,6 +348,24 @@ namespace FlightJournal.Web.Models
         }
 
         /// <summary>
+        /// True when the flight has a payer who is not the pilot (rendered as "paid by").
+        /// A method, so it is not serialized with the flight.
+        /// </summary>
+        public bool HasSeparatePayer()
+        {
+            return HasSeparatePayer(this.Betaler, this.BetalerId, this.PilotId);
+        }
+
+        /// <summary>
+        /// The "paid by" rule for flights and flight history: compares by id, because EF may materialize
+        /// the pilot and the payer as separate instances of the same person (e.g. AsNoTracking).
+        /// </summary>
+        public static bool HasSeparatePayer(Pilot betaler, int betalerId, int pilotId)
+        {
+            return betaler != null && betalerId != pilotId;
+        }
+
+        /// <summary>
         /// Return true if the current Flight is relevant for the Currently Selected Club
         /// </summary>
         /// <remarks>usable direcly in linq where statements</remarks>

@@ -405,6 +405,8 @@
     <Compile Include="Aprs\TokenSleeper.cs" />
     <Compile Include="Configuration\Demo.cs" />
     <Compile Include="Configuration\Settings.cs" />
+    <Compile Include="Configuration\SmsDeliveryException.cs" />
+    <Compile Include="Configuration\TwilioSmsConfig.cs" />
     <Compile Include="Controllers\api\FlightsController.cs" />
     <Compile Include="Controllers\CodePlaygroundController.cs" />
     <Compile Include="Controllers\CommentaryTypeAdminController.cs" />
@@ -463,6 +465,10 @@
     <Compile Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs" />
     <Compile Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.designer.cs">
       <DependentUpon>202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.cs" />
+    <Compile Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.Designer.cs">
+      <DependentUpon>202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\Export\TrainingFlightExportValidator.cs" />
@@ -532,6 +538,7 @@
     <Compile Include="Models\Training\Predefined\WindDirection.cs" />
     <Compile Include="Models\Training\Predefined\WindSpeed.cs" />
     <Compile Include="Models\Training\TrainingDataPolicy.cs" />
+    <Compile Include="Models\Training\TrainingHistoryQuery.cs" />
     <Compile Include="Models\Training\TrainingTimelineViewModel.cs" />
     <Compile Include="Translations\LocalizedWebViewPage.cs" />
     <Compile Include="Migrations\ApplicationDbContext\201408171336169_InitialDatabaseCreation.cs" />
@@ -572,6 +579,8 @@
       <DependentUpon>201505062147469_FlightVersion-Deleted-Date.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\FlightContext\Configuration.cs" />
+    <Compile Include="Migrations\FlightContext\DemoTrainingScenario.cs" />
+    <Compile Include="Migrations\FlightContext\DemoTrainingSeeder.cs" />
     <Compile Include="Configuration\ServiceCredentialsConfigurationSection.cs" />
     <Compile Include="Constraints\ClubRouteConstraint.cs" />
     <Compile Include="Models\PilotViewModels.cs" />
@@ -608,6 +617,10 @@
     <Compile Include="Models\FlightViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Report\AvailableDatesCache.cs" />
+    <Compile Include="Models\Report\ReportDataStamp.cs" />
+    <Compile Include="Models\Report\ReportDataLoader.cs" />
+    <Compile Include="Models\Report\ReportExport.cs" />
     <Compile Include="Models\ReportViewModels.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\Club.cs" />
@@ -879,6 +892,7 @@
     <Content Include="Migrations\FlightContext\202111152258080_Flights extended with index IX_Flights_Deleted_PilotBackseatId_StartTypeId.sql" />
     <Content Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.sql" />
     <Content Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.sql" />
+    <Content Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.sql" />
     <Content Include="Migrations\Readme.txt" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -1269,7 +1283,6 @@
     <Content Include="Views\Account\ForgotPasswordGeneratedAccount.cshtml" />
     <Content Include="Views\Flight\Disable.cshtml" />
     <Content Include="Views\About\License.cshtml" />
-    <Content Include="Views\Language\LanguageNotSupported.cshtml" />
     <Content Include="Views\Shared\_LanguagePartial.cshtml" />
     <Content Include="Translations\da\LC_MESSAGES\messages.po" />
     <Content Include="Translations\en\LC_MESSAGES\messages.po" />
@@ -1365,7 +1378,6 @@
     <Content Include="Views\TrainingLog\SelectTrainingProgram.cshtml" />
     <Content Include="Views\Flight\PartialGrid.cshtml" />
     <Content Include="Views\TrainingStatus\_PartialTrainingTimeline.cshtml" />
-    <Content Include="Views\Language\RedirectNotSupported.cshtml" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1448,6 +1460,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.resx">
       <DependentUpon>202111152304567_AppliedExercises extended with index IX_AppliedExercises_FlightId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\FlightContext\202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.resx">
+      <DependentUpon>202610241309473_TrainingFlightAnnotations extended with index IX_TrainingFlightAnnotations_FlightId.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\FlightContext\202305061826179_Adding PilotInTrainingProgram.resx">
       <DependentUpon>202305061826179_Adding PilotInTrainingProgram.cs</DependentUpon>

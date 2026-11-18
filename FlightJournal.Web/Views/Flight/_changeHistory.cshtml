@@ -84,7 +84,7 @@
                             <text>/ </text>
                             @item.PilotBackseat.Name
                         }
-                        if ((item.Betaler != null) && (item.Betaler != item.Pilot))
+                        if (item.HasSeparatePayer())
                         {
                             @Html.Raw(string.Format(" " + _("(paid by {0})"), item.Betaler.Name))
                         }
