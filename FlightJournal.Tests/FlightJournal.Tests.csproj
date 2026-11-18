@@ -201,6 +201,7 @@
     <Compile Include="Extensions\TimeSpanExtensionTest.cs" />
     <Compile Include="Extensions\LongExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Aprs\AprsTelemetryTest.cs" />
     <Compile Include="Aprs\FlightAnalysisRaceReproTest.cs" />
     <Compile Include="Aprs\FlightAnalysisWorkerTest.cs" />
     <Compile Include="Controllers\AboutControllerTest.cs" />
