@@ -68,6 +68,12 @@ namespace FlightJournal.Tests.Integration
 
         private static long LastChange(DateTime date) => ReportDataStamp.LastChange(ReportPeriod.ForDay(date));
 
+        /// <summary>
+        /// The flight version history is keyed on (FlightId, Created = DateTime.Now) in a SQL datetime column (about 3 ms
+        /// resolution), so a test that saves the same flight twice in quick succession waits a moment before the second save.
+        /// </summary>
+        private static void AwaitNextVersionTimestamp() => System.Threading.Thread.Sleep(20);
+
         [TestMethod]
         [TestCategory("Integration")]
         public void SaveChanges_AddedModifiedDeleted_TouchesDates()
@@ -246,6 +252,123 @@ namespace FlightJournal.Tests.Integration
             CollectionAssert.AreEquivalent(new[] { homePilotAway.Date, awayAtHome.Date, awayLandsAtHome.Date, homePaysAway.Date }, dates.Keys.ToList());
             Assert.IsFalse(dates.ContainsKey(otherClubOnly.Date), "Another club's flight away is not included");
             Assert.IsFalse(dates.ContainsKey(deletedHome.Date), "Deleted flights are not counted");
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void SaveChanges_TrackedTimeOnlyChange_DoesNotTouch_CacheStaysWarm()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var date = new DateTime(Year, 6, 1);
+            var flight = data.AddFlight(_db, date, data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            var flightId = flight.FlightId;
+            Detach();
+            var warm = AvailableDatesCache.Get(_db, data.HomeFilter);
+
+            // As the APRS takeoff/landing handler does: a tracked flight, times changed, then marked Modified
+            var tracked = _db.Flights.Single(f => f.FlightId == flightId);
+            tracked.Departure = date.AddHours(11);
+            tracked.Landing = date.AddHours(12);
+            tracked.LandingCount = 3;
+            tracked.TachoDeparture = 100;
+            tracked.TachoLanding = 101;
+            tracked.Description = "Times from tracking";
+            tracked.LastUpdated = date.AddHours(12);
+            _db.Entry(tracked).State = EntityState.Modified;
+            AwaitNextVersionTimestamp();
+            var before = ReportDataStamp.Current;
+            _db.SaveChanges();
+
+            Assert.AreEqual(before, ReportDataStamp.Current, "Time and count edits don't change the date counts");
+            _counter.Reset();
+            var after = AvailableDatesCache.Get(_db, data.HomeFilter);
+            Assert.AreEqual(0, _counter.Count, "The cache stays warm");
+            Assert.AreSame(warm, after);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void SaveChanges_TrackedCountRelevantChange_TouchesEachField()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var cases = new Dictionary<string, Action<Flight>>
+            {
+                { "Date", f => f.Date = f.Date.AddDays(1) },
+                { "Deleted", f => f.Deleted = f.Date },
+                { "PilotId", f => f.PilotId = data.HomePilot2.PilotId },
+                { "PilotBackseatId", f => f.PilotBackseatId = data.HomePilot3.PilotId },
+                { "BetalerId", f => f.BetalerId = data.HomePilot2.PilotId },
+                { "StartedFromId", f => f.StartedFromId = data.Away.LocationId },
+                { "LandedOnId", f => f.LandedOnId = data.Away.LocationId },
+            };
+
+            var day = 1;
+            foreach (var change in cases)
+            {
+                var date = new DateTime(Year, 7, day++);
+                var flight = data.AddFlight(_db, date, data.Home, data.HomePilot, null, data.HomePilot);
+                _db.SaveChanges();
+                var flightId = flight.FlightId;
+                Detach();
+
+                var tracked = _db.Flights.Single(f => f.FlightId == flightId);
+                change.Value(tracked);
+                _db.Entry(tracked).State = EntityState.Modified;
+                AwaitNextVersionTimestamp();
+                var before = ReportDataStamp.Current;
+                _db.SaveChanges();
+
+                Assert.IsTrue(ReportDataStamp.Current > before, change.Key + " touches");
+                Assert.AreEqual(ReportDataStamp.Current, LastChange(date), change.Key + " touches the flight's date");
+                Detach();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void SaveChanges_DisconnectedTimeOnlyEdit_DoesNotTouch()
+        {
+            var data = SyntheticReportData.Create(_db);
+            var date = new DateTime(Year, 8, 1);
+            var flight = data.AddFlight(_db, date, data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            var flightId = flight.FlightId;
+            Detach();
+
+            // As FlightController.Edit attaches the posted flight: compared with the database row, only times differ
+            var posted = _db.Flights.AsNoTracking().Single(f => f.FlightId == flightId);
+            posted.Departure = date.AddHours(13);
+            posted.Landing = date.AddHours(14);
+            _db.Entry(posted).State = EntityState.Modified;
+            AwaitNextVersionTimestamp();
+            var before = ReportDataStamp.Current;
+            _db.SaveChanges();
+
+            Assert.AreEqual(before, ReportDataStamp.Current, "A disconnected time edit doesn't change the date counts");
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void AvailableDates_WarmCache_ShowsTodaysNewFlight()
+        {
+            var data = SyntheticReportData.Create(_db);
+            data.AddFlight(_db, new DateTime(Year, 9, 1), data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+            Detach();
+            var warm = AvailableDatesCache.Get(_db, data.HomeFilter);
+            var today = DateTime.Today;
+            Assert.IsFalse(warm.ContainsKey(today));
+
+            // The first start of the day is registered
+            data.AddFlight(_db, today, data.Home, data.HomePilot, null, data.HomePilot);
+            _db.SaveChanges();
+
+            // The next visitor's front page lists today with its start
+            var dates = AvailableDatesCache.Get(_db, data.HomeFilter);
+            Assert.IsTrue(dates.ContainsKey(today), "Today is listed");
+            Assert.AreEqual(1, dates[today]);
+            Assert.AreEqual(today, dates.Keys.Max(), "Today is the latest date, so the front page opens on it");
         }
     }
 }
