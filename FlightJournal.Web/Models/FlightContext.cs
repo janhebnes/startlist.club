@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using CsvHelper.Configuration;
+using FlightJournal.Web.Models.Report;
 using FlightJournal.Web.Models.Training;
 using FlightJournal.Web.Models.Training.Catalogue;
 using FlightJournal.Web.Models.Training.Flight;
@@ -73,7 +75,66 @@ namespace FlightJournal.Web.Models
                                     .ToList<DbEntityEntry<Flight>>()
                                     .ForEach((c => this.FlightVersions.Add(new FlightVersionHistory((Flight)c.Entity, c.State))));
 
-            return base.SaveChanges();
+            // Report data invalidation: collected before the save, applied only after it succeeded
+            var changedDates = ChangedFlightDates();
+            var clubCountsChanged = ChangesClubMembershipOrLocation();
+
+            var result = base.SaveChanges();
+
+            ReportDataStamp.Touch(changedDates);
+            if (clubCountsChanged)
+                ReportDataStamp.TouchAll();
+            return result;
+        }
+
+        /// <summary>
+        /// The flight dates this save changes: Added gives the date, Deleted the original date, and Modified the current date plus
+        /// the original when it differs. A disconnected flight attached as Modified (as FlightController.Edit does) has original
+        /// values equal to the current ones, so when its Date is marked modified the old date is read from the database.
+        /// </summary>
+        private List<DateTime> ChangedFlightDates()
+        {
+            var dates = new List<DateTime>();
+            foreach (var entry in this.ChangeTracker.Entries<Flight>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        dates.Add(entry.Entity.Date);
+                        break;
+                    case EntityState.Deleted:
+                        dates.Add((DateTime)entry.OriginalValues["Date"]);
+                        break;
+                    case EntityState.Modified:
+                        var current = entry.Entity.Date;
+                        var original = (DateTime)entry.OriginalValues["Date"];
+                        dates.Add(current);
+                        if (original != current)
+                        {
+                            dates.Add(original);
+                        }
+                        else if (entry.Property(f => f.Date).IsModified)
+                        {
+                            var databaseValues = entry.GetDatabaseValues();
+                            if (databaseValues != null)
+                                dates.Add((DateTime)databaseValues["Date"]);
+                        }
+                        break;
+                }
+            }
+            return dates;
+        }
+
+        /// <summary>
+        /// A club's report counts depend on Pilot.ClubId (pilot, back seat, payer) and Club.LocationId. A disconnected entity
+        /// attached as Modified marks every property, so it conservatively counts as a change. Added pilots and clubs have no flights yet.
+        /// </summary>
+        private bool ChangesClubMembershipOrLocation()
+        {
+            return this.ChangeTracker.Entries<Pilot>().Any(e => e.State == EntityState.Deleted
+                                                                || (e.State == EntityState.Modified && e.Property(p => p.ClubId).IsModified))
+                   || this.ChangeTracker.Entries<Club>().Any(e => e.State == EntityState.Deleted
+                                                                  || (e.State == EntityState.Modified && e.Property(c => c.LocationId).IsModified));
         }
 
         /// <summary>

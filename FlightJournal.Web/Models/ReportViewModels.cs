@@ -12,7 +12,7 @@ namespace FlightJournal.Web.Models
 
         public string FormattedDate { get; set; }
 
-        public Dictionary<DateTime, int> AvailableDates { get; set; }
+        public IReadOnlyDictionary<DateTime, int> AvailableDates { get; set; }
 
         public List<Models.Flight> Flights { get; private set; }
 

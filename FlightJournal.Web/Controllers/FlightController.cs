@@ -323,13 +323,6 @@ namespace FlightJournal.Web.Controllers
                 this.db.Flights.Add(flight);
                 this.db.SaveChanges();
 
-                // Help handle clearing the cache on the availableDates of the Report Index page used on frontpage. 
-                if (HttpContext.Application["FlightCreated" + ClubController.CurrentClub.ShortName] == null || (DateTime)HttpContext.Application["FlightCreated" + ClubController.CurrentClub.ShortName] != DateTime.Now.Date)
-                {
-                    HttpContext.Application["FlightCreated" + ClubController.CurrentClub.ShortName] = DateTime.Now.Date;
-                    HttpContext.Application["AvailableDates" + ClubController.CurrentClub.ShortName] = null;
-                }
-
                 FlightsHub.NotifyFlightAdded(flight.FlightId, Guid.Empty, GetLocationsAffectedByFlight(flight));
 
                 return RedirectToAction("Grid");
