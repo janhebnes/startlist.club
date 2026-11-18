@@ -431,7 +431,7 @@ namespace FlightJournal.Tests.Integration
         }
 
         /// <summary>Synthetic clubs, pilots, locations and plane; never real member data.</summary>
-        private sealed class SyntheticReportData
+        internal sealed class SyntheticReportData
         {
             private static readonly DateTime Created = new DateTime(2000, 1, 1);
             private readonly string _tag = Guid.NewGuid().ToString("N").Substring(0, 6).ToUpperInvariant();
