@@ -11,6 +11,7 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NetTopologySuite.Index.Quadtree;
 using Skyhop.FlightAnalysis;
 using Skyhop.FlightAnalysis.Models;
 
@@ -125,7 +126,7 @@ namespace FlightJournal.Tests.Aprs
         [TestMethod]
         public void IndexFault_RecyclesEngine_AndContinuesProcessing()
         {
-            CreateWorker(n => n == 0 ? new FakeEngine { OnEnqueue = u => throw new IndexOutOfRangeException() } : new FakeEngine());
+            CreateWorker(n => n == 0 ? new FakeEngine { OnEnqueue = u => SimulatedQuadtree.Fail<IndexOutOfRangeException>() } : new FakeEngine());
 
             PostAndWait(Update("TEST01", 1), Update("TEST02", 1));
 
@@ -135,9 +136,26 @@ namespace FlightJournal.Tests.Aprs
         }
 
         [TestMethod]
+        public void OutOfRangeOutsideSpatialIndex_CountedAsFailure_NoRecycle()
+        {
+            // Like the library's own position-list read race: out of range, but not from the spatial index
+            CreateWorker(_ => new FakeEngine { OnEnqueue = u => { if (u.Aircraft == "TEST01") throw new ArgumentOutOfRangeException("index"); } });
+
+            PostAndWait(Update("TEST01", 1), Update("TEST02", 1));
+
+            Assert.AreEqual(1, _engines.Count, "The engine must not be recycled");
+            Assert.AreEqual(0, _worker.RecycleCount);
+            Assert.AreEqual(1, _worker.FailureCount);
+            CollectionAssert.AreEqual(new[] { "TEST02" }, _engines[0].Enqueued.Select(u => u.Aircraft).ToArray(),
+                "Processing continues on the same engine");
+            Assert.AreEqual(0, _engines[0].Detached.Count, "No tracked aircraft lose their context");
+            Assert.AreEqual(0, _channel.Events("FlightAnalysisRecycled").Count());
+        }
+
+        [TestMethod]
         public void RepeatedFaults_TripCircuitBreaker_AfterMaxPerHour()
         {
-            CreateWorker(_ => new FakeEngine { OnEnqueue = u => throw new ArgumentOutOfRangeException() },
+            CreateWorker(_ => new FakeEngine { OnEnqueue = u => SimulatedQuadtree.Fail<ArgumentOutOfRangeException>() },
                 new FlightAnalysisWorkerOptions { MaxFaultRecyclesPerHour = 6 });
 
             PostAndWait(Enumerable.Range(0, 10).Select(i => Update($"TEST{i:00}", i)).ToArray());
@@ -186,7 +204,7 @@ namespace FlightJournal.Tests.Aprs
         public void Recycle_DetachesAllTrackedAircraft_OnOldEngine()
         {
             CreateWorker(n => n == 0
-                ? new FakeEngine { OnEnqueue = u => { if (u.Aircraft == "TEST04") throw new IndexOutOfRangeException(); } }
+                ? new FakeEngine { OnEnqueue = u => { if (u.Aircraft == "TEST04") SimulatedQuadtree.Fail<IndexOutOfRangeException>(); } }
                 : new FakeEngine());
 
             PostAndWait(Update("TEST01", 1), Update("TEST02", 1), Update("TEST03", 1), Update("TEST04", 1));
@@ -197,7 +215,7 @@ namespace FlightJournal.Tests.Aprs
         [TestMethod]
         public void Events_FromRecycledEngine_StillReachSubscribers()
         {
-            var worker = CreateWorker(n => n == 0 ? new FakeEngine { OnEnqueue = u => throw new IndexOutOfRangeException() } : new FakeEngine());
+            var worker = CreateWorker(n => n == 0 ? new FakeEngine { OnEnqueue = u => SimulatedQuadtree.Fail<IndexOutOfRangeException>() } : new FakeEngine());
             var takeoffs = 0;
             var landings = 0;
             worker.OnTakeoff += (s, e) => Interlocked.Increment(ref takeoffs);
@@ -332,6 +350,22 @@ namespace FlightJournal.Tests.Aprs
             public void Dispose()
             {
             }
+        }
+    }
+}
+
+namespace NetTopologySuite.Index.Quadtree
+{
+    /// <summary>
+    /// Test double: throws from a frame inside the NetTopologySuite.Index.Quadtree namespace, as an index fault in the
+    /// library's spatial index does.
+    /// </summary>
+    internal static class SimulatedQuadtree
+    {
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        public static void Fail<TException>() where TException : System.Exception, new()
+        {
+            throw new TException();
         }
     }
 }
