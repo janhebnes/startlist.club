@@ -29,10 +29,14 @@ namespace FlightJournal.Web.Aprs
         public Aircraft Aircraft { get; }
         public DateTime? Time { get; }
 
-        public AircraftEvent(Aircraft a, DateTime? t)
+        /// <summary>The allow-listed telemetry facts of the detection (identity, position, times); never person data.</summary>
+        public AprsTelemetryFacts Facts { get; }
+
+        public AircraftEvent(Aircraft a, DateTime? t, AprsTelemetryFacts facts = null)
         {
             Aircraft = a;
             Time = t?.ToLocalTime();
+            Facts = facts ?? new AprsTelemetryFacts();
         }
     }
 
@@ -44,6 +48,7 @@ namespace FlightJournal.Web.Aprs
         private readonly IAircraftCatalog _catalog;
         private readonly List<Listener> _aprsClients;
         private readonly FlightAnalysisWorker _worker;
+        private readonly List<ListenerArea> _areas;
 
         public EventHandler<AircraftEvent> OnAircraftTakeoff { get; set; }
         public EventHandler<AircraftEvent> OnAircraftLanding { get; set; }
@@ -59,7 +64,8 @@ namespace FlightJournal.Web.Aprs
             _worker.OnRadarContact += OnRadarContact;
             _worker.OnContextDispose += OnContactLost;
 
-            _aprsClients = ranges.Where(r => r.IsValid).Select(CreateListener).ToList();
+            _areas = ranges.Where(r => r.IsValid).ToList();
+            _aprsClients = _areas.Select(CreateListener).ToList();
             _telemetryClient = telemetryClient;
         }
 
@@ -146,11 +152,13 @@ namespace FlightJournal.Web.Aprs
             {
                 var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-                var ae = new AircraftEvent(aircraft, e.Flight.StartTime);
+                var location = e.Flight.DepartureLocation;
+                var ae = new AircraftEvent(aircraft, e.Flight.StartTime,
+                    DetectionFacts("Takeoff", e.Flight.Aircraft, aircraft, location?.Y, location?.X, e.Flight.StartTime));
 #if DEBUG
                 Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Took off from ({e.Flight.DepartureLocation.Y:N4},{e.Flight.DepartureLocation.X:N4}) at {ae.Time:o}");
 #endif
-                _telemetryClient.TrackEvent("AprsTakeoffDetected");
+                _telemetryClient.TrackEvent("AprsTakeoffDetected", AprsTelemetry.Properties(ae.Facts));
                 try
                 {
                     OnAircraftTakeoff?.Invoke(this, ae);
@@ -169,11 +177,13 @@ namespace FlightJournal.Web.Aprs
             {
                 var aircraft = _catalog.AircraftInfo((e.Flight.Aircraft));
 
-                var ae = new AircraftEvent(aircraft, e.Flight.EndTime);
+                var location = e.Flight.ArrivalLocation;
+                var ae = new AircraftEvent(aircraft, e.Flight.EndTime,
+                    DetectionFacts("Landing", e.Flight.Aircraft, aircraft, location?.Y, location?.X, e.Flight.EndTime));
 #if DEBUG
                 Log.Debug($"{nameof(AprsListener)}: {e.Flight.Aircraft} {ae.Aircraft.Info()} - Landed at ({e.Flight.ArrivalLocation.Y:N4}, {e.Flight.ArrivalLocation.X:N4}) at {ae.Time:o}");
 #endif
-                _telemetryClient.TrackEvent("AprsLandingDetected");
+                _telemetryClient.TrackEvent("AprsLandingDetected", AprsTelemetry.Properties(ae.Facts));
                 try
                 {
                     OnAircraftLanding?.Invoke(this, ae);
@@ -186,6 +196,23 @@ namespace FlightJournal.Web.Aprs
                 
             }
 
+        }
+
+        private AprsTelemetryFacts DetectionFacts(string detection, string deviceId, Aircraft aircraft, double? latitude, double? longitude, DateTime? time)
+        {
+            return new AprsTelemetryFacts
+            {
+                Event = detection,
+                DeviceId = deviceId,
+                Registration = aircraft?.Registration,
+                CompetitionId = aircraft?.CompetitionId,
+                AircraftType = aircraft?.Type,
+                ListenerAreaIds = AprsTelemetry.ListenerAreaIds(_areas, latitude, longitude),
+                Latitude = latitude,
+                Longitude = longitude,
+                EventTime = time,
+                Received = DateTime.UtcNow
+            };
         }
 
         public void Start()
