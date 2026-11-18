@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FlightJournal.Tests.Models
 {
     /// <summary>
-    /// The report data stamp and the AvailableDates snapshot cache (BUG-0730b3). Pure: no database.
+    /// The report data stamp and the AvailableDates snapshot cache, shared safely between concurrent requests. Pure: no database.
     /// The stamp is process-wide, so tests compare deltas, and use years no other test touches.
     /// </summary>
     [TestClass]
@@ -82,7 +82,7 @@ namespace FlightJournal.Tests.Models
         [TestMethod]
         public void Cache_ConcurrentRequests_SingleBuild_NoExceptions()
         {
-            // The BUG-0730b3 regression guard: no shared Dictionary is mutated, and the herd waits for one rebuild
+            // Guards against the concurrent-request race: no shared Dictionary is mutated, and the herd waits for one rebuild
             var key = UniqueKey();
             var builds = 0;
             var exceptions = new ConcurrentQueue<Exception>();
