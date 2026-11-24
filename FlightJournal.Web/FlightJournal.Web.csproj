@@ -219,9 +219,6 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OGN.FlightLog.Client, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OGN.FlightLog.Client.3.0.0\lib\net472\OGN.FlightLog.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -397,7 +394,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SqlAppAuthenticationProvider.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="App_Start\Startup.OpenGliderNetworkFlightLogMonitor.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Aprs\AircraftCatalog.cs" />
     <Compile Include="Aprs\AircraftEventHandler.cs" />
@@ -488,7 +484,6 @@
     <Compile Include="Extensions\HtmlHelperExtensionExtendedDropDownListFor.cs" />
     <Compile Include="Extensions\HttpRequestBaseExtension.cs" />
     <Compile Include="Extensions\LongExtension.cs" />
-    <Compile Include="Extensions\OGNFlightExtension.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Extensions\HtmlHelpers.cs" />
@@ -1302,7 +1297,6 @@
     <Content Include="Views\Shared\DisplayTemplates\StartedFrom.cshtml" />
     <Content Include="Translations\sv\LC_MESSAGES\messages.po" />
     <Content Include="Views\Shared\DisplayTemplates\StartType.cshtml" />
-    <Content Include="Views\Flight\_ognFlightLog.cshtml" />
     <Content Include="Views\CodePlayground\Index.cshtml" />
     <Content Include="Views\CodePlayground\TableExpandPartial.cshtml" />
     <Content Include="Views\Flight\_changeHistoryLog.cshtml" />

@@ -25,9 +25,6 @@
         <th>
             @Html.DisplayNameFor(d => d.ICAO)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(d => d.RegisteredOgnFlightLogAirfield)
-        </th>*@
         <th></th>
     </tr>
     </thead>
@@ -48,9 +45,6 @@
                         var url = $"https://flightbook.glidernet.org/logbook/{item.ICAO}";
                         <a href="@url" target="_blank" style="margin-left: 20px"><img src="/Content/images/ognicon.png" height="20px" /></a>
                     }                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.RegisteredOgnFlightLogAirfield)
-                </td>*@
                 <td>
                     <div class="btn-group btn-group-sm">
                         @Html.ActionLink("Rediger", "Edit", new { id = item.LocationId }, new { @class = "btn btn-default" })
