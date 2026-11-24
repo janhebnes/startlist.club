@@ -10,7 +10,6 @@ using FlightJournal.Web.Validators;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using OGN.FlightLog.Client.Models;
 using EntityState = System.Data.Entity.EntityState;
 
 namespace FlightJournal.Web.Controllers

@@ -569,12 +569,6 @@ namespace FlightJournal.Web.Controllers
                 this.ViewBag.PilotId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotId);
                 this.ViewBag.PilotBackseatId = new SelectList(this.db.Pilots.Where(p => !p.ExitDate.HasValue || p.ExitDate.Value > DateTime.Today).ToList().Where(p => p.ClubId == clubid).OrderBy(p => p.Name), "PilotId", "RenderName", (flight == null) ? (object)null : flight.PilotBackseatId);
                 this.ViewBag.StartTypeId = new SelectList(this.db.StartTypes.ToList().Where(p => p.ClubId == null || p.ClubId == clubid).OrderBy(p => p.LocalizedDisplayName), "StartTypeId", "LocalizedDisplayName", (flight == null) ? (object)null : flight.StartTypeId);
-
-                //if (Request.Club().Location.RegisteredOgnFlightLogAirfield)
-                //{
-                //    var ognFlights = GetOGNFlights(flight.Date);
-                //    this.ViewBag.OgnFlightLog = ognFlights;
-                //}
             }
             else
             {
@@ -590,108 +584,6 @@ namespace FlightJournal.Web.Controllers
             // Add request context for keeping the back button alive
             ViewBag.UrlReferrer = ResolveUrlReferrer();
         }
-        
-        /// <summary>
-        /// Used to request OGN Flight information and safekeeping a cached request for not bombarding the OGN source.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        private List<OGN.FlightLog.Client.Models.Flight> GetOGNFlights(DateTime date)
-        {
-            var cacheKey = Request.Club().Location.ICAO + date.ToShortDateString();
-
-            var utcOffset = GetUtcOffset(Request.Club().Location.ICAO, date);
-            int timeZoneOffset = utcOffset.Hours;
-
-            var options = new OGN.FlightLog.Client.Client.Options(Request.Club().Location.ICAO, timeZoneOffset, date);
-            options.Timeout = 1500;
-
-            // ktrax logbooks does not keep records older than 7 days
-            if (DateTime.Now.Date.Subtract(date).Days <= 7)
-            {
-                this.ViewBag.OgnFlightLogSource = options.ToString();
-                this.ViewBag.OgnFlightLogSourceCsv = options.ToCsvDownloadAddress();
-            }
-            ViewBag.EnableLiveView = false; 
-            if (DateTime.Now.Date.Subtract(date).Days == 0)
-            {
-                ViewBag.EnableLiveView = true;
-            }
-
-            if (HttpContext?.Cache[cacheKey] != null)
-                return HttpContext.Cache[cacheKey] as List<OGN.FlightLog.Client.Models.Flight>;
-
-            List<OGN.FlightLog.Client.Models.Flight> ognFlights = new List<OGN.FlightLog.Client.Models.Flight>();
-            try
-            {
-                // Request the latest live feed from https://ktrax.kisstech.ch/logbook/?id=EKKS&tz=2&day=2019-04-26&units=metric&shorthand=true&showtype=true&fstatus=all&ftype=all&disp=cs&showcrew=true in csv and parse
-                ognFlights = OGN.FlightLog.Client.Client.GetFlights(options);
-
-                // Add to cache and add with a fixed expiration. 
-                HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(14), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
-            }
-            //catch (System.IO.FileNotFoundException fileNotFound)
-            //{
-            //    bool emptyNotJsonParsable = fileNotFound.Message == "Error reading JObject from JsonReader. Path '', line 2, position 1.";
-            //    bool emptyUnfinishedJson = fileNotFound.Message == "JsonToken EndArray is not valid for closing JsonType None. Path '', line 3, position 3."; // 
-
-            //    // There is an expected empty result from json that is broken json
-            //    if (emptyNotJsonParsable || emptyUnfinishedJson)
-            //    {
-            //        // Empty result page having not even json brackets... 
-            //        HttpContext?.Cache.Add(cacheKey, ognFlights, null, DateTime.Now.AddMinutes(20), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
-            //    }
-            //    else
-            //    {
-            //        this.ViewBag.OgnFlightLogException = jre.ToString();
-            //        this.ViewBag.OgnFlightLogExceptionUrl = options.ToString();
-            //    }
-            //}
-            catch (Exception ex)
-            {
-                this.ViewBag.OgnFlightLogException = ex.ToString();
-                this.ViewBag.OgnFlightLogExceptionUrl = options.ToString();
-            }
-
-            return ognFlights;
-        }
-
-        internal TimeSpan GetUtcOffset(string ICAO, DateTime date)
-        {
-            try
-            {
-                TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById(FindSystemTimeZoneIdByICAO(ICAO, "Central European Standard Time"));
-                return cstZone.GetUtcOffset(date);
-            }
-            catch (TimeZoneNotFoundException)
-            {
-                return new TimeSpan();
-            }
-            catch (InvalidTimeZoneException)
-            {
-                return new TimeSpan();
-            }
-        }
-
-        internal string FindSystemTimeZoneIdByICAO(string ICAO, string defaultResult = "Central European Standard Time")
-        {
-            if (ICAO.Length < 5) return defaultResult;
-
-            // based on https://en.wikipedia.org/wiki/ICAO_airport_code and https://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_E#EK_%E2%80%93_Denmark_and_the_Faroe_Islands
-            string ICAO1 = new string(ICAO.Take(1).ToArray()).ToUpperInvariant();
-            string ICAO2 = new string(ICAO.Take(2).ToArray()).ToUpperInvariant();
-            string ICAO3 = new string(ICAO.Take(3).ToArray()).ToUpperInvariant();
-            string ICAO4 = new string(ICAO.Take(4).ToArray()).ToUpperInvariant();
-
-
-            if (ICAO1 == "E")
-                return "Central European Standard Time";
-            
-            //TODO: When locations need this to work they can extend this location
-
-            return defaultResult;
-        }
-
 
         internal IEnumerable<int> GetLocationsAffectedByFlight(Flight flight)
         {
