@@ -204,6 +204,7 @@
     <Compile Include="Aprs\AprsTelemetryTest.cs" />
     <Compile Include="Aprs\FlightAnalysisRaceReproTest.cs" />
     <Compile Include="Aprs\FlightAnalysisWorkerTest.cs" />
+    <Compile Include="Configuration\NoOgnFlightLogTest.cs" />
     <Compile Include="Controllers\AboutControllerTest.cs" />
     <Compile Include="Controllers\TrainingLogControllerSecurityTest.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttributeTest.cs" />
